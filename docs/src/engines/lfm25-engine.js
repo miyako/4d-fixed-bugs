@@ -72,7 +72,20 @@ export function createEngine() {
       }
 
       onProgress("Loading LFM2.5-Thinking tokenizer + model files…");
-      const { AutoTokenizer, AutoModelForCausalLM } = await import(TRANSFORMERS_CDN_URL);
+      const { AutoTokenizer, AutoModelForCausalLM, env } = await import(TRANSFORMERS_CDN_URL);
+
+      // GitHub Pages can't set the Cross-Origin-Opener-Policy /
+      // Cross-Origin-Embedder-Policy headers needed for SharedArrayBuffer,
+      // so onnxruntime-web's default multi-threaded WASM init (which its
+      // WebGPU/JSEP backend piggybacks on to wire up `webgpuInit`) silently
+      // breaks here, surfacing as "no available backend found. ERR:
+      // [webgpu] TypeError: ...webgpuInit is not a function". Forcing
+      // single-threaded WASM avoids the SharedArrayBuffer dependency and
+      // lets the WebGPU backend initialize correctly. See
+      // https://github.com/huggingface/transformers.js/issues/787.
+      if (env?.backends?.onnx?.wasm) {
+        env.backends.onnx.wasm.numThreads = 1;
+      }
 
       const progress_callback = (p) => {
         if (p && p.status === "progress" && p.file) {
