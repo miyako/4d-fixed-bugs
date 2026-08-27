@@ -14,40 +14,20 @@ body {
   margin: 0 auto;
   padding: 1.5rem;
   line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 header h1 { margin-bottom: 0.25rem; }
 .subtitle { color: var(--muted); margin-top: 0; }
 
-.search-panel form {
+main {
+  flex: 1;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  align-items: center;
+  flex-direction: column;
+  min-height: 0;
 }
-
-#search-input, #rag-input {
-  flex: 1 1 300px;
-  padding: 0.5rem 0.75rem;
-  font-size: 1rem;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-}
-
-select, button {
-  padding: 0.5rem 0.75rem;
-  font-size: 1rem;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  cursor: pointer;
-}
-
-button {
-  background: var(--accent);
-  color: white;
-  border: none;
-}
-button:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .status {
   min-height: 1.5em;
@@ -56,65 +36,142 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
   margin: 0.5rem 0;
 }
 
-.results {
+select, button, input[type="text"] {
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+button {
+  background: var(--accent);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+#chat-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+#chat-input { flex: 1; }
+
+.chat-toolbar {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.chat-toolbar button {
+  background: white;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.chat-container {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  margin: 1.5rem 0;
-}
-
-.result-card {
+  gap: 0.6rem;
+  min-height: 20rem;
+  max-height: 60vh;
+  overflow-y: auto;
+  margin-top: 0.5rem;
+  padding: 0.75rem;
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 0.9rem 1.1rem;
+  background: white;
+}
+
+.chat-message {
+  max-width: 80%;
+  padding: 0.55rem 0.85rem;
+  border-radius: 14px;
+  white-space: pre-wrap;
+  line-height: 1.4;
+}
+
+.chat-message.user {
+  align-self: flex-end;
+  background: var(--accent);
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.chat-message.assistant {
+  align-self: flex-start;
   background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-bottom-left-radius: 4px;
+  max-width: 96%;
 }
 
-.result-card .ref-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
+.hits-table {
+  margin-top: 0.75rem;
+  border-collapse: collapse;
+  width: 100%;
   font-size: 0.85rem;
-  color: var(--muted);
-  margin-bottom: 0.4rem;
+  white-space: normal;
 }
 
-.result-card .ref {
+.hits-table th,
+.hits-table td {
+  border: 1px solid var(--border);
+  padding: 0.4rem 0.5rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.hits-table th {
+  background: rgba(0, 0, 0, 0.05);
   font-weight: 600;
-  color: inherit;
 }
 
-.result-card .score {
+.hits-table .hit-ref {
+  font-weight: 600;
   white-space: nowrap;
 }
 
-.result-card .versions {
-  margin-top: 0.5rem;
-  font-size: 0.8rem;
-  color: var(--muted);
+.hits-table .hit-versions {
+  white-space: nowrap;
 }
 
-.result-card a { color: var(--accent); }
 
-.rag-panel {
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border);
+.chat-message a { color: inherit; }
+
+.chat-message code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  background: rgba(0, 0, 0, 0.07);
+  padding: 0.1em 0.3em;
+  border-radius: 4px;
+  font-size: 0.9em;
 }
 
-#rag-answer {
-  margin-top: 1rem;
-  white-space: pre-wrap;
+.chat-message.user code {
+  background: rgba(255, 255, 255, 0.2);
 }
 
-#rag-answer .citation {
+.chat-message .citation {
   font-weight: 600;
   color: var(--accent);
-  cursor: pointer;
+}
+
+.chat-message.user .citation {
+  color: white;
+}
+
+.chat-note {
+  align-self: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-style: italic;
 }
 
 footer {
-  margin-top: 2.5rem;
+  margin-top: 1.5rem;
   font-size: 0.8rem;
   color: var(--muted);
 }
