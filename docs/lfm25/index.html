@@ -5,20 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="color-scheme" content="light dark" />
 <title>4D Fixed Bugs — AI Chat (LFM2.5-1.2B-Thinking)</title>
-<link rel="stylesheet" href="../style.css?v=8" />
-<!-- @huggingface/transformers dynamically imports the bare specifier
-     "onnxruntime-web/webgpu" at model-load time to get the WebGPU ONNX
-     Runtime backend. That works when a bundler resolves the package's
-     "exports" map, but browsers loading ESM straight from a CDN can't
-     resolve a bare (non-URL, non-relative) specifier on their own --
-     hence "does not resolve to a valid URL". This import map points
-     that exact specifier at the same "./webgpu" export target
-     (dist/ort.webgpu.bundle.min.mjs) from jsdelivr, pinned to the
-     onnxruntime-web version @huggingface/transformers@4.2.0 depends on. -->
+<link rel="stylesheet" href="../style.css?v=9" />
+<!-- @huggingface/transformers's web build has static top-level imports of
+     two bare (non-URL, non-relative) specifiers -- "onnxruntime-web/webgpu"
+     and "onnxruntime-common" -- to get the WebGPU ONNX Runtime backend and
+     its shared Tensor type. That works when a bundler resolves the
+     packages' "exports" maps, but browsers loading ESM straight from a CDN
+     can't resolve bare specifiers on their own -- hence "does not resolve
+     to a valid URL". This import map points each specifier at its real
+     "exports" target from jsdelivr, pinned to the exact onnxruntime-web /
+     onnxruntime-common versions @huggingface/transformers@4.2.0 depends on. -->
 <script type="importmap">
 {
   "imports": {
-    "onnxruntime-web/webgpu": "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.26.0-dev.20260416-b7804b056c/dist/ort.webgpu.bundle.min.mjs"
+    "onnxruntime-web/webgpu": "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.26.0-dev.20260416-b7804b056c/dist/ort.webgpu.bundle.min.mjs",
+    "onnxruntime-common": "https://cdn.jsdelivr.net/npm/onnxruntime-common@1.24.0-dev.20251116-b39e144322/dist/esm/index.js"
   }
 }
 </script>
@@ -76,6 +77,6 @@
     </p>
   </footer>
 
-  <script type="module" src="../src/app.js?v=8"></script>
+  <script type="module" src="../src/app.js?v=9"></script>
 </body>
 </html>
