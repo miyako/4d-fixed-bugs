@@ -1,4 +1,4 @@
-import { renderSummary } from "./render.js";
+import { renderSummary, renderVersions } from "./render.js";
 
 // Pin the exact transformers.js version to match the one used to
 // precompute embeddings in scripts/generate_embeddings.mjs.
@@ -12,13 +12,26 @@ const input = document.getElementById("search-input");
 const topKSelect = document.getElementById("top-k");
 const statusEl = document.getElementById("search-status");
 const resultsEl = document.getElementById("results");
+const subsetStatusEl = document.getElementById("subset-status");
+const createSubsetBtn = document.getElementById("create-subset-btn");
+const resetSubsetBtn = document.getElementById("reset-subset-btn");
+const selectAllBtn = document.getElementById("select-all-btn");
+const selectNoneBtn = document.getElementById("select-none-btn");
 
 /** @type {{reference: string, summary: string, commands: string[], versions: string[]}[]} */
 let meta = [];
 /** @type {Float32Array | null} */
 let embeddings = null;
 let embedder = null;
+
+/** Full ranked results from the last search. */
 let lastResults = [];
+/** What's currently rendered: either `lastResults` or a user-picked subset of it. */
+let displayedResults = [];
+/** Whether `displayedResults` is a subset (vs. the full `lastResults`). */
+let subsetActive = false;
+/** References checked via the per-card checkboxes in the current view. */
+let selectedRefs = new Set();
 
 function setStatus(msg) {
   statusEl.textContent = msg;
@@ -70,6 +83,18 @@ async function search(query, topK) {
   return scored.slice(0, topK).map((s) => ({ ...meta[s.index], score: s.score }));
 }
 
+function updateSubsetControls() {
+  createSubsetBtn.disabled = selectedRefs.size === 0;
+  resetSubsetBtn.disabled = !subsetActive;
+  if (subsetActive) {
+    subsetStatusEl.textContent = `Showing a subset of ${displayedResults.length} of ${lastResults.length} matching bugs. This subset is what the AI chat below will use as context.`;
+  } else if (lastResults.length > 0) {
+    subsetStatusEl.textContent = `Showing all ${displayedResults.length} matching bugs. Select some and click "Use selection as subset" to narrow the AI chat's context.`;
+  } else {
+    subsetStatusEl.textContent = "";
+  }
+}
+
 function renderResults(results) {
   resultsEl.innerHTML = "";
   if (results.length === 0) {
@@ -80,15 +105,29 @@ function renderResults(results) {
     const card = document.createElement("article");
     card.className = "result-card";
     card.id = `result-${r.reference}`;
-    const versions = r.versions?.length ? r.versions.join(", ") : "—";
+    // Cosine similarity of two normalized vectors is in [-1, 1]; for real
+    // text matches it's practically always positive, but clamp defensively
+    // before turning it into a bar width.
+    const pct = Math.max(0, Math.min(1, r.score)) * 100;
     card.innerHTML = `
       <div class="ref-row">
-        <span class="ref">${r.reference}</span>
-        <span class="score">similarity: ${r.score.toFixed(3)}</span>
+        <label class="select-label">
+          <input type="checkbox" class="select-checkbox" data-ref="${r.reference}" ${selectedRefs.has(r.reference) ? "checked" : ""} />
+          <span class="ref">${r.reference}</span>
+        </label>
+        <div class="score-bar" title="cosine similarity: ${r.score.toFixed(3)}">
+          <div class="score-bar-fill" style="width: ${pct.toFixed(1)}%"></div>
+          <span class="score-label">${r.score.toFixed(3)}</span>
+        </div>
       </div>
       <div class="summary">${renderSummary(r.summary)}</div>
-      <div class="versions">Fixed in: ${versions}</div>
+      <div class="versions">Fixed in: ${renderVersions(r.versions)}</div>
     `;
+    card.querySelector(".select-checkbox").addEventListener("change", (e) => {
+      if (e.target.checked) selectedRefs.add(r.reference);
+      else selectedRefs.delete(r.reference);
+      updateSubsetControls();
+    });
     resultsEl.appendChild(card);
   }
 }
@@ -100,7 +139,11 @@ form.addEventListener("submit", async (e) => {
   const topK = parseInt(topKSelect.value, 10);
   try {
     lastResults = await search(query, topK);
-    renderResults(lastResults);
+    displayedResults = lastResults;
+    subsetActive = false;
+    selectedRefs = new Set();
+    renderResults(displayedResults);
+    updateSubsetControls();
     setStatus(`Showing top ${lastResults.length} results for "${query}".`);
   } catch (err) {
     console.error(err);
@@ -108,15 +151,45 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-export function getLastResults() {
-  return lastResults;
-}
+selectAllBtn.addEventListener("click", () => {
+  for (const r of displayedResults) selectedRefs.add(r.reference);
+  renderResults(displayedResults);
+  updateSubsetControls();
+});
+
+selectNoneBtn.addEventListener("click", () => {
+  selectedRefs.clear();
+  renderResults(displayedResults);
+  updateSubsetControls();
+});
+
+createSubsetBtn.addEventListener("click", () => {
+  if (selectedRefs.size === 0) return;
+  displayedResults = lastResults.filter((r) => selectedRefs.has(r.reference));
+  subsetActive = true;
+  renderResults(displayedResults);
+  updateSubsetControls();
+});
+
+resetSubsetBtn.addEventListener("click", () => {
+  displayedResults = lastResults;
+  subsetActive = false;
+  selectedRefs = new Set();
+  renderResults(displayedResults);
+  updateSubsetControls();
+});
 
 loadData().catch((err) => {
   console.error(err);
   setStatus(`Failed to load bug database: ${err.message}`);
 });
 
-// Expose a hook for rag.js to trigger the same search + reuse results
-// without duplicating the ranking logic.
-window.__bugSearch = { search, getLastResults: () => lastResults };
+// Expose hooks for rag.js: the same search/ranking logic, plus the set of
+// bugs currently shown (subset if the user made one, otherwise the full
+// result list) so the chat can ground its answers in exactly what the
+// user is looking at.
+window.__bugSearch = {
+  search,
+  getActiveBugs: () => displayedResults,
+  isSubsetActive: () => subsetActive,
+};

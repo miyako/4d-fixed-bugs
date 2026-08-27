@@ -5,23 +5,78 @@
  * "Enable local AI answers". Once loaded, everything (retrieval + prompt +
  * generation) runs in-browser; no network calls carry the user's question
  * or the bug data anywhere.
+ *
+ * The chat assumes the conversation is about whichever bugs are currently
+ * displayed in the results list (the user's subset if they made one,
+ * otherwise the full search result set — see main.js's `getActiveBugs()`).
+ * Conversation history persists across new searches/subset changes; it is
+ * only cleared by the explicit "Clear conversation" button.
  */
 
 // Pin an exact web-llm version for reproducibility.
 const WEBLLM_CDN_URL = "https://esm.run/@mlc-ai/web-llm@0.2.79";
 const MODEL_ID = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
-const TOP_K_FOR_CONTEXT = 8;
 
 const enableBtn = document.getElementById("rag-enable-btn");
 const ragStatus = document.getElementById("rag-status");
 const ragForm = document.getElementById("rag-form");
 const ragInput = document.getElementById("rag-input");
-const ragAnswer = document.getElementById("rag-answer");
+const chatEl = document.getElementById("rag-chat");
+const clearBtn = document.getElementById("rag-clear-btn");
+const copyBtn = document.getElementById("rag-copy-btn");
 
 let engine = null;
+/** Persisted conversation turns: [{role: 'user'|'assistant', content, bugsContext}] */
+let conversation = [];
 
 function setStatus(msg) {
   ragStatus.textContent = msg;
+}
+
+function stripLinks(text) {
+  return text.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
+}
+
+function getActiveBugs() {
+  return window.__bugSearch?.getActiveBugs() ?? [];
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+/** Render an assistant message's ACI references as clickable citations
+ * that scroll to the matching result card. */
+function linkifyCitations(escapedText, bugs) {
+  return escapedText.replace(/\b(ACI\d+)\b/g, (m, ref) => {
+    const known = bugs.some((h) => h.reference === ref);
+    return known ? `<span class="citation" data-ref="${ref}">${ref}</span>` : ref;
+  });
+}
+
+function appendBubble(role, text, bugs) {
+  const bubble = document.createElement("div");
+  bubble.className = `chat-message ${role}`;
+  const escaped = escapeHtml(text);
+  bubble.innerHTML =
+    role === "assistant" ? linkifyCitations(escaped, bugs) : escaped;
+  bubble.querySelectorAll?.(".citation").forEach((el) => {
+    el.addEventListener("click", () => {
+      document
+        .getElementById(`result-${el.dataset.ref}`)
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  });
+  chatEl.appendChild(bubble);
+  chatEl.scrollTop = chatEl.scrollHeight;
+  return bubble;
+}
+
+function renderConversation() {
+  chatEl.innerHTML = "";
+  for (const turn of conversation) {
+    appendBubble(turn.role, turn.content, turn.bugsContext);
+  }
 }
 
 async function enableLocalAI() {
@@ -36,6 +91,7 @@ async function enableLocalAI() {
     });
     setStatus("Local AI ready. Ask a question below.");
     ragForm.hidden = false;
+    chatEl.hidden = false;
   } catch (err) {
     console.error(err);
     setStatus(`Failed to load local AI: ${err.message}`);
@@ -43,59 +99,79 @@ async function enableLocalAI() {
   }
 }
 
-function buildPrompt(question, hits) {
-  const context = hits
-    .map((h) => `[${h.reference}] ${h.summary.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")}`)
+function buildSystemMessage(bugs) {
+  const context = bugs
+    .map((h) => `[${h.reference}] ${stripLinks(h.summary)}`)
     .join("\n\n");
-  return [
-    {
-      role: "system",
-      content:
-        "You are a helpful assistant answering questions about 4D software bug fixes. " +
-        "Answer ONLY using the bug reports provided below. Always cite the ACI reference " +
-        "(e.g. ACI0092218) for any claim you make. If the provided reports don't answer the " +
-        "question, say so plainly instead of guessing.",
-    },
-    {
-      role: "user",
-      content: `Bug reports:\n\n${context}\n\nQuestion: ${question}`,
-    },
-  ];
-}
-
-function renderAnswer(text, hits) {
-  const escaped = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  const linked = escaped.replace(/\b(ACI\d+)\b/g, (m, ref) => {
-    const known = hits.some((h) => h.reference === ref);
-    return known ? `<span class="citation" data-ref="${ref}">${ref}</span>` : ref;
-  });
-  ragAnswer.innerHTML = linked;
-  ragAnswer.querySelectorAll(".citation").forEach((el) => {
-    el.addEventListener("click", () => {
-      document
-        .getElementById(`result-${el.dataset.ref}`)
-        ?.scrollIntoView({ behavior: "smooth", block: "center" });
-    });
-  });
+  return {
+    role: "system",
+    content:
+      "You are a helpful assistant answering questions about 4D software bug fixes. " +
+      "Answer ONLY using the bug reports provided below (the user's currently selected " +
+      "subset/list of bugs). Always cite the ACI reference (e.g. ACI0092218) for any claim " +
+      "you make. If the provided reports don't answer the question, say so plainly instead " +
+      "of guessing.\n\nBug reports:\n\n" +
+      context,
+  };
 }
 
 ragForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const question = ragInput.value.trim();
   if (!question || !engine) return;
-  setStatus("Retrieving relevant bug reports…");
-  ragAnswer.textContent = "";
+  ragInput.value = "";
+
+  const bugs = getActiveBugs();
+  conversation.push({ role: "user", content: question, bugsContext: bugs });
+  appendBubble("user", question, bugs);
+
+  setStatus("Generating answer locally…");
   try {
-    const hits = await window.__bugSearch.search(question, TOP_K_FOR_CONTEXT);
-    setStatus("Generating answer locally…");
-    const messages = buildPrompt(question, hits);
+    // Rebuild the system message from the *current* active bug list each
+    // turn (the user may have changed the subset since the last question),
+    // but keep the full prior conversation for context.
+    const messages = [
+      buildSystemMessage(bugs),
+      ...conversation.map((t) => ({ role: t.role, content: t.content })),
+    ];
     const reply = await engine.chat.completions.create({ messages });
     const text = reply.choices[0].message.content;
-    renderAnswer(text, hits);
+    conversation.push({ role: "assistant", content: text, bugsContext: bugs });
+    appendBubble("assistant", text, bugs);
     setStatus("Done.");
   } catch (err) {
     console.error(err);
     setStatus(`Error: ${err.message}`);
+  }
+});
+
+clearBtn.addEventListener("click", () => {
+  conversation = [];
+  renderConversation();
+  setStatus("Conversation cleared.");
+});
+
+copyBtn.addEventListener("click", async () => {
+  if (conversation.length === 0) {
+    setStatus("Nothing to copy yet.");
+    return;
+  }
+  const lastBugs = conversation[conversation.length - 1].bugsContext ?? [];
+  const bugsSection = lastBugs
+    .map((b) => `[${b.reference}] ${stripLinks(b.summary)} (Fixed in: ${(b.versions || []).join(", ") || "—"})`)
+    .join("\n");
+  const chatSection = conversation
+    .map((t) => `${t.role === "user" ? "You" : "AI"}: ${t.content}`)
+    .join("\n\n");
+  const text =
+    `Bug subset discussed (${lastBugs.length} bugs):\n${bugsSection}\n\n` +
+    `Conversation:\n${chatSection}`;
+  try {
+    await navigator.clipboard.writeText(text);
+    setStatus("Conversation copied to clipboard.");
+  } catch (err) {
+    console.error(err);
+    setStatus(`Failed to copy: ${err.message}`);
   }
 });
 

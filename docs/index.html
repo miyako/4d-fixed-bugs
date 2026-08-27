@@ -38,16 +38,30 @@
 
     <section id="results" class="results"></section>
 
+    <section class="subset-panel">
+      <div class="subset-toolbar">
+        <button id="select-all-btn" type="button">Select all shown</button>
+        <button id="select-none-btn" type="button">Clear selection</button>
+        <button id="create-subset-btn" type="button" disabled>Use selection as subset</button>
+        <button id="reset-subset-btn" type="button" disabled>Reset to all results</button>
+      </div>
+      <div id="subset-status" class="status" role="status"></div>
+    </section>
+
     <section class="rag-panel">
       <h2>Ask a question (optional, fully local AI)</h2>
       <p>
         Downloads a small language model to your browser (one-time, a few
-        hundred MB–2GB depending on model) and answers using only the
-        matching bug reports below. No API key, no network calls with your
-        question — everything runs locally after the model download.
+        hundred MB–2GB depending on model) and answers using only the bugs
+        currently shown above (your subset, if you made one — otherwise the
+        full result list). No API key, no network calls with your question
+        — everything runs locally after the model download. The
+        conversation keeps its context across new searches; nothing clears
+        it except the explicit "Clear conversation" button below.
       </p>
       <button id="rag-enable-btn" type="button">Enable local AI answers</button>
       <div id="rag-status" class="status" role="status"></div>
+      <div id="rag-chat" class="chat-container" hidden></div>
       <form id="rag-form" hidden>
         <input
           id="rag-input"
@@ -55,9 +69,12 @@
           placeholder="Ask a natural-language question about these bugs…"
           autocomplete="off"
         />
-        <button type="submit">Ask</button>
+        <button type="submit">Send</button>
       </form>
-      <div id="rag-answer"></div>
+      <div class="rag-toolbar">
+        <button id="rag-clear-btn" type="button">Clear conversation</button>
+        <button id="rag-copy-btn" type="button">Copy conversation</button>
+      </div>
     </section>
   </main>
 

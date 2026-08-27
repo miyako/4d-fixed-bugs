@@ -36,3 +36,18 @@ export function renderSummary(text) {
     }
   );
 }
+
+const BUGS_LIST_URL = "https://bugs.4d.com/fixedbugslist?version=";
+
+/** Render a bug's `versions` array as a comma-separated list of links to
+ * the matching bugs.4d.com fixed-bugs list (`?version=<version>`). */
+export function renderVersions(versions) {
+  if (!versions || versions.length === 0) return "—";
+  return versions
+    .map((v) => {
+      const safe = escapeHtml(v);
+      const href = BUGS_LIST_URL + encodeURIComponent(v);
+      return `<a href="${href}" target="_blank" rel="noopener noreferrer">${safe}</a>`;
+    })
+    .join(", ");
+}
