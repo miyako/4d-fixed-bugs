@@ -2,7 +2,6 @@ import { renderSummary, renderVersions } from "./render.js";
 import { parseVersionIntent, bugMatchesIntent, describeIntent } from "./version.js";
 import { buildCommandIndex, extractCommandMentions } from "./commands.js";
 import * as webllmEngine from "./engines/webllm-engine.js";
-import * as lfm25Engine from "./engines/lfm25-engine.js";
 
 /**
  * Single-interface chat app: semantic search over the 4D fixed-bugs
@@ -11,10 +10,10 @@ import * as lfm25Engine from "./engines/lfm25-engine.js";
  * default this is a fully deterministic tool: retrieval alone (ACI
  * lookup, classic version/command matching, semantic ranking) drives a
  * templated reply plus the results table below it — no LLM involved,
- * so it's instant and always factually exact. A local LLM chat layer
- * (WebLLM or LFM2.5-1.2B-Thinking) is still available behind a flag for
- * anyone who wants an actual conversational summary on top of the same
- * retrieval; see CHAT_ENGINE below and docs/lfm25/index.html.
+ * so it's instant and always factually exact. A local WebLLM chat layer
+ * is still available behind a flag for anyone who wants an actual
+ * conversational summary on top of the same retrieval; see CHAT_ENGINE
+ * below.
  *
  * Design note: retrieval never depends on a model to decide when/how to
  * "call" a search tool. It always runs in this file for every user
@@ -38,28 +37,28 @@ const TABLE_TOP_N = 8;
 /**
  * Chat engine selection. "deterministic" (the default) means no LLM at
  * all: replies are a plain templated summary of what was searched and
- * found. "webllm" and "lfm25" both implement the same minimal interface
- * (`init(onProgress)`, `chat(messages) -> {text, thinking}`, `reset()`),
- * so everything else in this file — retrieval, system-prompt
- * construction, conversation state, chat UI — is engine-agnostic. See
- * docs/src/engines/webllm-engine.js and docs/src/engines/lfm25-engine.js,
- * and SESSION_NOTES_LFM25_COMPARISON.md for why the LLM engines exist
- * and how they compare.
+ * found. "webllm" implements a minimal interface (`init(onProgress)`,
+ * `chat(messages) -> {text, thinking}`, `reset()`), so everything else
+ * in this file — retrieval, system-prompt construction, conversation
+ * state, chat UI — is engine-agnostic. See
+ * docs/src/engines/webllm-engine.js.
  *
- * A `?engine=webllm` / `?engine=lfm25` / `?engine=deterministic` URL
- * query param (or a `data-engine` attribute on <body>, as used by
- * docs/lfm25/index.html) overrides this constant, purely as a
- * convenience for side-by-side testing/comparison without editing
- * source.
+ * (A second engine, LFM2.5-1.2B-Thinking via onnxruntime-web/WebGPU, was
+ * tried as a comparison build and removed — its WebGPU backend could
+ * not be reliably loaded from a CDN/static-hosting setup; see
+ * SESSION_NOTES_LFM25_COMPARISON.md for the full writeup.)
+ *
+ * A `?engine=webllm` / `?engine=deterministic` URL query param overrides
+ * this constant, purely as a convenience for side-by-side
+ * testing/comparison without editing source.
  */
-const DEFAULT_CHAT_ENGINE = "deterministic"; // "deterministic" | "webllm" | "lfm25"
+const DEFAULT_CHAT_ENGINE = "deterministic"; // "deterministic" | "webllm"
 const CHAT_ENGINE =
   new URLSearchParams(location.search).get("engine") ||
   document.body.dataset.engine ||
   DEFAULT_CHAT_ENGINE;
 
 function createChatEngine() {
-  if (CHAT_ENGINE === "lfm25") return lfm25Engine.createEngine();
   if (CHAT_ENGINE === "webllm") return webllmEngine.createEngine();
   return null; // deterministic mode: no LLM engine at all.
 }
@@ -109,9 +108,8 @@ function dot(a, aOffset, b) {
 
 async function loadDataset() {
   setBootStatus("Loading bug database…");
-  // Resolve relative to this module's own URL (not the page URL), so this
-  // works whether app.js is loaded from docs/index.html or from a
-  // subdirectory page such as docs/lfm25/index.html.
+  // Resolve relative to this module's own URL (not the page URL), so
+  // this works regardless of which page loads app.js.
   const dataUrl = (name) => new URL(`../data/${name}`, import.meta.url);
   const [metaRes, binRes] = await Promise.all([
     fetch(dataUrl("meta.json")),
