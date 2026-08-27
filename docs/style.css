@@ -163,6 +163,28 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
   color: white;
 }
 
+/* Collapsible "reasoning" block for engines (e.g. LFM2.5-Thinking) that
+ * emit a <think>...</think> block ahead of their final answer. */
+.reasoning {
+  margin-bottom: 0.6rem;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+  color: var(--text-muted, #666);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.reasoning summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.reasoning-body {
+  margin-top: 0.5rem;
+  white-space: normal;
+}
+
 .chat-note {
   align-self: center;
   color: var(--muted);
