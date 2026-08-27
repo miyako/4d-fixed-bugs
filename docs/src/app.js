@@ -108,9 +108,37 @@ async function loadChatEngine() {
   });
 }
 
-/** Automatic retrieval for a user message: parse any version reference,
- * filter by it if present, then rank by semantic similarity. */
+/** Extract explicit ACI bug reference IDs mentioned in a message (e.g.
+ * "ACI0101931", "aci101931", "ACI 101931") and normalize them to the
+ * dataset's exact format: "ACI" + 7 zero-padded digits. */
+function extractExplicitRefs(text) {
+  const refs = new Set();
+  for (const m of text.matchAll(/\bACI\s*0*(\d{1,7})\b/gi)) {
+    refs.add("ACI" + m[1].padStart(7, "0"));
+  }
+  return [...refs];
+}
+
+/** Automatic retrieval for a user message: if the message explicitly
+ * names one or more ACI bug reference IDs, look those up directly
+ * (exact match, no semantic search needed). Otherwise parse any version
+ * reference, filter by it if present, then rank by semantic similarity. */
 async function retrieve(query) {
+  const explicitRefs = extractExplicitRefs(query);
+  if (explicitRefs.length > 0) {
+    const found = explicitRefs
+      .map((ref) => meta.find((b) => b.reference === ref))
+      .filter(Boolean);
+    const notFound = explicitRefs.filter((ref) => !found.some((b) => b.reference === ref));
+    if (found.length > 0) {
+      const results = found.map((b) => ({ ...b, score: 1 }));
+      return { results, intent: null, usedFallback: false, explicitRefs, notFoundRefs: notFound };
+    }
+    // None of the mentioned IDs exist in the dataset — fall through to
+    // semantic search, but remember which IDs were unrecognized so the
+    // system prompt can tell the model to mention that.
+  }
+
   const intent = parseVersionIntent(query, minMajor, maxMajor);
   let pool = meta.map((_, i) => i);
   let usedFallback = false;
@@ -128,11 +156,17 @@ async function retrieve(query) {
   const scored = pool.map((i) => ({ index: i, score: dot(embeddings, i * EMBED_DIM, queryVec) }));
   scored.sort((a, b) => b.score - a.score);
   const results = scored.slice(0, TOP_K).map((s) => ({ ...meta[s.index], score: s.score }));
-  return { results, intent, usedFallback };
+  return {
+    results,
+    intent,
+    usedFallback,
+    explicitRefs: explicitRefs.length > 0 ? explicitRefs : undefined,
+    notFoundRefs: explicitRefs.length > 0 ? explicitRefs : [],
+  };
 }
 
 function buildSystemMessage(retrieval) {
-  const { results, intent, usedFallback } = retrieval;
+  const { results, intent, usedFallback, explicitRefs, notFoundRefs } = retrieval;
   const intentDesc = describeIntent(intent);
   const context = results
     .map((h) => `[${h.reference}] (versions: ${(h.versions || []).join(", ") || "unknown"}) ${stripLinks(h.summary)}`)
@@ -143,6 +177,19 @@ function buildSystemMessage(retrieval) {
     versionNote = ` (note: no bugs matched ${intentDesc} specifically, so these are the closest overall matches instead)`;
   }
 
+  let lookupNote = "";
+  if (explicitRefs && explicitRefs.length > 0) {
+    if (results.length > 0 && (!notFoundRefs || notFoundRefs.length === 0)) {
+      lookupNote =
+        ` The user asked about a specific bug reference by ID (${explicitRefs.join(", ")}), so the report ` +
+        `below is an exact lookup, not a search — just describe it directly.`;
+    } else if (notFoundRefs && notFoundRefs.length > 0) {
+      lookupNote =
+        ` The user mentioned bug reference ID(s) ${notFoundRefs.join(", ")} which do not exist in the ` +
+        `database — mention that plainly instead of guessing what they might be.`;
+    }
+  }
+
   return {
     role: "system",
     content:
@@ -151,11 +198,11 @@ function buildSystemMessage(retrieval) {
       "phrased casually or doesn't mention 4D explicitly — this chat only ever discusses " +
       "that topic.\n\n" +
       `The app already searched the database for this message and found the bug reports ` +
-      `below${versionNote}. Write a short, friendly summary (2-4 sentences) of what they ` +
-      "have in common and which ones best answer the question, citing their ACI reference " +
-      "codes (e.g. ACI0092218). A table with the full details of these same reports is " +
-      "shown automatically right after your reply, so no need to list them all yourself — " +
-      "just give a helpful, conversational summary.\n\n" +
+      `below${versionNote}.${lookupNote} Write a short, friendly summary (2-4 sentences) of ` +
+      "what they have in common and which ones best answer the question, citing their ACI " +
+      "reference codes (e.g. ACI0092218). A table with the full details of these same " +
+      "reports is shown automatically right after your reply, so no need to list them all " +
+      "yourself — just give a helpful, conversational summary.\n\n" +
       "Only decline to help if the message is obviously not about software bugs at all " +
       "(e.g. personal advice, unrelated trivia) — in that case say briefly that you can " +
       "only help with 4D fixed-bug questions.\n\n" +
