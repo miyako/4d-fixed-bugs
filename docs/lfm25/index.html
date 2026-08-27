@@ -3,15 +3,18 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>4D Fixed Bugs — AI Chat</title>
-<link rel="stylesheet" href="style.css" />
+<title>4D Fixed Bugs — AI Chat (LFM2.5-1.2B-Thinking)</title>
+<link rel="stylesheet" href="../style.css" />
 </head>
-<body>
+<body data-engine="lfm25">
   <header>
     <h1>4D Fixed Bugs — AI Chat</h1>
     <p class="subtitle">
-      Ask about 4D bug fixes in natural language. Runs entirely in your
-      browser — no server, no data leaves your machine, no API key.
+      Comparison build running <strong>LiquidAI LFM2.5-1.2B-Thinking</strong>
+      (ONNX/WebGPU) instead of the default WebLLM model. Requires a
+      WebGPU-capable browser. Everything else — retrieval, version rules,
+      ACI direct lookup, system prompt — is identical to the
+      <a href="../index.html">default chat</a>.
     </p>
   </header>
 
@@ -41,13 +44,13 @@
       Data crawled from <a href="https://bugs.4d.com" target="_blank" rel="noopener noreferrer">bugs.4d.com</a>.
       Embeddings: all-MiniLM-L6-v2 via
       <a href="https://huggingface.co/docs/transformers.js" target="_blank" rel="noopener noreferrer">transformers.js</a>.
-      Local AI: <a href="https://github.com/mlc-ai/web-llm" target="_blank" rel="noopener noreferrer">WebLLM</a>
-      (default) — try the
-      <a href="lfm25/">LFM2.5-1.2B-Thinking comparison build</a> for an
-      alternative local model.
+      Local AI:
+      <a href="https://huggingface.co/LiquidAI/LFM2.5-1.2B-Thinking-ONNX" target="_blank" rel="noopener noreferrer">LFM2.5-1.2B-Thinking</a>
+      via <a href="https://huggingface.co/docs/transformers.js" target="_blank" rel="noopener noreferrer">transformers.js</a>
+      (comparison build — see <a href="https://github.com/miyako/4d-fixed-bugs/blob/main/SESSION_NOTES_LFM25_COMPARISON.md">SESSION_NOTES_LFM25_COMPARISON.md</a>).
     </p>
   </footer>
 
-  <script type="module" src="src/app.js"></script>
+  <script type="module" src="../src/app.js"></script>
 </body>
 </html>
