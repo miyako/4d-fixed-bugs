@@ -203,6 +203,9 @@ function buildSystemMessage(retrieval) {
       "reference codes (e.g. ACI0092218). A table with the full details of these same " +
       "reports is shown automatically right after your reply, so no need to list them all " +
       "yourself — just give a helpful, conversational summary.\n\n" +
+      "Reply in plain prose only: do not use markdown tables, bullet lists, numbered lists, " +
+      "headings, or bold/italic formatting. Write it as ordinary sentences and paragraphs, " +
+      "since the detailed table is already provided separately.\n\n" +
       "Only decline to help if the message is obviously not about software bugs at all " +
       "(e.g. personal advice, unrelated trivia) — in that case say briefly that you can " +
       "only help with 4D fixed-bug questions.\n\n" +
