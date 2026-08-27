@@ -1,5 +1,7 @@
 import { renderSummary, renderVersions } from "./render.js";
 import { parseVersionIntent, bugMatchesIntent, describeIntent } from "./version.js";
+import * as webllmEngine from "./engines/webllm-engine.js";
+import * as lfm25Engine from "./engines/lfm25-engine.js";
 
 /**
  * Single-interface chat app: semantic search over the 4D fixed-bugs
@@ -23,12 +25,31 @@ import { parseVersionIntent, bugMatchesIntent, describeIntent } from "./version.
 // Pinned CDN versions for reproducibility.
 const TRANSFORMERS_CDN_URL =
   "https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/dist/transformers.min.js";
-const WEBLLM_CDN_URL = "https://esm.run/@mlc-ai/web-llm@0.2.79";
 const EMBED_MODEL_ID = "Xenova/all-MiniLM-L6-v2";
-const CHAT_MODEL_ID = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
 const EMBED_DIM = 384;
 const TOP_K = 15;
 const TABLE_TOP_N = 8;
+
+/**
+ * Chat engine selection. Both engines implement the same minimal interface
+ * (`init(onProgress)`, `chat(messages) -> {text, thinking}`, `reset()`), so
+ * everything else in this file — retrieval, system-prompt construction,
+ * conversation state, chat UI — is engine-agnostic. See
+ * docs/src/engines/webllm-engine.js and docs/src/engines/lfm25-engine.js,
+ * and SESSION_NOTES_LFM25_COMPARISON.md for why this flag exists and how
+ * the two engines compare.
+ *
+ * Flip this constant to "lfm25" to try LiquidAI's LFM2.5-1.2B-Thinking
+ * (ONNX/WebGPU) instead of WebLLM's Llama-3.2-1B-Instruct. A `?engine=lfm25`
+ * (or `?engine=webllm`) URL query param overrides this constant, purely as
+ * a convenience for side-by-side testing/comparison without editing source.
+ */
+const DEFAULT_CHAT_ENGINE = "webllm"; // "webllm" | "lfm25"
+const CHAT_ENGINE = new URLSearchParams(location.search).get("engine") || DEFAULT_CHAT_ENGINE;
+
+function createChatEngine() {
+  return CHAT_ENGINE === "lfm25" ? lfm25Engine.createEngine() : webllmEngine.createEngine();
+}
 
 const bootStatusEl = document.getElementById("boot-status");
 const chatEl = document.getElementById("chat");
@@ -100,12 +121,8 @@ async function loadEmbedder() {
 
 async function loadChatEngine() {
   setBootStatus("Downloading local AI model… this can take a while the first time.");
-  const webllm = await import(WEBLLM_CDN_URL);
-  engine = await webllm.CreateMLCEngine(CHAT_MODEL_ID, {
-    initProgressCallback: (progress) => {
-      setBootStatus(progress.text || "Loading local AI model…");
-    },
-  });
+  engine = createChatEngine();
+  await engine.init((text) => setBootStatus(text || "Loading local AI model…"));
 }
 
 /** Automatic retrieval for a user message: parse any version reference,
@@ -195,13 +212,16 @@ function highlightCitations(html, bugs) {
   });
 }
 
-function appendBubble(role, text, bugs) {
+function appendBubble(role, text, bugs, thinking) {
   const bubble = document.createElement("div");
   bubble.className = `chat-message ${role}`;
   const proseHtml = renderSummary(text);
   if (role === "assistant") {
+    const thinkingHtml = thinking
+      ? `<details class="reasoning"><summary>Show reasoning</summary><div class="reasoning-body">${renderSummary(thinking)}</div></details>`
+      : "";
     const tableHtml = renderHitsTable(bugs);
-    bubble.innerHTML = highlightCitations(proseHtml, bugs) + tableHtml;
+    bubble.innerHTML = thinkingHtml + highlightCitations(proseHtml, bugs) + tableHtml;
   } else {
     bubble.innerHTML = proseHtml;
   }
@@ -213,7 +233,7 @@ function appendBubble(role, text, bugs) {
 function renderConversation() {
   chatEl.innerHTML = "";
   for (const turn of conversation) {
-    appendBubble(turn.role, turn.content, turn.bugsContext || []);
+    appendBubble(turn.role, turn.content, turn.bugsContext || [], turn.thinking);
   }
 }
 
@@ -247,12 +267,16 @@ chatForm.addEventListener("submit", async (e) => {
       buildSystemMessage(retrieval),
       ...conversation.map((t) => ({ role: t.role, content: t.content })),
     ];
-    const reply = await engine.chat.completions.create({ messages });
+    const { text, thinking } = await engine.chat(messages);
     note.remove();
 
-    const text = reply.choices[0].message.content;
-    conversation.push({ role: "assistant", content: text, bugsContext: retrieval.results });
-    appendBubble("assistant", text, retrieval.results);
+    conversation.push({
+      role: "assistant",
+      content: text,
+      bugsContext: retrieval.results,
+      thinking,
+    });
+    appendBubble("assistant", text, retrieval.results, thinking);
   } catch (err) {
     console.error(err);
     note.remove();
