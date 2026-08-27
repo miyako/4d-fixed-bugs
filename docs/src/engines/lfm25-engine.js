@@ -29,8 +29,18 @@
  * correctness.
  */
 
+// Deliberately the "web" build, not `dist/transformers.min.js` (the
+// universal/isomorphic build that `main`/package exports resolve to by
+// default for bundlers). Loading the universal build directly as a bare
+// ESM import from a CDN — outside of a bundler that applies the
+// package's "browser"/"default" export condition — leaves ONNX Runtime
+// Web's WebGPU backend mis-wired, producing a
+// "webgpuInit is not a function" error at model load time even on a
+// WebGPU-capable browser. `dist/transformers.web.min.js` is the exact
+// browser build the package.json `exports.default` field points bundlers
+// at, and works correctly when imported directly like this too.
 const TRANSFORMERS_CDN_URL =
-  "https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.2.0/dist/transformers.min.js";
+  "https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.2.0/dist/transformers.web.min.js";
 const MODEL_ID = "LiquidAI/LFM2.5-1.2B-Thinking-ONNX";
 const MAX_NEW_TOKENS = 2048;
 
