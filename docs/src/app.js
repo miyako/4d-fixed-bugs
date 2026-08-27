@@ -391,10 +391,19 @@ function renderConversation() {
   }
 }
 
-function appendSystemNote(text) {
+function appendSystemNote(text, { spinner = false } = {}) {
   const note = document.createElement("div");
   note.className = "chat-note";
-  note.textContent = text;
+  if (spinner) {
+    const dots = document.createElement("span");
+    dots.className = "typing-indicator";
+    dots.innerHTML = "<span></span><span></span><span></span>";
+    const label = document.createElement("span");
+    label.textContent = text;
+    note.append(dots, label);
+  } else {
+    note.textContent = text;
+  }
   chatEl.appendChild(note);
   chatEl.scrollTop = chatEl.scrollHeight;
   return note;
@@ -412,7 +421,7 @@ chatForm.addEventListener("submit", async (e) => {
   conversation.push({ role: "user", content: question, bugsContext: priorBugs });
   appendBubble("user", question, priorBugs);
 
-  let note = appendSystemNote("Searching the bug database…");
+  let note = appendSystemNote("Searching the bug database…", { spinner: true });
   try {
     const retrieval = await retrieve(question);
     note.remove();
@@ -425,7 +434,7 @@ chatForm.addEventListener("submit", async (e) => {
       text = buildDeterministicReply(retrieval);
       thinking = null;
     } else {
-      note = appendSystemNote("Thinking…");
+      note = appendSystemNote("Thinking…", { spinner: true });
       const messages = [
         buildSystemMessage(retrieval),
         ...conversation.map((t) => ({ role: t.role, content: t.content })),
