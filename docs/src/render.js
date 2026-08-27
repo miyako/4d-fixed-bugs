@@ -1,11 +1,14 @@
 /**
  * Minimal, safe renderer for bug summaries.
  *
- * Summaries only ever use markdown *link* syntax: `[text](url)`, pointing
- * at developer.4d.com command docs. We do not pull in a general markdown
- * library — instead: HTML-escape the raw text first (so no stray HTML/JS
- * from the data can ever execute), then linkify `[text](url)` patterns,
- * restricting the href to an allowlisted domain as defense-in-depth.
+ * Summaries use a small, fixed subset of markdown (confirmed by scanning
+ * the dataset): links `[text](url)` pointing at developer.4d.com command
+ * docs, inline code spans `` `code` ``, and italics `*text*`. No bold or
+ * fenced code blocks appear anywhere in the data, so those aren't handled.
+ * We do not pull in a general markdown library — instead: HTML-escape the
+ * raw text first (so no stray HTML/JS from the data can ever execute),
+ * then convert just these three inline patterns, restricting link hrefs
+ * to an allowlisted domain as defense-in-depth.
  */
 
 const ALLOWED_HREF_PREFIX = "https://developer.4d.com/";
@@ -19,20 +22,34 @@ function escapeHtml(str) {
     .replace(/'/g, "&#39;");
 }
 
-/** Render a raw summary string (with `[text](url)` links) to safe HTML. */
+// Matches, in priority order: a markdown link, an inline code span, or an
+// italic span. Applied as a single alternation pass so the three inline
+// constructs don't interfere with each other's delimiters.
+const INLINE_PATTERN = /\[([^\]]+)\]\(([^)]+)\)|`([^`]+)`|\*([^*\n]+)\*/g;
+
+/** Render a raw summary string (markdown links/code/italics) to safe HTML. */
 export function renderSummary(text) {
   const escaped = escapeHtml(text);
-  // escapeHtml turns `"` into `&quot;`, so the URL inside () is untouched
-  // except for `&` -> `&amp;`, which we undo only within captured URLs.
   return escaped.replace(
-    /\[([^\]]+)\]\(([^)]+)\)/g,
-    (match, linkText, href) => {
-      const realHref = href.replace(/&amp;/g, "&");
-      if (!realHref.startsWith(ALLOWED_HREF_PREFIX)) {
-        // Not an allowlisted link target: render as plain text, no <a>.
-        return linkText;
+    INLINE_PATTERN,
+    (match, linkText, href, code, italic) => {
+      if (linkText !== undefined) {
+        // escapeHtml turns `"` into `&quot;`, so the URL inside () is
+        // untouched except for `&` -> `&amp;`, which we undo here.
+        const realHref = href.replace(/&amp;/g, "&");
+        if (!realHref.startsWith(ALLOWED_HREF_PREFIX)) {
+          // Not an allowlisted link target: render as plain text, no <a>.
+          return linkText;
+        }
+        return `<a href="${escapeHtml(realHref)}" target="_blank" rel="noopener noreferrer">${linkText}</a>`;
       }
-      return `<a href="${escapeHtml(realHref)}" target="_blank" rel="noopener noreferrer">${linkText}</a>`;
+      if (code !== undefined) {
+        return `<code>${code}</code>`;
+      }
+      if (italic !== undefined) {
+        return `<em>${italic}</em>`;
+      }
+      return match;
     }
   );
 }

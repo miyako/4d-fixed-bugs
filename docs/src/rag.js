@@ -1,3 +1,5 @@
+import { renderSummary } from "./render.js";
+
 /**
  * Optional, fully local RAG layer using WebLLM (@mlc-ai/web-llm).
  *
@@ -41,14 +43,12 @@ function getActiveBugs() {
   return window.__bugSearch?.getActiveBugs() ?? [];
 }
 
-function escapeHtml(str) {
-  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
-
 /** Render an assistant message's ACI references as clickable citations
- * that scroll to the matching result card. */
-function linkifyCitations(escapedText, bugs) {
-  return escapedText.replace(/\b(ACI\d+)\b/g, (m, ref) => {
+ * that scroll to the matching result card. Runs on top of renderSummary's
+ * already-safe (HTML-escaped) output, so it just needs a plain-text regex
+ * over the rendered markup. */
+function linkifyCitations(html, bugs) {
+  return html.replace(/\b(ACI\d+)\b/g, (m, ref) => {
     const known = bugs.some((h) => h.reference === ref);
     return known ? `<span class="citation" data-ref="${ref}">${ref}</span>` : ref;
   });
@@ -57,9 +57,13 @@ function linkifyCitations(escapedText, bugs) {
 function appendBubble(role, text, bugs) {
   const bubble = document.createElement("div");
   bubble.className = `chat-message ${role}`;
-  const escaped = escapeHtml(text);
-  bubble.innerHTML =
-    role === "assistant" ? linkifyCitations(escaped, bugs) : escaped;
+  // Both user and assistant text pass through the same safe markdown
+  // renderer used for bug summaries (handles links/code/italics and
+  // HTML-escapes everything else), so formatting the model may echo back
+  // from a bug summary renders consistently instead of showing raw
+  // markdown syntax.
+  const html = renderSummary(text);
+  bubble.innerHTML = role === "assistant" ? linkifyCitations(html, bugs) : html;
   bubble.querySelectorAll?.(".citation").forEach((el) => {
     el.addEventListener("click", () => {
       document

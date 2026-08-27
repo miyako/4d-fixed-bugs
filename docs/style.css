@@ -133,6 +133,19 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .result-card a { color: var(--accent); }
 
+.summary code,
+.chat-message code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  background: rgba(0, 0, 0, 0.07);
+  padding: 0.1em 0.3em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.chat-message.user code {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 .subset-panel {
   margin: 1rem 0;
 }
