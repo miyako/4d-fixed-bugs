@@ -105,6 +105,20 @@ If a version filter is parsed but matches zero bugs, retrieval falls
 back to an unfiltered semantic search and the system prompt tells the
 model to mention that fallback to the user.
 
+## Explicit ACI reference lookup
+
+If a message names a specific bug reference ID (e.g. "what is
+ACI0101931 about?", "aci 101931", case-insensitive, with or without
+leading zeros), `retrieve()` in `app.js` matches it via
+`extractExplicitRefs` (`\bACI\s*0*(\d{1,7})\b`, normalized to the
+dataset's exact `ACI` + 7-zero-padded-digits format) and does a direct
+exact-match lookup in `meta.json` instead of semantic search — faster
+and more accurate for the common "tell me about bug X" case. If none of
+the mentioned IDs exist in the dataset, retrieval falls back to normal
+version-aware semantic search and the system prompt is told which
+ID(s) were not found, so the model states that plainly instead of
+guessing.
+
 ## Key implementation decisions
 
 - **Same pinned model version on both sides.** The Node precompute
@@ -149,6 +163,24 @@ model to mention that fallback to the user.
   scroll to. Once that list was removed in the single-chat redesign,
   citations became plain emphasized text (`<strong class="citation">`)
   since there's no longer a card to link to.
+- **Deterministic hits table, independent of model prose quality.** The
+  1B local model was observed to sometimes ignore good retrieval
+  results and claim "I don't have information" even when relevant bugs
+  had been found. Rather than relying purely on prompt engineering to
+  fix that, `app.js` now always renders an HTML table of the top 8
+  retrieved bugs (ACI reference, versions as `bugs.4d.com` links, and
+  summaries with their command links to `developer.4d.com`) underneath
+  every assistant reply, built directly from the retrieval data. The
+  model's prose is just a short complementary summary — the actual
+  results are always shown correctly regardless of what the model says.
+- **Positive-only system prompt phrasing.** An earlier system prompt
+  used heavy negative/imperative language ("IMPORTANT", "forbid",
+  "never say ...") to stop the model from claiming no information was
+  found. This backfired: the small model latched onto the refusal-like
+  framing and started giving generic declines even for clearly on-topic,
+  well-matched questions. The prompt was rewritten to short, positive
+  instructions that assume every message is in-scope and simply ask for
+  a brief helpful summary, which resolved the spurious refusals.
 
 ## History of iterations (chronological, high level)
 
@@ -166,7 +198,7 @@ model to mention that fallback to the user.
    inline code spans and italics in real summaries were showing as raw
    `` `text` ``/`*text*`. Extended `render.js` to handle all three
    constructs safely.
-4. **v4 (current — single chat interface):** removed the search
+4. **v4 (single chat interface):** removed the search
    box/top-K select/results list/subset picker entirely. The whole page
    is now one chat interface that auto-boots (dataset, embedder, WebLLM,
    in that order) with input disabled until ready. Every message
@@ -174,6 +206,27 @@ model to mention that fallback to the user.
    system prompt restricts the model to the bug database's scope and
    politely declines anything else. Clear/copy conversation controls are
    kept from v2.
+5. **v5 (current — RAG quality + direct ID lookup):** fixed a real-world
+   failure mode where the small local model ignored good retrieval
+   results and either claimed to have no information or gave generic
+   refusals. Added a deterministic hits table (rendered from the actual
+   retrieval data, not the model's reproduction of it) and rewrote the
+   system prompt from negative/imperative phrasing to short, positive
+   instructions. Also added direct exact-match lookup for messages that
+   name a specific ACI bug reference ID, bypassing semantic search for
+   that case.
+
+## Deployment
+
+Published via GitHub Pages: repository Settings > Pages is configured
+to build from the `main` branch, `/docs` folder
+(`gh api --method POST repos/<owner>/<repo>/pages -f "source[branch]=main" -f "source[path]=/docs"`).
+Live at `https://miyako.github.io/4d-fixed-bugs/`. Because the initial
+PR (#2) was merged to `main` early — before the later rounds of
+iteration in this document — a follow-up PR (#4) was opened and merged
+to bring `main` fully up to date before Pages was enabled, so the live
+site reflects the current single-chat architecture rather than the
+original search-bar version.
 
 ## Verification performed
 
@@ -206,6 +259,24 @@ model to mention that fallback to the user.
   - `render.js` confirmed (from earlier passes, still valid — renderer
     unchanged in this iteration) to reject a synthetic `javascript:` URL
     and HTML-escape a raw `<script>` tag embedded in test input.
+- Follow-up Playwright passes for the v5 fixes (also using the mocked
+  WebLLM engine):
+  - The hits table renders the correct top-8 bugs with working version
+    and command links even when the mocked model reproduces the exact
+    "I don't have any information" failure mode originally reported.
+  - The rewritten, positive-only system prompt was confirmed to no
+    longer contain "IMPORTANT"/"forbid"/"Never say" phrasing.
+  - Explicit ACI ID lookup: exact-format (`ACI0101931`) and loosely
+    formatted (`aci 101931`, no leading zeros) IDs both resolve to a
+    single, correct exact-match result; a nonexistent ID falls back to
+    semantic search with a "not found" note surfaced to the model;
+    normal semantic queries (no ID mentioned) are unaffected.
+  - Conversation persistence, copy, and clear continue to work
+    correctly after all of the above changes, with zero console errors.
+- Verified the live GitHub Pages deployment directly: `curl` confirms
+  `https://miyako.github.io/4d-fixed-bugs/` returns 200 with the current
+  (single-chat) `<title>`, and `data/meta.json` / `src/app.js` are both
+  reachable at their expected paths.
 
 ## Possible follow-ups (not done in this pass)
 
@@ -218,3 +289,11 @@ model to mention that fallback to the user.
   answer somewhere in the UI (currently only visible via "Copy
   conversation" or by asking the model directly), now that there's no
   standing result list to glance at.
+- **Model swap evaluation (in progress, separate branch/session):**
+  GitHub issue #3 tracks evaluating LiquidAI's LFM2.5-1.2B-Thinking
+  (ONNX/WebGPU) as an alternative to WebLLM's Llama-3.2-1B, since it's
+  not a drop-in model-ID swap (different runtime: raw
+  `onnxruntime-web` + manual generation loop vs. WebLLM's high-level
+  chat API). Being prototyped on a separate branch behind a pluggable
+  engine flag so it can be compared without risking this working
+  implementation.
