@@ -3,15 +3,17 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>4D Fixed Bugs — AI Chat</title>
+<title>4D Fixed Bugs — Search</title>
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
-    <h1>4D Fixed Bugs — AI Chat</h1>
+    <h1>4D Fixed Bugs — Search</h1>
     <p class="subtitle">
-      Ask about 4D bug fixes in natural language. Runs entirely in your
-      browser — no server, no data leaves your machine, no API key.
+      Ask about 4D bug fixes in natural language, by version (e.g. "v20",
+      "around v18", "before 17"), by exact command name (e.g. GOTO OBJECT),
+      or by ACI reference ID. Runs entirely in your browser — no server, no
+      data leaves your machine, no LLM required.
     </p>
   </header>
 
@@ -41,10 +43,11 @@
       Data crawled from <a href="https://bugs.4d.com" target="_blank" rel="noopener noreferrer">bugs.4d.com</a>.
       Embeddings: all-MiniLM-L6-v2 via
       <a href="https://huggingface.co/docs/transformers.js" target="_blank" rel="noopener noreferrer">transformers.js</a>.
-      Local AI: <a href="https://github.com/mlc-ai/web-llm" target="_blank" rel="noopener noreferrer">WebLLM</a>
-      (default) — try the
-      <a href="lfm25/">LFM2.5-1.2B-Thinking comparison build</a> for an
-      alternative local model.
+      Search is fully deterministic (exact ACI/command/version matching plus
+      semantic ranking) — no LLM, no chat model download, instant replies. Curious
+      about an LLM-summarized version instead? Try the
+      <a href="lfm25/">LFM2.5-1.2B-Thinking comparison build</a> (or append
+      <code>?engine=webllm</code> to this page's URL for the original WebLLM build).
     </p>
   </footer>
 

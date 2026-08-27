@@ -1,25 +1,30 @@
 import { renderSummary, renderVersions } from "./render.js";
 import { parseVersionIntent, bugMatchesIntent, describeIntent } from "./version.js";
+import { buildCommandIndex, extractCommandMentions } from "./commands.js";
 import * as webllmEngine from "./engines/webllm-engine.js";
 import * as lfm25Engine from "./engines/lfm25-engine.js";
 
 /**
  * Single-interface chat app: semantic search over the 4D fixed-bugs
  * dataset is performed automatically, behind the scenes, on every user
- * message (no separate search bar/results list/selection UI) and used to
- * ground a fully local WebLLM chat model's answer.
+ * message (no separate search bar/results list/selection UI). By
+ * default this is a fully deterministic tool: retrieval alone (ACI
+ * lookup, classic version/command matching, semantic ranking) drives a
+ * templated reply plus the results table below it — no LLM involved,
+ * so it's instant and always factually exact. A local LLM chat layer
+ * (WebLLM or LFM2.5-1.2B-Thinking) is still available behind a flag for
+ * anyone who wants an actual conversational summary on top of the same
+ * retrieval; see CHAT_ENGINE below and docs/lfm25/index.html.
  *
- * Design note: rather than relying on the (small, 1B-parameter) local
- * model to itself decide when/how to "call" a search tool — which is
- * unreliable for a model this size — retrieval is deterministic and
- * always runs in this file for every user turn: it parses the message
- * for a version reference (see version.js for the exact rules), filters
- * the dataset accordingly if one is found, then ranks by semantic
- * similarity. The system prompt sent to the model explains this process
- * (including the version rules verbatim) and provides the retrieved bug
- * reports as grounding context, so the model's job is just to answer
- * from that context and decline anything out of scope — not to run the
- * retrieval itself.
+ * Design note: retrieval never depends on a model to decide when/how to
+ * "call" a search tool. It always runs in this file for every user
+ * turn: it looks for an explicit ACI reference first, then an exact
+ * (case-sensitive) command-name mention and/or a version reference (see
+ * commands.js / version.js for the exact rules), filters the dataset
+ * accordingly, then ranks by semantic similarity. When an LLM engine is
+ * enabled, the system prompt explains this process and provides the
+ * retrieved bug reports as grounding context so the model only has to
+ * summarize, not search.
  */
 
 // Pinned CDN versions for reproducibility.
@@ -31,27 +36,32 @@ const TOP_K = 15;
 const TABLE_TOP_N = 8;
 
 /**
- * Chat engine selection. Both engines implement the same minimal interface
- * (`init(onProgress)`, `chat(messages) -> {text, thinking}`, `reset()`), so
- * everything else in this file — retrieval, system-prompt construction,
- * conversation state, chat UI — is engine-agnostic. See
+ * Chat engine selection. "deterministic" (the default) means no LLM at
+ * all: replies are a plain templated summary of what was searched and
+ * found. "webllm" and "lfm25" both implement the same minimal interface
+ * (`init(onProgress)`, `chat(messages) -> {text, thinking}`, `reset()`),
+ * so everything else in this file — retrieval, system-prompt
+ * construction, conversation state, chat UI — is engine-agnostic. See
  * docs/src/engines/webllm-engine.js and docs/src/engines/lfm25-engine.js,
- * and SESSION_NOTES_LFM25_COMPARISON.md for why this flag exists and how
- * the two engines compare.
+ * and SESSION_NOTES_LFM25_COMPARISON.md for why the LLM engines exist
+ * and how they compare.
  *
- * Flip this constant to "lfm25" to try LiquidAI's LFM2.5-1.2B-Thinking
- * (ONNX/WebGPU) instead of WebLLM's Llama-3.2-1B-Instruct. A `?engine=lfm25`
- * (or `?engine=webllm`) URL query param overrides this constant, purely as
- * a convenience for side-by-side testing/comparison without editing source.
+ * A `?engine=webllm` / `?engine=lfm25` / `?engine=deterministic` URL
+ * query param (or a `data-engine` attribute on <body>, as used by
+ * docs/lfm25/index.html) overrides this constant, purely as a
+ * convenience for side-by-side testing/comparison without editing
+ * source.
  */
-const DEFAULT_CHAT_ENGINE = "webllm"; // "webllm" | "lfm25"
+const DEFAULT_CHAT_ENGINE = "deterministic"; // "deterministic" | "webllm" | "lfm25"
 const CHAT_ENGINE =
   new URLSearchParams(location.search).get("engine") ||
   document.body.dataset.engine ||
   DEFAULT_CHAT_ENGINE;
 
 function createChatEngine() {
-  return CHAT_ENGINE === "lfm25" ? lfm25Engine.createEngine() : webllmEngine.createEngine();
+  if (CHAT_ENGINE === "lfm25") return lfm25Engine.createEngine();
+  if (CHAT_ENGINE === "webllm") return webllmEngine.createEngine();
+  return null; // deterministic mode: no LLM engine at all.
 }
 
 const bootStatusEl = document.getElementById("boot-status");
@@ -70,6 +80,9 @@ let embedder = null;
 let engine = null;
 let minMajor = Infinity;
 let maxMajor = -Infinity;
+/** @type {string[]} Longest-first list of distinct command names present
+ * in the dataset, for classic (exact) command-mention matching. */
+let commandIndex = [];
 
 /** Persisted conversation turns: [{role: 'user'|'assistant', content, bugsContext}] */
 let conversation = [];
@@ -107,6 +120,7 @@ async function loadDataset() {
   meta = await metaRes.json();
   const buf = await binRes.arrayBuffer();
   embeddings = new Float32Array(buf);
+  commandIndex = buildCommandIndex(meta);
   for (const bug of meta) {
     for (const v of bug.versions || []) {
       const m = v.match(/^(\d+)/);
@@ -143,10 +157,16 @@ function extractExplicitRefs(text) {
   return [...refs];
 }
 
-/** Automatic retrieval for a user message: if the message explicitly
- * names one or more ACI bug reference IDs, look those up directly
- * (exact match, no semantic search needed). Otherwise parse any version
- * reference, filter by it if present, then rank by semantic similarity. */
+/** Automatic retrieval for a user message:
+ *  1. If the message explicitly names one or more ACI bug reference
+ *     IDs, look those up directly (exact match, no search needed).
+ *  2. Otherwise, run "classic" (exact, not semantic) matching: an
+ *     exact-cased command-name mention (see commands.js) and/or a
+ *     parsed version reference (see version.js) each narrow the
+ *     candidate pool if present.
+ *  3. Rank whatever's left by semantic similarity and take the top K.
+ * Each classic filter falls back to "no narrowing" (with a flag the
+ * caller can surface) if it would otherwise eliminate every bug. */
 async function retrieve(query) {
   const explicitRefs = extractExplicitRefs(query);
   if (explicitRefs.length > 0) {
@@ -156,15 +176,35 @@ async function retrieve(query) {
     const notFound = explicitRefs.filter((ref) => !found.some((b) => b.reference === ref));
     if (found.length > 0) {
       const results = found.map((b) => ({ ...b, score: 1 }));
-      return { results, intent: null, usedFallback: false, explicitRefs, notFoundRefs: notFound };
+      return {
+        results,
+        intent: null,
+        usedFallback: false,
+        commandMentions: [],
+        usedCommandFallback: false,
+        explicitRefs,
+        notFoundRefs: notFound,
+      };
     }
     // None of the mentioned IDs exist in the dataset — fall through to
     // semantic search, but remember which IDs were unrecognized so the
-    // system prompt can tell the model to mention that.
+    // reply/system prompt can mention that.
   }
 
   const intent = parseVersionIntent(query, minMajor, maxMajor);
+  const commandMentions = extractCommandMentions(query, commandIndex);
+
   let pool = meta.map((_, i) => i);
+  let usedCommandFallback = false;
+  if (commandMentions.length > 0) {
+    const filtered = pool.filter((i) => meta[i].commands?.some((c) => commandMentions.includes(c)));
+    if (filtered.length > 0) {
+      pool = filtered;
+    } else {
+      usedCommandFallback = true;
+    }
+  }
+
   let usedFallback = false;
   if (intent) {
     const filtered = pool.filter((i) => bugMatchesIntent(meta[i], intent));
@@ -184,13 +224,16 @@ async function retrieve(query) {
     results,
     intent,
     usedFallback,
+    commandMentions,
+    usedCommandFallback,
     explicitRefs: explicitRefs.length > 0 ? explicitRefs : undefined,
     notFoundRefs: explicitRefs.length > 0 ? explicitRefs : [],
   };
 }
 
 function buildSystemMessage(retrieval) {
-  const { results, intent, usedFallback, explicitRefs, notFoundRefs } = retrieval;
+  const { results, intent, usedFallback, commandMentions, usedCommandFallback, explicitRefs, notFoundRefs } =
+    retrieval;
   const intentDesc = describeIntent(intent);
   const context = results
     .map((h) => `[${h.reference}] (versions: ${(h.versions || []).join(", ") || "unknown"}) ${stripLinks(h.summary)}`)
@@ -199,6 +242,11 @@ function buildSystemMessage(retrieval) {
   let versionNote = "";
   if (intentDesc && usedFallback) {
     versionNote = ` (note: no bugs matched ${intentDesc} specifically, so these are the closest overall matches instead)`;
+  }
+
+  let commandNote = "";
+  if (commandMentions.length > 0 && usedCommandFallback) {
+    commandNote = ` (note: no bugs specifically mention ${commandMentions.join(", ")}, so these are the closest overall matches instead)`;
   }
 
   let lookupNote = "";
@@ -221,11 +269,16 @@ function buildSystemMessage(retrieval) {
       "Always assume every user message is about the 4D fixed-bugs database, even if it's " +
       "phrased casually or doesn't mention 4D explicitly — this chat only ever discusses " +
       "that topic.\n\n" +
+      "Before ranking by semantic similarity, the app also does classic (exact, not semantic) " +
+      "matching: an exact-cased 4D command name mentioned in the message (e.g. GOTO OBJECT, " +
+      "Print form) narrows results to bugs whose commands include it, and a version reference " +
+      "narrows results using the version rules below — so retrieval is deterministic, not left " +
+      "to the model.\n\n" +
       `The app already searched the database for this message and found the bug reports ` +
-      `below${versionNote}.${lookupNote} Write a short, friendly summary (2-4 sentences) of ` +
-      "what they have in common and which ones best answer the question, citing their ACI " +
-      "reference codes (e.g. ACI0092218). A table with the full details of these same " +
-      "reports is shown automatically right after your reply, so no need to list them all " +
+      `below${versionNote}${commandNote}.${lookupNote} Write a short, friendly summary (2-4 ` +
+      "sentences) of what they have in common and which ones best answer the question, citing " +
+      "their ACI reference codes (e.g. ACI0092218). A table with the full details of these " +
+      "same reports is shown automatically right after your reply, so no need to list them all " +
       "yourself — just give a helpful, conversational summary.\n\n" +
       "Reply in plain prose only: do not use markdown tables, bullet lists, numbered lists, " +
       "headings, or bold/italic formatting. Write it as ordinary sentences and paragraphs, " +
@@ -236,6 +289,50 @@ function buildSystemMessage(retrieval) {
       "Bug reports found for this message:\n\n" +
       context,
   };
+}
+
+/** Build a plain-text templated reply describing what was searched and
+ * found, used instead of calling an LLM in the default deterministic
+ * mode (CHAT_ENGINE === "deterministic"). No model involved: this is
+ * generated purely from the retrieval() result. */
+function buildDeterministicReply(retrieval) {
+  const { results, intent, usedFallback, commandMentions, usedCommandFallback, explicitRefs, notFoundRefs } =
+    retrieval;
+  const intentDesc = describeIntent(intent);
+
+  if (explicitRefs && explicitRefs.length > 0) {
+    if (results.length > 0 && (!notFoundRefs || notFoundRefs.length === 0)) {
+      return explicitRefs.length === 1
+        ? `Found ${explicitRefs[0]} directly — see the details below.`
+        : `Found ${explicitRefs.join(", ")} directly — see the details below.`;
+    }
+    if (notFoundRefs && notFoundRefs.length > 0) {
+      return results.length > 0
+        ? `${notFoundRefs.join(", ")} doesn't exist in the database. Here are the closest matches by search instead:`
+        : `${notFoundRefs.join(", ")} doesn't exist in the database, and no similar bugs were found either.`;
+    }
+  }
+
+  if (results.length === 0) {
+    return "No bugs matched that search.";
+  }
+
+  const criteria = [];
+  if (commandMentions.length > 0 && !usedCommandFallback) criteria.push(`mentioning ${commandMentions.join(", ")}`);
+  if (intentDesc && !usedFallback) criteria.push(`fixed in ${intentDesc}`);
+
+  let lead = `Found ${results.length} bug${results.length === 1 ? "" : "s"}`;
+  if (criteria.length > 0) lead += " " + criteria.join(" and ");
+  lead += ".";
+
+  const fallbackNotes = [];
+  if (usedCommandFallback) fallbackNotes.push(`no exact match for ${commandMentions.join(", ")}`);
+  if (usedFallback) fallbackNotes.push(`no exact match for ${intentDesc}`);
+  if (fallbackNotes.length > 0) {
+    lead += ` No exact match for that${fallbackNotes.length > 1 ? " (" + fallbackNotes.join("; ") + ")" : ""} — showing the closest overall matches instead.`;
+  }
+
+  return lead + " Top matches below.";
 }
 
 /** Deterministically render a table of the top retrieved bugs (reference,
@@ -306,7 +403,8 @@ function appendSystemNote(text) {
 chatForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const question = chatInput.value.trim();
-  if (!question || !engine) return;
+  if (!question) return;
+  if (CHAT_ENGINE !== "deterministic" && !engine) return;
   chatInput.value = "";
   setReady(false);
 
@@ -318,14 +416,24 @@ chatForm.addEventListener("submit", async (e) => {
   try {
     const retrieval = await retrieve(question);
     note.remove();
+    note = null;
 
-    note = appendSystemNote("Thinking…");
-    const messages = [
-      buildSystemMessage(retrieval),
-      ...conversation.map((t) => ({ role: t.role, content: t.content })),
-    ];
-    const { text, thinking } = await engine.chat(messages);
-    note.remove();
+    let text, thinking;
+    if (CHAT_ENGINE === "deterministic") {
+      // No LLM call at all: the reply is a plain template generated
+      // directly from the retrieval result.
+      text = buildDeterministicReply(retrieval);
+      thinking = null;
+    } else {
+      note = appendSystemNote("Thinking…");
+      const messages = [
+        buildSystemMessage(retrieval),
+        ...conversation.map((t) => ({ role: t.role, content: t.content })),
+      ];
+      ({ text, thinking } = await engine.chat(messages));
+      note.remove();
+      note = null;
+    }
 
     conversation.push({
       role: "assistant",
@@ -336,7 +444,7 @@ chatForm.addEventListener("submit", async (e) => {
     appendBubble("assistant", text, retrieval.results, thinking);
   } catch (err) {
     console.error(err);
-    note.remove();
+    if (note) note.remove();
     appendSystemNote(`Error: ${err.message}`);
   } finally {
     setReady(true);
@@ -376,7 +484,9 @@ async function boot() {
   try {
     await loadDataset();
     await loadEmbedder();
-    await loadChatEngine();
+    if (CHAT_ENGINE !== "deterministic") {
+      await loadChatEngine();
+    }
     setBootStatus(
       `Ready. Ask about any of the ${meta.length} fixed 4D bugs (versions ${minMajor}-${maxMajor}).`
     );
