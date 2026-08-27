@@ -37,11 +37,17 @@ export function renderSummary(text) {
         // escapeHtml turns `"` into `&quot;`, so the URL inside () is
         // untouched except for `&` -> `&amp;`, which we undo here.
         const realHref = href.replace(/&amp;/g, "&");
+        // Some summaries wrap the command name in backticks *inside* the
+        // link text itself, e.g. [`GOTO OBJECT`](url) -- render that as a
+        // fixed-width <code> span rather than showing literal backtick
+        // characters next to the link.
+        const codeMatch = /^`([^`]+)`$/.exec(linkText);
+        const displayText = codeMatch ? `<code>${codeMatch[1]}</code>` : linkText;
         if (!realHref.startsWith(ALLOWED_HREF_PREFIX)) {
           // Not an allowlisted link target: render as plain text, no <a>.
-          return linkText;
+          return displayText;
         }
-        return `<a href="${escapeHtml(realHref)}" target="_blank" rel="noopener noreferrer">${linkText}</a>`;
+        return `<a href="${escapeHtml(realHref)}" target="_blank" rel="noopener noreferrer">${displayText}</a>`;
       }
       if (code !== undefined) {
         return `<code>${code}</code>`;
