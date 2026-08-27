@@ -3,79 +3,37 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>4D Fixed Bugs — Semantic Search</title>
+<title>4D Fixed Bugs — AI Chat</title>
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
-    <h1>4D Fixed Bugs — Semantic Search</h1>
+    <h1>4D Fixed Bugs — AI Chat</h1>
     <p class="subtitle">
-      Search 2,420 4D bug fixes by meaning, not just keywords. Runs entirely
-      in your browser — no server, no data leaves your machine.
+      Ask about 4D bug fixes in natural language. Runs entirely in your
+      browser — no server, no data leaves your machine, no API key.
     </p>
   </header>
 
   <main>
-    <section class="search-panel">
-      <form id="search-form">
-        <input
-          id="search-input"
-          type="search"
-          placeholder="Describe the bug or behavior you're looking for…"
-          autocomplete="off"
-        />
-        <label for="top-k">Results:</label>
-        <select id="top-k">
-          <option value="5">5</option>
-          <option value="10" selected>10</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
-        </select>
-        <button type="submit">Search</button>
-      </form>
-      <div id="search-status" class="status" role="status"></div>
-    </section>
+    <div id="boot-status" class="status" role="status">Starting up…</div>
 
-    <section id="results" class="results"></section>
+    <div id="chat" class="chat-container"></div>
 
-    <section class="subset-panel">
-      <div class="subset-toolbar">
-        <button id="select-all-btn" type="button">Select all shown</button>
-        <button id="select-none-btn" type="button">Clear selection</button>
-        <button id="create-subset-btn" type="button" disabled>Use selection as subset</button>
-        <button id="reset-subset-btn" type="button" disabled>Reset to all results</button>
-      </div>
-      <div id="subset-status" class="status" role="status"></div>
-    </section>
-
-    <section class="rag-panel">
-      <h2>Ask a question (optional, fully local AI)</h2>
-      <p>
-        Downloads a small language model to your browser (one-time, a few
-        hundred MB–2GB depending on model) and answers using only the bugs
-        currently shown above (your subset, if you made one — otherwise the
-        full result list). No API key, no network calls with your question
-        — everything runs locally after the model download. The
-        conversation keeps its context across new searches; nothing clears
-        it except the explicit "Clear conversation" button below.
-      </p>
-      <button id="rag-enable-btn" type="button">Enable local AI answers</button>
-      <div id="rag-status" class="status" role="status"></div>
-      <div id="rag-chat" class="chat-container" hidden></div>
-      <form id="rag-form" hidden>
-        <input
-          id="rag-input"
-          type="text"
-          placeholder="Ask a natural-language question about these bugs…"
-          autocomplete="off"
-        />
-        <button type="submit">Send</button>
-      </form>
-      <div class="rag-toolbar">
-        <button id="rag-clear-btn" type="button">Clear conversation</button>
-        <button id="rag-copy-btn" type="button">Copy conversation</button>
-      </div>
-    </section>
+    <form id="chat-form">
+      <input
+        id="chat-input"
+        type="text"
+        placeholder="Ask about a 4D bug fix…"
+        autocomplete="off"
+        disabled
+      />
+      <button type="submit" disabled>Send</button>
+    </form>
+    <div class="chat-toolbar">
+      <button id="clear-btn" type="button">Clear conversation</button>
+      <button id="copy-btn" type="button">Copy conversation</button>
+    </div>
   </main>
 
   <footer>
@@ -87,7 +45,6 @@
     </p>
   </footer>
 
-  <script type="module" src="src/main.js"></script>
-  <script type="module" src="src/rag.js"></script>
+  <script type="module" src="src/app.js"></script>
 </body>
 </html>
