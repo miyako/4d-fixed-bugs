@@ -1,4 +1,4 @@
-import { renderSummary } from "./render.js";
+import { renderSummary, renderVersions } from "./render.js";
 import { parseVersionIntent, bugMatchesIntent, describeIntent } from "./version.js";
 
 /**
@@ -28,6 +28,7 @@ const EMBED_MODEL_ID = "Xenova/all-MiniLM-L6-v2";
 const CHAT_MODEL_ID = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
 const EMBED_DIM = 384;
 const TOP_K = 15;
+const TABLE_TOP_N = 8;
 
 const bootStatusEl = document.getElementById("boot-status");
 const chatEl = document.getElementById("chat");
@@ -152,9 +153,16 @@ function buildSystemMessage(retrieval) {
       "about anything outside that scope (general programming help, other software, small " +
       "talk, etc.), politely and professionally decline and explain you can only discuss " +
       "the 4D fixed-bugs database.\n\n" +
-      "For every user message, the app automatically searches this database for you: it " +
-      "detects any 4D version mentioned in the message and applies these filter rules " +
-      "before ranking by semantic relevance:\n" +
+      "IMPORTANT: the app has ALREADY searched the database for this exact message and " +
+      "the results are listed below under \"Retrieved bug reports\" — these ARE the search " +
+      "results, already found for you. Never say you have no information, can't search, or " +
+      "don't have access to the database: if the list below is non-empty, you already have " +
+      "real results in front of you and must use them. Only say the database has nothing " +
+      "relevant if the list below is genuinely unrelated to the question after you've " +
+      "actually read it.\n\n" +
+      "For every user message, the app automatically searches this database: it detects " +
+      "any 4D version mentioned in the message and applies these filter rules before " +
+      "ranking by semantic relevance:\n" +
       "- A specific version like \"v20\", \"20\", or \"20.1\" -> that major version and all " +
       "its releases/hotfixes (20, 20.*).\n" +
       "- An R-release like \"v19 R8\" or \"19r8\" -> exactly that R-release plus the entire " +
@@ -163,13 +171,37 @@ function buildSystemMessage(retrieval) {
       "version below and one above (17, 18, 19).\n" +
       "- An open-ended range like \"before 17\" or \"after 20\" -> all matching versions in " +
       "that direction that exist in the database.\n\n" +
-      "Answer ONLY using the bug reports provided below. Always cite the ACI reference " +
-      "(e.g. ACI0092218) for any claim you make. If the retrieved reports don't answer the " +
-      "question, say so plainly instead of guessing." +
+      "Write a short, focused prose summary (2-4 sentences) of what these reports have in " +
+      "common and which are most relevant to the question, citing ACI reference codes " +
+      "(e.g. ACI0092218) for the claims you make. Do NOT restate every report in full or " +
+      "produce a table/list yourself — the app will automatically display a table with the " +
+      "full details (references, versions, and commands) of the top matches right below " +
+      "your reply, so keep your prose short and complementary to that table rather than " +
+      "duplicating it." +
       versionNote +
       "\n\nRetrieved bug reports:\n\n" +
       context,
   };
+}
+
+/** Deterministically render a table of the top retrieved bugs (reference,
+ * versions as links to bugs.4d.com, and the summary with its commands as
+ * links to developer.4d.com) — built directly from the retrieval data
+ * rather than reproduced by the model, since a small local model can't be
+ * relied on to faithfully echo every result, reference, and link. */
+function renderHitsTable(bugs) {
+  if (!bugs || bugs.length === 0) return "";
+  const rows = bugs
+    .slice(0, TABLE_TOP_N)
+    .map(
+      (b) =>
+        `<tr><td class="hit-ref">${b.reference}</td><td class="hit-versions">${renderVersions(b.versions)}</td><td class="hit-summary">${renderSummary(b.summary)}</td></tr>`
+    )
+    .join("");
+  return (
+    `<table class="hits-table"><thead><tr><th>ACI</th><th>Versions</th><th>Summary</th></tr></thead>` +
+    `<tbody>${rows}</tbody></table>`
+  );
 }
 
 /** Render an assistant message's ACI references as bold citations. There's
@@ -186,8 +218,13 @@ function highlightCitations(html, bugs) {
 function appendBubble(role, text, bugs) {
   const bubble = document.createElement("div");
   bubble.className = `chat-message ${role}`;
-  const html = renderSummary(text);
-  bubble.innerHTML = role === "assistant" ? highlightCitations(html, bugs) : html;
+  const proseHtml = renderSummary(text);
+  if (role === "assistant") {
+    const tableHtml = renderHitsTable(bugs);
+    bubble.innerHTML = highlightCitations(proseHtml, bugs) + tableHtml;
+  } else {
+    bubble.innerHTML = proseHtml;
+  }
   chatEl.appendChild(bubble);
   chatEl.scrollTop = chatEl.scrollHeight;
   return bubble;

@@ -106,7 +106,39 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-bottom-left-radius: 4px;
+  max-width: 96%;
 }
+
+.hits-table {
+  margin-top: 0.75rem;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.85rem;
+  white-space: normal;
+}
+
+.hits-table th,
+.hits-table td {
+  border: 1px solid var(--border);
+  padding: 0.4rem 0.5rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.hits-table th {
+  background: rgba(0, 0, 0, 0.05);
+  font-weight: 600;
+}
+
+.hits-table .hit-ref {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.hits-table .hit-versions {
+  white-space: nowrap;
+}
+
 
 .chat-message a { color: inherit; }
 
