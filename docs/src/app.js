@@ -139,47 +139,27 @@ function buildSystemMessage(retrieval) {
     .join("\n\n");
 
   let versionNote = "";
-  if (intentDesc) {
-    versionNote = usedFallback
-      ? `\n\nThe user's message referenced ${intentDesc}, but no bugs matched that exact filter, so the reports below are the best overall semantic matches instead. Mention this to the user.`
-      : `\n\nThe user's message referenced ${intentDesc}. The bug reports below have already been filtered to that version scope and ranked by relevance.`;
+  if (intentDesc && usedFallback) {
+    versionNote = ` (note: no bugs matched ${intentDesc} specifically, so these are the closest overall matches instead)`;
   }
 
   return {
     role: "system",
     content:
-      "You are an assistant for a database of fixed 4D software bugs (bugs.4d.com). " +
-      "The database ONLY contains fixed 4D bug reports — nothing else. If the user asks " +
-      "about anything outside that scope (general programming help, other software, small " +
-      "talk, etc.), politely and professionally decline and explain you can only discuss " +
-      "the 4D fixed-bugs database.\n\n" +
-      "IMPORTANT: the app has ALREADY searched the database for this exact message and " +
-      "the results are listed below under \"Retrieved bug reports\" — these ARE the search " +
-      "results, already found for you. Never say you have no information, can't search, or " +
-      "don't have access to the database: if the list below is non-empty, you already have " +
-      "real results in front of you and must use them. Only say the database has nothing " +
-      "relevant if the list below is genuinely unrelated to the question after you've " +
-      "actually read it.\n\n" +
-      "For every user message, the app automatically searches this database: it detects " +
-      "any 4D version mentioned in the message and applies these filter rules before " +
-      "ranking by semantic relevance:\n" +
-      "- A specific version like \"v20\", \"20\", or \"20.1\" -> that major version and all " +
-      "its releases/hotfixes (20, 20.*).\n" +
-      "- An R-release like \"v19 R8\" or \"19r8\" -> exactly that R-release plus the entire " +
-      "next major version, since R-releases are effectively previews of the next major.\n" +
-      "- An approximate version like \"around v18\" or \"18 or thereabouts\" -> one major " +
-      "version below and one above (17, 18, 19).\n" +
-      "- An open-ended range like \"before 17\" or \"after 20\" -> all matching versions in " +
-      "that direction that exist in the database.\n\n" +
-      "Write a short, focused prose summary (2-4 sentences) of what these reports have in " +
-      "common and which are most relevant to the question, citing ACI reference codes " +
-      "(e.g. ACI0092218) for the claims you make. Do NOT restate every report in full or " +
-      "produce a table/list yourself — the app will automatically display a table with the " +
-      "full details (references, versions, and commands) of the top matches right below " +
-      "your reply, so keep your prose short and complementary to that table rather than " +
-      "duplicating it." +
-      versionNote +
-      "\n\nRetrieved bug reports:\n\n" +
+      "You help people find and understand fixed 4D software bugs (bugs.4d.com). " +
+      "Always assume every user message is about the 4D fixed-bugs database, even if it's " +
+      "phrased casually or doesn't mention 4D explicitly — this chat only ever discusses " +
+      "that topic.\n\n" +
+      `The app already searched the database for this message and found the bug reports ` +
+      `below${versionNote}. Write a short, friendly summary (2-4 sentences) of what they ` +
+      "have in common and which ones best answer the question, citing their ACI reference " +
+      "codes (e.g. ACI0092218). A table with the full details of these same reports is " +
+      "shown automatically right after your reply, so no need to list them all yourself — " +
+      "just give a helpful, conversational summary.\n\n" +
+      "Only decline to help if the message is obviously not about software bugs at all " +
+      "(e.g. personal advice, unrelated trivia) — in that case say briefly that you can " +
+      "only help with 4D fixed-bug questions.\n\n" +
+      "Bug reports found for this message:\n\n" +
       context,
   };
 }
