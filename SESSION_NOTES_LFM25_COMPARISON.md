@@ -155,3 +155,44 @@ opt-in comparison path, not a switch.** Rationale:
    run the real side-by-side comparison in an actual WebGPU browser
    before deciding whether to switch the default or expose a
    user-facing model picker.
+
+## Update: comparison build abandoned/removed
+
+After publishing `/lfm25/` on GitHub Pages, real-browser testing hit a
+persistent `webgpuInit is not a function` / "does not resolve to a
+valid URL" error that survived three different fix attempts:
+
+1. A hand-written `<script type="importmap">` pinning the bare
+   specifiers `onnxruntime-web/webgpu` and `onnxruntime-common` to
+   specific jsdelivr dist files (matching `@huggingface/transformers`'s
+   own pinned dependency versions).
+2. Forcing `env.backends.onnx.wasm.numThreads = 1` to avoid the
+   `SharedArrayBuffer`/cross-origin-isolation requirement that GitHub
+   Pages can't satisfy (no custom response headers available).
+3. Replacing the raw CDN dist file + import map with jsdelivr's `+esm`
+   endpoint, which performs full bundler-style "exports"-map and
+   nested-dependency resolution automatically.
+
+Each fix addressed a real, verifiable problem (confirmed in headless
+Chromium up to the point our sandbox's lack of a GPU adapter stops
+further testing), but the underlying `webgpuInit` wiring inside
+onnxruntime-web's WebGPU/JSEP backend kept failing on the user's real
+GPU-capable browser regardless. Given transformers.js's own GitHub
+issues confirm this exact error is a known, currently-unresolved
+upstream fragility in onnxruntime-web's WebGPU backend when loaded
+outside of a from-scratch bundled app (its own official demo apps hit
+variants of this too, e.g. huggingface/transformers.js#1604, #1678),
+further CDN/import-map/threading workarounds were not a productive use
+of time without a real WebGPU-capable browser + devtools to iterate in
+directly.
+
+**Decision: abandon the LFM2.5 comparison build.** Removed
+`docs/lfm25/`, `docs/src/engines/lfm25-engine.js`, and all references
+to them from `docs/src/app.js`. The pluggable chat-engine abstraction
+itself (the `{init, chat, reset}` interface, `webllm-engine.js`, and
+the `CHAT_ENGINE`/`?engine=` seam) is kept — it's low-risk, generic,
+and still valuable if a different local-LLM engine is tried in the
+future via a real bundler (Vite/webpack) rather than raw CDN ESM, which
+would very likely sidestep this whole class of bug. WebLLM remains the
+only LLM engine option (deterministic search stays the default), and
+is unaffected by any of this.
