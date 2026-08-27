@@ -29,18 +29,20 @@
  * correctness.
  */
 
-// Deliberately the "web" build, not `dist/transformers.min.js` (the
-// universal/isomorphic build that `main`/package exports resolve to by
-// default for bundlers). Loading the universal build directly as a bare
-// ESM import from a CDN — outside of a bundler that applies the
-// package's "browser"/"default" export condition — leaves ONNX Runtime
-// Web's WebGPU backend mis-wired, producing a
-// "webgpuInit is not a function" error at model load time even on a
-// WebGPU-capable browser. `dist/transformers.web.min.js` is the exact
-// browser build the package.json `exports.default` field points bundlers
-// at, and works correctly when imported directly like this too.
-const TRANSFORMERS_CDN_URL =
-  "https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.2.0/dist/transformers.web.min.js";
+// @huggingface/transformers's web build has static top-level imports of
+// two bare (non-URL, non-relative) specifiers -- "onnxruntime-web/webgpu"
+// and "onnxruntime-common" -- to get the WebGPU ONNX Runtime backend and
+// its shared Tensor type. A real bundler (the reference app this engine
+// is modeled on uses Vite) resolves those via the packages' "exports"
+// maps automatically; loading the raw dist file directly from a CDN
+// can't, since browsers don't resolve bare specifiers on their own. We
+// use jsdelivr's "+esm" endpoint instead of the raw `dist/*.min.js`
+// file: it does the same "exports"-map + nested-dependency resolution a
+// bundler would (rewriting every bare import — including the ones
+// inside onnxruntime-web's own bundle — into real jsdelivr URLs), so no
+// hand-maintained import map is needed and the dependency graph matches
+// what a bundled build actually resolves to.
+const TRANSFORMERS_CDN_URL = "https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.2.0/+esm";
 const MODEL_ID = "LiquidAI/LFM2.5-1.2B-Thinking-ONNX";
 const MAX_NEW_TOKENS = 2048;
 
