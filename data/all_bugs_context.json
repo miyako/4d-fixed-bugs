@@ -1883,8 +1883,7 @@
     "reference": "ACI0100004",
     "raw_summary": "Some dictionary languages like French and Norwegian share the same numeric ID",
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ],
     "jp_notes": [
       "ノルウェー語とフランス語のスペルチェック辞書に同一のID番号が振られました。\n\n**注記**: Mac版のシステムスペルチェックだけが修正され，番号ではなく``fr-FR``や``en-US``のような識別子が使用されるようになりました。Hunspell版のスペルチェックは，ライブラリが発行するIDをそのまま使用しています。"
@@ -6703,8 +6702,7 @@
     "reference": "ACI0100945",
     "raw_summary": "\"Modified record\" returns True after SAVE RECORD if the record field is modified by commands as \"OB SET\" or \"OB SET ARRAY\"",
     "versions": [
-      "18_r6",
-      "18.3_nb_257605"
+      "18_r6"
     ],
     "jp_notes": [
       "``OB SET``または``OB SET ARRAY``でオブジェクト型フィールドを更新してかた``SAVE RECORD ``で保存した場合，``Modified record``が``True``を返しました。フィールド自体にフィールドを代入すれば，``False``が返されるようになります。"
@@ -7334,8 +7332,7 @@
     "reference": "ACI0101061",
     "raw_summary": "When creating a listbox in project mode, the \"movableRows\" property is missing in the object definition in the \"form.4DForm\" file.",
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ],
     "jp_notes": [
       "プロジェクトモードのみ。新規作成したリストボックスには「行の移動可」プロパティがありませんでした。バイナリモードから変換されたリストボックスは問題ありません。プロパティが設定されていない場合，行のドラッグ＆ドロップができません。"
@@ -7398,8 +7395,7 @@
     "reference": "ACI0101067",
     "raw_summary": "MAIL Convert from MIME returns wrong time",
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ],
     "jp_notes": [
       "``MAIL Convert from MIME``で変換したメールオブジェクトは，送信日が正しく返されないことがありました。タイムゾーンが正しく計算されていないためです。たとえばMIMEのヘッダー値が``Mon, 3 Aug 2020 09:27:52 +0200``だった場合，``2020-08-03T09:27:52.000Z``のような日付に変換されました。"
@@ -7745,8 +7741,7 @@
     "reference": "ACI0101135",
     "raw_summary": "'LISTBOX SET PROPERTY' + 'lk named selection' does not work in project mode after conversion from Binary mode to Project mode.",
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ],
     "jp_notes": [
       "プロジェクトモードのみ。``LISTBOX SET PROPERTY``と``lk named selection``の組み合わせでリストボックスの命名セレクションを設定することができませんでした。"
@@ -7939,8 +7934,7 @@
     "reference": "ACI0101209",
     "raw_summary": "Entity selection listbox shows different user selected data sources if used in a form or in a subform",
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ],
     "jp_notes": [
       "エンティティセレクション型のリストボックスをサブフォーム内で使用した場合，「カレントの項目の位置」や「選択された項目」がデバッガーに表示されませんでした。「カレントの項目」だけが表示されました。"
@@ -7969,8 +7963,7 @@
     "reference": "ACI0101212",
     "raw_summary": "'MAIL Convert from MIME': content of ID pictures get lost",
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ],
     "jp_notes": [
       "``MAIL Convert from MIME``でメールオブジェクトを作成した場合，エンコードに問題があるために画像が表示されないことがありました。"
@@ -8289,8 +8282,7 @@
     "raw_summary": "When deleting a form (and emptying the trash), its objects methods are not deleted. The MSC detect them as orphan objects.",
     "versions": [
       "18_r4",
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ],
     "jp_notes": [
       "バイナリモードのみ。オブジェクトメソッドが設定されているオブジェクトを含むフォームを削除してごみ箱に空にした場合，MSCのアプリケーション検査を実行すると，どこにも使用されていない``CC4D``リソース（オーファンメソッド）が検出されました。"
@@ -8372,8 +8364,7 @@
     "raw_summary": "'SELECTION TO ARRAY' with picture field and external storage returns error -10533 in Remote mode (client side).",
     "versions": [
       "17.5",
-      "18_r6",
-      "18.3_nb_257605"
+      "18_r6"
     ],
     "jp_notes": [
       "クライアント/サーバー版のみ。保存オプションが「データファイルの外」に設定されているピクチャフィールドに対して``SELECTION TO ARRAY``を実行した場合，エラー``-10533``が返されました。\n\n**注記**: サーバーとクライアントの両方が修正されました。両方のビルドをアップデートする必要があります。",
@@ -8390,8 +8381,7 @@
     "reference": "ACI0101270",
     "raw_summary": "Explorer window: Error when duplicating a method / form in the 'Home' folder.",
     "versions": [
-      "18_r6",
-      "18.3_nb_257605"
+      "18_r6"
     ],
     "jp_notes": [
       "エクスプローラーのフォルダーに入れられているフォームまたはプロジェクトメソッドを複製した場合，新しいフォームまたはプロジェクトメソッドがオリジナルと同じフォルダーではなく，エクスプローラーのトップレベルに作成されました。",
@@ -8456,8 +8446,7 @@
     "reference": "ACI0101280",
     "raw_summary": "4D View Pro: Loss of formulas when opening a converted 4D View document (converted to 4D View Pro thanks to 'VP Convert from 4D View') in a 4D View Pro area.",
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ],
     "jp_notes": [
       "4D ViewスプレッドシートをView Proに変換した場合，埋め込まれたフォーミュラの大部分が失われることがありました。\n\n**注記**: View Proの限界を超える長さのフォーミュラが出力されることがありました。たとえば，データ型を文字列で統一するため，各パラメーターを関数でキャストしているようなフォーミュラを変換した場合，数式がさらに長くなりました。修正により，日付リテラルは文字列型リテラル，``String``関数はシンプルな関数名（``TEXT``）に変換されるようになりました。View Proの標準関数は，内部的にバリアント側を使用しているため，日付を文字列で渡すことができます。",
@@ -8549,8 +8538,7 @@
     "reference": "ACI0101294",
     "raw_summary": "4D View Pro: The sheet index begins at 1 instead of 0 for the command 'VP Convert to picture'.",
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ],
     "jp_notes": [
       "``VP Convert to picture``はシート番号を``0``ではなく``1``からカウントしました。"
@@ -8591,8 +8579,7 @@
     "reference": "ACI0101298",
     "raw_summary": "The event 'On Data change' get activated once unexpectedly when loosing focus on a variable area that has a background color and if the command 'OBJECT SET RGB COLORS' is called.",
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ],
     "jp_notes": [
       "背景色が設定されているテキスト入力エリアに対して``OBJECT SET RGB COLORS``を使用した場合，フォーカスアウトのタイミングで``On Data change``イベントが発生しました。背景色が「透過」に設定されているオブジェクトは問題ありません。"
@@ -8619,8 +8606,7 @@
     "reference": "ACI0101305",
     "raw_summary": "'OBJECT GET SCROLL POSITION' with auto row height property starts at 0 instead of 1.",
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ],
     "jp_notes": [
       "リストボックスの「自動行の高さ」が有効にされている場合，``OBJECT GET SCROLL POSITION``から返される行番号が``0``から始まりました。通常のリストボックスであれば，行番号が``1``から始まります。\n\n**注記**: 問題は修正されましたが，プロパティによってコマンドの振る舞いが違うことに留意してください。「自動行の高さ」が有効にされていない場合，階層リストやリストフォームと同じように，コマンドは完全に表示されている最初の行番号を返します。リストボックスの「自動行の高さ」が有効にされている場合，コマンドは部分的であっても表示されている最初の行番号を返します。",
@@ -8690,8 +8676,7 @@
     "reference": "ACI0101315",
     "raw_summary": "A memory leaks could happen with 'collection.query()', when the compator \"IN\" is used",
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ],
     "jp_notes": [
       "``entitySelection.query()``および``collection.query()``で``IN``比較演算子を使用した場合，条件に使用したコレクションがメモリーリークすることがありました。"
@@ -12422,7 +12407,7 @@
   },
   {
     "reference": "ACI0102035",
-    "raw_summary": "When a 4D v18 catalog is opened with 4D v19, every <tip> tag is modified to add a return before the closing tag. This makes proper version control impossible when working with multiple versions because it creates thousands of changes in the catalog file.",
+    "raw_summary": "When a 4D v18 catalog is opened with 4D v19 every, <tip> tag is modified to add a return before the closing tag. This makes proper version control impossible when working with multiple versions because it creates thousands of changes in the catalog file.",
     "versions": [
       "19",
       "19_r2",
@@ -12959,7 +12944,7 @@
   },
   {
     "reference": "ACI0102170",
-    "raw_summary": "Unexpected execution error about relation path (link between 2 tables) at database launch with 4D Remote if 'On startup' database method is not empty.",
+    "raw_summary": "Unexpected execution error about Relation path (link between 2 tables) at database launch with 4D Remote if 'On startup' database method is not empty.",
     "versions": [
       "19.0_hf1",
       "19_r2",
@@ -12973,7 +12958,7 @@
   },
   {
     "reference": "ACI0102171",
-    "raw_summary": "4D Entity selection listbox builder doesn't display the entities in Client/Server mode",
+    "raw_summary": "4D Entity selection Listbox builder doesn't display the entities in Client/Server mode",
     "versions": [
       "19.0_hf1",
       "19_r2",
@@ -13111,7 +13096,7 @@
   },
   {
     "reference": "ACI0102189",
-    "raw_summary": "4D Write Pro: PDF export doesn't take into account text color of text SVGs",
+    "raw_summary": "4D Write Pro PDF export does not take into account text color of text SVGs",
     "versions": [
       "19.0_hf1",
       "19_r2",
@@ -21352,7 +21337,7 @@
   },
   {
     "reference": "ACI0103756",
-    "raw_summary": "Wrong font size applied on an input text after modifying it in the font dialog when using 4K resolution screen",
+    "raw_summary": "Wrong font size applied on an imput text after modifying it in the font dialog when using 4K resolution screen",
     "versions": [
       "19_r8"
     ],

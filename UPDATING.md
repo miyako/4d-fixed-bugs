@@ -203,3 +203,24 @@ Re-run the audit any time — it should report nothing:
 python3 scripts/update/lint_jp_source.py --links
 ```
 
+## Known defects in bugs.4d.com source (resolved)
+
+`?version=` pages list, per bug, every other version it was "fixed also
+with" as a link — `parse.py` follows every one of those links. One page
+(`18_r4`/`18_r5`/`18_r6`) linked to `?version=18.3_nb_257605`, an internal QA
+nightly-build snapshot that doesn't fit 4D's public version scheme
+(`major[.minor][_rN][_hfM]`) but does resolve to a real (if useless) page, so
+it was picked up as if it were a legitimate version and attached to 15 bugs.
+`parse.py` now whitelists version tokens against that scheme
+(`VALID_VERSION_RE`) and silently drops anything that doesn't match, so this
+class of internal-tag leak can't recur.
+
+Separately, when the same bug's summary text differs slightly across the
+pages it appears on (typo fixed/reintroduced upstream, e.g. `Listbox` vs.
+`listbox`), `parse.py` keeps the longest variant as canonical. Same-length
+ties used to fall back to Python's hash-randomized `set` iteration order,
+making a plain re-parse of unchanged HTML non-deterministic — it could flip
+the chosen variant and spuriously mark a bug `source-changed`, pointlessly
+demanding re-enrichment. Ties now break alphabetically, so re-parsing the
+same HTML always yields the same `bugs_raw.json`.
+

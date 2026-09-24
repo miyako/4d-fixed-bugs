@@ -66,6 +66,13 @@ ROW_BETA_RE = re.compile(
 HREF_RE = re.compile(r'href="/fixes\?version=([^"]+)"')
 TAG_RE = re.compile(r"<[^>]+>")
 
+# 4D's own release-numbering scheme: major[.minor][_rN][_hfM]. "Fixed also
+# with" cells occasionally link to internal-only artifacts (observed: a QA
+# nightly-build tag like "18.3_nb_257605") that don't fit this shape and were
+# never meant to be a public version. Anything that doesn't match is dropped
+# rather than recorded as a phantom version.
+VALID_VERSION_RE = re.compile(r"^\d+(\.\d+)?(_r\d+)?(_hf\d+)?$")
+
 
 def clean_text(raw: str) -> str:
     text = TAG_RE.sub("", raw)
@@ -81,7 +88,11 @@ def parse_file(source: str, version: str, content: str):
         if not REF_RE.match(ref):
             malformed.append((source, version, ref))
             continue
-        also = {normalize_version(v) for v in HREF_RE.findall(m.group("also"))}
+        also = {
+            normalize_version(v)
+            for v in HREF_RE.findall(m.group("also"))
+            if VALID_VERSION_RE.match(normalize_version(v))
+        }
         rows.append(
             {
                 "reference": ref,
@@ -133,7 +144,10 @@ def main() -> int:
     output = []
     for ref, rec in records.items():
         # Longest variant wins: pages sometimes carry a truncated summary.
-        summaries = sorted(rec["summaries"], key=len, reverse=True)
+        # Ties (equal length) are broken alphabetically so the choice is
+        # deterministic across runs — `rec["summaries"]` is a set, and
+        # Python's hash randomization otherwise makes tie order random.
+        summaries = sorted(rec["summaries"], key=lambda s: (-len(s), s))
         output.append(
             {
                 "reference": ref,

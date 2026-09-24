@@ -1419,8 +1419,7 @@
       "Some dictionary languages like French and Norwegian share the same numeric ID"
     ],
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ]
   },
   {
@@ -5124,8 +5123,7 @@
       "\"Modified record\" returns True after SAVE RECORD if the record field is modified by commands as \"OB SET\" or \"OB SET ARRAY\""
     ],
     "versions": [
-      "18_r6",
-      "18.3_nb_257605"
+      "18_r6"
     ]
   },
   {
@@ -5621,8 +5619,7 @@
       "When creating a listbox in project mode, the \"movableRows\" property is missing in the object definition in the \"form.4DForm\" file."
     ],
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ]
   },
   {
@@ -5666,8 +5663,7 @@
       "MAIL Convert from MIME returns wrong time"
     ],
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ]
   },
   {
@@ -5912,8 +5908,7 @@
       "'LISTBOX SET PROPERTY' + 'lk named selection' does not work in project mode after conversion from Binary mode to Project mode."
     ],
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ]
   },
   {
@@ -6055,8 +6050,7 @@
       "Entity selection listbox shows different user selected data sources if used in a form or in a subform"
     ],
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ]
   },
   {
@@ -6077,8 +6071,7 @@
       "'MAIL Convert from MIME': content of ID pictures get lost"
     ],
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ]
   },
   {
@@ -6318,8 +6311,7 @@
     ],
     "versions": [
       "18_r4",
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ]
   },
   {
@@ -6389,8 +6381,7 @@
     ],
     "versions": [
       "17.5",
-      "18_r6",
-      "18.3_nb_257605"
+      "18_r6"
     ]
   },
   {
@@ -6400,8 +6391,7 @@
       "Explorer window: Error when duplicating a method / form in the 'Home' folder."
     ],
     "versions": [
-      "18_r6",
-      "18.3_nb_257605"
+      "18_r6"
     ]
   },
   {
@@ -6455,8 +6445,7 @@
       "4D View Pro: Loss of formulas when opening a converted 4D View document (converted to 4D View Pro thanks to 'VP Convert from 4D View') in a 4D View Pro area."
     ],
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ]
   },
   {
@@ -6521,8 +6510,7 @@
       "4D View Pro: The sheet index begins at 1 instead of 0 for the command 'VP Convert to picture'."
     ],
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ]
   },
   {
@@ -6552,8 +6540,7 @@
       "The event 'On Data change' get activated once unexpectedly when loosing focus on a variable area that has a background color and if the command 'OBJECT SET RGB COLORS' is called."
     ],
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ]
   },
   {
@@ -6573,8 +6560,7 @@
       "'OBJECT GET SCROLL POSITION' with auto row height property starts at 0 instead of 1."
     ],
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ]
   },
   {
@@ -6628,8 +6614,7 @@
       "A memory leaks could happen with 'collection.query()', when the compator \"IN\" is used"
     ],
     "versions": [
-      "18_r5",
-      "18.3_nb_257605"
+      "18_r5"
     ]
   },
   {
@@ -9425,10 +9410,10 @@
   },
   {
     "reference": "ACI0102035",
-    "raw_summary": "When a 4D v18 catalog is opened with 4D v19, every <tip> tag is modified to add a return before the closing tag. This makes proper version control impossible when working with multiple versions because it creates thousands of changes in the catalog file.",
+    "raw_summary": "When a 4D v18 catalog is opened with 4D v19 every, <tip> tag is modified to add a return before the closing tag. This makes proper version control impossible when working with multiple versions because it creates thousands of changes in the catalog file.",
     "raw_summary_variants": [
-      "When a 4D v18 catalog is opened with 4D v19, every <tip> tag is modified to add a return before the closing tag. This makes proper version control impossible when working with multiple versions because it creates thousands of changes in the catalog file.",
-      "When a 4D v18 catalog is opened with 4D v19 every, <tip> tag is modified to add a return before the closing tag. This makes proper version control impossible when working with multiple versions because it creates thousands of changes in the catalog file."
+      "When a 4D v18 catalog is opened with 4D v19 every, <tip> tag is modified to add a return before the closing tag. This makes proper version control impossible when working with multiple versions because it creates thousands of changes in the catalog file.",
+      "When a 4D v18 catalog is opened with 4D v19, every <tip> tag is modified to add a return before the closing tag. This makes proper version control impossible when working with multiple versions because it creates thousands of changes in the catalog file."
     ],
     "versions": [
       "19",
@@ -9864,10 +9849,10 @@
   },
   {
     "reference": "ACI0102170",
-    "raw_summary": "Unexpected execution error about relation path (link between 2 tables) at database launch with 4D Remote if 'On startup' database method is not empty.",
+    "raw_summary": "Unexpected execution error about Relation path (link between 2 tables) at database launch with 4D Remote if 'On startup' database method is not empty.",
     "raw_summary_variants": [
-      "Unexpected execution error about relation path (link between 2 tables) at database launch with 4D Remote if 'On startup' database method is not empty.",
-      "Unexpected execution error about Relation path (link between 2 tables) at database launch with 4D Remote if 'On startup' database method is not empty."
+      "Unexpected execution error about Relation path (link between 2 tables) at database launch with 4D Remote if 'On startup' database method is not empty.",
+      "Unexpected execution error about relation path (link between 2 tables) at database launch with 4D Remote if 'On startup' database method is not empty."
     ],
     "versions": [
       "19.0_hf1",
@@ -9878,10 +9863,10 @@
   },
   {
     "reference": "ACI0102171",
-    "raw_summary": "4D Entity selection listbox builder doesn't display the entities in Client/Server mode",
+    "raw_summary": "4D Entity selection Listbox builder doesn't display the entities in Client/Server mode",
     "raw_summary_variants": [
-      "4D Entity selection listbox builder doesn't display the entities in Client/Server mode",
-      "4D Entity selection Listbox builder doesn't display the entities in Client/Server mode"
+      "4D Entity selection Listbox builder doesn't display the entities in Client/Server mode",
+      "4D Entity selection listbox builder doesn't display the entities in Client/Server mode"
     ],
     "versions": [
       "19.0_hf1",
@@ -10000,10 +9985,10 @@
   },
   {
     "reference": "ACI0102189",
-    "raw_summary": "4D Write Pro: PDF export doesn't take into account text color of text SVGs",
+    "raw_summary": "4D Write Pro PDF export does not take into account text color of text SVGs",
     "raw_summary_variants": [
-      "4D Write Pro: PDF export doesn't take into account text color of text SVGs",
-      "4D Write Pro PDF export does not take into account text color of text SVGs"
+      "4D Write Pro PDF export does not take into account text color of text SVGs",
+      "4D Write Pro: PDF export doesn't take into account text color of text SVGs"
     ],
     "versions": [
       "19.0_hf1",
@@ -16519,10 +16504,10 @@
   },
   {
     "reference": "ACI0103756",
-    "raw_summary": "Wrong font size applied on an input text after modifying it in the font dialog when using 4K resolution screen",
+    "raw_summary": "Wrong font size applied on an imput text after modifying it in the font dialog when using 4K resolution screen",
     "raw_summary_variants": [
-      "Wrong font size applied on an input text after modifying it in the font dialog when using 4K resolution screen",
-      "Wrong font size applied on an imput text after modifying it in the font dialog when using 4K resolution screen"
+      "Wrong font size applied on an imput text after modifying it in the font dialog when using 4K resolution screen",
+      "Wrong font size applied on an input text after modifying it in the font dialog when using 4K resolution screen"
     ],
     "versions": [
       "19_r8"
