@@ -187,76 +187,19 @@ Also note that a handful of genuinely old commands (`CHANGE USER`, for one) have
 no page on developer.4d.com at all. Render those as a plain code span rather
 than inventing a URL, and leave them out of the record's `commands` array.
 
-## Known defects in the Japanese source
+## Known defects in the Japanese source (resolved)
 
-`sync_jp.py` tolerates all of these, so the dataset is correct either way — but
-they are malformed upstream and worth fixing at the source. Re-run the audit
-any time with:
+An earlier version of this pipeline found 23 malformed ACI bullets across
+both repos — bad spacing after the bullet marker, references glued directly
+to the note text, and 4-6-digit truncated references. `sync_jp.py` tolerated
+all of them, so the published dataset was never wrong, but they were genuine
+defects upstream and were reported. 4D-JP fixed every one across a handful of
+commits between `24fe121`→`c8bce5d` (`4D-jp.github.io`) and
+`e149e67`→`fb8e68c` (`release-notes`).
+
+Re-run the audit any time — it should report nothing:
 
 ```
 python3 scripts/update/lint_jp_source.py --links
 ```
 
-Line numbers below are as of `4D-jp.github.io` @ `24fe121` and `release-notes`
-@ `e149e67`.
-
-### 1. Bad spacing after the bullet marker (7 lines)
-
-With **no** space after the asterisk, CommonMark does not see a list item at
-all — the line renders as running text with a stray emphasis marker, so these
-are wrong on the published site too, not only for this pipeline.
-
-`*ACI0106136` — no space; the same note is duplicated across four posts:
-
-- [`_posts/2026-01-13-release-note-version-21.md#L82`](https://github.com/4D-JP/4D-jp.github.io/blob/master/_posts/2026-01-13-release-note-version-21.md#L82)
-- [`_posts/2026-02-23-release-note-version-21r2.md#L165`](https://github.com/4D-JP/4D-jp.github.io/blob/master/_posts/2026-02-23-release-note-version-21r2.md#L165)
-- [`_posts/2026-03-19-release-note-version-21.md#L76`](https://github.com/4D-JP/4D-jp.github.io/blob/master/_posts/2026-03-19-release-note-version-21.md#L76)
-- [`_posts/2026-08-26-release-note-version-20.md#L86`](https://github.com/4D-JP/4D-jp.github.io/blob/master/_posts/2026-08-26-release-note-version-20.md#L86)
-
-`*ACI0094436` — no space:
-
-- [`v15/15.2/hf2/README.md#L118`](https://github.com/4D-JP/release-notes/blob/master/v15/15.2/hf2/README.md#L118)
-
-`*  ACI0098713` — two spaces; renders fine, but breaks a single-space regex:
-
-- [`_posts/2019-02-08-release-note-version-17r4.md#L222`](https://github.com/4D-JP/4D-jp.github.io/blob/master/_posts/2019-02-08-release-note-version-17r4.md#L222)
-- [`_posts/2019-02-11-release-note-version-17.md#L152`](https://github.com/4D-JP/4D-jp.github.io/blob/master/_posts/2019-02-11-release-note-version-17.md#L152)
-
-### 2. Reference not separated from the note text (11 lines)
-
-The id runs straight into the summary — `* ACI0103196Mac版のみ。`. This renders,
-but it reads as one token and only parses because a reference is known to be
-exactly 7 digits. The worst case is
-[`v17/r2/README.md#L40`](https://github.com/4D-JP/release-notes/blob/master/v17/r2/README.md#L40), `* ACI009838832ビット版のみ`,
-which is `ACI0098388` followed by `32ビット版` — a human could reasonably read
-that id as 8 or 9 digits long.
-
-| Reference | File |
-|---|---|
-| `ACI0103196` | [`_posts/2022-10-10-release-note-version-19r7.md#L173`](https://github.com/4D-JP/4D-jp.github.io/blob/master/_posts/2022-10-10-release-note-version-19r7.md#L173) |
-| `ACI0103964` | [`_posts/2023-07-09-release-note-version-20.md#L135`](https://github.com/4D-JP/4D-jp.github.io/blob/master/_posts/2023-07-09-release-note-version-20.md#L135) |
-| `ACI0104521` | [`_posts/2024-01-04-release-note-version-20r4.md#L221`](https://github.com/4D-JP/4D-jp.github.io/blob/master/_posts/2024-01-04-release-note-version-20r4.md#L221) |
-| `ACI0104521` | [`_posts/2024-02-04-release-note-version-20.md#L128`](https://github.com/4D-JP/4D-jp.github.io/blob/master/_posts/2024-02-04-release-note-version-20.md#L128) |
-| `ACI0104864` | [`_posts/2024-06-26-release-note-version-20r7.md#L144`](https://github.com/4D-JP/4D-jp.github.io/blob/master/_posts/2024-06-26-release-note-version-20r7.md#L144) |
-| `ACI0104864` | [`_posts/2024-11-24-release-note-version-20.md#L70`](https://github.com/4D-JP/4D-jp.github.io/blob/master/_posts/2024-11-24-release-note-version-20.md#L70) |
-| `ACI0105403` | [`_posts/2025-01-19-release-note-version-20r7.md#L31`](https://github.com/4D-JP/4D-jp.github.io/blob/master/_posts/2025-01-19-release-note-version-20r7.md#L31) |
-| `ACI0106065` | [`_posts/2025-09-09-release-note-version-21.md#L53`](https://github.com/4D-JP/4D-jp.github.io/blob/master/_posts/2025-09-09-release-note-version-21.md#L53) |
-| `ACI0106230` | [`_posts/2026-02-23-release-note-version-21r2.md#L38`](https://github.com/4D-JP/4D-jp.github.io/blob/master/_posts/2026-02-23-release-note-version-21r2.md#L38) |
-| `ACI0092551` | [`v15/r2/README.md#L330`](https://github.com/4D-JP/release-notes/blob/master/v15/r2/README.md#L330) |
-| `ACI0098388` | [`v17/r2/README.md#L40`](https://github.com/4D-JP/release-notes/blob/master/v17/r2/README.md#L40) |
-
-### 3. Truncated references (5 lines, 4 distinct bugs)
-
-Every other reference in both repos is `ACI` + exactly 7 digits; these have 6,
-so an `ACI\d{7}` matcher skips them silently. **The correct id could not be
-recovered** — neither a prefix match nor a symptom search against the
-bugs.4d.com dataset identifies any of them — so each needs checking against the
-original bug report before it can be corrected.
-
-| Written as | Subject | File |
-|---|---|---|
-| `ACI009873` | `entity.clone()` returns empty fields in client/server | [`_posts/2018-10-18-release-note-version-17.md#L160`](https://github.com/4D-JP/4D-jp.github.io/blob/master/_posts/2018-10-18-release-note-version-17.md#L160) |
-| `ACI009873` | (same note, duplicated) | [`v17/17.0/hf3/README.md#L153`](https://github.com/4D-JP/release-notes/blob/master/v17/17.0/hf3/README.md#L153) |
-| `ACI009938` | Write Pro underline/strikethrough style sheet, Mac | [`_posts/2019-05-15-release-note-version-17r5.md#L299`](https://github.com/4D-JP/4D-jp.github.io/blob/master/_posts/2019-05-15-release-note-version-17r5.md#L299) |
-| `ACI010148` | accented-character input via key repeat, Mac | [`_posts/2020-10-19-release-note-version-18r5.md#L94`](https://github.com/4D-JP/4D-jp.github.io/blob/master/_posts/2020-10-19-release-note-version-18r5.md#L94) |
-| `ACI008907` | Structure editor full-width → half-width rename | [`v15/r2/README.md#L48`](https://github.com/4D-JP/release-notes/blob/master/v15/r2/README.md#L48) |

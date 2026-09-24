@@ -2472,12 +2472,12 @@
   },
   "jp": {
     "blog": {
-      "head": "787437e8ee0b2d636cc8e4ad1e69dad3c7774528",
-      "synced_at": "2026-09-24T01:40:15+00:00"
+      "head": "c8bce5d952241061a21499debe98b49cf228715c",
+      "synced_at": "2026-09-24T01:44:16+00:00"
     },
     "release-notes": {
-      "head": "d6df42258d80e3789c04825ea16bcfed6d456821",
-      "synced_at": "2026-09-24T01:40:17+00:00"
+      "head": "fb8e68c9cdb27dc037cdd6ab4e110082f1fe7971",
+      "synced_at": "2026-09-24T01:44:18+00:00"
     }
   },
   "last_crawl": {
