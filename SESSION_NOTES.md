@@ -204,3 +204,89 @@ to reconstructing/extending the crawl:
 Raw HTML (`exists/`, `notfound/`) was not transferred (large, and fully
 reproducible from `crawl_4d_bugs.sh` — the JSON artifacts above are the
 durable value).
+
+---
+
+# Addendum: the 2025 incremental-update session (2,420 → 2,458 bugs)
+
+The notes above describe the original one-shot build. This addendum records
+what changed when the dataset was refreshed for the first time, and what that
+exercise taught. The workflow itself is documented in `UPDATING.md`.
+
+## What broke between builds
+
+1. **`bugs.4d.com` grew a second listing with a different HTML layout.**
+   `?version=<v>` still serves released products, but versions still in beta
+   are now only reachable via `?branch=<v>`, which renders a completely
+   different table (`<td class="title">` rows carrying build number and date,
+   rather than `<th class="title 4D">`). `?version=21_r4` returns the site's
+   standard error page. Both endpoints answer **HTTP 200 regardless**, so
+   existence has to be detected from the body: an error `<div>` for the
+   released layout, a missing `<h1>` for the beta one.
+   **Lesson: the crawler must probe both listings for every candidate, and
+   the parser must handle both layouts. Which listing served a version is
+   worth persisting — `data/version_sources.json` does that, and it is what
+   lets the client link beta-only versions to the URL that actually works.**
+
+2. **Documentation links rot silently.** developer.4d.com moved the whole
+   4D Write Pro and View Pro command families out of `/docs/commands/` into
+   `/docs/WritePro/commands/` and `/docs/ViewPro/commands/`. 199 entries in
+   `data/command_index.json` and 81 published summaries were pointing at
+   404s, and nothing noticed, because links are only ever written, never
+   re-read. `scripts/update/check_links.py` now re-verifies the whole corpus
+   (results cached in `update_state.json`, so a routine run is cheap).
+   **Lesson: any dataset that embeds third-party URLs needs a link check as
+   a pipeline stage, not as a one-off. And when a family moves, fix the
+   index as well as the prose — otherwise the next enrichment pass
+   reintroduces the dead URL.**
+
+3. **Miniforge Python's CA trust store was unusable** (`SSLCertVerificationError`
+   on every HTTPS request). Rather than fight it, all fetching goes through
+   system `curl` via `subprocess`.
+   **Lesson: the original notes already concluded "use curl"; this time it
+   was forced rather than chosen.**
+
+## What made the delta tracking work
+
+- **Crawl and parse are always complete and idempotent.** They are cheap.
+  Only the expensive, non-deterministic step — writing English prose — is
+  gated on a delta. That split is the whole design.
+- **The enrichment fingerprint hashes the raw summary plus the *sorted set*
+  of Japanese notes, and deliberately excludes `versions`.** A new hotfix
+  adds a version without changing a word of the prose, so including
+  `versions` would have forced needless rewrites. Sorting matters too: the
+  first attempt flagged 166 bugs, of which a third differed only in the
+  *order* the JP notes happened to be extracted in. Order-insensitivity took
+  it to 110 genuinely-changed bugs.
+- **A `--max-pending` guard (default 400) refuses to proceed** if the delta
+  suddenly looks enormous. An upstream layout change should fail loudly, not
+  silently trigger a 2,400-bug rewrite.
+- **Embedding reuse keys on byte-identical summary text**, so the final build
+  re-embedded 46 rows instead of 2,458 — seconds instead of many minutes.
+
+## Japanese note extraction: two real bugs found
+
+- Bullets are sometimes written `*ACI0106136` with **no space** after the
+  asterisk. The original regex required one, silently dropping 191 notes.
+- The original extractor let a `---` horizontal rule fall through, bleeding
+  the following bullet's text into the previous note. Fixing that recovered
+  225 notes' worth of correctness.
+  **Lesson: when rewriting an extractor, diff the output against the old one
+  item by item and account for every single difference. Both of these showed
+  up only as "this run has fewer/longer items than last time".**
+
+## Command matching
+
+`scripts/update/match_commands.py` reproduces the original candidate matcher
+at 94.7% exact agreement (precision 0.992, recall 0.883) against the 2,420
+hand-reviewed bugs. The residual disagreements are almost entirely the
+*original's* over-matches on ambiguous single-word names (`File`, `Form`,
+`Formula`, `QUERY`, `Table`); the new matcher only accepts those inside a
+code span. The one non-obvious requirement: **Japanese prose has no spaces**,
+so non-Latin runs must be blanked out before tokenizing, or command names get
+"found" inside unrelated Japanese text.
+
+Note that matching only produces *candidates* — the enrichment step still
+judges each one, and routinely drops matches like `WEB Server` (the bug is
+about the web server, not the command) or `True`/`False` (values, not
+commands).

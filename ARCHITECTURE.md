@@ -1,7 +1,7 @@
 # 4D Fixed Bugs — Semantic Search Chat
 
 A fully static, client-side web app that lets a user ask natural-language
-questions about a dataset of 2,420 fixed 4D software bugs and get back
+questions about a dataset of 2,458 fixed 4D software bugs and get back
 relevant bug reports, ranked by semantic similarity, with an optional
 local-LLM conversational layer on top. There is no backend and no server
 of any kind at request time: everything (dataset, embeddings, embedding
@@ -40,6 +40,7 @@ docs/                      # GitHub Pages root (served as /)
   src/
     app.js                     # entry point: boot, retrieval, chat UI, deterministic reply builder
     render.js                  # safe minimal-markdown renderer for summaries + version links
+    beta-versions.js           # GENERATED: Set of versions that only exist as a bugs.4d.com beta branch
     version.js                 # natural-language version-reference parsing/matching
     commands.js                # exact command-name mention matching
     engines/
@@ -50,12 +51,35 @@ data/                       # source dataset + offline precompute inputs (NOT se
   all_bugs_enriched.json      # [{reference, summary (markdown w/ dev.4d.com links), commands}]
   all_bugs_context.json       # [{reference, raw_summary, versions, jp_notes, matched_commands}]
   command_index.json          # {commandName: {title, url}} — reference data, not consumed by the client at runtime
-  bugs_raw.json, jp_notes.json, pilot_bugs.json, pilot_report.md  # earlier crawl/pipeline artifacts, not used by the deployed app
+  bugs_raw.json               # parser output: [{reference, raw_summary, raw_summary_variants, versions}]
+  jp_notes.json               # Japanese cross-reference notes keyed by ACI reference
+  update_state.json           # incremental-update memory: page hashes, enrichment fingerprints, JP repo SHAs, link checks
+  version_sources.json        # {version: ["version"|"branch"]} — which bugs.4d.com listing serves each version
+  pending_enrichment.json     # bugs whose English summary still needs writing (empty after a completed update)
+  pilot_bugs.json, pilot_report.md  # the 40-bug hand-reviewed pilot that set the prose style bar
 
 scripts/
-  generate_embeddings.mjs     # offline Node precompute: builds docs/data/{meta.json,embeddings.bin} from data/*.json
+  update.sh                   # end-to-end dataset refresh (see UPDATING.md)
+  update/
+    common.py                  # shared paths, version scheme, update_state.json handling
+    crawl.py                   # probes ?version= and ?branch= listings, hashes each page
+    parse.py                   # both HTML layouts -> data/bugs_raw.json
+    sync_jp.py                 # shallow-clones the 4D-JP repos -> data/jp_notes.json
+    match_commands.py          # candidate command detection in English + Japanese text
+    build_context.py           # context bundle + the pending-enrichment delta
+    split_pending.py           # splits pending work into per-worker chunks
+    merge_enrichment.py        # validates and merges written summaries back in
+    check_links.py             # re-verifies every developer.4d.com URL still resolves
+    generate_embeddings.mjs    # incremental build of docs/data/{meta.json,embeddings.bin}
+    bump_cache_bust.py         # bumps ?v=N on docs/index.html asset URLs
+    ENRICHMENT_PROMPT.md       # the prose-writing instructions handed to each worker
   package.json                 # scripts-only deps: @xenova/transformers@2.17.2
-  crawl_4d_bugs.sh             # original dataset-crawling script (unrelated to the web app itself)
+  generate_embeddings.mjs      # original non-incremental build (superseded by update/generate_embeddings.mjs)
+  crawl_4d_bugs.sh             # original crawler, kept for reference (superseded by update/crawl.py)
+  parse_phase1.py              # original parser, kept for reference (superseded by update/parse.py)
+
+html/                       # gitignored: raw crawled HTML, reproducible via scripts/update/crawl.py
+vendor/                     # gitignored: shallow clones of the 4D-JP cross-reference repos
 ```
 
 ## 3. Data model
@@ -88,10 +112,11 @@ has this shape:
   (`"19.5_hf1"`), and R-release (`"19_r7"`, optionally with its own
   hotfix suffix like `"20_r10_hf2"`).
 
-Dataset size: 2,420 bugs. Embedding: 384-dim (`all-MiniLM-L6-v2`),
+Dataset size: 2,458 bugs. Embedding: 384-dim (`all-MiniLM-L6-v2`),
 Float32, L2-normalized. `embeddings.bin` is therefore exactly
-`2420 * 384 * 4` bytes = 3,717,120 bytes, row `i` (0-indexed) being the
-embedding for `meta.json[i]`.
+`2458 * 384 * 4` bytes = 3,775,488 bytes, row `i` (0-indexed) being the
+embedding for `meta.json[i]`. (The dataset grows as 4D ships fixes — see
+`UPDATING.md`; the invariant is `byteLength === meta.length * 384 * 4`.)
 
 ### Source data (`data/`, not served — precompute inputs only)
 
@@ -111,15 +136,18 @@ embedding for `meta.json[i]`.
   read this file (it builds its own runtime command list, see §6.3,
   directly from `meta.json`'s per-bug `commands` arrays).
 
-## 4. Offline precompute (`scripts/generate_embeddings.mjs`)
+## 4. Offline precompute (`scripts/update/generate_embeddings.mjs`)
 
-Run manually, once (or whenever the dataset changes), from `scripts/`:
+Run whenever the dataset changes, from `scripts/`:
 
 ```
 cd scripts
 npm install         # installs @xenova/transformers@2.17.2 only
-node generate_embeddings.mjs
+node update/generate_embeddings.mjs
 ```
+
+It is the last stage of the dataset-refresh pipeline described in
+`UPDATING.md`, and `./scripts/update.sh` runs it for you.
 
 Steps:
 1. Load `data/all_bugs_enriched.json` and `data/all_bugs_context.json`.
@@ -142,6 +170,21 @@ Steps:
 7. Write `docs/data/embeddings.bin` as the raw bytes of that
    `Float32Array` (`Buffer.from(floatArray.buffer)`) and
    `docs/data/meta.json` as the records array.
+8. Write `docs/src/beta-versions.js`, exporting a `Set` of the versions
+   bugs.4d.com only publishes as a beta branch (taken from
+   `data/update_state.json`'s `beta_only_versions`). `render.js` imports
+   it to decide whether a version link should point at
+   `?version=<v>` or `?branch=<v>` — for a version still in beta the
+   former returns the site's error page.
+
+The step is **incremental**: before embedding, it reads the existing
+`docs/data/meta.json` + `embeddings.bin` and, for any bug whose `summary`
+is byte-identical to the one already built, copies that row straight
+across instead of recomputing it. A routine update therefore embeds a
+hundred bugs rather than two and a half thousand. The existing binary is
+only reused if its length matches `meta.length * 384 * 4` exactly;
+otherwise everything is recomputed. `--force` skips reuse entirely, which
+is what you want after an embedding-model change.
 
 This script is the **only** place embeddings are ever computed — the
 browser never re-embeds the dataset, only the user's query at search
@@ -325,7 +368,7 @@ delegated to an LLM "tool call". Order of precedence:
    return `{results, intent, usedFallback, commandMentions,
    usedCommandFallback, explicitRefs, notFoundRefs}`.
 
-This is brute-force (linear scan over ≤2,420 384-dim vectors per query)
+This is brute-force (linear scan over ≤2,458 384-dim vectors per query)
 — no vector index/ANN library, deliberately, since the corpus is small
 enough that this runs in a few milliseconds.
 
@@ -558,8 +601,9 @@ that history. It is not part of the current app.)
    an enriched-summary file (`reference`, markdown `summary` with
    command doc-links, `commands`) and a context file (`reference`,
    `versions`) to join by `reference`.
-2. Write and run `scripts/generate_embeddings.mjs` (§4) to produce
-   `docs/data/meta.json` + `docs/data/embeddings.bin`.
+2. Write and run `scripts/update/generate_embeddings.mjs` (§4) to
+   produce `docs/data/meta.json`, `docs/data/embeddings.bin` and
+   `docs/src/beta-versions.js`.
 3. Build `docs/index.html` + `docs/style.css` per §5/§8.
 4. Implement `docs/src/version.js`, `docs/src/commands.js`,
    `docs/src/render.js` per §6.3/§6.6 (pure functions, no DOM/network
@@ -572,3 +616,7 @@ that history. It is not part of the current app.)
 7. Commit `docs/` to `main` and enable GitHub Pages for `main` /
    `/docs` in repo settings. Remember the cache-busting `?v=N`
    convention on every future asset-changing deploy.
+
+To refresh the dataset afterwards rather than rebuild it, use
+`./scripts/update.sh`; `UPDATING.md` documents that pipeline and the
+delta-tracking state it keeps in `data/update_state.json`.
