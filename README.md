@@ -1,6 +1,6 @@
 # 4d-fixed-bugs
 
-A dataset of 2,420 fixed 4D software bugs crawled from
+A dataset of 2,458 fixed 4D software bugs crawled from
 [bugs.4d.com](https://bugs.4d.com), each with an ACI reference ID, an
 English summary (with markdown links to the relevant
 [developer.4d.com](https://developer.4d.com) command docs), the 4D
@@ -18,4 +18,6 @@ in-browser.
 
 See [`ARCHITECTURE.md`](ARCHITECTURE.md) for a full technical writeup
 of how the app works (data model, embedding pipeline, retrieval logic,
-rendering, deployment) — detailed enough to rebuild it from scratch.
+rendering, deployment) — detailed enough to rebuild it from scratch,
+and [`UPDATING.md`](UPDATING.md) for how to refresh the dataset when 4D
+ships new fixes.

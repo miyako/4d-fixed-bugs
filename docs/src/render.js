@@ -60,16 +60,25 @@ export function renderSummary(text) {
   );
 }
 
+import { BETA_ONLY_VERSIONS } from "./beta-versions.js";
+
 const BUGS_LIST_URL = "https://bugs.4d.com/fixedbugslist?version=";
+const BUGS_BRANCH_URL = "https://bugs.4d.com/fixedbugslist?branch=";
 
 /** Render a bug's `versions` array as a comma-separated list of links to
- * the matching bugs.4d.com fixed-bugs list (`?version=<version>`). */
+ * the matching bugs.4d.com fixed-bugs list.
+ *
+ * Most versions live under `?version=<v>`, but a version still in beta has no
+ * released listing — `?version=<v>` returns the site's error page and the real
+ * list is at `?branch=<v>`. `BETA_ONLY_VERSIONS` is generated at build time
+ * from the crawl, so those links point somewhere real. */
 export function renderVersions(versions) {
   if (!versions || versions.length === 0) return "—";
   return versions
     .map((v) => {
       const safe = escapeHtml(v);
-      const href = BUGS_LIST_URL + encodeURIComponent(v);
+      const base = BETA_ONLY_VERSIONS.has(v) ? BUGS_BRANCH_URL : BUGS_LIST_URL;
+      const href = base + encodeURIComponent(v);
       return `<a href="${href}" target="_blank" rel="noopener noreferrer">${safe}</a>`;
     })
     .join(", ");

@@ -5169,583 +5169,583 @@
   },
   "VP GET STYLESHEETS": {
     "title": "VP Get stylesheets",
-    "url": "https://developer.4d.com/docs/commands/vp-get-stylesheet"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-stylesheet"
   },
   "VP CELLS": {
     "title": "VP Cells",
-    "url": "https://developer.4d.com/docs/commands/vp-cells"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-cells"
   },
   "VP SET TEXT VALUE": {
     "title": "VP SET TEXT VALUE",
-    "url": "https://developer.4d.com/docs/commands/vp-set-text-value"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-text-value"
   },
   "VP GET SHEET NAME": {
     "title": "VP Get sheet name",
-    "url": "https://developer.4d.com/docs/commands/vp-get-sheet-name"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-sheet-name"
   },
   "VP SET CUSTOM FUNCTIONS": {
     "title": "VP SET CUSTOM FUNCTIONS",
-    "url": "https://developer.4d.com/docs/commands/vp-set-custom-functions"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-custom-functions"
   },
   "VP GET CELL STYLE": {
     "title": "VP Get cell style",
-    "url": "https://developer.4d.com/docs/commands/vp-get-cell-style"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-cell-style"
   },
   "VP RESET SELECTION": {
     "title": "VP RESET SELECTION",
-    "url": "https://developer.4d.com/docs/commands/vp-reset-selection"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-reset-selection"
   },
   "VP GET COLUMN ATTRIBUTES": {
     "title": "VP Get column attributes",
-    "url": "https://developer.4d.com/docs/commands/vp-get-column-attributes"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-column-attributes"
   },
   "VP COLUMN AUTOFIT": {
     "title": "VP COLUMN AUTOFIT",
-    "url": "https://developer.4d.com/docs/commands/vp-column-autofit"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-column-autofit"
   },
   "VP GET FROZEN PANES": {
     "title": "VP Get frozen panes",
-    "url": "https://developer.4d.com/docs/commands/vp-get-frozen-panes"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-frozen-panes"
   },
   "VP SET ROW ATTRIBUTES": {
     "title": "VP SET ROW ATTRIBUTES",
-    "url": "https://developer.4d.com/docs/commands/vp-set-row-attributes"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-row-attributes"
   },
   "VP FLUSH COMMANDS": {
     "title": "VP FLUSH COMMANDS",
-    "url": "https://developer.4d.com/docs/commands/vp-flush-commands"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-flush-commands"
   },
   "VP REMOVE SPAN": {
     "title": "VP REMOVE SPAN",
-    "url": "https://developer.4d.com/docs/commands/vp-remove-span"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-remove-span"
   },
   "VP GET FORMULAS": {
     "title": "VP Get formulas",
-    "url": "https://developer.4d.com/docs/commands/vp-get-formulas"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-formulas"
   },
   "VP CONVERT FROM 4D VIEW": {
     "title": "VP Convert from 4D View",
-    "url": "https://developer.4d.com/docs/commands/vp-convert-from-4d-view"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-convert-from-4d-view"
   },
   "VP GET TABLES": {
     "title": "VP Get tables",
-    "url": "https://developer.4d.com/docs/commands/vp-get-tables"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-tables"
   },
   "VP GET TABLE COLUMN INDEX": {
     "title": "VP Get table column index",
-    "url": "https://developer.4d.com/docs/commands/vp-get-table-column-index"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-table-column-index"
   },
   "VP GET FORMULA BY NAME": {
     "title": "VP Get formula by name",
-    "url": "https://developer.4d.com/docs/commands/vp-get-formula-by-name"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-formula-by-name"
   },
   "VP IMPORT FROM BLOB": {
     "title": "VP IMPORT FROM BLOB",
-    "url": "https://developer.4d.com/docs/commands/vp-import-from-blob"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-import-from-blob"
   },
   "VP SET FROZEN PANES": {
     "title": "VP SET FROZEN PANES",
-    "url": "https://developer.4d.com/docs/commands/vp-set-frozen-panes"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-frozen-panes"
   },
   "VP GET SHOW PRINT LINES": {
     "title": "VP Get show print lines",
-    "url": "https://developer.4d.com/docs/commands/vp-get-show-print-lines"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-show-print-lines"
   },
   "VP SET COLUMN ATTRIBUTES": {
     "title": "VP SET COLUMN ATTRIBUTES",
-    "url": "https://developer.4d.com/docs/commands/vp-set-column-attributes"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-column-attributes"
   },
   "VP GET ROW COUNT": {
     "title": "VP Get row count",
-    "url": "https://developer.4d.com/docs/commands/vp-get-row-count"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-row-count"
   },
   "VP ADD SELECTION": {
     "title": "VP ADD SELECTION",
-    "url": "https://developer.4d.com/docs/commands/vp-add-selection"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-add-selection"
   },
   "VP GET TABLE RANGE": {
     "title": "VP Get table range",
-    "url": "https://developer.4d.com/docs/commands/vp-get-table-range"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-table-range"
   },
   "VP SET ROW COUNT": {
     "title": "VP SET ROW COUNT",
-    "url": "https://developer.4d.com/docs/commands/vp-set-row-count"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-row-count"
   },
   "VP SET PRINT INFO": {
     "title": "VP SET PRINT INFO",
-    "url": "https://developer.4d.com/docs/commands/vp-set-print-info"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-print-info"
   },
   "VP SET DATE VALUE": {
     "title": "VP SET DATE VALUE",
-    "url": "https://developer.4d.com/docs/commands/vp-set-date-value"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-date-value"
   },
   "VP GET DATA CONTEXT": {
     "title": "VP Get data context",
-    "url": "https://developer.4d.com/docs/commands/vp-get-data-context"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-data-context"
   },
   "VP FONT TO OBJECT": {
     "title": "VP Font to object",
-    "url": "https://developer.4d.com/docs/commands/vp-font-to-object"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-font-to-object"
   },
   "VP SET SHEET OPTIONS": {
     "title": "VP SET SHEET OPTIONS",
-    "url": "https://developer.4d.com/docs/commands/vp-set-sheet-options"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-sheet-options"
   },
   "VP SET FORMULAS": {
     "title": "VP SET FORMULAS",
-    "url": "https://developer.4d.com/docs/commands/vp-set-formulas"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-formulas"
   },
   "VP SET VALUES": {
     "title": "VP SET VALUES",
-    "url": "https://developer.4d.com/docs/commands/vp-set-values"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-values"
   },
   "VP SET FORMULA": {
     "title": "VP SET FORMULA",
-    "url": "https://developer.4d.com/docs/commands/vp-set-formula"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-formula"
   },
   "VP GET SELECTION": {
     "title": "VP Get selection",
-    "url": "https://developer.4d.com/docs/commands/vp-get-selection"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-selection"
   },
   "VP COMBINE RANGES": {
     "title": "VP Combine ranges",
-    "url": "https://developer.4d.com/docs/commands/vp-combine-ranges"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-combine-ranges"
   },
   "VP SET ALLOWED METHODS": {
     "title": "VP SET ALLOWED METHODS",
-    "url": "https://developer.4d.com/docs/commands/vp-set-allowed-methods"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-allowed-methods"
   },
   "VP SET SELECTION": {
     "title": "VP SET SELECTION",
-    "url": "https://developer.4d.com/docs/commands/vp-set-selection"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-selection"
   },
   "VP GET TABLE THEME": {
     "title": "VP Get table theme",
-    "url": "https://developer.4d.com/docs/commands/vp-get-table-theme"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-table-theme"
   },
   "VP RUN OFFSCREEN AREA": {
     "title": "VP Run offscreen area",
-    "url": "https://developer.4d.com/docs/commands/vp-run-offscreen-area"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-run-offscreen-area"
   },
   "VP SET ACTIVE CELL": {
     "title": "VP SET ACTIVE CELL",
-    "url": "https://developer.4d.com/docs/commands/vp-set-active-cell"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-active-cell"
   },
   "VP GET WORKBOOK OPTIONS": {
     "title": "VP Get workbook options",
-    "url": "https://developer.4d.com/docs/commands/vp-get-workbook-options"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-workbook-options"
   },
   "VP SET TIME VALUE": {
     "title": "VP SET TIME VALUE",
-    "url": "https://developer.4d.com/docs/commands/vp-set-time-value"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-time-value"
   },
   "VP SET BOOLEAN VALUE": {
     "title": "VP SET BOOLEAN VALUE",
-    "url": "https://developer.4d.com/docs/commands/vp-set-boolean-value"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-boolean-value"
   },
   "VP GET ACTIVE CELL": {
     "title": "VP Get active cell",
-    "url": "https://developer.4d.com/docs/commands/vp-get-active-cell"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-active-cell"
   },
   "VP GET NAMES": {
     "title": "VP Get names",
-    "url": "https://developer.4d.com/docs/commands/vp-get-names"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-names"
   },
   "VP GET SHEET OPTIONS": {
     "title": "VP Get sheet options",
-    "url": "https://developer.4d.com/docs/commands/vp-get-sheet-options"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-sheet-options"
   },
   "VP SET DATA CONTEXT": {
     "title": "VP SET DATA CONTEXT",
-    "url": "https://developer.4d.com/docs/commands/vp-set-data-context"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-data-context"
   },
   "VP SET TABLE THEME": {
     "title": "VP SET TABLE THEME",
-    "url": "https://developer.4d.com/docs/commands/vp-set-table-theme"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-table-theme"
   },
   "VP REMOVE TABLE ROWS": {
     "title": "VP REMOVE TABLE ROWS",
-    "url": "https://developer.4d.com/docs/commands/vp-remove-table-rows"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-remove-table-rows"
   },
   "VP SUSPEND COMPUTING": {
     "title": "VP SUSPEND COMPUTING",
-    "url": "https://developer.4d.com/docs/commands/vp-suspend-computing"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-suspend-computing"
   },
   "VP CONVERT TO PICTURE": {
     "title": "VP Convert to picture",
-    "url": "https://developer.4d.com/docs/commands/vp-convert-to-picture"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-convert-to-picture"
   },
   "VP SET BORDER": {
     "title": "VP SET BORDER",
-    "url": "https://developer.4d.com/docs/commands/vp-set-border"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-border"
   },
   "VP REMOVE TABLE": {
     "title": "VP REMOVE TABLE",
-    "url": "https://developer.4d.com/docs/commands/vp-remove-table"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-remove-table"
   },
   "VP DELETE ROWS": {
     "title": "VP DELETE ROWS",
-    "url": "https://developer.4d.com/docs/commands/vp-delete-rows"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-delete-rows"
   },
   "VP REMOVE NAME": {
     "title": "VP REMOVE NAME",
-    "url": "https://developer.4d.com/docs/commands/vp-remove-name"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-remove-name"
   },
   "VP ROW AUTOFIT": {
     "title": "VP ROW AUTOFIT",
-    "url": "https://developer.4d.com/docs/commands/vp-row-autofit"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-row-autofit"
   },
   "VP CELL": {
     "title": "VP Cell",
-    "url": "https://developer.4d.com/docs/commands/vp-cell"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-cell"
   },
   "VP SET COLUMN COUNT": {
     "title": "VP SET COLUMN COUNT",
-    "url": "https://developer.4d.com/docs/commands/vp-set-column-count"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-column-count"
   },
   "VP OBJECT TO FONT": {
     "title": "VP Object to font",
-    "url": "https://developer.4d.com/docs/commands/vp-object-to-font"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-object-to-font"
   },
   "VP REMOVE TABLE COLUMNS": {
     "title": "VP REMOVE TABLE COLUMNS",
-    "url": "https://developer.4d.com/docs/commands/vp-remove-table-columns"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-remove-table-columns"
   },
   "VP INSERT TABLE ROWS": {
     "title": "VP INSERT TABLE ROWS",
-    "url": "https://developer.4d.com/docs/commands/vp-insert-table-rows"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-insert-table-rows"
   },
   "VP SET DEFAULT STYLE": {
     "title": "VP SET DEFAULT STYLE",
-    "url": "https://developer.4d.com/docs/commands/vp-set-default-style"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-default-style"
   },
   "VP CREATE TABLE": {
     "title": "VP CREATE TABLE",
-    "url": "https://developer.4d.com/docs/commands/vp-create-table"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-create-table"
   },
   "VP SET SHEET NAME": {
     "title": "VP SET SHEET NAME",
-    "url": "https://developer.4d.com/docs/commands/vp-set-sheet-name"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-sheet-name"
   },
   "VP NEW DOCUMENT": {
     "title": "VP NEW DOCUMENT",
-    "url": "https://developer.4d.com/docs/commands/vp-new-document"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-new-document"
   },
   "VP SET VALUE": {
     "title": "VP SET VALUE",
-    "url": "https://developer.4d.com/docs/commands/vp-set-value"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-value"
   },
   "VP SET CELL STYLE": {
     "title": "VP SET CELL STYLE",
-    "url": "https://developer.4d.com/docs/commands/vp-set-cell-style"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-cell-style"
   },
   "VP MOVE CELLS": {
     "title": "VP MOVE CELLS",
-    "url": "https://developer.4d.com/docs/commands/vp-move-cells"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-move-cells"
   },
   "VP GET TABLE DIRTY ROWS": {
     "title": "VP Get table dirty rows",
-    "url": "https://developer.4d.com/docs/commands/vp-get-table-dirty-rows"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-table-dirty-rows"
   },
   "VP RECOMPUTE FORMULAS": {
     "title": "VP RECOMPUTE FORMULAS",
-    "url": "https://developer.4d.com/docs/commands/vp-recompute-formulas"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-recompute-formulas"
   },
   "VP SET CURRENT SHEET": {
     "title": "VP SET CURRENT SHEET",
-    "url": "https://developer.4d.com/docs/commands/vp-set-current-sheet"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-current-sheet"
   },
   "VP SET FIELD": {
     "title": "VP SET FIELD",
-    "url": "https://developer.4d.com/docs/commands/vp-set-field"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-field"
   },
   "VP GET BINDING PATH": {
     "title": "VP Get binding path",
-    "url": "https://developer.4d.com/docs/commands/vp-get-binding-path"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-binding-path"
   },
   "VP ADD SHEET": {
     "title": "VP ADD SHEET",
-    "url": "https://developer.4d.com/docs/commands/vp-add-sheet"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-add-sheet"
   },
   "VP IMPORT FROM OBJECT": {
     "title": "VP IMPORT FROM OBJECT",
-    "url": "https://developer.4d.com/docs/commands/vp-import-from-object"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-import-from-object"
   },
   "VP COLUMN": {
     "title": "VP Column",
-    "url": "https://developer.4d.com/docs/commands/vp-column"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-column"
   },
   "VP ADD RANGE NAME": {
     "title": "VP ADD RANGE NAME",
-    "url": "https://developer.4d.com/docs/commands/vp-add-range-name"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-add-range-name"
   },
   "VP ROW": {
     "title": "VP Row",
-    "url": "https://developer.4d.com/docs/commands/vp-row"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-row"
   },
   "VP GET DEFAULT STYLE": {
     "title": "VP Get default style",
-    "url": "https://developer.4d.com/docs/commands/vp-get-default-style"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-default-style"
   },
   "VP GET COLUMN COUNT": {
     "title": "VP Get column count",
-    "url": "https://developer.4d.com/docs/commands/vp-get-column-count"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-column-count"
   },
   "VP PRINT": {
     "title": "VP PRINT",
-    "url": "https://developer.4d.com/docs/commands/vp-print"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-print"
   },
   "VP GET SPANS": {
     "title": "VP Get spans",
-    "url": "https://developer.4d.com/docs/commands/vp-get-spans"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-spans"
   },
   "VP IMPORT DOCUMENT": {
     "title": "VP IMPORT DOCUMENT",
-    "url": "https://developer.4d.com/docs/commands/vp-import-document"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-import-document"
   },
   "VP SET TABLE COLUMN ATTRIBUTES": {
     "title": "VP SET TABLE COLUMN ATTRIBUTES",
-    "url": "https://developer.4d.com/docs/commands/vp-set-table-column-attributes"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-table-column-attributes"
   },
   "VP SET BINDING PATH": {
     "title": "VP SET BINDING PATH",
-    "url": "https://developer.4d.com/docs/commands/vp-set-binding-path"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-binding-path"
   },
   "VP PASTE FROM OBJECT": {
     "title": "VP PASTE FROM OBJECT",
-    "url": "https://developer.4d.com/docs/commands/vp-paste-from-object"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-paste-from-object"
   },
   "VP GET STYLESHEET": {
     "title": "VP Get stylesheet",
-    "url": "https://developer.4d.com/docs/commands/vp-get-stylesheets"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-stylesheets"
   },
   "VP GET SHEET INDEX": {
     "title": "VP Get sheet index",
-    "url": "https://developer.4d.com/docs/commands/vp-get-sheet-index"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-sheet-index"
   },
   "VP SET SHOW PRINT LINES": {
     "title": "VP SET SHOW PRINT LINES",
-    "url": "https://developer.4d.com/docs/commands/vp-set-show-print-lines"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-show-print-lines"
   },
   "VP GET CURRENT SHEET": {
     "title": "VP Get current sheet",
-    "url": "https://developer.4d.com/docs/commands/vp-get-current-sheet"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-current-sheet"
   },
   "VP GET VALUES": {
     "title": "VP Get values",
-    "url": "https://developer.4d.com/docs/commands/vp-get-values"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-values"
   },
   "VP COPY TO OBJECT": {
     "title": "VP Copy to object",
-    "url": "https://developer.4d.com/docs/commands/vp-copy-to-object"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-copy-to-object"
   },
   "VP DELETE COLUMNS": {
     "title": "VP DELETE COLUMNS",
-    "url": "https://developer.4d.com/docs/commands/vp-delete-columns"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-delete-columns"
   },
   "VP REMOVE STYLESHEET": {
     "title": "VP REMOVE STYLESHEET",
-    "url": "https://developer.4d.com/docs/commands/vp-remove-stylesheet"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-remove-stylesheet"
   },
   "VP GET FORMULA": {
     "title": "VP Get formula",
-    "url": "https://developer.4d.com/docs/commands/vp-get-formula"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-formula"
   },
   "VP EXPORT TO BLOB": {
     "title": "VP EXPORT TO BLOB",
-    "url": "https://developer.4d.com/docs/commands/vp-export-to-blob"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-export-to-blob"
   },
   "VP SET DATE TIME VALUE": {
     "title": "VP SET DATE TIME VALUE",
-    "url": "https://developer.4d.com/docs/commands/vp-set-date-time-value"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-date-time-value"
   },
   "VP ADD STYLESHEET": {
     "title": "VP ADD STYLESHEET",
-    "url": "https://developer.4d.com/docs/commands/vp-add-stylesheet"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-add-stylesheet"
   },
   "VP EXPORT TO OBJECT": {
     "title": "VP Export to object",
-    "url": "https://developer.4d.com/docs/commands/vp-export-to-object"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-export-to-object"
   },
   "VP REMOVE SHEET": {
     "title": "VP REMOVE SHEET",
-    "url": "https://developer.4d.com/docs/commands/vp-remove-sheet"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-remove-sheet"
   },
   "VP INSERT TABLE COLUMNS": {
     "title": "VP INSERT TABLE COLUMNS",
-    "url": "https://developer.4d.com/docs/commands/vp-insert-table-columns"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-insert-table-columns"
   },
   "VP ADD SPAN": {
     "title": "VP ADD SPAN",
-    "url": "https://developer.4d.com/docs/commands/vp-add-span"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-add-span"
   },
   "VP SET SHEET COUNT": {
     "title": "VP SET SHEET COUNT",
-    "url": "https://developer.4d.com/docs/commands/vp-set-sheet-count"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-sheet-count"
   },
   "VP GET VALUE": {
     "title": "VP Get value",
-    "url": "https://developer.4d.com/docs/commands/vp-get-value"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-value"
   },
   "VP GET ROW ATTRIBUTES": {
     "title": "VP Get row attributes",
-    "url": "https://developer.4d.com/docs/commands/vp-get-row-attributes"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-row-attributes"
   },
   "VP NAME": {
     "title": "VP Name",
-    "url": "https://developer.4d.com/docs/commands/vp-name"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-name"
   },
   "VP GET PRINT INFO": {
     "title": "VP Get print info",
-    "url": "https://developer.4d.com/docs/commands/vp-get-print-info"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-print-info"
   },
   "VP SET WORKBOOK OPTIONS": {
     "title": "VP SET WORKBOOK OPTIONS",
-    "url": "https://developer.4d.com/docs/commands/vp-set-workbook-options"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-workbook-options"
   },
   "VP INSERT ROWS": {
     "title": "VP INSERT ROWS",
-    "url": "https://developer.4d.com/docs/commands/vp-insert-rows"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-insert-rows"
   },
   "VP SHOW CELL": {
     "title": "VP SHOW CELL",
-    "url": "https://developer.4d.com/docs/commands/vp-show-cell"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-show-cell"
   },
   "VP SET NUM VALUE": {
     "title": "VP SET NUM VALUE",
-    "url": "https://developer.4d.com/docs/commands/vp-set-num-value"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-num-value"
   },
   "VP FIND TABLE": {
     "title": "VP Find table",
-    "url": "https://developer.4d.com/docs/commands/vp-find-table"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-find-table"
   },
   "VP ADD FORMULA NAME": {
     "title": "VP ADD FORMULA NAME",
-    "url": "https://developer.4d.com/docs/commands/vp-add-formula-name"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-add-formula-name"
   },
   "VP FIND": {
     "title": "VP Find",
-    "url": "https://developer.4d.com/docs/commands/vp-find"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-find"
   },
   "VP GET SHEET COUNT": {
     "title": "VP Get sheet count",
-    "url": "https://developer.4d.com/docs/commands/vp-get-sheet-count"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-sheet-count"
   },
   "VP ALL": {
     "title": "VP All",
-    "url": "https://developer.4d.com/docs/commands/vp-all"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-all"
   },
   "VP INSERT COLUMNS": {
     "title": "VP INSERT COLUMNS",
-    "url": "https://developer.4d.com/docs/commands/vp-insert-columns"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-insert-columns"
   },
   "VP RESIZE TABLE": {
     "title": "VP RESIZE TABLE",
-    "url": "https://developer.4d.com/docs/commands/vp-resize-table"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-resize-table"
   },
   "VP RESUME COMPUTING": {
     "title": "VP RESUME COMPUTING",
-    "url": "https://developer.4d.com/docs/commands/vp-resume-computing"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-resume-computing"
   },
   "VP EXPORT DOCUMENT": {
     "title": "VP EXPORT DOCUMENT",
-    "url": "https://developer.4d.com/docs/commands/vp-export-document"
+    "url": "https://developer.4d.com/docs/ViewPro/commands/vp-export-document"
   },
   "WP INSERT BREAK": {
     "title": "WP Insert break",
-    "url": "https://developer.4d.com/docs/commands/wp-insert-break"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-insert-break"
   },
   "WP GET TEXT": {
     "title": "WP Get text",
-    "url": "https://developer.4d.com/docs/commands/wp-get-text"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-text"
   },
   "WP GET BREAKS": {
     "title": "WP Get breaks",
-    "url": "https://developer.4d.com/docs/commands/wp-get-breaks"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-breaks"
   },
   "WP INSERT FORMULA": {
     "title": "WP Insert formula",
-    "url": "https://developer.4d.com/docs/commands/wp-insert-formula"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-insert-formula"
   },
   "WP GET HEADER": {
     "title": "WP Get header",
-    "url": "https://developer.4d.com/docs/commands/wp-get-header"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-header"
   },
   "WP TABLE APPEND ROW": {
     "title": "WP Table append row",
-    "url": "https://developer.4d.com/docs/commands/wp-table-append-row"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-table-append-row"
   },
   "WP NEW BOOKMARK": {
     "title": "WP NEW BOOKMARK",
-    "url": "https://developer.4d.com/docs/commands/wp-new-bookmark"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-new-bookmark"
   },
   "WP TABLE RANGE": {
     "title": "WP Table range",
-    "url": "https://developer.4d.com/docs/commands/wp-table-range"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-table-range"
   },
   "WP PRINT": {
     "title": "WP PRINT",
-    "url": "https://developer.4d.com/docs/commands/wp-print"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-print"
   },
   "WP SET DATA CONTEXT": {
     "title": "WP SET DATA CONTEXT",
-    "url": "https://developer.4d.com/docs/commands/wp-set-data-context"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-set-data-context"
   },
   "WP BOOKMARK RANGE": {
     "title": "WP Bookmark range",
-    "url": "https://developer.4d.com/docs/commands/wp-bookmark-range"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-bookmark-range"
   },
   "WP TABLE DELETE COLUMNS": {
     "title": "WP TABLE DELETE COLUMNS",
-    "url": "https://developer.4d.com/docs/commands/wp-table-delete-columns"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-table-delete-columns"
   },
   "WP NEW FOOTER": {
     "title": "WP New footer",
-    "url": "https://developer.4d.com/docs/commands/wp-new-footer"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-new-footer"
   },
   "WP SET VIEW PROPERTIES": {
     "title": "WP SET VIEW PROPERTIES",
-    "url": "https://developer.4d.com/docs/commands/wp-set-view-properties"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-set-view-properties"
   },
   "WP GET STYLE SHEETS": {
     "title": "WP Get style sheets",
-    "url": "https://developer.4d.com/docs/commands/wp-get-style-sheets"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-style-sheets"
   },
   "WP SELECT": {
     "title": "WP SELECT",
-    "url": "https://developer.4d.com/docs/commands/wp-select"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-select"
   },
   "WP GET STYLE SHEET": {
     "title": "WP Get style sheet",
-    "url": "https://developer.4d.com/docs/commands/wp-get-style-sheet"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-style-sheet"
   },
   "WP DELETE SECTION": {
     "title": "WP DELETE SECTION",
-    "url": "https://developer.4d.com/docs/commands/wp-delete-section"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-delete-section"
   },
   "WP GET FOOTER": {
     "title": "WP Get footer",
-    "url": "https://developer.4d.com/docs/commands/wp-get-footer"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-footer"
   },
   "WP ADD PICTURE": {
     "title": "WP Add picture",
-    "url": "https://developer.4d.com/docs/commands/wp-add-picture"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-add-picture"
   },
   "WP GET FRAME": {
     "title": "WP Get frame",
-    "url": "https://developer.4d.com/docs/commands/wp-get-frame"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-frame"
   },
   "WP TABLE DELETE ROWS": {
     "title": "WP TABLE DELETE ROWS",
-    "url": "https://developer.4d.com/docs/commands/wp-table-delete-rows"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-table-delete-rows"
   },
   "WP IMPORT DOCUMENT": {
     "title": "WP Import document",
-    "url": "https://developer.4d.com/docs/commands/wp-import-document"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-import-document"
   },
   "WP GET SECTIONS": {
     "title": "WP Get sections",
-    "url": "https://developer.4d.com/docs/commands/wp-get-sections"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-sections"
   },
   "4D WRITE PRO COMMANDS": {
     "title": "4D Write Pro Commands",
@@ -5753,218 +5753,218 @@
   },
   "WP PARAGRAPH RANGE": {
     "title": "WP Paragraph range",
-    "url": "https://developer.4d.com/docs/commands/wp-paragraph-range"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-paragraph-range"
   },
   "WP SELECTION RANGE": {
     "title": "WP Selection range",
-    "url": "https://developer.4d.com/docs/commands/wp-selection-range"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-selection-range"
   },
   "WP NEW HEADER": {
     "title": "WP New header",
-    "url": "https://developer.4d.com/docs/commands/wp-new-header"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-new-header"
   },
   "WP GET DATA CONTEXT": {
     "title": "WP Get data context",
-    "url": "https://developer.4d.com/docs/commands/wp-get-data-context"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-data-context"
   },
   "WP COMPUTE FORMULAS": {
     "title": "WP COMPUTE FORMULAS",
-    "url": "https://developer.4d.com/docs/commands/wp-compute-formulas"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-compute-formulas"
   },
   "WP TABLE GET ROWS": {
     "title": "WP Table get rows",
-    "url": "https://developer.4d.com/docs/commands/wp-table-get-rows"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-table-get-rows"
   },
   "WP NEW STYLE SHEET": {
     "title": "WP New style sheet",
-    "url": "https://developer.4d.com/docs/commands/wp-new-style-sheet"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-new-style-sheet"
   },
   "WP TABLE GET COLUMNS": {
     "title": "WP Table get columns",
-    "url": "https://developer.4d.com/docs/commands/wp-table-get-columns"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-table-get-columns"
   },
   "WP FIND PREVIOUS": {
     "title": "WP Find previous",
-    "url": "https://developer.4d.com/docs/commands/wp-find-previous"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-find-previous"
   },
   "WP GET BODY": {
     "title": "WP Get body",
-    "url": "https://developer.4d.com/docs/commands/wp-get-body"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-body"
   },
   "WP TABLE GET CELLS": {
     "title": "WP Table get cells",
-    "url": "https://developer.4d.com/docs/commands/wp-table-get-cells"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-table-get-cells"
   },
   "WP NEW": {
     "title": "WP New",
-    "url": "https://developer.4d.com/docs/commands/wp-new"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-new"
   },
   "WP TABLE INSERT COLUMNS": {
     "title": "WP Table insert columns",
-    "url": "https://developer.4d.com/docs/commands/wp-table-insert-columns"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-table-insert-columns"
   },
   "WP DELETE TEXT BOX": {
     "title": "WP DELETE TEXT BOX",
-    "url": "https://developer.4d.com/docs/commands/wp-delete-text-box"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-delete-text-box"
   },
   "WP SET ATTRIBUTES": {
     "title": "WP SET ATTRIBUTES",
-    "url": "https://developer.4d.com/docs/commands/wp-set-attributes"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-set-attributes"
   },
   "WP EXPORT DOCUMENT": {
     "title": "WP EXPORT DOCUMENT",
-    "url": "https://developer.4d.com/docs/commands/wp-export-document"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-export-document"
   },
   "WP SET FRAME": {
     "title": "WP SET FRAME",
-    "url": "https://developer.4d.com/docs/commands/wp-set-frame"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-set-frame"
   },
   "WP IMPORT STYLE SHEETS": {
     "title": "WP IMPORT STYLE SHEETS",
-    "url": "https://developer.4d.com/docs/commands/wp-import-style-sheets"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-import-style-sheets"
   },
   "WP GET BOOKMARKS": {
     "title": "WP GET BOOKMARKS",
-    "url": "https://developer.4d.com/docs/commands/wp-get-bookmarks"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-bookmarks"
   },
   "WP EXPORT VARIABLE": {
     "title": "WP EXPORT VARIABLE",
-    "url": "https://developer.4d.com/docs/commands/wp-export-variable"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-export-variable"
   },
   "WP INSERT TABLE": {
     "title": "WP Insert table",
-    "url": "https://developer.4d.com/docs/commands/wp-insert-table"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-insert-table"
   },
   "WP INSERT DOCUMENT BODY": {
     "title": "WP Insert document body",
-    "url": "https://developer.4d.com/docs/commands/wp-insert-document-body"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-insert-document-body"
   },
   "WP GET ELEMENT BY ID": {
     "title": "WP Get element by ID",
-    "url": "https://developer.4d.com/docs/commands/wp-get-element-by-id"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-element-by-id"
   },
   "WP GET SUBSECTION": {
     "title": "WP Get subsection",
-    "url": "https://developer.4d.com/docs/commands/wp-get-subsection"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-subsection"
   },
   "WP DELETE BOOKMARK": {
     "title": "WP DELETE BOOKMARK",
-    "url": "https://developer.4d.com/docs/commands/wp-delete-bookmark"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-delete-bookmark"
   },
   "WP IS FONT STYLE SUPPORTED": {
     "title": "WP Is font style supported",
-    "url": "https://developer.4d.com/docs/commands/wp-is-font-style-supported"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-is-font-style-supported"
   },
   "WP FIND NEXT": {
     "title": "WP Find next",
-    "url": "https://developer.4d.com/docs/commands/wp-find-next"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-find-next"
   },
   "WP GET VIEW PROPERTIES": {
     "title": "WP Get view properties",
-    "url": "https://developer.4d.com/docs/commands/wp-get-view-properties"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-view-properties"
   },
   "WP USE PAGE SETUP": {
     "title": "WP USE PAGE SETUP",
-    "url": "https://developer.4d.com/docs/commands/wp-use-page-setup"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-use-page-setup"
   },
   "WP TABLE INSERT ROWS": {
     "title": "WP Table insert rows",
-    "url": "https://developer.4d.com/docs/commands/wp-table-insert-rows"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-table-insert-rows"
   },
   "WP DELETE PICTURE": {
     "title": "WP DELETE PICTURE",
-    "url": "https://developer.4d.com/docs/commands/wp-delete-picture"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-delete-picture"
   },
   "WP FREEZE FORMULAS": {
     "title": "WP FREEZE FORMULAS",
-    "url": "https://developer.4d.com/docs/commands/wp-freeze-formulas"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-freeze-formulas"
   },
   "WP DELETE SUBSECTION": {
     "title": "WP DELETE SUBSECTION",
-    "url": "https://developer.4d.com/docs/commands/wp-delete-subsection"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-delete-subsection"
   },
   "WP PICTURE RANGE": {
     "title": "WP Picture range",
-    "url": "https://developer.4d.com/docs/commands/wp-picture-range"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-picture-range"
   },
   "WP TABLE MERGE CELLS": {
     "title": "WP TABLE MERGE CELLS",
-    "url": "https://developer.4d.com/docs/commands/wp-table-merge-cells"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-table-merge-cells"
   },
   "WP DELETE FOOTER": {
     "title": "WP DELETE FOOTER",
-    "url": "https://developer.4d.com/docs/commands/wp-delete-footer"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-delete-footer"
   },
   "WP GET FORMULAS": {
     "title": "WP Get formulas",
-    "url": "https://developer.4d.com/docs/commands/wp-get-formulas"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-formulas"
   },
   "WP SET TEXT": {
     "title": "WP SET TEXT",
-    "url": "https://developer.4d.com/docs/commands/wp-set-text"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-set-text"
   },
   "WP NEW SUBSECTION": {
     "title": "WP New subsection",
-    "url": "https://developer.4d.com/docs/commands/wp-new-subsection"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-new-subsection"
   },
   "WP TEXT RANGE": {
     "title": "WP Text range",
-    "url": "https://developer.4d.com/docs/commands/wp-text-range"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-text-range"
   },
   "WP TABLE SPLIT CELLS": {
     "title": "WP TABLE SPLIT CELLS",
-    "url": "https://developer.4d.com/docs/commands/wp-table-split-cells"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-table-split-cells"
   },
   "WP GET LINKS": {
     "title": "WP Get links",
-    "url": "https://developer.4d.com/docs/commands/wp-get-links"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-links"
   },
   "WP DELETE STYLE SHEET": {
     "title": "WP DELETE STYLE SHEET",
-    "url": "https://developer.4d.com/docs/commands/wp-delete-style-sheet"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-delete-style-sheet"
   },
   "WP NEW TEXT BOX": {
     "title": "WP New text box",
-    "url": "https://developer.4d.com/docs/commands/wp-new-text-box"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-new-text-box"
   },
   "WP GET POSITION": {
     "title": "WP Get position",
-    "url": "https://developer.4d.com/docs/commands/wp-get-position"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-position"
   },
   "WP INSERT PICTURE": {
     "title": "WP Insert picture",
-    "url": "https://developer.4d.com/docs/commands/wp-insert-picture"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-insert-picture"
   },
   "WP SET LINK": {
     "title": "WP SET LINK",
-    "url": "https://developer.4d.com/docs/commands/wp-set-link"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-set-link"
   },
   "WP DELETE HEADER": {
     "title": "WP DELETE HEADER",
-    "url": "https://developer.4d.com/docs/commands/wp-delete-header"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-delete-header"
   },
   "WP FIND ALL": {
     "title": "WP Find all",
-    "url": "https://developer.4d.com/docs/commands/wp-find-all"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-find-all"
   },
   "WP GET ELEMENTS": {
     "title": "WP Get elements",
-    "url": "https://developer.4d.com/docs/commands/wp-get-elements"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-elements"
   },
   "WP GET PAGE COUNT": {
     "title": "WP Get page count",
-    "url": "https://developer.4d.com/docs/commands/wp-get-page-count"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-page-count"
   },
   "WP GET SECTION": {
     "title": "WP Get section",
-    "url": "https://developer.4d.com/docs/commands/wp-get-section"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-section"
   },
   "WP GET ATTRIBUTES": {
     "title": "WP Get attributes",
-    "url": "https://developer.4d.com/docs/commands/wp-get-attributes"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-attributes"
   },
   "WP RESET ATTRIBUTES": {
     "title": "WP RESET ATTRIBUTES",
-    "url": "https://developer.4d.com/docs/commands/wp-reset-attributes"
+    "url": "https://developer.4d.com/docs/WritePro/commands/wp-reset-attributes"
   }
 }

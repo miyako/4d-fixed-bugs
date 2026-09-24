@@ -1,0 +1,7 @@
+# Crawled HTML — large and fully reproducible via scripts/update/crawl.py
+html/
+# Shallow clones of the 4D-JP cross-reference repos
+vendor/
+# Per-run enrichment worker scratch files
+data/enrichment/
+__pycache__/
