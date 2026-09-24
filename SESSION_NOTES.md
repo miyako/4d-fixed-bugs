@@ -266,14 +266,28 @@ exercise taught. The workflow itself is documented in `UPDATING.md`.
 
 ## Japanese note extraction: two real bugs found
 
-- Bullets are sometimes written `*ACI0106136` with **no space** after the
-  asterisk. The original regex required one, silently dropping 191 notes.
+- Bullets are occasionally written `*ACI0106136` with **no space** after the
+  asterisk, or `*  ACI0098713` with two. A regex requiring exactly one space
+  silently drops them. Across both repos this is 7 lines covering 3 distinct
+  references — small, but the affected notes vanish without a trace. These
+  are malformed in the source too (with no space, CommonMark does not see a
+  list item at all), so they are worth fixing upstream; `UPDATING.md` lists
+  the exact files and line numbers.
 - The original extractor let a `---` horizontal rule fall through, bleeding
-  the following bullet's text into the previous note. Fixing that recovered
-  225 notes' worth of correctness.
+  the following bullet's text into the previous note. This was the larger of
+  the two effects by far, and unlike the bullet spacing it is purely an
+  extractor bug — a `---` in the body is perfectly valid markdown.
   **Lesson: when rewriting an extractor, diff the output against the old one
   item by item and account for every single difference. Both of these showed
-  up only as "this run has fewer/longer items than last time".**
+  up only as "this run has fewer/longer items than last time" — and beware
+  attributing a large discrepancy to the first cause you find, which is
+  exactly the mistake made here before the two were measured separately.**
+
+Separately, 5 bullets carry a **6-digit** ACI id where every other reference
+is 7 digits, so any `ACI\d{7}` matcher skips them. None of the five could be
+resolved against the bugs.4d.com dataset by prefix or by symptom, so the
+correct ids are unknown and need the upstream author. They are listed in
+`UPDATING.md` too.
 
 ## Command matching
 
