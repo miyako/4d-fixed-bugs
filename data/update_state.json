@@ -2473,11 +2473,11 @@
   "jp": {
     "blog": {
       "head": "787437e8ee0b2d636cc8e4ad1e69dad3c7774528",
-      "synced_at": "2026-09-24T01:36:08+00:00"
+      "synced_at": "2026-09-24T01:40:15+00:00"
     },
     "release-notes": {
-      "head": "13948b96fcadddac5824f24db8b3a982e537cced",
-      "synced_at": "2026-09-24T01:36:10+00:00"
+      "head": "d6df42258d80e3789c04825ea16bcfed6d456821",
+      "synced_at": "2026-09-24T01:40:17+00:00"
     }
   },
   "last_crawl": {
