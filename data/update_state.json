@@ -6,9 +6,9 @@
     "bugs_raw": 2458,
     "context": 2458,
     "enriched": 2458,
-    "jp_notes": 13179,
+    "jp_notes": 13185,
     "pages_found": 151,
-    "pending_enrichment": 110
+    "pending_enrichment": 0
   },
   "enrichment_fingerprints": {
     "ACI0092218": "31eb100f3c7657be66f126d27e3af6bb4d0b338eab45290c2124f512acd4876a",
@@ -2472,12 +2472,12 @@
   },
   "jp": {
     "blog": {
-      "head": "24fe1213e892c54c473b53d8bd6d47dd8b1e4357",
-      "synced_at": "2026-09-24T00:02:38+00:00"
+      "head": "787437e8ee0b2d636cc8e4ad1e69dad3c7774528",
+      "synced_at": "2026-09-24T01:36:08+00:00"
     },
     "release-notes": {
-      "head": "e149e67f648e340b6ec297afd5762c4f9b2dd8cd",
-      "synced_at": "2026-09-24T00:02:40+00:00"
+      "head": "13948b96fcadddac5824f24db8b3a982e537cced",
+      "synced_at": "2026-09-24T01:36:10+00:00"
     }
   },
   "last_crawl": {

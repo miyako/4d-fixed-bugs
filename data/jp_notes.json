@@ -1924,7 +1924,15 @@
     "source": "blog",
     "version_raw": "17.0",
     "version_norm": "17",
-    "text": "フォームエディターで，セレクション型のリストボックスが選択されている場合，プロパティリストの内容が正しく更新されませんでした。\n\n* ACI009873 クライアント/サーバー版で``entity.clone()``を実行した場合，フィールドの値が空でした。ローカルモードではコピー元のエンティティと同じ値が代入されています。プライマリーキーがUUIDの場合にだけ問題が発生します。",
+    "text": "フォームエディターで，セレクション型のリストボックスが選択されている場合，プロパティリストの内容が正しく更新されませんでした。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2018-10-18-release-note-version-17.md"
+  },
+  {
+    "reference": "ACI0098734",
+    "source": "blog",
+    "version_raw": "17.0",
+    "version_norm": "17",
+    "text": "クライアント/サーバー版で``entity.clone()``を実行した場合，フィールドの値が空でした。ローカルモードではコピー元のエンティティと同じ値が代入されています。プライマリーキーがUUIDの場合にだけ問題が発生します。",
     "path": "4D-JP/4D-jp.github.io/_posts/2018-10-18-release-note-version-17.md"
   },
   {
@@ -6772,7 +6780,15 @@
     "source": "blog",
     "version_raw": "17r5",
     "version_norm": "17_r5",
-    "text": "テキスト型の変数を使用してBOM（バイトオーダーマーク）付きのUTF-8を``HTTP Get``で受信した場合，冒頭BOM（``0xFEFF``）がそのままテキストに代入されました。BLOBで受信してから``Convert to text``でテキストに変換した場合は問題ありません。\n\n* ACI009938 Mac版のみ。Write Proドキュメントにアンダーラインまたは取り消し線がセットされたスタイルシートをレンジに設定した場合，アンダーラインまたは取り消し線の属性がレンジに適用されませんでした。",
+    "text": "テキスト型の変数を使用してBOM（バイトオーダーマーク）付きのUTF-8を``HTTP Get``で受信した場合，冒頭BOM（``0xFEFF``）がそのままテキストに代入されました。BLOBで受信してから``Convert to text``でテキストに変換した場合は問題ありません。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2019-05-15-release-note-version-17r5.md"
+  },
+  {
+    "reference": "ACI0099389",
+    "source": "blog",
+    "version_raw": "17r5",
+    "version_norm": "17_r5",
+    "text": "Mac版のみ。Write Proドキュメントにアンダーラインまたは取り消し線がセットされたスタイルシートをレンジに設定した場合，アンダーラインまたは取り消し線の属性がレンジに適用されませんでした。",
     "path": "4D-JP/4D-jp.github.io/_posts/2019-05-15-release-note-version-17r5.md"
   },
   {
@@ -23468,7 +23484,15 @@
     "source": "blog",
     "version_raw": "18r5",
     "version_norm": "18_r5",
-    "text": "`#DECLARE`構文が使用されているメソッドを実行した場合，アプリケーションがクラッシュしました。\n\n例：\n\n```\n#DECLARE ($i : Integer; $j : Text)->$value : Integer\n```\n\n* ACI010148 Mac版のみ。文字列の途中にキャレットがある状態で`e`キーを「長押し」してé`を入力した場合，１文字後の位置に文字が挿入されました。",
+    "text": "`#DECLARE`構文が使用されているメソッドを実行した場合，アプリケーションがクラッシュしました。\n\n例：\n\n```\n#DECLARE ($i : Integer; $j : Text)->$value : Integer\n```",
+    "path": "4D-JP/4D-jp.github.io/_posts/2020-10-19-release-note-version-18r5.md"
+  },
+  {
+    "reference": "ACI0101480",
+    "source": "blog",
+    "version_raw": "18r5",
+    "version_norm": "18_r5",
+    "text": "Mac版のみ。テキストの`3`文字目にキャレットが表示されている状態で英数キーを長押ししてアクセント付きの文字を入力した場合，テキストの`4`文字目に文字が入力されました。",
     "path": "4D-JP/4D-jp.github.io/_posts/2020-10-19-release-note-version-18r5.md"
   },
   {
@@ -69464,62 +69488,6 @@
     "path": "4D-JP/4D-jp.github.io/_posts/2026-07-13-release-note-version-21r4.md"
   },
   {
-    "reference": "ACI0106507",
-    "source": "blog",
-    "version_raw": "\"21.2\"",
-    "version_norm": "21.2",
-    "text": "テーブルのジャーナリングが有効にされていない場合，`EntitySelection.drop()`で空のエンティティセレクションを削除するのに`500`㍉秒を要しました。",
-    "path": "4D-JP/4D-jp.github.io/_posts/2026-08-17-release-note-version-21.md"
-  },
-  {
-    "reference": "ACI0106530",
-    "source": "blog",
-    "version_raw": "\"21.2\"",
-    "version_norm": "21.2",
-    "text": "Mac版のみ。Apple Siliconをビルドターゲットに設定した場合，Intelターゲットのコードも出力されました。ACI0104718と逆のパターンです。",
-    "path": "4D-JP/4D-jp.github.io/_posts/2026-08-17-release-note-version-21.md"
-  },
-  {
-    "reference": "ACI0106528",
-    "source": "blog",
-    "version_raw": "\"21.2\"",
-    "version_norm": "21.2",
-    "text": "日付または時間型の入力オブジェクトにフォーカスを移動した場合，入力中もフォーマットが解除されませんでした。オブジェクトの入力順が先頭であれば問題ありません。タブ移動で現象が再現します。また，表示フォーマットに加えて入力フィルターも設定されていれば問題ありません。",
-    "path": "4D-JP/4D-jp.github.io/_posts/2026-08-17-release-note-version-21.md"
-  },
-  {
-    "reference": "ACI0106425",
-    "source": "blog",
-    "version_raw": "\"21.2\"",
-    "version_norm": "21.2",
-    "text": "Mac版のみ。システムWebエリアが配置されたフォーム上で`\"Is window maximized`または`MAXIMIZE WINDOW`を実行した場合，アプリケーションがクラッシュしました。macOS 27 Golden Gateに特有の現象です。",
-    "path": "4D-JP/4D-jp.github.io/_posts/2026-08-17-release-note-version-21.md"
-  },
-  {
-    "reference": "ACI0106517",
-    "source": "blog",
-    "version_raw": "\"21.2\"",
-    "version_norm": "21.2",
-    "text": "Windows版のみ。印刷中にエラーが発生した場合，「未知のエラー」という大雑把なメッセージが返されました。もっと具体的な情報が表示されるべきです。\n\n**注記**: メッセージに加え，エラーの原因となる印刷関連の不具合も修正されました。特定の状況で印刷APIがメインスレッドから呼び出されないことがありました。",
-    "path": "4D-JP/4D-jp.github.io/_posts/2026-08-17-release-note-version-21.md"
-  },
-  {
-    "reference": "ACI0106511",
-    "source": "blog",
-    "version_raw": "\"21.2\"",
-    "version_norm": "21.2",
-    "text": "クイックレポートでカレント日付を差し込むために`#D`を使用した場合，UTC時間帯の日付が出力されました。",
-    "path": "4D-JP/4D-jp.github.io/_posts/2026-08-17-release-note-version-21.md"
-  },
-  {
-    "reference": "ACI0106513",
-    "source": "blog",
-    "version_raw": "\"21.2\"",
-    "version_norm": "21.2",
-    "text": "*tool4d* で`FORM SCREENSHOT`を実行した場合，アプリケーションがクラッシュしました。",
-    "path": "4D-JP/4D-jp.github.io/_posts/2026-08-17-release-note-version-21.md"
-  },
-  {
     "reference": "ACI0106239",
     "source": "blog",
     "version_raw": "\"21.2\"",
@@ -70398,6 +70366,70 @@
     "version_norm": "20.9",
     "text": "クライアント/サーバー版のみ。Apple Siliconターゲットのコンパイルモードでサーバー側で実行するように設定されているコンポーネントメソッドを`On Server Startup`で実行した場合，同じメソッドをクライアント側から実行することができなくなりました。",
     "path": "4D-JP/4D-jp.github.io/_posts/2026-08-26-release-note-version-20.md"
+  },
+  {
+    "reference": "ACI0106543",
+    "source": "blog",
+    "version_raw": "\"21.2\"",
+    "version_norm": "21.2",
+    "text": "ホストと同じ名称のコンポーネントをインストールした場合，エクスプローラーのタブを切り替えるたびに画面のちらつき，メモリーリークが発生しました。\n\n**注記**: 修正により，ホストと同じ名称のコンポーネントや依存関係はロードされず，エラーが返されるようになりました。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-13-release-note-version-21.md"
+  },
+  {
+    "reference": "ACI0106507",
+    "source": "blog",
+    "version_raw": "\"21.2\"",
+    "version_norm": "21.2",
+    "text": "テーブルのジャーナリングが有効にされていない場合，`EntitySelection.drop()`で空のエンティティセレクションを削除するのに`500`㍉秒を要しました。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-13-release-note-version-21.md"
+  },
+  {
+    "reference": "ACI0106530",
+    "source": "blog",
+    "version_raw": "\"21.2\"",
+    "version_norm": "21.2",
+    "text": "Mac版のみ。Apple Siliconをビルドターゲットに設定した場合，Intelターゲットのコードも出力されました。ACI0104718と逆のパターンです。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-13-release-note-version-21.md"
+  },
+  {
+    "reference": "ACI0106528",
+    "source": "blog",
+    "version_raw": "\"21.2\"",
+    "version_norm": "21.2",
+    "text": "日付または時間型の入力オブジェクトにフォーカスを移動した場合，入力中もフォーマットが解除されませんでした。オブジェクトの入力順が先頭であれば問題ありません。タブ移動で現象が再現します。また，表示フォーマットに加えて入力フィルターも設定されていれば問題ありません。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-13-release-note-version-21.md"
+  },
+  {
+    "reference": "ACI0106425",
+    "source": "blog",
+    "version_raw": "\"21.2\"",
+    "version_norm": "21.2",
+    "text": "Mac版のみ。システムWebエリアが配置されたフォーム上で`\"Is window maximized`または`MAXIMIZE WINDOW`を実行した場合，アプリケーションがクラッシュしました。macOS 27 Golden Gateに特有の現象です。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-13-release-note-version-21.md"
+  },
+  {
+    "reference": "ACI0106517",
+    "source": "blog",
+    "version_raw": "\"21.2\"",
+    "version_norm": "21.2",
+    "text": "Windows版のみ。印刷中にエラーが発生した場合，「未知のエラー」という大雑把なメッセージが返されました。もっと具体的な情報が表示されるべきです。\n\n**注記**: メッセージに加え，エラーの原因となる印刷関連の不具合も修正されました。特定の状況で印刷APIがメインスレッドから呼び出されないことがありました。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-13-release-note-version-21.md"
+  },
+  {
+    "reference": "ACI0106511",
+    "source": "blog",
+    "version_raw": "\"21.2\"",
+    "version_norm": "21.2",
+    "text": "クイックレポートでカレント日付を差し込むために`#D`を使用した場合，UTC時間帯の日付が出力されました。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-13-release-note-version-21.md"
+  },
+  {
+    "reference": "ACI0106513",
+    "source": "blog",
+    "version_raw": "\"21.2\"",
+    "version_norm": "21.2",
+    "text": "*tool4d* で`FORM SCREENSHOT`を実行した場合，アプリケーションがクラッシュしました。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-13-release-note-version-21.md"
   },
   {
     "reference": "ACI0096078",
@@ -79188,7 +79220,15 @@
     "source": "release-notes",
     "version_raw": "v15/r2",
     "version_norm": "15_r2",
-    "text": "クイックレポートから4D View文書を作成した場合，プラグインのウインドウがクイックレポートの背後に表示されました。\n\n* ACI008907 ストラクチャーエディターでテーブルやフィールドの名前を全角から半角（または平仮名からカタカナ）に変更した場合，変更が反映されませんでした。",
+    "text": "クイックレポートから4D View文書を作成した場合，プラグインのウインドウがクイックレポートの背後に表示されました。",
+    "path": "4D-JP/release-notes/v15/r2/README.md"
+  },
+  {
+    "reference": "ACI0089072",
+    "source": "release-notes",
+    "version_raw": "v15/r2",
+    "version_norm": "15_r2",
+    "text": "ストラクチャエディターで日本語のテーブル名またはフィールド名を編集した場合，ひらがなをカタカナに，あるいは全角を半角に変更しただけであれば，値が更新されませんでした。",
     "path": "4D-JP/release-notes/v15/r2/README.md"
   },
   {
@@ -103988,7 +104028,15 @@
     "source": "release-notes",
     "version_raw": "v17/17.0/hf3",
     "version_norm": "17.0_hf3",
-    "text": "フォームエディターで，セレクション型のリストボックスが選択されている場合，プロパティリストの内容が正しく更新されませんでした。\n\n* ACI009873 クライアント/サーバー版で``entity.clone()``を実行した場合，フィールドの値が空でした。ローカルモードではコピー元のエンティティと同じ値が代入されています。プライマリーキーがUUIDの場合にだけ問題が発生します。",
+    "text": "フォームエディターで，セレクション型のリストボックスが選択されている場合，プロパティリストの内容が正しく更新されませんでした。",
+    "path": "4D-JP/release-notes/v17/17.0/hf3/README.md"
+  },
+  {
+    "reference": "ACI0098734",
+    "source": "release-notes",
+    "version_raw": "v17/17.0/hf3",
+    "version_norm": "17.0_hf3",
+    "text": "クライアント/サーバー版で``entity.clone()``を実行した場合，フィールドの値が空でした。ローカルモードではコピー元のエンティティと同じ値が代入されています。プライマリーキーがUUIDの場合にだけ問題が発生します。",
     "path": "4D-JP/release-notes/v17/17.0/hf3/README.md"
   },
   {

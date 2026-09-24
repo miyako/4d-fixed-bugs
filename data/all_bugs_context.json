@@ -107,7 +107,7 @@
     "matched_commands": [
       {
         "title": "WP New",
-        "url": "https://developer.4d.com/docs/commands/wp-new"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-new"
       }
     ]
   },
@@ -1440,7 +1440,7 @@
     "matched_commands": [
       {
         "title": "WP Get attributes",
-        "url": "https://developer.4d.com/docs/commands/wp-get-attributes"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-attributes"
       }
     ]
   },
@@ -1863,7 +1863,7 @@
     "matched_commands": [
       {
         "title": "WP EXPORT DOCUMENT",
-        "url": "https://developer.4d.com/docs/commands/wp-export-document"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-export-document"
       }
     ]
   },
@@ -1994,7 +1994,7 @@
     "matched_commands": [
       {
         "title": "VP SET TEXT VALUE",
-        "url": "https://developer.4d.com/docs/commands/vp-set-text-value"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-text-value"
       }
     ]
   },
@@ -2335,7 +2335,7 @@
     "matched_commands": [
       {
         "title": "WP New",
-        "url": "https://developer.4d.com/docs/commands/wp-new"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-new"
       }
     ]
   },
@@ -2500,7 +2500,7 @@
     "matched_commands": [
       {
         "title": "VP EXPORT DOCUMENT",
-        "url": "https://developer.4d.com/docs/commands/vp-export-document"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-export-document"
       }
     ]
   },
@@ -2889,7 +2889,7 @@
       },
       {
         "title": "WP SET TEXT",
-        "url": "https://developer.4d.com/docs/commands/wp-set-text"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-set-text"
       }
     ]
   },
@@ -3967,7 +3967,7 @@
     "matched_commands": [
       {
         "title": "VP Convert to picture",
-        "url": "https://developer.4d.com/docs/commands/vp-convert-to-picture"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-convert-to-picture"
       }
     ]
   },
@@ -4352,7 +4352,7 @@
     "matched_commands": [
       {
         "title": "WP SET TEXT",
-        "url": "https://developer.4d.com/docs/commands/wp-set-text"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-set-text"
       }
     ]
   },
@@ -4389,11 +4389,11 @@
     "matched_commands": [
       {
         "title": "WP EXPORT DOCUMENT",
-        "url": "https://developer.4d.com/docs/commands/wp-export-document"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-export-document"
       },
       {
         "title": "WP EXPORT VARIABLE",
-        "url": "https://developer.4d.com/docs/commands/wp-export-variable"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-export-variable"
       }
     ]
   },
@@ -4854,7 +4854,7 @@
     "matched_commands": [
       {
         "title": "WP EXPORT VARIABLE",
-        "url": "https://developer.4d.com/docs/commands/wp-export-variable"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-export-variable"
       }
     ]
   },
@@ -5824,7 +5824,7 @@
     "matched_commands": [
       {
         "title": "WP Insert table",
-        "url": "https://developer.4d.com/docs/commands/wp-insert-table"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-insert-table"
       }
     ]
   },
@@ -6512,7 +6512,7 @@
     "matched_commands": [
       {
         "title": "VP Convert from 4D View",
-        "url": "https://developer.4d.com/docs/commands/vp-convert-from-4d-view"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-convert-from-4d-view"
       }
     ]
   },
@@ -6979,7 +6979,7 @@
       },
       {
         "title": "WP Get formulas",
-        "url": "https://developer.4d.com/docs/commands/wp-get-formulas"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-formulas"
       }
     ]
   },
@@ -7101,7 +7101,7 @@
     "matched_commands": [
       {
         "title": "WP EXPORT DOCUMENT",
-        "url": "https://developer.4d.com/docs/commands/wp-export-document"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-export-document"
       }
     ]
   },
@@ -7444,11 +7444,11 @@
     "matched_commands": [
       {
         "title": "VP Get value",
-        "url": "https://developer.4d.com/docs/commands/vp-get-value"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-value"
       },
       {
         "title": "VP SET VALUES",
-        "url": "https://developer.4d.com/docs/commands/vp-set-values"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-values"
       }
     ]
   },
@@ -7724,7 +7724,7 @@
     "matched_commands": [
       {
         "title": "WP Get formulas",
-        "url": "https://developer.4d.com/docs/commands/wp-get-formulas"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-formulas"
       }
     ]
   },
@@ -8090,7 +8090,7 @@
     "matched_commands": [
       {
         "title": "WP SET LINK",
-        "url": "https://developer.4d.com/docs/commands/wp-set-link"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-set-link"
       }
     ]
   },
@@ -8470,7 +8470,7 @@
       },
       {
         "title": "VP Convert from 4D View",
-        "url": "https://developer.4d.com/docs/commands/vp-convert-from-4d-view"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-convert-from-4d-view"
       }
     ]
   },
@@ -8558,7 +8558,7 @@
     "matched_commands": [
       {
         "title": "VP Convert to picture",
-        "url": "https://developer.4d.com/docs/commands/vp-convert-to-picture"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-convert-to-picture"
       }
     ]
   },
@@ -8583,7 +8583,7 @@
     "matched_commands": [
       {
         "title": "VP Convert to picture",
-        "url": "https://developer.4d.com/docs/commands/vp-convert-to-picture"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-convert-to-picture"
       }
     ]
   },
@@ -9314,7 +9314,7 @@
       },
       {
         "title": "WP PRINT",
-        "url": "https://developer.4d.com/docs/commands/wp-print"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-print"
       }
     ]
   },
@@ -9497,7 +9497,7 @@
     "matched_commands": [
       {
         "title": "VP Convert from 4D View",
-        "url": "https://developer.4d.com/docs/commands/vp-convert-from-4d-view"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-convert-from-4d-view"
       }
     ]
   },
@@ -9543,7 +9543,7 @@
       },
       {
         "title": "WP Insert break",
-        "url": "https://developer.4d.com/docs/commands/wp-insert-break"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-insert-break"
       }
     ]
   },
@@ -9671,7 +9671,7 @@
       },
       {
         "title": "WP PRINT",
-        "url": "https://developer.4d.com/docs/commands/wp-print"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-print"
       }
     ]
   },
@@ -9800,7 +9800,7 @@
     "matched_commands": [
       {
         "title": "WP Get text",
-        "url": "https://developer.4d.com/docs/commands/wp-get-text"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-text"
       }
     ]
   },
@@ -10028,7 +10028,7 @@
     "matched_commands": [
       {
         "title": "VP Convert from 4D View",
-        "url": "https://developer.4d.com/docs/commands/vp-convert-from-4d-view"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-convert-from-4d-view"
       }
     ]
   },
@@ -10486,7 +10486,7 @@
       },
       {
         "title": "VP SET CELL STYLE",
-        "url": "https://developer.4d.com/docs/commands/vp-set-cell-style"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-cell-style"
       }
     ]
   },
@@ -10585,7 +10585,7 @@
     "matched_commands": [
       {
         "title": "WP Get elements",
-        "url": "https://developer.4d.com/docs/commands/wp-get-elements"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-elements"
       }
     ]
   },
@@ -10766,7 +10766,7 @@
     "matched_commands": [
       {
         "title": "VP Convert from 4D View",
-        "url": "https://developer.4d.com/docs/commands/vp-convert-from-4d-view"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-convert-from-4d-view"
       }
     ]
   },
@@ -11064,7 +11064,7 @@
     "matched_commands": [
       {
         "title": "WP TABLE DELETE ROWS",
-        "url": "https://developer.4d.com/docs/commands/wp-table-delete-rows"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-table-delete-rows"
       }
     ]
   },
@@ -11264,7 +11264,7 @@
     "matched_commands": [
       {
         "title": "WP Insert table",
-        "url": "https://developer.4d.com/docs/commands/wp-insert-table"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-insert-table"
       }
     ]
   },
@@ -11452,7 +11452,7 @@
     "matched_commands": [
       {
         "title": "WP EXPORT DOCUMENT",
-        "url": "https://developer.4d.com/docs/commands/wp-export-document"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-export-document"
       }
     ]
   },
@@ -11657,7 +11657,7 @@
     "matched_commands": [
       {
         "title": "VP PRINT",
-        "url": "https://developer.4d.com/docs/commands/vp-print"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-print"
       }
     ]
   },
@@ -11855,7 +11855,7 @@
     "matched_commands": [
       {
         "title": "VP Convert to picture",
-        "url": "https://developer.4d.com/docs/commands/vp-convert-to-picture"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-convert-to-picture"
       }
     ]
   },
@@ -11871,7 +11871,7 @@
     "matched_commands": [
       {
         "title": "VP Convert to picture",
-        "url": "https://developer.4d.com/docs/commands/vp-convert-to-picture"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-convert-to-picture"
       }
     ]
   },
@@ -12156,15 +12156,15 @@
       },
       {
         "title": "WP Find all",
-        "url": "https://developer.4d.com/docs/commands/wp-find-all"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-find-all"
       },
       {
         "title": "WP Find next",
-        "url": "https://developer.4d.com/docs/commands/wp-find-next"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-find-next"
       },
       {
         "title": "WP Find previous",
-        "url": "https://developer.4d.com/docs/commands/wp-find-previous"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-find-previous"
       }
     ]
   },
@@ -12499,11 +12499,11 @@
     "matched_commands": [
       {
         "title": "VP PRINT",
-        "url": "https://developer.4d.com/docs/commands/vp-print"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-print"
       },
       {
         "title": "VP SET PRINT INFO",
-        "url": "https://developer.4d.com/docs/commands/vp-set-print-info"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-print-info"
       }
     ]
   },
@@ -12553,7 +12553,7 @@
     "matched_commands": [
       {
         "title": "WP Get text",
-        "url": "https://developer.4d.com/docs/commands/wp-get-text"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-text"
       }
     ]
   },
@@ -12569,7 +12569,7 @@
     "matched_commands": [
       {
         "title": "WP PRINT",
-        "url": "https://developer.4d.com/docs/commands/wp-print"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-print"
       }
     ]
   },
@@ -13138,7 +13138,7 @@
     "matched_commands": [
       {
         "title": "VP SET PRINT INFO",
-        "url": "https://developer.4d.com/docs/commands/vp-set-print-info"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-print-info"
       }
     ]
   },
@@ -13157,11 +13157,11 @@
     "matched_commands": [
       {
         "title": "VP Get print info",
-        "url": "https://developer.4d.com/docs/commands/vp-get-print-info"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-print-info"
       },
       {
         "title": "VP SET PRINT INFO",
-        "url": "https://developer.4d.com/docs/commands/vp-set-print-info"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-print-info"
       }
     ]
   },
@@ -13691,11 +13691,11 @@
     "matched_commands": [
       {
         "title": "WP Get text",
-        "url": "https://developer.4d.com/docs/commands/wp-get-text"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-text"
       },
       {
         "title": "WP SELECT",
-        "url": "https://developer.4d.com/docs/commands/wp-select"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-select"
       }
     ]
   },
@@ -13987,7 +13987,7 @@
     "matched_commands": [
       {
         "title": "WP Insert formula",
-        "url": "https://developer.4d.com/docs/commands/wp-insert-formula"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-insert-formula"
       }
     ]
   },
@@ -14725,7 +14725,7 @@
       },
       {
         "title": "WP Get view properties",
-        "url": "https://developer.4d.com/docs/commands/wp-get-view-properties"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-view-properties"
       }
     ]
   },
@@ -15507,11 +15507,11 @@
     "matched_commands": [
       {
         "title": "WP Get position",
-        "url": "https://developer.4d.com/docs/commands/wp-get-position"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-position"
       },
       {
         "title": "WP Text range",
-        "url": "https://developer.4d.com/docs/commands/wp-text-range"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-text-range"
       }
     ]
   },
@@ -15627,7 +15627,7 @@
     "matched_commands": [
       {
         "title": "VP EXPORT DOCUMENT",
-        "url": "https://developer.4d.com/docs/commands/vp-export-document"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-export-document"
       }
     ]
   },
@@ -15673,7 +15673,7 @@
     "matched_commands": [
       {
         "title": "WP SET LINK",
-        "url": "https://developer.4d.com/docs/commands/wp-set-link"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-set-link"
       }
     ]
   },
@@ -15779,7 +15779,7 @@
     "matched_commands": [
       {
         "title": "WP Get position",
-        "url": "https://developer.4d.com/docs/commands/wp-get-position"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-position"
       }
     ]
   },
@@ -15797,7 +15797,7 @@
     "matched_commands": [
       {
         "title": "WP Get position",
-        "url": "https://developer.4d.com/docs/commands/wp-get-position"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-position"
       }
     ]
   },
@@ -15832,7 +15832,7 @@
       },
       {
         "title": "VP SET DATE TIME VALUE",
-        "url": "https://developer.4d.com/docs/commands/vp-set-date-time-value"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-date-time-value"
       }
     ]
   },
@@ -16194,7 +16194,7 @@
     "matched_commands": [
       {
         "title": "WP New",
-        "url": "https://developer.4d.com/docs/commands/wp-new"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-new"
       }
     ]
   },
@@ -16312,7 +16312,7 @@
       },
       {
         "title": "VP SET CELL STYLE",
-        "url": "https://developer.4d.com/docs/commands/vp-set-cell-style"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-cell-style"
       }
     ]
   },
@@ -16481,15 +16481,15 @@
     "matched_commands": [
       {
         "title": "WP Find all",
-        "url": "https://developer.4d.com/docs/commands/wp-find-all"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-find-all"
       },
       {
         "title": "WP Find next",
-        "url": "https://developer.4d.com/docs/commands/wp-find-next"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-find-next"
       },
       {
         "title": "WP Find previous",
-        "url": "https://developer.4d.com/docs/commands/wp-find-previous"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-find-previous"
       }
     ]
   },
@@ -16730,15 +16730,15 @@
       },
       {
         "title": "VP All",
-        "url": "https://developer.4d.com/docs/commands/vp-all"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-all"
       },
       {
         "title": "VP Cells",
-        "url": "https://developer.4d.com/docs/commands/vp-cells"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-cells"
       },
       {
         "title": "VP SET CELL STYLE",
-        "url": "https://developer.4d.com/docs/commands/vp-set-cell-style"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-cell-style"
       }
     ]
   },
@@ -17167,7 +17167,7 @@
     "matched_commands": [
       {
         "title": "VP SET CELL STYLE",
-        "url": "https://developer.4d.com/docs/commands/vp-set-cell-style"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-cell-style"
       }
     ]
   },
@@ -17369,7 +17369,7 @@
     "matched_commands": [
       {
         "title": "VP Convert to picture",
-        "url": "https://developer.4d.com/docs/commands/vp-convert-to-picture"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-convert-to-picture"
       }
     ]
   },
@@ -19052,19 +19052,19 @@
     "matched_commands": [
       {
         "title": "WP COMPUTE FORMULAS",
-        "url": "https://developer.4d.com/docs/commands/wp-compute-formulas"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-compute-formulas"
       },
       {
         "title": "WP Import document",
-        "url": "https://developer.4d.com/docs/commands/wp-import-document"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-import-document"
       },
       {
         "title": "WP New",
-        "url": "https://developer.4d.com/docs/commands/wp-new"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-new"
       },
       {
         "title": "WP Text range",
-        "url": "https://developer.4d.com/docs/commands/wp-text-range"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-text-range"
       }
     ]
   },
@@ -19223,7 +19223,7 @@
     "matched_commands": [
       {
         "title": "WP SET ATTRIBUTES",
-        "url": "https://developer.4d.com/docs/commands/wp-set-attributes"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-set-attributes"
       }
     ]
   },
@@ -19285,7 +19285,7 @@
     "matched_commands": [
       {
         "title": "WP SET DATA CONTEXT",
-        "url": "https://developer.4d.com/docs/commands/wp-set-data-context"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-set-data-context"
       }
     ]
   },
@@ -19793,7 +19793,7 @@
     "matched_commands": [
       {
         "title": "VP EXPORT DOCUMENT",
-        "url": "https://developer.4d.com/docs/commands/vp-export-document"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-export-document"
       }
     ]
   },
@@ -20156,11 +20156,11 @@
     "matched_commands": [
       {
         "title": "WP Add picture",
-        "url": "https://developer.4d.com/docs/commands/wp-add-picture"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-add-picture"
       },
       {
         "title": "WP SET ATTRIBUTES",
-        "url": "https://developer.4d.com/docs/commands/wp-set-attributes"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-set-attributes"
       }
     ]
   },
@@ -20369,7 +20369,7 @@
     "matched_commands": [
       {
         "title": "VP REMOVE TABLE COLUMNS",
-        "url": "https://developer.4d.com/docs/commands/vp-remove-table-columns"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-remove-table-columns"
       }
     ]
   },
@@ -21111,15 +21111,15 @@
     "matched_commands": [
       {
         "title": "VP Copy to object",
-        "url": "https://developer.4d.com/docs/commands/vp-copy-to-object"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-copy-to-object"
       },
       {
         "title": "VP MOVE CELLS",
-        "url": "https://developer.4d.com/docs/commands/vp-move-cells"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-move-cells"
       },
       {
         "title": "VP PASTE FROM OBJECT",
-        "url": "https://developer.4d.com/docs/commands/vp-paste-from-object"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-paste-from-object"
       }
     ]
   },
@@ -21237,7 +21237,7 @@
     "matched_commands": [
       {
         "title": "VP EXPORT DOCUMENT",
-        "url": "https://developer.4d.com/docs/commands/vp-export-document"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-export-document"
       }
     ]
   },
@@ -21374,7 +21374,7 @@
     "matched_commands": [
       {
         "title": "VP EXPORT DOCUMENT",
-        "url": "https://developer.4d.com/docs/commands/vp-export-document"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-export-document"
       }
     ]
   },
@@ -21392,11 +21392,11 @@
     "matched_commands": [
       {
         "title": "WP Get sections",
-        "url": "https://developer.4d.com/docs/commands/wp-get-sections"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-sections"
       },
       {
         "title": "WP Insert formula",
-        "url": "https://developer.4d.com/docs/commands/wp-insert-formula"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-insert-formula"
       }
     ]
   },
@@ -22107,7 +22107,7 @@
     "matched_commands": [
       {
         "title": "WP EXPORT DOCUMENT",
-        "url": "https://developer.4d.com/docs/commands/wp-export-document"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-export-document"
       }
     ]
   },
@@ -22272,15 +22272,15 @@
     "matched_commands": [
       {
         "title": "WP Get page count",
-        "url": "https://developer.4d.com/docs/commands/wp-get-page-count"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-page-count"
       },
       {
         "title": "WP Insert formula",
-        "url": "https://developer.4d.com/docs/commands/wp-insert-formula"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-insert-formula"
       },
       {
         "title": "WP PRINT",
-        "url": "https://developer.4d.com/docs/commands/wp-print"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-print"
       }
     ]
   },
@@ -22496,7 +22496,7 @@
     "matched_commands": [
       {
         "title": "WP EXPORT DOCUMENT",
-        "url": "https://developer.4d.com/docs/commands/wp-export-document"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-export-document"
       }
     ]
   },
@@ -22513,7 +22513,7 @@
     "matched_commands": [
       {
         "title": "WP PRINT",
-        "url": "https://developer.4d.com/docs/commands/wp-print"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-print"
       }
     ]
   },
@@ -23440,7 +23440,7 @@
     "matched_commands": [
       {
         "title": "WP SET ATTRIBUTES",
-        "url": "https://developer.4d.com/docs/commands/wp-set-attributes"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-set-attributes"
       }
     ]
   },
@@ -23944,11 +23944,11 @@
     "matched_commands": [
       {
         "title": "VP MOVE CELLS",
-        "url": "https://developer.4d.com/docs/commands/vp-move-cells"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-move-cells"
       },
       {
         "title": "VP PASTE FROM OBJECT",
-        "url": "https://developer.4d.com/docs/commands/vp-paste-from-object"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-paste-from-object"
       }
     ]
   },
@@ -24466,7 +24466,7 @@
     "matched_commands": [
       {
         "title": "VP IMPORT FROM OBJECT",
-        "url": "https://developer.4d.com/docs/commands/vp-import-from-object"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-import-from-object"
       }
     ]
   },
@@ -26557,7 +26557,7 @@
     "matched_commands": [
       {
         "title": "WP PRINT",
-        "url": "https://developer.4d.com/docs/commands/wp-print"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-print"
       }
     ]
   },
@@ -27028,11 +27028,11 @@
     "matched_commands": [
       {
         "title": "VP FLUSH COMMANDS",
-        "url": "https://developer.4d.com/docs/commands/vp-flush-commands"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-flush-commands"
       },
       {
         "title": "VP SET FORMULA",
-        "url": "https://developer.4d.com/docs/commands/vp-set-formula"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-formula"
       }
     ]
   },
@@ -27404,7 +27404,7 @@
     "matched_commands": [
       {
         "title": "VP Convert to picture",
-        "url": "https://developer.4d.com/docs/commands/vp-convert-to-picture"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-convert-to-picture"
       }
     ]
   },
@@ -27515,7 +27515,7 @@
     "matched_commands": [
       {
         "title": "WP Import document",
-        "url": "https://developer.4d.com/docs/commands/wp-import-document"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-import-document"
       }
     ]
   },
@@ -27616,7 +27616,7 @@
     "matched_commands": [
       {
         "title": "VP IMPORT DOCUMENT",
-        "url": "https://developer.4d.com/docs/commands/vp-import-document"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-import-document"
       }
     ]
   },
@@ -27826,7 +27826,7 @@
     "matched_commands": [
       {
         "title": "WP Get elements",
-        "url": "https://developer.4d.com/docs/commands/wp-get-elements"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-elements"
       }
     ]
   },
@@ -27947,7 +27947,7 @@
     "matched_commands": [
       {
         "title": "VP Convert to picture",
-        "url": "https://developer.4d.com/docs/commands/vp-convert-to-picture"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-convert-to-picture"
       }
     ]
   },
@@ -29890,7 +29890,7 @@
     "matched_commands": [
       {
         "title": "WP Get position",
-        "url": "https://developer.4d.com/docs/commands/wp-get-position"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-position"
       }
     ]
   },
@@ -30300,7 +30300,7 @@
     "matched_commands": [
       {
         "title": "WP EXPORT DOCUMENT",
-        "url": "https://developer.4d.com/docs/commands/wp-export-document"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-export-document"
       }
     ]
   },
@@ -30610,7 +30610,7 @@
       },
       {
         "title": "VP CREATE TABLE",
-        "url": "https://developer.4d.com/docs/commands/vp-create-table"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-create-table"
       }
     ]
   },
@@ -30678,7 +30678,7 @@
     "matched_commands": [
       {
         "title": "VP PRINT",
-        "url": "https://developer.4d.com/docs/commands/vp-print"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-print"
       }
     ]
   },
@@ -31132,7 +31132,7 @@
       },
       {
         "title": "WP COMPUTE FORMULAS",
-        "url": "https://developer.4d.com/docs/commands/wp-compute-formulas"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-compute-formulas"
       }
     ]
   },
@@ -31336,7 +31336,7 @@
     "matched_commands": [
       {
         "title": "VP Convert to picture",
-        "url": "https://developer.4d.com/docs/commands/vp-convert-to-picture"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-convert-to-picture"
       }
     ]
   },
@@ -31354,7 +31354,7 @@
     "matched_commands": [
       {
         "title": "VP Convert to picture",
-        "url": "https://developer.4d.com/docs/commands/vp-convert-to-picture"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-convert-to-picture"
       }
     ]
   },
@@ -31505,7 +31505,7 @@
     "matched_commands": [
       {
         "title": "VP Convert to picture",
-        "url": "https://developer.4d.com/docs/commands/vp-convert-to-picture"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-convert-to-picture"
       }
     ]
   },
@@ -31625,7 +31625,7 @@
     "matched_commands": [
       {
         "title": "VP Convert to picture",
-        "url": "https://developer.4d.com/docs/commands/vp-convert-to-picture"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-convert-to-picture"
       }
     ]
   },
@@ -32432,23 +32432,23 @@
     "matched_commands": [
       {
         "title": "WP Bookmark range",
-        "url": "https://developer.4d.com/docs/commands/wp-bookmark-range"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-bookmark-range"
       },
       {
         "title": "WP Paragraph range",
-        "url": "https://developer.4d.com/docs/commands/wp-paragraph-range"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-paragraph-range"
       },
       {
         "title": "WP Picture range",
-        "url": "https://developer.4d.com/docs/commands/wp-picture-range"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-picture-range"
       },
       {
         "title": "WP Selection range",
-        "url": "https://developer.4d.com/docs/commands/wp-selection-range"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-selection-range"
       },
       {
         "title": "WP Text range",
-        "url": "https://developer.4d.com/docs/commands/wp-text-range"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-text-range"
       }
     ]
   },
@@ -32695,11 +32695,11 @@
     "matched_commands": [
       {
         "title": "VP Get table range",
-        "url": "https://developer.4d.com/docs/commands/vp-get-table-range"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-get-table-range"
       },
       {
         "title": "VP RESIZE TABLE",
-        "url": "https://developer.4d.com/docs/commands/vp-resize-table"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-resize-table"
       }
     ]
   },
@@ -33250,11 +33250,11 @@
       },
       {
         "title": "VP SET FORMULA",
-        "url": "https://developer.4d.com/docs/commands/vp-set-formula"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-formula"
       },
       {
         "title": "VP SET WORKBOOK OPTIONS",
-        "url": "https://developer.4d.com/docs/commands/vp-set-workbook-options"
+        "url": "https://developer.4d.com/docs/ViewPro/commands/vp-set-workbook-options"
       }
     ]
   },
@@ -33316,7 +33316,7 @@
     "matched_commands": [
       {
         "title": "WP New",
-        "url": "https://developer.4d.com/docs/commands/wp-new"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-new"
       }
     ]
   },
@@ -35479,7 +35479,7 @@
     "matched_commands": [
       {
         "title": "WP New",
-        "url": "https://developer.4d.com/docs/commands/wp-new"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-new"
       }
     ]
   },
@@ -36017,7 +36017,7 @@
       },
       {
         "title": "WP SET ATTRIBUTES",
-        "url": "https://developer.4d.com/docs/commands/wp-set-attributes"
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-set-attributes"
       }
     ]
   },
