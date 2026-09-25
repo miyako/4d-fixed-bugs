@@ -137,6 +137,21 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
   color: white;
 }
 
+@media (max-width: 640px) {
+  .app-bar-inner {
+    padding: 0.6rem 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .icon-btn span {
+    display: none;
+  }
+
+  .icon-btn {
+    padding: 0.5rem;
+  }
+}
+
 .chat-container {
   flex: 1;
   display: flex;
@@ -203,6 +218,40 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .hits-table .hit-versions {
   white-space: nowrap;
+}
+
+.hits-table .hit-match {
+  white-space: nowrap;
+  text-align: center;
+}
+
+.match-badge {
+  display: inline-block;
+  padding: 0.15em 0.5em;
+  border-radius: 999px;
+  font-size: 0.8em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.match-badge.exact {
+  background: var(--accent);
+  color: white;
+}
+
+.match-badge.high {
+  background: #1e7e34;
+  color: white;
+}
+
+.match-badge.medium {
+  background: #b8860b;
+  color: white;
+}
+
+.match-badge.low {
+  background: var(--hairline-strong);
+  color: var(--muted);
 }
 
 
