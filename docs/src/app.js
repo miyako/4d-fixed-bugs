@@ -33,6 +33,21 @@ const EMBED_MODEL_ID = "Xenova/all-MiniLM-L6-v2";
 const EMBED_DIM = 384;
 const TOP_K = 15;
 const TABLE_TOP_N = 8;
+// Cosine-similarity floor below which a semantic match is considered
+// irrelevant and dropped entirely, rather than always padding the
+// results out to TOP_K regardless of how weak the match is.
+const MIN_SCORE = 0.35;
+// Finer bands (all >= MIN_SCORE, since anything below it is already
+// excluded) used purely to color-code the "Match" badge in the UI.
+const SCORE_TIER_HIGH = 0.55;
+const SCORE_TIER_MEDIUM = 0.45;
+
+/** Bucket a cosine-similarity score into a confidence tier for display. */
+function scoreTier(score) {
+  if (score >= SCORE_TIER_HIGH) return "high";
+  if (score >= SCORE_TIER_MEDIUM) return "medium";
+  return "low";
+}
 
 /**
  * Chat engine selection. "deterministic" (the default) means no LLM at
@@ -217,7 +232,9 @@ async function retrieve(query) {
   const queryVec = output.data;
   const scored = pool.map((i) => ({ index: i, score: dot(embeddings, i * EMBED_DIM, queryVec) }));
   scored.sort((a, b) => b.score - a.score);
-  const results = scored.slice(0, TOP_K).map((s) => ({ ...meta[s.index], score: s.score }));
+  const relevant = scored.filter((s) => s.score >= MIN_SCORE);
+  const noRelevantResults = scored.length > 0 && relevant.length === 0;
+  const results = relevant.slice(0, TOP_K).map((s) => ({ ...meta[s.index], score: s.score }));
   return {
     results,
     intent,
@@ -226,6 +243,7 @@ async function retrieve(query) {
     usedCommandFallback,
     explicitRefs: explicitRefs.length > 0 ? explicitRefs : undefined,
     notFoundRefs: explicitRefs.length > 0 ? explicitRefs : [],
+    noRelevantResults,
   };
 }
 
@@ -294,7 +312,7 @@ function buildSystemMessage(retrieval) {
  * mode (CHAT_ENGINE === "deterministic"). No model involved: this is
  * generated purely from the retrieval() result. */
 function buildDeterministicReply(retrieval) {
-  const { results, intent, usedFallback, commandMentions, usedCommandFallback, explicitRefs, notFoundRefs } =
+  const { results, intent, usedFallback, commandMentions, usedCommandFallback, explicitRefs, notFoundRefs, noRelevantResults } =
     retrieval;
   const intentDesc = describeIntent(intent);
 
@@ -312,25 +330,34 @@ function buildDeterministicReply(retrieval) {
   }
 
   if (results.length === 0) {
-    return "No bugs matched that search.";
+    return noRelevantResults
+      ? "No bugs closely matched that search — try rephrasing, or describing the bug in more detail."
+      : "No bugs matched that search.";
   }
 
   const criteria = [];
   if (commandMentions.length > 0 && !usedCommandFallback) criteria.push(`mentioning ${commandMentions.join(", ")}`);
   if (intentDesc && !usedFallback) criteria.push(`fixed in ${intentDesc}`);
 
+  const fallbackNotes = [];
+  if (usedCommandFallback) fallbackNotes.push(`no exact match for ${commandMentions.join(", ")}`);
+  if (usedFallback) fallbackNotes.push(`no exact match for ${intentDesc}`);
+
+  if (criteria.length === 0 && fallbackNotes.length === 0) {
+    // Nothing extra to say beyond what the results table (with its match
+    // scores) already shows — skip the generic "Found N bugs" preamble.
+    return "";
+  }
+
   let lead = `Found ${results.length} bug${results.length === 1 ? "" : "s"}`;
   if (criteria.length > 0) lead += " " + criteria.join(" and ");
   lead += ".";
 
-  const fallbackNotes = [];
-  if (usedCommandFallback) fallbackNotes.push(`no exact match for ${commandMentions.join(", ")}`);
-  if (usedFallback) fallbackNotes.push(`no exact match for ${intentDesc}`);
   if (fallbackNotes.length > 0) {
     lead += ` No exact match for that${fallbackNotes.length > 1 ? " (" + fallbackNotes.join("; ") + ")" : ""} — showing the closest overall matches instead.`;
   }
 
-  return lead + " Top matches below.";
+  return lead;
 }
 
 /** Deterministically render a table of the top retrieved bugs (reference,
@@ -338,17 +365,26 @@ function buildDeterministicReply(retrieval) {
  * links to developer.4d.com) — built directly from the retrieval data
  * rather than reproduced by the model, since a small local model can't be
  * relied on to faithfully echo every result, reference, and link. */
+function renderMatchBadge(score) {
+  if (score === undefined) return "";
+  // An explicit ACI-reference lookup (score === 1) is an exact match, not
+  // a semantic ranking — label it distinctly rather than showing "100%".
+  if (score === 1) return `<span class="match-badge exact">Exact</span>`;
+  const pct = Math.round(score * 100);
+  return `<span class="match-badge ${scoreTier(score)}">${pct}%</span>`;
+}
+
 function renderHitsTable(bugs) {
   if (!bugs || bugs.length === 0) return "";
   const rows = bugs
     .slice(0, TABLE_TOP_N)
     .map(
       (b) =>
-        `<tr><td class="hit-ref">${b.reference}</td><td class="hit-versions">${renderVersions(b.versions)}</td><td class="hit-summary">${renderSummary(b.summary)}</td></tr>`
+        `<tr><td class="hit-ref">${b.reference}</td><td class="hit-match">${renderMatchBadge(b.score)}</td><td class="hit-versions">${renderVersions(b.versions)}</td><td class="hit-summary">${renderSummary(b.summary)}</td></tr>`
     )
     .join("");
   return (
-    `<table class="hits-table"><thead><tr><th>ACI</th><th>Versions</th><th>Summary</th></tr></thead>` +
+    `<table class="hits-table"><thead><tr><th>ACI</th><th>Match</th><th>Versions</th><th>Summary</th></tr></thead>` +
     `<tbody>${rows}</tbody></table>`
   );
 }
@@ -495,7 +531,7 @@ async function boot() {
       await loadChatEngine();
     }
     setBootStatus(
-      `Ready. Ask about any of the ${meta.length} fixed 4D bugs (versions ${minMajor}-${maxMajor}).`
+      `Ready. ${meta.length} fixed 4D bugs loaded (versions ${minMajor}-${maxMajor}). Describe a bug to search.`
     );
     setReady(true);
   } catch (err) {
