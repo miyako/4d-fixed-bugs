@@ -499,29 +499,97 @@ clearBtn.addEventListener("click", () => {
   renderConversation();
 });
 
-copyBtn.addEventListener("click", async () => {
-  if (conversation.length === 0) return;
-  const lastBugs = conversation[conversation.length - 1].bugsContext || [];
-  const bugsSection = lastBugs
+/** Copy text to the clipboard, preferring the async Clipboard API but
+ * falling back to the legacy execCommand("copy") approach if it's
+ * rejected. Some browsers (notably Firefox) can spuriously reject
+ * navigator.clipboard.writeText on the very same click that also blurs
+ * a focused text input — even though it's a genuine user gesture — and
+ * only succeed on a second click. The execCommand fallback runs
+ * synchronously within the same gesture, so it succeeds immediately
+ * instead of requiring that extra click. */
+async function copyTextToClipboard(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return;
+    } catch {
+      // Fall through to the legacy fallback below.
+    }
+  }
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.style.position = "fixed";
+  textarea.style.top = "-1000px";
+  textarea.style.opacity = "0";
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  try {
+    if (!document.execCommand("copy")) {
+      throw new Error("Copy command was rejected by the browser.");
+    }
+  } finally {
+    document.body.removeChild(textarea);
+  }
+}
+
+/** Escape a value for use inside a markdown table cell: collapse
+ * newlines (which would otherwise break the row) and escape pipe
+ * characters (which would otherwise split into extra columns). */
+function escapeMdCell(text) {
+  return text.replace(/\r?\n/g, " ").replace(/\|/g, "\\|");
+}
+
+/** Build the same match label shown in the on-screen badge ("Exact" for
+ * a direct ACI lookup, otherwise a rounded percentage), as plain text
+ * for the markdown table. */
+function matchLabel(score) {
+  if (score === undefined) return "";
+  if (score === 1) return "Exact";
+  return `${Math.round(score * 100)}%`;
+}
+
+/** Build a markdown table of the retrieved bugs, mirroring the columns
+ * and row count of the on-screen results table (ACI reference, match
+ * confidence, versions, plain-text summary) so "Copy" reproduces
+ * exactly what's visible, not a conversational transcript. */
+function buildResultsMarkdownTable(bugs) {
+  const rows = bugs.slice(0, TABLE_TOP_N);
+  const header = "| ACI | Match | Versions | Summary |\n| --- | --- | --- | --- |";
+  const body = rows
     .map(
       (b) =>
-        `[${b.reference}] ${stripLinks(b.summary)} (Fixed in: ${(b.versions || []).join(", ") || "—"})`
+        `| ${b.reference} | ${matchLabel(b.score)} | ${escapeMdCell((b.versions || []).join(", ") || "—")} | ${escapeMdCell(stripLinks(b.summary))} |`
     )
     .join("\n");
-  const chatSection = conversation
-    .map((t) => `${t.role === "user" ? "You" : "AI"}: ${t.content}`)
-    .join("\n\n");
-  const text =
-    `Bug subset discussed (${lastBugs.length} bugs):\n${bugsSection}\n\n` +
-    `Conversation:\n${chatSection}`;
+  return `${header}\n${body}`;
+}
+
+copyBtn.addEventListener("click", async () => {
+  if (conversation.length === 0) return;
+  // Release focus from the search input first: on some browsers, a
+  // click that both blurs a focused input and triggers a clipboard
+  // write in the same event can confuse the browser's user-activation
+  // check for the async Clipboard API.
+  if (document.activeElement instanceof HTMLElement) {
+    document.activeElement.blur();
+  }
+  const lastBugs = conversation[conversation.length - 1].bugsContext || [];
+  if (lastBugs.length === 0) {
+    appendSystemNote("No results to copy yet.");
+    return;
+  }
+  const text = buildResultsMarkdownTable(lastBugs);
   try {
-    await navigator.clipboard.writeText(text);
-    appendSystemNote("Conversation copied to clipboard.");
+    await copyTextToClipboard(text);
+    appendSystemNote("Results table copied to clipboard.");
   } catch (err) {
     console.error(err);
     appendSystemNote(`Failed to copy: ${err.message}`);
   }
 });
+
+
 
 async function boot() {
   try {
