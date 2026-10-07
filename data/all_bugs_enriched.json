@@ -3263,9 +3263,7 @@
   {
     "reference": "ACI0101285",
     "summary": "Loading a 4D View Pro document that had been converted from 4D View and contained long formulas — such as one summing 25 `AVERAGE` calculations — could take several minutes, a regression from v17. The fix improves asynchronous call performance in 4D and updates the underlying SpreadJS library to version 14.0.4.",
-    "commands": [
-      "Average"
-    ]
+    "commands": []
   },
   {
     "reference": "ACI0101287",
@@ -3794,9 +3792,7 @@
   {
     "reference": "ACI0101501",
     "summary": "In the Structure editor, typing a new field or relation name in the Inspector palette and then selecting a different field could discard the just-entered name; confirming the edit required pressing Tab or clicking another active object in the Inspector first.",
-    "commands": [
-      "Field name"
-    ]
+    "commands": []
   },
   {
     "reference": "ACI0101503",
@@ -3838,9 +3834,7 @@
   {
     "reference": "ACI0101540",
     "summary": "Running a client-side data file verification from the MSC failed to produce a viewable report: the downloaded log did not include the required `LogStyleSheet.css`, and in Project mode the button to also download `Verify_Logs.xml` was unresponsive.",
-    "commands": [
-      "Data file"
-    ]
+    "commands": []
   },
   {
     "reference": "ACI0101541",
@@ -3872,10 +3866,7 @@
   {
     "reference": "ACI0101556",
     "summary": "Verifying an encrypted data file through the MSC logged error 5 (\"table encryption is enabled but data is not encrypted\") for a table marked as encryptable that simply had no records yet.",
-    "commands": [
-      "Log file",
-      "Data file"
-    ]
+    "commands": []
   },
   {
     "reference": "ACI0101563",
@@ -4448,11 +4439,7 @@
   {
     "reference": "ACI0101871",
     "summary": "After a field was added to a table that already contained records, existing records had a null value for that field. Calling `max()`, `min()`, or `average()` on an entity selection of such records returned `undefined` instead of properly accounting for the null values; forcing an update of the records with \"Map null values to blank values\" enabled worked around the issue.",
-    "commands": [
-      "Max",
-      "Min",
-      "Average"
-    ]
+    "commands": []
   },
   {
     "reference": "ACI0101873",
@@ -4479,9 +4466,7 @@
   {
     "reference": "ACI0101885",
     "summary": "In 4D View Pro spreadsheets, the `ROUND` function could return an incorrect value — for example `=ROUND(18.205;2)` returned 18.2 instead of 18.21 — due to a bug in the underlying SpreadJS library; the fix backports a SpreadJS 14.0.8 patch into the SpreadJS 12.2.5 build used by this version.",
-    "commands": [
-      "Round"
-    ]
+    "commands": []
   },
   {
     "reference": "ACI0101887",
@@ -4529,8 +4514,7 @@
     "summary": "Using `Choose` as a sort condition inside `ORDER BY FORMULA` could produce a compile error.",
     "commands": [
       "ORDER BY FORMULA",
-      "Choose",
-      "Formula"
+      "Choose"
     ]
   },
   {
@@ -6042,8 +6026,7 @@
     "reference": "ACI0102643",
     "summary": "In 4D View Pro, passing an empty date value (`!00-00-00!`) to `VP SET DATE TIME VALUE` produced the incorrect date 11/30/1899 instead of returning a proper null value.",
     "commands": [
-      "VP SET DATE TIME VALUE",
-      "Null"
+      "VP SET DATE TIME VALUE"
     ]
   },
   {
@@ -6239,8 +6222,7 @@
     "reference": "ACI0102720",
     "summary": "When a query executed against a Sybase stored procedure via `SQL EXECUTE` returned null, the command filled the destination 4D array with one empty element instead of leaving it empty as it should for a null result.",
     "commands": [
-      "SQL EXECUTE",
-      "Null"
+      "SQL EXECUTE"
     ]
   },
   {
@@ -7632,8 +7614,7 @@
     "reference": "ACI0103524",
     "summary": "In ORDA, a `Not` condition combined with a `null` comparison on an object attribute did not work correctly when run as an indexed query, since `null` — matching no value — should be included in the results of a `Not(attribute = parameter)` query; the equivalent sequential query worked correctly.",
     "commands": [
-      "Not",
-      "Null"
+      "Not"
     ]
   },
   {
@@ -7832,10 +7813,7 @@
   {
     "reference": "ACI0103621",
     "summary": "Clicking the Restore button in the Maintenance and Security Center while no data file was selected caused the application to crash.",
-    "commands": [
-      "Data file",
-      "RESTORE"
-    ]
+    "commands": []
   },
   {
     "reference": "ACI0103623",
@@ -8034,9 +8012,7 @@
   {
     "reference": "ACI0103699",
     "summary": "Opening the Maintenance and Security Center without selecting a data file and clicking the encryption or rollback button caused the application to freeze in an endless loop (spinning wheel).",
-    "commands": [
-      "Data file"
-    ]
+    "commands": []
   },
   {
     "reference": "ACI0103708",
@@ -9181,9 +9157,7 @@
   {
     "reference": "ACI0104121",
     "summary": "In some 4D Write Pro dialogs (such as its error dialogs), the Cancel button appeared on the left side instead of the conventional right side.",
-    "commands": [
-      "CANCEL"
-    ]
+    "commands": []
   },
   {
     "reference": "ACI0104122",
@@ -9232,9 +9206,7 @@
   {
     "reference": "ACI0104136",
     "summary": "In 4D NetKit's Microsoft Graph API integration, the `isLastPage` attribute was not set correctly on the final message when retrieving mail, so callers could not reliably detect the end of pagination.",
-    "commands": [
-      "GRAPH"
-    ]
+    "commands": []
   },
   {
     "reference": "ACI0104138",
@@ -9254,9 +9226,7 @@
   {
     "reference": "ACI0104145",
     "summary": "In the 4D NetKit component's Microsoft Graph API integration, retrieving email messages returned incorrect information.",
-    "commands": [
-      "GRAPH"
-    ]
+    "commands": []
   },
   {
     "reference": "ACI0104147",
@@ -10688,9 +10658,7 @@
   {
     "reference": "ACI0104802",
     "summary": "In Qodly Studio, the $shared folder could not be reached via the webAdmin port (default 7443) unless the web server was started at launch.",
-    "commands": [
-      "WEB Server"
-    ]
+    "commands": []
   },
   {
     "reference": "ACI0104805",
@@ -11724,9 +11692,7 @@
   {
     "reference": "ACI0105285",
     "summary": "Saving an expression in the debugger's expression pane that calls `HTTPRequest.wait()` caused the debugger to enter an infinite loop as soon as a breakpoint was hit, making the debugger window blink and become unusable.",
-    "commands": [
-      "HTTP Request"
-    ]
+    "commands": []
   },
   {
     "reference": "ACI0105286",
@@ -13137,9 +13103,7 @@
   {
     "reference": "ACI0106074",
     "summary": "NaN values in an object attribute's properties disrupted entity selection sorting via `.orderBy()` or `.query(\"... order by ...\")`; such values should sort the same way as they would for a collection.",
-    "commands": [
-      "ORDER BY"
-    ]
+    "commands": []
   },
   {
     "reference": "ACI0106077",
@@ -13647,9 +13611,7 @@
   {
     "reference": "ACI0106326",
     "summary": "When compacting a database with the \"Force update all records\" option, pointers stored inside object fields were corrupted, leaving those objects empty after compaction.",
-    "commands": [
-      "ALL RECORDS"
-    ]
+    "commands": []
   },
   {
     "reference": "ACI0106328",
