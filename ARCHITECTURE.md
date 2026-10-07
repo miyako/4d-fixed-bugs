@@ -30,15 +30,21 @@ implementation in enough detail to recreate it from scratch.
 
 ```
 docs/                      # GitHub Pages root (served as /)
-  index.html                # the single page
+  index.html                # the English page
+  ja/
+    index.html               # the Japanese page (same JS/CSS, <html lang="ja">; see §11)
   style.css                 # all styling (light + dark)
   assets/
     banner.png               # 128x128 app-bar logo/icon
   data/
     meta.json                 # array of {reference, summary, commands, versions}, one per bug, index-aligned with embeddings.bin
     embeddings.bin             # raw Float32Array, row-major, N rows x 384 cols, L2-normalized
+    ja/
+      meta.json                 # same records with Japanese summaries
+      embeddings.bin            # N rows x 256 cols (ruri-v3-30m), L2-normalized
   src/
     app.js                     # entry point: boot, retrieval, chat UI, deterministic reply builder
+    i18n.js                    # per-language dataset dir, embedding model settings, score thresholds, UI strings
     render.js                  # safe minimal-markdown renderer for summaries + version links
     beta-versions.js           # GENERATED: Set of versions that only exist as a bugs.4d.com beta branch
     version.js                 # natural-language version-reference parsing/matching
@@ -53,6 +59,8 @@ data/                       # source dataset + offline precompute inputs (NOT se
   command_index.json          # {commandName: {title, url}} — reference data, not consumed by the client at runtime
   bugs_raw.json               # parser output: [{reference, raw_summary, raw_summary_variants, versions}]
   jp_notes.json               # Japanese cross-reference notes keyed by ACI reference
+  all_bugs_ja.json            # [{reference, summary (Japanese), source_fingerprint}] — see §11
+  pending_translation.json    # bugs whose Japanese summary still needs writing
   update_state.json           # incremental-update memory: page hashes, enrichment fingerprints, JP repo SHAs, link checks
   version_sources.json        # {version: ["version"|"branch"]} — which bugs.4d.com listing serves each version
   pending_enrichment.json     # bugs whose English summary still needs writing (empty after a completed update)
@@ -70,10 +78,20 @@ scripts/
     split_pending.py           # splits pending work into per-worker chunks
     merge_enrichment.py        # validates and merges written summaries back in
     check_links.py             # re-verifies every developer.4d.com URL still resolves
-    generate_embeddings.mjs    # incremental build of docs/data/{meta.json,embeddings.bin}
+    build_translation.py       # Japanese translation delta -> data/pending_translation.json
+    merge_translation.py       # validates and merges written Japanese summaries
+    ja_common.py               # translation fingerprint + validator
+    TRANSLATION_PROMPT.md      # instructions handed to each translation worker
+    generate_embeddings.mjs    # incremental build of docs/data/{meta.json,embeddings.bin} (--lang ja: docs/data/ja/)
     bump_cache_bust.py         # bumps ?v=N on docs/index.html asset URLs
     ENRICHMENT_PROMPT.md       # the prose-writing instructions handed to each worker
-  package.json                 # scripts-only deps: @xenova/transformers@2.17.2
+  package.json                 # scripts-only deps: @xenova/transformers@2.17.2 (English), @huggingface/transformers@3.8.1 (Japanese); playwright (dev, smoke test)
+
+tests/
+  js/                         # node:test unit tests for docs/src (version/command parsing, rendering, i18n)
+  python/                     # unittest for the translation validator
+  eval/                       # Japanese retrieval-quality eval set + script
+  browser/smoke.mjs           # headless-browser smoke test of both pages
   generate_embeddings.mjs      # original non-incremental build (superseded by update/generate_embeddings.mjs)
   crawl_4d_bugs.sh             # original crawler, kept for reference (superseded by update/crawl.py)
   parse_phase1.py              # original parser, kept for reference (superseded by update/parse.py)
@@ -266,13 +284,16 @@ Key structural points:
 ### 6.1 Constants & configuration
 
 ```js
-const TRANSFORMERS_CDN_URL = "https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/dist/transformers.min.js";
-const EMBED_MODEL_ID = "Xenova/all-MiniLM-L6-v2";
-const EMBED_DIM = 384;
+const LOCALE = getLocale(document.documentElement.lang); // from i18n.js, see §11
+const EMBED_DIM = LOCALE.embedding.dim;                   // 384 (en) / 256 (ja)
 const TOP_K = 15;          // candidates ranked/returned by retrieve()
 const TABLE_TOP_N = 8;     // how many of those are actually rendered in the hits table
+const MIN_SCORE = LOCALE.scores.min;                      // per-model similarity floor
 const DEFAULT_CHAT_ENGINE = "deterministic"; // "deterministic" | "webllm"
 ```
+
+For English, `LOCALE.embedding` is the transformers.js 2.17.2 CDN URL,
+`Xenova/all-MiniLM-L6-v2`, `{ quantized: true }`, no query prefix.
 
 `CHAT_ENGINE` is resolved once at load time as: `?engine=` URL query
 param → `document.body.dataset.engine` → `DEFAULT_CHAT_ENGINE`. This
@@ -620,3 +641,46 @@ that history. It is not part of the current app.)
 To refresh the dataset afterwards rather than rebuild it, use
 `./scripts/update.sh`; `UPDATING.md` documents that pipeline and the
 delta-tracking state it keeps in `data/update_state.json`.
+
+## 11. Japanese version (`docs/ja/`)
+
+The Japanese page is the same app: `docs/ja/index.html` is a translated copy of
+`index.html` (`<html lang="ja">`, asset paths prefixed `../`, a language switch
+linking back), loading the same `src/app.js`. `app.js` reads
+`document.documentElement.lang` and takes everything language-specific from
+`src/i18n.js`:
+
+- **Dataset**: `docs/data/ja/meta.json` + `embeddings.bin` — the same records
+  (same order, `commands`, `versions`) with the Japanese `summary`.
+- **Embedding model**: `sirasagi62/ruri-v3-30m-ONNX` (ONNX export of
+  cl-nagoya/ruri-v3-30m, a Japanese ModernBERT embedding model, 256-dim),
+  pinned to a commit, `dtype: "q8"` (~37 MB), loaded with
+  `@huggingface/transformers@3.8.1` from jsDelivr (2.17.2 does not support
+  ModernBERT), running on WASM. Ruri v3 is trained with task prefixes, so the
+  corpus is embedded as `"検索文書: " + text` and queries as
+  `"検索クエリ: " + query`; mean pooling, L2-normalized, like English.
+- **Score thresholds**: ruri's cosine similarities sit on a much higher scale
+  than MiniLM's, so `MIN_SCORE` and the badge bands are calibrated separately
+  (`tests/eval/eval_retrieval.mjs` prints the distributions).
+- **UI strings**: status lines, reply templates, table headers, copy messages.
+  `describeIntent(intent, "ja")` in `version.js` phrases version filters in
+  Japanese.
+
+Classic matching is shared and works on Japanese text unchanged — JS `\b` is
+ASCII-only, so `\bGOTO OBJECT\b` and `\bACI\d+` match next to kana/kanji.
+Queries are NFKC-normalized before ACI/command/version matching so full-width
+input (`ＡＣＩ００９２２１８`, `Ｖ２０`) works. `parseVersionIntent` also
+understands Japanese phrasings: `v18前後`/`18頃`/`約18` (approximate),
+`17より前`/`17未満` (strictly before), `17以前`/`17以下` (inclusive), `20より後`
+(strictly after), `20以降`/`20以上` (inclusive), `バージョン20` (exact). The
+inclusive forms carry `inclusive: true` on the intent.
+
+Japanese summaries are written per `scripts/update/TRANSLATION_PROMPT.md`
+from the English summary and the original 4D Japan release-note text
+(`jp_notes`), in polite form (です・ます調), keeping every command link with
+its English link text and the URL moved to `https://developer.4d.com/docs/ja/…`
+(the renderer's allowlist prefix still matches). `merge_translation.py`
+enforces this; see `UPDATING.md` → *The Japanese site*.
+
+In WebLLM mode the system prompt stays in English with an added instruction to
+reply in Japanese.

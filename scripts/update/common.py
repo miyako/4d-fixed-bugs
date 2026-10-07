@@ -34,6 +34,8 @@ COMMAND_INDEX_PATH = os.path.join(DATA_DIR, "command_index.json")
 CONTEXT_PATH = os.path.join(DATA_DIR, "all_bugs_context.json")
 ENRICHED_PATH = os.path.join(DATA_DIR, "all_bugs_enriched.json")
 PENDING_PATH = os.path.join(DATA_DIR, "pending_enrichment.json")
+JA_PATH = os.path.join(DATA_DIR, "all_bugs_ja.json")
+PENDING_TRANSLATION_PATH = os.path.join(DATA_DIR, "pending_translation.json")
 
 USER_AGENT = (
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "

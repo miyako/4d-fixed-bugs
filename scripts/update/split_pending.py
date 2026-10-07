@@ -7,8 +7,11 @@ single-pass task, so the pending set is split into self-contained chunks that
 can be handed to parallel workers (agents or people). Each chunk file is a
 complete input: nothing else needs to be read to write its summaries.
 
-Usage:  python3 scripts/update/split_pending.py --chunks 4 --out-dir data/enrichment
+Usage:  python3 scripts/update/split_pending.py --chunks 4
         (then write data/enrichment/chunk_N.out.json for each chunk and merge)
+
+        python3 scripts/update/split_pending.py --kind translation
+        (same for data/pending_translation.json -> data/translation/)
 """
 from __future__ import annotations
 
@@ -19,20 +22,36 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from common import DATA_DIR, PENDING_PATH, load_json, write_json  # noqa: E402
+from common import DATA_DIR, PENDING_PATH, PENDING_TRANSLATION_PATH, load_json, write_json  # noqa: E402
 
-DEFAULT_OUT_DIR = os.path.join(DATA_DIR, "enrichment")
-PROMPT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ENRICHMENT_PROMPT.md")
+HERE = os.path.dirname(os.path.abspath(__file__))
+KINDS = {
+    "enrichment": {
+        "pending": PENDING_PATH,
+        "out_dir": os.path.join(DATA_DIR, "enrichment"),
+        "prompt": os.path.join(HERE, "ENRICHMENT_PROMPT.md"),
+        "merge": "merge_enrichment.py",
+    },
+    "translation": {
+        "pending": PENDING_TRANSLATION_PATH,
+        "out_dir": os.path.join(DATA_DIR, "translation"),
+        "prompt": os.path.join(HERE, "TRANSLATION_PROMPT.md"),
+        "merge": "merge_translation.py",
+    },
+}
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--chunks", type=int, default=4)
     parser.add_argument("--max-per-chunk", type=int, default=40)
-    parser.add_argument("--out-dir", default=DEFAULT_OUT_DIR)
+    parser.add_argument("--kind", choices=sorted(KINDS), default="enrichment")
+    parser.add_argument("--out-dir", default=None)
     args = parser.parse_args()
+    kind = KINDS[args.kind]
+    args.out_dir = args.out_dir or kind["out_dir"]
 
-    pending = load_json(PENDING_PATH, []) or []
+    pending = load_json(kind["pending"], []) or []
     if not pending:
         print("Nothing pending — no chunks written.")
         return 0
@@ -53,9 +72,9 @@ def main() -> int:
     print(f"{len(pending)} pending bug(s) -> {len(written)} chunk(s):")
     for path, count in written:
         print(f"  {os.path.relpath(path)}  ({count} bugs)")
-    print(f"\nInstructions for each chunk: {os.path.relpath(PROMPT_PATH)}")
+    print(f"\nInstructions for each chunk: {os.path.relpath(kind['prompt'])}")
     print("Write chunk_N.out.json alongside each input, then:")
-    print(f"  python3 scripts/update/merge_enrichment.py {os.path.relpath(args.out_dir)}/chunk_N.out.json --partial")
+    print(f"  python3 scripts/update/{kind['merge']} {os.path.relpath(args.out_dir)}/chunk_N.out.json --partial")
     return 0
 
 

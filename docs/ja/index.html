@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="light dark" />
+<title>4D 修正済みバグ検索</title>
+<link rel="alternate" hreflang="en" href="https://miyako.github.io/4d-fixed-bugs/" />
+<link rel="alternate" hreflang="ja" href="https://miyako.github.io/4d-fixed-bugs/ja/" />
+<link rel="stylesheet" href="../style.css?v=16" />
+</head>
+<body>
+  <header class="app-bar">
+    <div class="app-bar-inner">
+      <img class="app-bar-logo" src="../assets/banner.png" alt="4D 修正済みバグ" />
+      <form id="chat-form" class="app-bar-form">
+        <input
+          id="chat-input"
+          type="text"
+          placeholder="4D のバグの内容を入力…"
+          autocomplete="off"
+          disabled
+        />
+        <button type="submit" class="icon-btn icon-btn-primary" disabled title="検索">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2a8 8 0 1 0 4.9 14.32l5.39 5.39 1.42-1.42-5.39-5.39A8 8 0 0 0 10 2zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12z"/></svg>
+          <span>検索</span>
+        </button>
+        <button id="clear-btn" type="button" class="icon-btn" title="会話をクリア">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3l1-1h4l1 1h4v2H5V3h4zM6 7h12l-1 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 7zm3 3v9h1v-9H9zm5 0v9h1v-9h-1z"/></svg>
+          <span>クリア</span>
+        </button>
+        <button id="copy-btn" type="button" class="icon-btn" title="結果を Markdown でコピー">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 2a2 2 0 0 0-2 2H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1a2 2 0 0 0-2-2H9zm0 2h4v2H9V4zM6 6h1v2h6V6h1v14H6V6z"/></svg>
+          <span>コピー</span>
+        </button>
+      </form>
+    </div>
+  </header>
+
+  <main>
+    <nav class="lang-switch" aria-label="言語"><a href="../" hreflang="en" lang="en">English</a> · <span aria-current="page">日本語</span></nav>
+    <p class="subtitle">
+      4D のバグを自然な日本語で入力して検索できます。バージョン（例:「v20」「v18 前後」「17 より前」「20 以降」）、正確なコマンド名（例: GOTO OBJECT）、ACI 番号でも絞り込めます。すべてブラウザー内で動作し、サーバーへのデータ送信も LLM も必要ありません。
+    </p>
+    <div id="boot-status" class="status" role="status">起動しています…</div>
+
+    <div id="chat" class="chat-container"></div>
+  </main>
+
+  <footer>
+    <p>
+      データ出典: <a href="https://bugs.4d.com" target="_blank" rel="noopener noreferrer">bugs.4d.com</a>、
+      <a href="https://github.com/4D-JP/4D-jp.github.io" target="_blank" rel="noopener noreferrer">4D Japan リリースノート</a>。
+      埋め込みモデル: <a href="https://huggingface.co/cl-nagoya/ruri-v3-30m" target="_blank" rel="noopener noreferrer">ruri-v3-30m</a>（<a href="https://huggingface.co/docs/transformers.js" target="_blank" rel="noopener noreferrer">transformers.js</a>）。
+    </p>
+  </footer>
+
+  <script type="module" src="../src/app.js?v=16"></script>
+</body>
+</html>
