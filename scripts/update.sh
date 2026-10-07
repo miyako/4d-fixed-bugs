@@ -75,7 +75,7 @@ step "5/7 Checking documentation links"
 python3 scripts/update/check_links.py
 
 step "6/7 Building embeddings + client dataset"
-(cd scripts && npm install --silent && node update/generate_embeddings.mjs "${EMBED_ARGS[@]}")
+(cd scripts && npm install --silent && node update/generate_embeddings.mjs ${EMBED_ARGS[@]+"${EMBED_ARGS[@]}"})
 
 step "7/7 Bumping asset cache-busting version"
 python3 scripts/update/bump_cache_bust.py

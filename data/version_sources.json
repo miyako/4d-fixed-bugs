@@ -412,6 +412,10 @@
     "version"
   ],
   "21_r4": [
+    "version",
+    "branch"
+  ],
+  "21_r5": [
     "branch"
   ],
   "21.1": [

@@ -1,7 +1,7 @@
 # 4D Fixed Bugs — Semantic Search Chat
 
 A fully static, client-side web app that lets a user ask natural-language
-questions about a dataset of 2,458 fixed 4D software bugs and get back
+questions about a dataset of 2,467 fixed 4D software bugs and get back
 relevant bug reports, ranked by semantic similarity, with an optional
 local-LLM conversational layer on top. There is no backend and no server
 of any kind at request time: everything (dataset, embeddings, embedding
@@ -112,9 +112,9 @@ has this shape:
   (`"19.5_hf1"`), and R-release (`"19_r7"`, optionally with its own
   hotfix suffix like `"20_r10_hf2"`).
 
-Dataset size: 2,458 bugs. Embedding: 384-dim (`all-MiniLM-L6-v2`),
+Dataset size: 2,467 bugs. Embedding: 384-dim (`all-MiniLM-L6-v2`),
 Float32, L2-normalized. `embeddings.bin` is therefore exactly
-`2458 * 384 * 4` bytes = 3,775,488 bytes, row `i` (0-indexed) being the
+`2467 * 384 * 4` bytes = 3,789,312 bytes, row `i` (0-indexed) being the
 embedding for `meta.json[i]`. (The dataset grows as 4D ships fixes — see
 `UPDATING.md`; the invariant is `byteLength === meta.length * 384 * 4`.)
 
@@ -368,7 +368,7 @@ delegated to an LLM "tool call". Order of precedence:
    return `{results, intent, usedFallback, commandMentions,
    usedCommandFallback, explicitRefs, notFoundRefs}`.
 
-This is brute-force (linear scan over ≤2,458 384-dim vectors per query)
+This is brute-force (linear scan over ≤2,467 384-dim vectors per query)
 — no vector index/ANN library, deliberately, since the corpus is small
 enough that this runs in a few milliseconds.
 

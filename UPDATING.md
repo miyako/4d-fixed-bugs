@@ -11,6 +11,24 @@ That runs the deterministic stages, stops at the enrichment gate if there is
 prose to write, and tells you what to do next. Everything is incremental: only
 bugs whose source text actually changed get re-written and re-embedded.
 
+## Running it on GitHub Actions
+
+The *Update dataset* workflow (`.github/workflows/update-dataset.yml`) runs the
+same pipeline on demand (Actions → Update dataset → Run workflow):
+
+- **mode `update`** (optionally with *full crawl*) runs stages 1–4 and opens a
+  pull request with the result. If bugs need English summaries, the pipeline
+  stops at the enrichment gate and the PR body lists them. Write the prose on
+  the PR branch (see [Writing the enrichment](#writing-the-enrichment)),
+  merge it with `merge_enrichment.py`, push, then re-run the workflow **on
+  that branch** with mode `build-only`. If nothing is pending, the PR already
+  contains the rebuilt site data.
+- **mode `build-only`** runs stages 6–8 on the selected branch and commits the
+  result back to it.
+
+The repository must allow *GitHub Actions to create and approve pull requests*
+(Settings → Actions → General → Workflow permissions).
+
 ## The pipeline
 
 | # | Stage | Script | Output |

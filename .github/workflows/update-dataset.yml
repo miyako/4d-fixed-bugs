@@ -1,0 +1,121 @@
+name: Update dataset
+
+# Manually triggered refresh of the bug dataset (see UPDATING.md).
+#
+# - mode "update": crawl bugs.4d.com + sync the 4D-JP notes, rebuild the
+#   context, and open a PR. If bugs need English summaries the pipeline stops
+#   at the enrichment gate and the PR lists them; write the prose on that
+#   branch (merge_enrichment.py), then re-run this workflow on that branch
+#   with mode "build-only".
+# - mode "build-only": skip crawling and finish the build (link check,
+#   embeddings, cache-bust) on the selected branch, committing the result.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Pipeline mode
+        type: choice
+        options: [update, build-only]
+        default: update
+      full_crawl:
+        description: Re-probe every version candidate (update mode only)
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: update-dataset-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      MODE: ${{ inputs.mode }}
+      FULL_CRAWL: ${{ inputs.full_crawl }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: scripts/package-lock.json
+
+      - name: Cache embedding model
+        uses: actions/cache@v4
+        with:
+          path: scripts/node_modules/@xenova/transformers/.cache
+          key: transformers-models-${{ hashFiles('scripts/package-lock.json') }}
+
+      - name: Run pipeline
+        id: run
+        run: |
+          set -euo pipefail
+          args=()
+          if [ "$MODE" = "build-only" ]; then
+            args+=(--build-only)
+          elif [ "$FULL_CRAWL" = "true" ]; then
+            args+=(--full-crawl)
+          fi
+          ./scripts/update.sh ${args[@]+"${args[@]}"}
+
+          pending=$(python3 -c "import json;print(len(json.load(open('data/pending_enrichment.json'))))")
+          echo "pending=$pending" >> "$GITHUB_OUTPUT"
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Summarize
+        run: |
+          python3 - > "$RUNNER_TEMP/pr_body.md" <<'EOF'
+          import json, os
+          pending = json.load(open("data/pending_enrichment.json"))
+          run_url = (f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}"
+                     f"/actions/runs/{os.environ['GITHUB_RUN_ID']}")
+          print(f"Automated dataset refresh (`{os.environ['MODE']}` mode, [run]({run_url})).\n")
+          if pending:
+              print(f"**{len(pending)} bug(s) need an English summary before the site can be rebuilt.**\n")
+              print("Write them per `scripts/update/ENRICHMENT_PROMPT.md`, merge with "
+                    "`python3 scripts/update/merge_enrichment.py <output.json>`, then re-run "
+                    "the *Update dataset* workflow on this branch with mode `build-only`.\n")
+              print("| Reference | Reason | Versions | Raw summary |")
+              print("|---|---|---|---|")
+              for b in pending:
+                  s = b["raw_summary"].replace("|", "\\|").replace("\n", " ")
+                  print(f"| {b['reference']} | {b['reason']} | {', '.join(b['versions'])} | {s} |")
+          else:
+              print("No enrichment pending; site data has been rebuilt.")
+          EOF
+          cat "$RUNNER_TEMP/pr_body.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit to current branch (build-only)
+        if: steps.run.outputs.changed == 'true' && inputs.mode == 'build-only'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Rebuild site data"
+          git push
+
+      - name: Open pull request (update)
+        if: steps.run.outputs.changed == 'true' && inputs.mode == 'update'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: dataset-update/${{ github.run_id }}
+          commit-message: Update dataset from bugs.4d.com and 4D-JP notes
+          title: >-
+            Update dataset${{ steps.run.outputs.pending != '0' && format(' ({0} bugs pending enrichment)', steps.run.outputs.pending) || '' }}
+          body-path: ${{ runner.temp }}/pr_body.md
+          delete-branch: true
