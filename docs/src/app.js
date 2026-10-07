@@ -2,6 +2,7 @@ import { renderSummary, renderVersions } from "./render.js";
 import { parseVersionIntent, bugMatchesIntent, describeIntent } from "./version.js";
 import { buildCommandIndex, extractCommandMentions } from "./commands.js";
 import * as webllmEngine from "./engines/webllm-engine.js";
+import { getLocale } from "./i18n.js";
 
 /**
  * Single-interface chat app: semantic search over the 4D fixed-bugs
@@ -26,21 +27,21 @@ import * as webllmEngine from "./engines/webllm-engine.js";
  * summarize, not search.
  */
 
-// Pinned CDN versions for reproducibility.
-const TRANSFORMERS_CDN_URL =
-  "https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/dist/transformers.min.js";
-const EMBED_MODEL_ID = "Xenova/all-MiniLM-L6-v2";
-const EMBED_DIM = 384;
+// The page's <html lang> selects the dataset, embedding model and UI
+// strings (see i18n.js). CDN versions are pinned there for reproducibility.
+const LOCALE = getLocale(document.documentElement.lang);
+const T = LOCALE.t;
+const EMBED_DIM = LOCALE.embedding.dim;
 const TOP_K = 15;
 const TABLE_TOP_N = 8;
 // Cosine-similarity floor below which a semantic match is considered
 // irrelevant and dropped entirely, rather than always padding the
 // results out to TOP_K regardless of how weak the match is.
-const MIN_SCORE = 0.35;
+const MIN_SCORE = LOCALE.scores.min;
 // Finer bands (all >= MIN_SCORE, since anything below it is already
 // excluded) used purely to color-code the "Match" badge in the UI.
-const SCORE_TIER_HIGH = 0.55;
-const SCORE_TIER_MEDIUM = 0.45;
+const SCORE_TIER_HIGH = LOCALE.scores.high;
+const SCORE_TIER_MEDIUM = LOCALE.scores.medium;
 
 /** Bucket a cosine-similarity score into a confidence tier for display. */
 function scoreTier(score) {
@@ -122,10 +123,10 @@ function dot(a, aOffset, b) {
 }
 
 async function loadDataset() {
-  setBootStatus("Loading bug database…");
+  setBootStatus(T.loadingData);
   // Resolve relative to this module's own URL (not the page URL), so
   // this works regardless of which page loads app.js.
-  const dataUrl = (name) => new URL(`../data/${name}`, import.meta.url);
+  const dataUrl = (name) => new URL(`${LOCALE.dataDir}${name}`, import.meta.url);
   const [metaRes, binRes] = await Promise.all([
     fetch(dataUrl("meta.json")),
     fetch(dataUrl("embeddings.bin")),
@@ -146,17 +147,17 @@ async function loadDataset() {
 }
 
 async function loadEmbedder() {
-  setBootStatus("Loading semantic search model…");
-  const { pipeline, env } = await import(TRANSFORMERS_CDN_URL);
+  setBootStatus(T.loadingModel);
+  const { pipeline, env } = await import(LOCALE.embedding.library);
   env.allowLocalModels = false;
   env.useBrowserCache = true;
-  embedder = await pipeline("feature-extraction", EMBED_MODEL_ID, { quantized: true });
+  embedder = await pipeline("feature-extraction", LOCALE.embedding.model, LOCALE.embedding.options);
 }
 
 async function loadChatEngine() {
-  setBootStatus("Downloading local AI model… this can take a while the first time.");
+  setBootStatus(T.loadingChat);
   engine = createChatEngine();
-  await engine.init((text) => setBootStatus(text || "Loading local AI model…"));
+  await engine.init((text) => setBootStatus(text || T.loadingChatShort));
 }
 
 /** Extract explicit ACI bug reference IDs mentioned in a message (e.g.
@@ -164,7 +165,7 @@ async function loadChatEngine() {
  * dataset's exact format: "ACI" + 7 zero-padded digits. */
 function extractExplicitRefs(text) {
   const refs = new Set();
-  for (const m of text.matchAll(/\bACI\s*0*(\d{1,7})\b/gi)) {
+  for (const m of text.normalize("NFKC").matchAll(/\bACI\s*0*(\d{1,7})\b/gi)) {
     refs.add("ACI" + m[1].padStart(7, "0"));
   }
   return [...refs];
@@ -205,7 +206,8 @@ async function retrieve(query) {
   }
 
   const intent = parseVersionIntent(query, minMajor, maxMajor);
-  const commandMentions = extractCommandMentions(query, commandIndex);
+  // NFKC so full-width input ("ＧＯＴＯ　ＯＢＪＥＣＴ") still matches.
+  const commandMentions = extractCommandMentions(query.normalize("NFKC"), commandIndex);
 
   let pool = meta.map((_, i) => i);
   let usedCommandFallback = false;
@@ -228,7 +230,7 @@ async function retrieve(query) {
     }
   }
 
-  const output = await embedder(query, { pooling: "mean", normalize: true });
+  const output = await embedder(LOCALE.embedding.queryPrefix + query, { pooling: "mean", normalize: true });
   const queryVec = output.data;
   const scored = pool.map((i) => ({ index: i, score: dot(embeddings, i * EMBED_DIM, queryVec) }));
   scored.sort((a, b) => b.score - a.score);
@@ -302,6 +304,7 @@ function buildSystemMessage(retrieval) {
       "Only decline to help if the message is obviously not about software bugs at all " +
       "(e.g. personal advice, unrelated trivia) — in that case say briefly that you can " +
       "only help with 4D fixed-bug questions.\n\n" +
+      T.replyLanguage +
       "Bug reports found for this message:\n\n" +
       context,
   };
@@ -314,34 +317,28 @@ function buildSystemMessage(retrieval) {
 function buildDeterministicReply(retrieval) {
   const { results, intent, usedFallback, commandMentions, usedCommandFallback, explicitRefs, notFoundRefs, noRelevantResults } =
     retrieval;
-  const intentDesc = describeIntent(intent);
+  const intentDesc = describeIntent(intent, LOCALE.lang);
 
   if (explicitRefs && explicitRefs.length > 0) {
     if (results.length > 0 && (!notFoundRefs || notFoundRefs.length === 0)) {
-      return explicitRefs.length === 1
-        ? `Found ${explicitRefs[0]} directly — see the details below.`
-        : `Found ${explicitRefs.join(", ")} directly — see the details below.`;
+      return T.foundDirect(explicitRefs);
     }
     if (notFoundRefs && notFoundRefs.length > 0) {
-      return results.length > 0
-        ? `${notFoundRefs.join(", ")} doesn't exist in the database. Here are the closest matches by search instead:`
-        : `${notFoundRefs.join(", ")} doesn't exist in the database, and no similar bugs were found either.`;
+      return results.length > 0 ? T.notFoundWithResults(notFoundRefs) : T.notFoundNoResults(notFoundRefs);
     }
   }
 
   if (results.length === 0) {
-    return noRelevantResults
-      ? "No bugs closely matched that search — try rephrasing, or describing the bug in more detail."
-      : "No bugs matched that search.";
+    return noRelevantResults ? T.noRelevant : T.noResults;
   }
 
   const criteria = [];
-  if (commandMentions.length > 0 && !usedCommandFallback) criteria.push(`mentioning ${commandMentions.join(", ")}`);
-  if (intentDesc && !usedFallback) criteria.push(`fixed in ${intentDesc}`);
+  if (commandMentions.length > 0 && !usedCommandFallback) criteria.push(T.mentioning(commandMentions));
+  if (intentDesc && !usedFallback) criteria.push(T.fixedIn(intentDesc));
 
   const fallbackNotes = [];
-  if (usedCommandFallback) fallbackNotes.push(`no exact match for ${commandMentions.join(", ")}`);
-  if (usedFallback) fallbackNotes.push(`no exact match for ${intentDesc}`);
+  if (usedCommandFallback) fallbackNotes.push(T.noExactMatchFor(commandMentions.join(", ")));
+  if (usedFallback) fallbackNotes.push(T.noExactMatchFor(intentDesc));
 
   if (criteria.length === 0 && fallbackNotes.length === 0) {
     // Nothing extra to say beyond what the results table (with its match
@@ -349,13 +346,8 @@ function buildDeterministicReply(retrieval) {
     return "";
   }
 
-  let lead = `Found ${results.length} bug${results.length === 1 ? "" : "s"}`;
-  if (criteria.length > 0) lead += " " + criteria.join(" and ");
-  lead += ".";
-
-  if (fallbackNotes.length > 0) {
-    lead += ` No exact match for that${fallbackNotes.length > 1 ? " (" + fallbackNotes.join("; ") + ")" : ""} — showing the closest overall matches instead.`;
-  }
+  let lead = T.found(results.length, criteria);
+  if (fallbackNotes.length > 0) lead += T.fallback(fallbackNotes);
 
   return lead;
 }
@@ -369,7 +361,7 @@ function renderMatchBadge(score) {
   if (score === undefined) return "";
   // An explicit ACI-reference lookup (score === 1) is an exact match, not
   // a semantic ranking — label it distinctly rather than showing "100%".
-  if (score === 1) return `<span class="match-badge exact">Exact</span>`;
+  if (score === 1) return `<span class="match-badge exact">${T.exact}</span>`;
   const pct = Math.round(score * 100);
   return `<span class="match-badge ${scoreTier(score)}">${pct}%</span>`;
 }
@@ -384,7 +376,7 @@ function renderHitsTable(bugs) {
     )
     .join("");
   return (
-    `<table class="hits-table"><thead><tr><th>ACI</th><th>Match</th><th>Versions</th><th>Summary</th></tr></thead>` +
+    `<table class="hits-table"><thead><tr>${T.headers.map((h) => `<th>${h}</th>`).join("")}</tr></thead>` +
     `<tbody>${rows}</tbody></table>`
   );
 }
@@ -406,7 +398,7 @@ function appendBubble(role, text, bugs, thinking) {
   const proseHtml = renderSummary(text);
   if (role === "assistant") {
     const thinkingHtml = thinking
-      ? `<details class="reasoning"><summary>Show reasoning</summary><div class="reasoning-body">${renderSummary(thinking)}</div></details>`
+      ? `<details class="reasoning"><summary>${T.showReasoning}</summary><div class="reasoning-body">${renderSummary(thinking)}</div></details>`
       : "";
     const tableHtml = renderHitsTable(bugs);
     bubble.innerHTML = thinkingHtml + highlightCitations(proseHtml, bugs) + tableHtml;
@@ -455,7 +447,7 @@ chatForm.addEventListener("submit", async (e) => {
   conversation.push({ role: "user", content: question, bugsContext: priorBugs });
   appendBubble("user", question, priorBugs);
 
-  let note = appendSystemNote("Searching the bug database…", { spinner: true });
+  let note = appendSystemNote(T.searching, { spinner: true });
   try {
     const retrieval = await retrieve(question);
     note.remove();
@@ -468,7 +460,7 @@ chatForm.addEventListener("submit", async (e) => {
       text = buildDeterministicReply(retrieval);
       thinking = null;
     } else {
-      note = appendSystemNote("Thinking…", { spinner: true });
+      note = appendSystemNote(T.thinking, { spinner: true });
       const messages = [
         buildSystemMessage(retrieval),
         ...conversation.map((t) => ({ role: t.role, content: t.content })),
@@ -488,7 +480,7 @@ chatForm.addEventListener("submit", async (e) => {
   } catch (err) {
     console.error(err);
     if (note) note.remove();
-    appendSystemNote(`Error: ${err.message}`);
+    appendSystemNote(T.error(err.message));
   } finally {
     setReady(true);
   }
@@ -526,7 +518,7 @@ async function copyTextToClipboard(text) {
   textarea.select();
   try {
     if (!document.execCommand("copy")) {
-      throw new Error("Copy command was rejected by the browser.");
+      throw new Error(T.copyRejected);
     }
   } finally {
     document.body.removeChild(textarea);
@@ -545,7 +537,7 @@ function escapeMdCell(text) {
  * for the markdown table. */
 function matchLabel(score) {
   if (score === undefined) return "";
-  if (score === 1) return "Exact";
+  if (score === 1) return T.exact;
   return `${Math.round(score * 100)}%`;
 }
 
@@ -555,7 +547,7 @@ function matchLabel(score) {
  * exactly what's visible, not a conversational transcript. */
 function buildResultsMarkdownTable(bugs) {
   const rows = bugs.slice(0, TABLE_TOP_N);
-  const header = "| ACI | Match | Versions | Summary |\n| --- | --- | --- | --- |";
+  const header = `| ${T.headers.join(" | ")} |\n| --- | --- | --- | --- |`;
   const body = rows
     .map(
       (b) =>
@@ -576,16 +568,16 @@ copyBtn.addEventListener("click", async () => {
   }
   const lastBugs = conversation[conversation.length - 1].bugsContext || [];
   if (lastBugs.length === 0) {
-    appendSystemNote("No results to copy yet.");
+    appendSystemNote(T.nothingToCopy);
     return;
   }
   const text = buildResultsMarkdownTable(lastBugs);
   try {
     await copyTextToClipboard(text);
-    appendSystemNote("Results table copied to clipboard.");
+    appendSystemNote(T.copied);
   } catch (err) {
     console.error(err);
-    appendSystemNote(`Failed to copy: ${err.message}`);
+    appendSystemNote(T.copyFailed(err.message));
   }
 });
 
@@ -598,13 +590,11 @@ async function boot() {
     if (CHAT_ENGINE !== "deterministic") {
       await loadChatEngine();
     }
-    setBootStatus(
-      `Ready. ${meta.length} fixed 4D bugs loaded (versions ${minMajor}-${maxMajor}). Describe a bug to search.`
-    );
+    setBootStatus(T.ready(meta.length, minMajor, maxMajor));
     setReady(true);
   } catch (err) {
     console.error(err);
-    setBootStatus(`Failed to start: ${err.message}`);
+    setBootStatus(T.failed(err.message));
   }
 }
 

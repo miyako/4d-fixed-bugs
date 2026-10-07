@@ -14,7 +14,11 @@ questions (or search by version, exact command name, or ACI ID) and
 get back the most relevant bug reports, ranked by similarity, entirely
 in-browser.
 
-**Live app:** https://miyako.github.io/4d-fixed-bugs/
+**Live app:** https://miyako.github.io/4d-fixed-bugs/ ·
+**日本語版:** https://miyako.github.io/4d-fixed-bugs/ja/ (Japanese summaries
+written from the English summaries and 4D Japan's original release notes,
+searched with the Japanese [ruri-v3-30m](https://huggingface.co/cl-nagoya/ruri-v3-30m)
+embedding model)
 
 See [`ARCHITECTURE.md`](ARCHITECTURE.md) for a full technical writeup
 of how the app works (data model, embedding pipeline, retrieval logic,

@@ -20,23 +20,57 @@
  * routine update embeds a hundred bugs instead of two and a half thousand.
  * Pass --force to re-embed everything (e.g. after a model change).
  *
- * Run from scripts/: `npm install && node update/generate_embeddings.mjs`
+ * --lang ja builds the Japanese site's dataset instead: summaries come from
+ * data/all_bugs_ja.json (commands and versions are shared with English), are
+ * embedded with the Japanese ruri-v3-30m model, and land in docs/data/ja/.
+ * Every bug must have a translation (see merge_translation.py).
+ *
+ * The model settings per language must match docs/src/i18n.js exactly, or
+ * query and corpus vectors stop being comparable.
+ *
+ * Run from scripts/: `npm install && node update/generate_embeddings.mjs [--lang ja]`
  */
-import { pipeline } from "@xenova/transformers";
-import { readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, "..", "..");
-const MODEL_ID = "Xenova/all-MiniLM-L6-v2";
-const EMBED_DIM = 384;
 const BATCH_SIZE = 32;
+
+const langArg = process.argv.indexOf("--lang");
+const LANG = langArg >= 0 ? process.argv[langArg + 1] : "en";
+
+const LANGS = {
+  en: {
+    library: "@xenova/transformers",
+    model: "Xenova/all-MiniLM-L6-v2",
+    options: { quantized: true },
+    dim: 384,
+    docPrefix: "",
+    outDir: path.join(REPO_ROOT, "docs", "data"),
+  },
+  ja: {
+    library: "@huggingface/transformers",
+    model: "sirasagi62/ruri-v3-30m-ONNX",
+    options: { dtype: "q8", revision: "cdf9391f1ff2198daa8f63f7ccf97d7b3e7415a0" },
+    dim: 256,
+    docPrefix: "検索文書: ",
+    outDir: path.join(REPO_ROOT, "docs", "data", "ja"),
+    summaries: path.join(REPO_ROOT, "data", "all_bugs_ja.json"),
+  },
+};
+const CONFIG = LANGS[LANG];
+if (!CONFIG) {
+  console.error(`Unknown --lang ${LANG}; expected one of ${Object.keys(LANGS).join(", ")}`);
+  process.exit(2);
+}
+const EMBED_DIM = CONFIG.dim;
 
 const ENRICHED_PATH = path.join(REPO_ROOT, "data", "all_bugs_enriched.json");
 const CONTEXT_PATH = path.join(REPO_ROOT, "data", "all_bugs_context.json");
 const STATE_PATH = path.join(REPO_ROOT, "data", "update_state.json");
-const OUT_DIR = path.join(REPO_ROOT, "docs", "data");
+const OUT_DIR = CONFIG.outDir;
 const OUT_BIN = path.join(OUT_DIR, "embeddings.bin");
 const OUT_META = path.join(OUT_DIR, "meta.json");
 const OUT_BETA = path.join(REPO_ROOT, "docs", "src", "beta-versions.js");
@@ -67,7 +101,7 @@ async function readExistingEmbeddings(meta) {
     const expected = meta.length * EMBED_DIM * 4;
     if (buf.byteLength !== expected) {
       console.warn(
-        `Existing embeddings.bin is ${buf.byteLength} bytes but meta.json implies ${expected}; re-embedding everything.`
+        `Existing ${LANG} embeddings.bin is ${buf.byteLength} bytes but meta.json implies ${expected}; re-embedding everything.`
       );
       return null;
     }
@@ -96,9 +130,24 @@ async function main() {
 
   const versionsByRef = new Map(context.map((c) => [c.reference, c.versions ?? []]));
 
+  let summaryByRef = null;
+  if (CONFIG.summaries) {
+    const translated = await readJson(CONFIG.summaries, []);
+    summaryByRef = new Map(translated.map((t) => [t.reference, t.summary]));
+    const missing = enriched.filter((bug) => !summaryByRef.has(bug.reference));
+    if (missing.length) {
+      throw new Error(
+        `${missing.length} bug(s) have no ${LANG} summary (e.g. ${missing
+          .slice(0, 5)
+          .map((b) => b.reference)
+          .join(", ")}); run build_translation.py and merge the translations first.`
+      );
+    }
+  }
+
   const records = enriched.map((bug) => ({
     reference: bug.reference,
-    summary: bug.summary,
+    summary: summaryByRef ? summaryByRef.get(bug.reference) : bug.summary,
     commands: bug.commands ?? [],
     versions: versionsByRef.get(bug.reference) ?? [],
   }));
@@ -139,11 +188,12 @@ async function main() {
   console.log(`${records.length} bugs: reusing ${reused} embeddings, computing ${toEmbed.length}.`);
 
   if (toEmbed.length) {
-    console.log(`Loading embedding model ${MODEL_ID}...`);
-    const embedder = await pipeline("feature-extraction", MODEL_ID, { quantized: true });
+    console.log(`Loading embedding model ${CONFIG.model}...`);
+    const { pipeline } = await import(CONFIG.library);
+    const embedder = await pipeline("feature-extraction", CONFIG.model, CONFIG.options);
     for (let start = 0; start < toEmbed.length; start += BATCH_SIZE) {
       const slice = toEmbed.slice(start, start + BATCH_SIZE);
-      const texts = slice.map((i) => stripMarkdownLinks(records[i].summary));
+      const texts = slice.map((i) => CONFIG.docPrefix + stripMarkdownLinks(records[i].summary));
       const output = await embedder(texts, { pooling: "mean", normalize: true });
       slice.forEach((recordIndex, j) => {
         floatArray.set(
@@ -156,13 +206,16 @@ async function main() {
     console.log("\nDone embedding.");
   }
 
+  await mkdir(OUT_DIR, { recursive: true });
   await writeFile(OUT_BIN, Buffer.from(floatArray.buffer));
   await writeFile(OUT_META, JSON.stringify(records));
-  const beta = await writeBetaVersions(state.beta_only_versions ?? []);
-
   console.log(`Wrote ${OUT_BIN} (${floatArray.byteLength} bytes)`);
   console.log(`Wrote ${OUT_META} (${records.length} records)`);
-  console.log(`Wrote ${OUT_BETA} (${beta.length} beta-only versions: ${beta.join(", ") || "none"})`);
+
+  if (LANG === "en") {
+    const beta = await writeBetaVersions(state.beta_only_versions ?? []);
+    console.log(`Wrote ${OUT_BETA} (${beta.length} beta-only versions: ${beta.join(", ") || "none"})`);
+  }
 }
 
 main().catch((err) => {

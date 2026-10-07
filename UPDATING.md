@@ -23,8 +23,9 @@ same pipeline on demand (Actions → Update dataset → Run workflow):
   merge it with `merge_enrichment.py`, push, then re-run the workflow **on
   that branch** with mode `build-only`. If nothing is pending, the PR already
   contains the rebuilt site data.
-- **mode `build-only`** runs stages 6–8 on the selected branch and commits the
-  result back to it.
+- **mode `build-only`** runs stages 6–11 on the selected branch and commits the
+  result back to it. If Japanese summaries are pending it stops at the
+  translation gate instead (see [The Japanese site](#the-japanese-site)).
 
 The repository must allow *GitHub Actions to create and approve pull requests*
 (Settings → Actions → General → Workflow permissions).
@@ -39,9 +40,13 @@ The repository must allow *GitHub Actions to create and approve pull requests*
 | 4 | Context | `scripts/update/build_context.py` | `data/all_bugs_context.json`, `data/pending_enrichment.json` |
 | — | **Enrichment (manual gate)** | `scripts/update/ENRICHMENT_PROMPT.md` | `data/enrichment/chunk_N.out.json` |
 | 5 | Merge | `scripts/update/merge_enrichment.py` | `data/all_bugs_enriched.json` |
-| 6 | Link check | `scripts/update/check_links.py` | verified URLs cached in `data/update_state.json` |
-| 7 | Build | `scripts/update/generate_embeddings.mjs` | `docs/data/meta.json`, `docs/data/embeddings.bin`, `docs/src/beta-versions.js` |
-| 8 | Cache-bust | `scripts/update/bump_cache_bust.py` | `docs/index.html` `?v=N` |
+| 6 | Translation context | `scripts/update/build_translation.py` | `data/pending_translation.json` |
+| — | **Translation (manual gate)** | `scripts/update/TRANSLATION_PROMPT.md` | `data/translation/chunk_N.out.json` |
+| 7 | Merge translation | `scripts/update/merge_translation.py` | `data/all_bugs_ja.json` |
+| 8 | Link check | `scripts/update/check_links.py` | verified URLs cached in `data/update_state.json` |
+| 9 | Build | `scripts/update/generate_embeddings.mjs` | `docs/data/meta.json`, `docs/data/embeddings.bin`, `docs/src/beta-versions.js` |
+| 10 | Build (ja) | `scripts/update/generate_embeddings.mjs --lang ja` | `docs/data/ja/meta.json`, `docs/data/ja/embeddings.bin` |
+| 11 | Cache-bust | `scripts/update/bump_cache_bust.py` | `docs/index.html`, `docs/ja/index.html` `?v=N` |
 
 `html/` and `vendor/` are gitignored — both are large and fully reproducible.
 
@@ -138,6 +143,54 @@ Then finish the build:
 ./scripts/update.sh --build-only
 ```
 
+## The Japanese site
+
+`docs/ja/` is the same app over a Japanese dataset. Every bug gets a Japanese
+summary in `data/all_bugs_ja.json`, written from two sources: the English
+summary (structure, facts, doc-links) and the bug's `jp_notes` — the original
+text 4D Japan published, which is the authority on Japanese wording. Each record
+keeps the fingerprint of both sources it was written from, so a bug is queued
+again only when its English summary or its JP notes change.
+
+After the English summaries are merged, `./scripts/update.sh --build-only` runs
+`build_translation.py` and stops at the translation gate if anything is
+pending:
+
+```
+python3 scripts/update/split_pending.py --kind translation
+# hand each data/translation/chunk_N.json + scripts/update/TRANSLATION_PROMPT.md to a worker
+python3 scripts/update/merge_translation.py data/translation/chunk_N.out.json --partial
+./scripts/update.sh --build-only
+```
+
+`merge_translation.py` validates hard: every link from the English summary must
+be present with identical (English) link text and its URL moved under
+`https://developer.4d.com/docs/ja/`; every code span and ACI reference must be
+preserved; the text must actually be Japanese, one paragraph, in the allowed
+markdown subset. Warnings flag sentences not in polite form (です・ます調),
+numbers dropped from the English, and long untranslated English runs; pass
+`--strict` to make them errors.
+
+The Japanese dataset is embedded with
+[ruri-v3-30m](https://huggingface.co/cl-nagoya/ruri-v3-30m) (256-dim, a
+Japanese-specific model; the ONNX export `sirasagi62/ruri-v3-30m-ONNX` is
+pinned to a commit) via `@huggingface/transformers`, with the model's
+`検索文書: ` / `検索クエリ: ` document/query prefixes. The model settings live
+in both `generate_embeddings.mjs` and `docs/src/i18n.js` and must match; a unit
+test checks that.
+
+## Tests
+
+```
+cd scripts && npm install && npm test             # unit tests (JS + Python)
+node ../tests/eval/eval_retrieval.mjs             # Japanese retrieval quality (recall@8, MRR)
+PW_CHANNEL=chrome node ../tests/browser/smoke.mjs # both pages in headless Chrome (needs network)
+```
+
+`eval_retrieval.mjs` also prints the score distribution of correct hits versus
+off-topic queries — re-check the `scores` thresholds in `docs/src/i18n.js`
+against it after any embedding-model change.
+
 ## Command matching
 
 `scripts/update/match_commands.py` produces the *candidate* command links that
@@ -170,6 +223,9 @@ Rarely needed, but supported:
 python3 scripts/update/build_context.py --force-all
 # …write all ~2,400 summaries…
 (cd scripts && node update/generate_embeddings.mjs --force)
+python3 scripts/update/build_translation.py --force-all
+# …write all ~2,400 Japanese summaries…
+(cd scripts && node update/generate_embeddings.mjs --lang ja --force)
 ```
 
 `--force-all` and `--force` bypass the fingerprint and row-reuse logic
@@ -180,7 +236,8 @@ the summaries are unchanged but every vector must be recomputed.
 
 Every documentation URL in a summary points at developer.4d.com, and 4D
 reorganizes that site occasionally, so links that were correct when they were
-written can quietly start 404ing. Stage 6 re-checks them:
+written can quietly start 404ing. Stage 8 re-checks them (English and Japanese
+summaries alike):
 
 ```
 python3 scripts/update/check_links.py      # only unverified/previously-broken links
