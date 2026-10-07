@@ -68680,14 +68680,6 @@
     "path": "4D-JP/4D-jp.github.io/_posts/2026-07-11-release-note-version-21.md"
   },
   {
-    "reference": "ACI0106421",
-    "source": "blog",
-    "version_raw": "\"21.1\"",
-    "version_norm": "21.1",
-    "text": "クライアント/サーバー版のみ。クライアント暗号化通信とシングルサインオン（SSO）の両方を有効にした場合，ServerNetでサーバーに接続することができませんでした。どちらか一方を無効にすれば，問題ありません。QUICネットワークレイヤー（常に暗号化通信）でも問題ありません。ACI0106296が修正されたことによる副作用のようです。",
-    "path": "4D-JP/4D-jp.github.io/_posts/2026-07-11-release-note-version-21.md"
-  },
-  {
     "reference": "ACI0106220",
     "source": "blog",
     "version_raw": "\"21.1\"",
@@ -68886,6 +68878,22 @@
     "version_norm": "21_r3",
     "text": "ヘッドレスモードの*tool4D* で`Create deployment license`を実行した場合，アプリケーションがクラッシュしました。",
     "path": "4D-JP/4D-jp.github.io/_posts/2026-07-12-release-note-version-21r3.md"
+  },
+  {
+    "reference": "ACI0106545",
+    "source": "blog",
+    "version_raw": "\"21r4\"",
+    "version_norm": "21_r4",
+    "text": "「レコードの強制更新」モードで圧縮した場合，「レコードと一緒」に保存したオブジェクト値が失われました。「データファイルの中」（レコード外のBLOBブロックに保存）であれば問題ありません。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-07-13-release-note-version-21r4.md"
+  },
+  {
+    "reference": "ACI0106546",
+    "source": "blog",
+    "version_raw": "\"21r4\"",
+    "version_norm": "21_r4",
+    "text": "`PackProject`キーを`False`設定してアプリケーションをビルドした場合，初回起動時に純正コンポーネントのインストールを促す依存関係マネージャーのダイアログが表示されました。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-07-13-release-note-version-21r4.md"
   },
   {
     "reference": "ACI0106476",
@@ -69816,14 +69824,6 @@
     "path": "4D-JP/4D-jp.github.io/_posts/2026-08-17-release-note-version-21.md"
   },
   {
-    "reference": "ACI0106421",
-    "source": "blog",
-    "version_raw": "\"21.2\"",
-    "version_norm": "21.2",
-    "text": "クライアント/サーバー版のみ。クライアント暗号化通信とシングルサインオン（SSO）の両方を有効にした場合，ServerNetでサーバーに接続することができませんでした。どちらか一方を無効にすれば，問題ありません。QUICネットワークレイヤー（常に暗号化通信）でも問題ありません。ACI0106296が修正されたことによる副作用のようです。",
-    "path": "4D-JP/4D-jp.github.io/_posts/2026-08-17-release-note-version-21.md"
-  },
-  {
     "reference": "ACI0106436",
     "source": "blog",
     "version_raw": "\"21.2\"",
@@ -70038,6 +70038,14 @@
     "version_norm": "21_r3",
     "text": "キーボードショートカットの`Control`+`R`でメソッドを実行することができませんでした。`Control`+`Shift`+`I`（コンパイルモードで再起動）も作動しないようです。",
     "path": "4D-JP/4D-jp.github.io/_posts/2026-08-18-release-note-version-21r3.md"
+  },
+  {
+    "reference": "ACI0106421",
+    "source": "blog",
+    "version_raw": "\"20.9\"",
+    "version_norm": "20.9",
+    "text": "クライアント/サーバー版のみ。クライアント暗号化通信とシングルサインオン（SSO）の両方を有効にした場合，ServerNetでサーバーに接続することができませんでした。どちらか一方を無効にすれば，問題ありません。QUICネットワークレイヤー（常に暗号化通信）でも問題ありません。ACI0106296が修正されたことによる副作用のようです。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-08-26-release-note-version-20.md"
   },
   {
     "reference": "ACI0097827",
@@ -70366,6 +70374,134 @@
     "version_norm": "20.9",
     "text": "クライアント/サーバー版のみ。Apple Siliconターゲットのコンパイルモードでサーバー側で実行するように設定されているコンポーネントメソッドを`On Server Startup`で実行した場合，同じメソッドをクライアント側から実行することができなくなりました。",
     "path": "4D-JP/4D-jp.github.io/_posts/2026-08-26-release-note-version-20.md"
+  },
+  {
+    "reference": "ACI0106566",
+    "source": "blog",
+    "version_raw": "\"21r5\"",
+    "version_norm": "21_r5",
+    "text": "HTTPレスポンスに`Location`ヘッダーが含まれる場合，ステータスコードが強制的に`302`に設定されました。結果的に`201 Created`レスポンスを返すことができません。` 4D.OutgoingMessage`（HTTPリクエストハンドラー）と`WEB SET HTTP HEADER`の両方で問題が再現します。RFC 9110 15.3.2によれば，`201`レスポンスには`Location`ヘッダーが定義されています。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-11-release-note-version-21r5.md"
+  },
+  {
+    "reference": "ACI0106558",
+    "source": "blog",
+    "version_raw": "\"21r5\"",
+    "version_norm": "21_r5",
+    "text": "Mac版のみ。`EXECUTE ON CLIENT`を続けて実行した場合，`3`回目以降は`2`回目と同じパラメーターがメソッドに渡されました。旧式ネットワークレイヤーの廃止に伴うリグレッションです。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-11-release-note-version-21r5.md"
+  },
+  {
+    "reference": "ACI0106506",
+    "source": "blog",
+    "version_raw": "\"21r5\"",
+    "version_norm": "21_r5",
+    "text": "Windows版のみ。マルチディスプレイの配置を変更した場合，プロパティリストがスクリーンの表示領域外にとどまることがありました。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-11-release-note-version-21r5.md"
+  },
+  {
+    "reference": "ACI0106545",
+    "source": "blog",
+    "version_raw": "\"21r5\"",
+    "version_norm": "21_r5",
+    "text": "「レコードの強制更新」モードで圧縮した場合，「レコードと一緒」に保存したオブジェクト値が失われました。「データファイルの中」（レコード外のBLOBブロックに保存）であれば問題ありません。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-11-release-note-version-21r5.md"
+  },
+  {
+    "reference": "ACI0106495",
+    "source": "blog",
+    "version_raw": "\"21r5\"",
+    "version_norm": "21_r5",
+    "text": "スリープ解除時にアプリケーションがフリーズすることがありました。リクエスト送信中にクライアントがスリープモードに移行すると問題が再現します。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-11-release-note-version-21r5.md"
+  },
+  {
+    "reference": "ACI0106564",
+    "source": "blog",
+    "version_raw": "\"21r5\"",
+    "version_norm": "21_r5",
+    "text": "[データ収集](https://developer.4d.com/docs/ja/Admin/data-collect/)の`isShadowCopyActivated`が常に`True`でした。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-11-release-note-version-21r5.md"
+  },
+  {
+    "reference": "ACI0106565",
+    "source": "blog",
+    "version_raw": "\"21r5\"",
+    "version_norm": "21_r5",
+    "text": "バイナリモードのプロジェクトを終了した場合，アプリケーションがフリーズしました。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-11-release-note-version-21r5.md"
+  },
+  {
+    "reference": "ACI0106542",
+    "source": "blog",
+    "version_raw": "\"21r5\"",
+    "version_norm": "21_r5",
+    "text": "プロジェクトを指定せずにアプリケーションを起動した場合，ライセンスの自動アップデートが実行されず，ライセンス番号の入力を求められました。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-11-release-note-version-21r5.md"
+  },
+  {
+    "reference": "ACI0106546",
+    "source": "blog",
+    "version_raw": "\"21r5\"",
+    "version_norm": "21_r5",
+    "text": "`PackProject`キーを`False`設定してアプリケーションをビルドした場合，初回起動時に純正コンポーネントのインストールを促す依存関係マネージャーのダイアログが表示されました。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-11-release-note-version-21r5.md"
+  },
+  {
+    "reference": "ACI0106545",
+    "source": "blog",
+    "version_raw": "\"21.2\"",
+    "version_norm": "21.2",
+    "text": "「レコードの強制更新」モードで圧縮した場合，「レコードと一緒」に保存したオブジェクト値が失われました。「データファイルの中」（レコード外のBLOBブロックに保存）であれば問題ありません。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-13-release-note-version-21.md"
+  },
+  {
+    "reference": "ACI0106495",
+    "source": "blog",
+    "version_raw": "\"21.2\"",
+    "version_norm": "21.2",
+    "text": "スリープ解除時にアプリケーションがフリーズすることがありました。リクエスト送信中にクライアントがスリープモードに移行すると問題が再現します。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-13-release-note-version-21.md"
+  },
+  {
+    "reference": "ACI0106564",
+    "source": "blog",
+    "version_raw": "\"21.2\"",
+    "version_norm": "21.2",
+    "text": "[データ収集](https://developer.4d.com/docs/ja/Admin/data-collect/)の`isShadowCopyActivated`が常に`True`でした。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-13-release-note-version-21.md"
+  },
+  {
+    "reference": "ACI0106546",
+    "source": "blog",
+    "version_raw": "\"21.2\"",
+    "version_norm": "21.2",
+    "text": "`PackProject`キーを`False`設定してアプリケーションをビルドした場合，初回起動時に純正コンポーネントのインストールを促す依存関係マネージャーのダイアログが表示されました。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-13-release-note-version-21.md"
+  },
+  {
+    "reference": "ACI0106542",
+    "source": "blog",
+    "version_raw": "\"21.2\"",
+    "version_norm": "21.2",
+    "text": "プロジェクトを指定せずにアプリケーションを起動した場合，ライセンスの自動アップデートが実行されず，ライセンス番号の入力を求められました。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-13-release-note-version-21.md"
+  },
+  {
+    "reference": "ACI0106526",
+    "source": "blog",
+    "version_raw": "\"21.2\"",
+    "version_norm": "21.2",
+    "text": "特定のストラクチャーファイルに対し，MSCの検査/修復，コンパイラーのシンタックスチェック，プロジェクト変換を実行しようとした場合，アプリケーションがクラッシュしました。\n\n**注記**: 無効な表示フォーマットにより，スタックオーバーフローが発生することが原因でした。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-13-release-note-version-21.md"
+  },
+  {
+    "reference": "ACI0106421",
+    "source": "blog",
+    "version_raw": "\"21.2\"",
+    "version_norm": "21.2",
+    "text": "クライアント/サーバー版のみ。クライアント暗号化通信とシングルサインオン（SSO）の両方を有効にした場合，ServerNetでサーバーに接続することができませんでした。どちらか一方を無効にすれば，問題ありません。QUICネットワークレイヤー（常に暗号化通信）でも問題ありません。ACI0106296が修正されたことによる副作用のようです。",
+    "path": "4D-JP/4D-jp.github.io/_posts/2026-09-13-release-note-version-21.md"
   },
   {
     "reference": "ACI0106543",

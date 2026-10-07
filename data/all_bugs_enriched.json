@@ -13765,6 +13765,11 @@
     "commands": []
   },
   {
+    "reference": "ACI0106366",
+    "summary": "On macOS 26 Tahoe only, list boxes using the Liquid Glass theme had become dramatically slower — roughly twenty times slower than in earlier versions — both to display and to select rows by code. The lag was especially noticeable when clicking in a check box column.",
+    "commands": []
+  },
+  {
     "reference": "ACI0106367",
     "summary": "A form object property of type Time was not displayed correctly whenever its type was set only through the object's default properties, rather than being explicitly specified via the form object's expression type setting.",
     "commands": []
@@ -13838,6 +13843,11 @@
   {
     "reference": "ACI0106405",
     "summary": "Importing a `.docx` file containing multi-level lists into a 4D Write Pro document rendered the lists differently from Microsoft Word. Only numbered-list styling was corrected; multi-level list structure is still not guaranteed to match Word exactly, because Write Pro attaches multi-level lists to paragraphs that carry a list style whereas Word also allows them on paragraphs without one, so numbering may be recomputed on import. Details of what was adjusted are written to the import log.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106406",
+    "summary": "In client/server mode, stopping a 4D Qodly Pro debug session crashed 4D Server.",
     "commands": []
   },
   {
@@ -14032,7 +14042,12 @@
   },
   {
     "reference": "ACI0106517",
-    "summary": "On Windows only, any failure during printing was reported with the vague \"unknown error\" message, giving no clue as to the real cause; more specific error information is now returned. Beyond the wording, the underlying printing defect was also corrected — in certain situations the printing API was not being called from the main thread.",
+    "summary": "On Windows only, a failure during printing was reported only as a generic \"Error 1\" / unknown error, giving no clue as to the real cause; more specific error information is now returned. Beyond the message, the underlying printing defect was also corrected — in certain situations the printing API was not being called from the main thread.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106526",
+    "summary": "Running MSC Verify or Repair, the compiler's syntax check, or a binary-to-project conversion on certain binary structure files crashed 4D every time. The cause was an invalid display format in the structure, which triggered a stack overflow.",
     "commands": []
   },
   {
@@ -14041,8 +14056,42 @@
     "commands": []
   },
   {
+    "reference": "ACI0106530",
+    "summary": "On macOS, building an application with the \"Apple Silicon only\" target still produced a universal executable that also contained Intel code. This was the reverse of the problem fixed in ACI0104718.",
+    "commands": []
+  },
+  {
     "reference": "ACI0106539",
     "summary": "On macOS only, recent system updates (macOS 15.8, 26.7 and 27) made 4D consider the publication port to be permanently in use, so the web server refused to start even though the port was free.",
     "commands": []
+  },
+  {
+    "reference": "ACI0106542",
+    "summary": "When a new release was launched without opening a project and the license manager was opened directly, licenses from the previous release were not updated automatically; instead, the user was asked to enter license numbers again.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106545",
+    "summary": "Compacting a data file in the MSC with *Force update of all records* lost object field values that were stored inside the record. Object values stored in the data file outside the record (as separate BLOB blocks) were unaffected.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106546",
+    "summary": "An application built with the `PackProject` key set to `False` showed the Dependency Manager dialog on its first launch, prompting the user to install the 4D components that used to be bundled with 4D.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106558",
+    "summary": "On macOS only, calling [EXECUTE ON CLIENT](https://developer.4d.com/docs/commands/execute-on-client) repeatedly passed stale parameters: from the third call onward, the method received the same parameters as the second call. This regression came from the retirement of the legacy network layer.",
+    "commands": [
+      "EXECUTE ON CLIENT"
+    ]
+  },
+  {
+    "reference": "ACI0106566",
+    "summary": "Whenever an HTTP response contained a `Location` header, the web server forced its status code to `302`, so it was impossible to return a `201 Created` response even though RFC 9110 defines `Location` for that status. The problem affected both `4D.OutgoingMessage` in HTTP request handlers and [WEB SET HTTP HEADER](https://developer.4d.com/docs/commands/web-set-http-header).",
+    "commands": [
+      "WEB SET HTTP HEADER"
+    ]
   }
 ]

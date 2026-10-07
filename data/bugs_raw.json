@@ -27172,6 +27172,7 @@
       "Find highlights in the method editor overrides selection highlight; you can't distinguish properly what has been found. On Windows system only."
     ],
     "versions": [
+      "21_r4",
       "21.1_hf1",
       "21.2"
     ]
@@ -27348,14 +27349,15 @@
       "20.8_hf3",
       "20.9",
       "21_r2_hf1",
+      "21_r4",
       "21.1"
     ]
   },
   {
     "reference": "ACI0106259",
-    "raw_summary": "Command GET PROCESS VARIABLE returns empty interprocess variable in component",
+    "raw_summary": "Command 'GET PROCESS VARIABLE' returns empty interprocess variable in component",
     "raw_summary_variants": [
-      "Command GET PROCESS VARIABLE returns empty interprocess variable in component"
+      "Command 'GET PROCESS VARIABLE' returns empty interprocess variable in component"
     ],
     "versions": [
       "21_r2",
@@ -27395,6 +27397,7 @@
     "versions": [
       "20.8_hf4",
       "20.9",
+      "21_r4",
       "21.1_hf1",
       "21.2"
     ]
@@ -27455,6 +27458,7 @@
       "Possible crashes when using pop-up dropdown objects in list form on old databases, created with 19.x, or before the 19 R3 (using the compatibility option 'Use DirectWrite for text' may prevent the bug)."
     ],
     "versions": [
+      "21_r4",
       "21.1_hf1",
       "21.2"
     ]
@@ -27468,6 +27472,7 @@
     "versions": [
       "20.8_hf3",
       "20.9",
+      "21_r4",
       "21.1_hf1",
       "21.2"
     ]
@@ -27493,6 +27498,7 @@
       "4D Server may crash after a unexpected disconnection"
     ],
     "versions": [
+      "21_r4",
       "21.1"
     ]
   },
@@ -27523,8 +27529,9 @@
   },
   {
     "reference": "ACI0106308",
-    "raw_summary": "Executing the keyboard shortcut Ctrl+Shift+\"W\" in a 4D View Pro area causes a black screen and forces 4D to quit.",
+    "raw_summary": "4D Viewx Pro: Executing the keyboard shortcut Ctrl+Shift+\"W\" in a 4D View Pro area causes a black screen and forces 4D to quit.",
     "raw_summary_variants": [
+      "4D Viewx Pro: Executing the keyboard shortcut Ctrl+Shift+\"W\" in a 4D View Pro area causes a black screen and forces 4D to quit.",
       "Executing the keyboard shortcut Ctrl+Shift+\"W\" in a 4D View Pro area causes a black screen and forces 4D to quit."
     ],
     "versions": [
@@ -27542,6 +27549,7 @@
     "versions": [
       "20.8_hf3",
       "20.9",
+      "21_r4",
       "21.1"
     ]
   },
@@ -27559,11 +27567,12 @@
   },
   {
     "reference": "ACI0106318",
-    "raw_summary": "4D Write Pro shows empty/white output when clipPath child uses transform (works when transform is flattened)",
+    "raw_summary": "4D Write Pro: it shows empty/white output when clipPath child uses transform (works when transform is flattened)",
     "raw_summary_variants": [
-      "4D Write Pro shows empty/white output when clipPath child uses transform (works when transform is flattened)"
+      "4D Write Pro: it shows empty/white output when clipPath child uses transform (works when transform is flattened)"
     ],
     "versions": [
+      "21_r4",
       "21.1_hf1",
       "21.2"
     ]
@@ -27635,6 +27644,7 @@
     ],
     "versions": [
       "21_r3",
+      "21_r4",
       "21.1_hf1",
       "21.2"
     ]
@@ -27678,7 +27688,8 @@
     "reference": "ACI0106341",
     "raw_summary": "Issue in user name display in the 4D toolbox : user name seems to be duplicated (whereas it is not).",
     "raw_summary_variants": [
-      "Issue in user name display in the 4D toolbox : user name seems to be duplicated (whereas it is not)."
+      "Issue in user name display in the 4D toolbox : user name seems to be duplicated (whereas it is not).",
+      "Issue in username display in the 4D toolbox: username seems to be duplicated (whereas it is not)."
     ],
     "versions": [
       "21_r4",
@@ -27729,6 +27740,7 @@
       "Tool4D throws compilation errors on 4D.WebSocketServer and 4D.WebSocketConnection classes"
     ],
     "versions": [
+      "21_r4",
       "21.1_hf1",
       "21.2"
     ]
@@ -27775,6 +27787,7 @@
       "Pasting field name into Query Editor no longer changes the box to enter value"
     ],
     "versions": [
+      "21_r4",
       "21.1_hf1",
       "21.2"
     ]
@@ -27839,6 +27852,16 @@
     ]
   },
   {
+    "reference": "ACI0106366",
+    "raw_summary": "A general unexpected slowness in Listbox display and selection of rows by code (about 20 times slower)",
+    "raw_summary_variants": [
+      "A general unexpected slowness in Listbox display and selection of rows by code (about 20 times slower)"
+    ],
+    "versions": [
+      "21_r4"
+    ]
+  },
+  {
     "reference": "ACI0106367",
     "raw_summary": "Display issue with Time type object properties: when an object property is of type Time, 4D does not display it correctly in a form if the property is only defined through default properties.",
     "raw_summary_variants": [
@@ -27867,7 +27890,8 @@
     "reference": "ACI0106376",
     "raw_summary": "Building an applaication with 'tool4D' and the component 'build4D' crashes in _core \"Create deployment license\" when starting it in headless mode.",
     "raw_summary_variants": [
-      "Building an applaication with 'tool4D' and the component 'build4D' crashes in _core \"Create deployment license\" when starting it in headless mode."
+      "Building an applaication with 'tool4D' and the component 'build4D' crashes in _core \"Create deployment license\" when starting it in headless mode.",
+      "Building an application with 'tool4D' and the component 'build4D' crashes in _core \"Create deployment license\" when starting it in headless mode."
     ],
     "versions": [
       "21_r3_hf1",
@@ -27988,9 +28012,20 @@
   },
   {
     "reference": "ACI0106405",
-    "raw_summary": "4D Write Pro Import of Multi-Level Lists in 4D",
+    "raw_summary": "4D Write Pro: the numbering of multi-level lists was sometimes incorrect after importing a .docx document, and no longer matched the original Word document.",
     "raw_summary_variants": [
+      "4D Write Pro: the numbering of multi-level lists was sometimes incorrect after importing a .docx document, and no longer matched the original Word document.",
       "4D Write Pro Import of Multi-Level Lists in 4D"
+    ],
+    "versions": [
+      "21_r4"
+    ]
+  },
+  {
+    "reference": "ACI0106406",
+    "raw_summary": "4D Qodly Pro - 4D Server crash when stopping a debug session",
+    "raw_summary_variants": [
+      "4D Qodly Pro - 4D Server crash when stopping a debug session"
     ],
     "versions": [
       "21_r4"
@@ -28059,9 +28094,9 @@
       "On Windows, it is not possible to establish a client connection with SSO and client-server encryption enabled."
     ],
     "versions": [
-      "21_r4",
-      "21.1_hf2",
-      "21.2"
+      "20",
+      "21",
+      "21_r4"
     ]
   },
   {
@@ -28108,8 +28143,7 @@
     ],
     "versions": [
       "21_r4",
-      "21.1_hf2",
-      "21.2"
+      "21.1_hf2"
     ]
   },
   {
@@ -28128,7 +28162,8 @@
     "reference": "ACI0106448",
     "raw_summary": "\"Modifiable Element\" checkbox is not Checked by default when creating a new list element",
     "raw_summary_variants": [
-      "\"Modifiable Element\" checkbox is not Checked by default when creating a new list element"
+      "\"Modifiable Element\" checkbox is not Checked by default when creating a new list element",
+      "\"Modifiable Element\" checkbox is not checked by default when creating a new list element"
     ],
     "versions": [
       "21_r4",
@@ -28138,8 +28173,9 @@
   },
   {
     "reference": "ACI0106450",
-    "raw_summary": "Font Changes When Applying Bold/Italic via \"Invoke Action\" and \"WP SET ATTRIBUTES\" in Write Pro",
+    "raw_summary": "4D Write Pro: Font changes when applying Bold/Italic via \"Invoke Action\" and \"WP SET ATTRIBUTES\".",
     "raw_summary_variants": [
+      "4D Write Pro: Font changes when applying Bold/Italic via \"Invoke Action\" and \"WP SET ATTRIBUTES\".",
       "Font Changes When Applying Bold/Italic via \"Invoke Action\" and \"WP SET ATTRIBUTES\" in Write Pro"
     ],
     "versions": [
@@ -28174,8 +28210,9 @@
   },
   {
     "reference": "ACI0106458",
-    "raw_summary": "can't use This inside a deferred formula",
+    "raw_summary": "Impossible to use 'This' inside a deferred formula.",
     "raw_summary_variants": [
+      "Impossible to use 'This' inside a deferred formula.",
       "can't use This inside a deferred formula"
     ],
     "versions": [
@@ -28337,7 +28374,8 @@
     "reference": "ACI0106504",
     "raw_summary": "The 'Total HTTP hits' number may increase unexpectedly on Administration window (see 'HTTP Server' tab) with some non-http actions; yet, nothing is reported in the http log.",
     "raw_summary_variants": [
-      "The 'Total HTTP hits' number may increase unexpectedly on Administration window (see 'HTTP Server' tab) with some non-http actions; yet, nothing is reported in the http log."
+      "The 'Total HTTP hits' number may increase unexpectedly on Administration window (see 'HTTP Server' tab) with some non-http actions; yet, nothing is reported in the http log.",
+      "The 'Total HTTP hits' number may increase unexpectedly on Administration window (see 'HTTP Server' tab) with some non-http actions; yet nothing is reported in the http log."
     ],
     "versions": [
       "21_r3_hf2",
@@ -28347,8 +28385,9 @@
   },
   {
     "reference": "ACI0106507",
-    "raw_summary": "EntitySelection.drop() takes ~500ms on an empty selection when Include in Log File is deactivated and no delete trigger exists",
+    "raw_summary": "EntitySelection.drop() takes ~500ms on an empty selection when \"Include in Log File\" is deactivated and the table has no Delete Trigger set.",
     "raw_summary_variants": [
+      "EntitySelection.drop() takes ~500ms on an empty selection when \"Include in Log File\" is deactivated and the table has no Delete Trigger set.",
       "EntitySelection.drop() takes ~500ms on an empty selection when Include in Log File is deactivated and no delete trigger exists"
     ],
     "versions": [
@@ -28391,13 +28430,24 @@
   },
   {
     "reference": "ACI0106517",
-    "raw_summary": "When a printing error occurs, 4D should return a more specific error message rather than the generic \"Error 1",
+    "raw_summary": "When a printing error occurs, 4D should return a more specific error message rather than the generic \"Error 1\"",
     "raw_summary_variants": [
+      "When a printing error occurs, 4D should return a more specific error message rather than the generic \"Error 1\"",
       "When a printing error occurs, 4D should return a more specific error message rather than the generic \"Error 1"
     ],
     "versions": [
       "21",
       "21_r4"
+    ]
+  },
+  {
+    "reference": "ACI0106526",
+    "raw_summary": "Systematic 4D crash when processing a binary structure during MSC Verify, Structure Repair, compiler syntax check and binary to project conversion",
+    "raw_summary_variants": [
+      "Systematic 4D crash when processing a binary structure during MSC Verify, Structure Repair, compiler syntax check and binary to project conversion"
+    ],
+    "versions": [
+      "21"
     ]
   },
   {
@@ -28412,6 +28462,16 @@
     ]
   },
   {
+    "reference": "ACI0106530",
+    "raw_summary": "When building an application with the \"Silicon only\" option, the generated executable contains unexpectedly 2 architectures: Intel code is added.",
+    "raw_summary_variants": [
+      "When building an application with the \"Silicon only\" option, the generated executable contains unexpectedly 2 architectures: Intel code is added."
+    ],
+    "versions": [
+      "21_r4"
+    ]
+  },
+  {
     "reference": "ACI0106539",
     "raw_summary": "4D 20.x Web Server falsely reports occupied ports on recent macOS versions (macOS 15.8, 26.7 and 27). This is fixed with 4D 20.9.",
     "raw_summary_variants": [
@@ -28419,6 +28479,62 @@
     ],
     "versions": [
       "20.9"
+    ]
+  },
+  {
+    "reference": "ACI0106542",
+    "raw_summary": "License update issue from R(x) into R(x+1) if you launch R(x+1) and directly open the licenses manager",
+    "raw_summary_variants": [
+      "License update issue from R(x) into R(x+1) if you launch R(x+1) and directly open the licenses manager"
+    ],
+    "versions": [
+      "21",
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106545",
+    "raw_summary": "MSC Compact with \"Force update of all records\" loses object values that are stored inside the record",
+    "raw_summary_variants": [
+      "MSC Compact with \"Force update of all records\" loses object values that are stored inside the record"
+    ],
+    "versions": [
+      "21",
+      "21_r4",
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106546",
+    "raw_summary": "The Engine server built with the â€˜PackProjectâ€™ key set to false displays a prompt on launch asking to import components that were previously included in 4D.",
+    "raw_summary_variants": [
+      "The Engine server built with the â€˜PackProjectâ€™ key set to false displays a prompt on launch asking to import components that were previously included in 4D.",
+      "The Engine server built with the ‘PackProject’ key set to 'False' displays a prompt on launch asking to import components that were previously included in 4D."
+    ],
+    "versions": [
+      "21",
+      "21_r4",
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106558",
+    "raw_summary": "EXECUTE ON CLIENT Parameter Regression After Two Successful Calls",
+    "raw_summary_variants": [
+      "EXECUTE ON CLIENT Parameter Regression After Two Successful Calls"
+    ],
+    "versions": [
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106566",
+    "raw_summary": "Web server forces 302 when the response has a Location header: 201 Created is impossible",
+    "raw_summary_variants": [
+      "Web server forces 302 when the response has a Location header: 201 Created is impossible"
+    ],
+    "versions": [
+      "21_r5"
     ]
   }
 ]
