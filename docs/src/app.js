@@ -3,6 +3,9 @@ import { parseVersionIntent, bugMatchesIntent, describeIntent } from "./version.
 import { buildCommandIndex, extractCommandMentions } from "./commands.js";
 import * as webllmEngine from "./engines/webllm-engine.js";
 import { getLocale } from "./i18n.js";
+import { SEARCH_CONFIG } from "./search-config.js";
+import { SemanticSearch } from "./semantic-client.js";
+import { createKeywordSearch } from "./keyword-search.js";
 
 /**
  * Single-interface chat app: semantic search over the 4D fixed-bugs
@@ -27,11 +30,11 @@ import { getLocale } from "./i18n.js";
  * summarize, not search.
  */
 
-// The page's <html lang> selects the dataset, embedding model and UI
-// strings (see i18n.js). CDN versions are pinned there for reproducibility.
+// The page selects localized data and UI strings; every language uses the
+// same pinned text-only encoder and model contract.
 const LOCALE = getLocale(document.documentElement.lang);
 const T = LOCALE.t;
-const EMBED_DIM = LOCALE.embedding.dim;
+const EMBED_DIM = SEARCH_CONFIG.dimensions;
 const TOP_K = 15;
 const TABLE_TOP_N = 8;
 // Cosine-similarity floor below which a semantic match is considered
@@ -89,9 +92,9 @@ const copyBtn = document.getElementById("copy-btn");
 
 /** @type {{reference: string, summary: string, commands: string[], versions: string[]}[]} */
 let meta = [];
-/** @type {Float32Array | null} */
-let embeddings = null;
-let embedder = null;
+/** @type {SemanticSearch | null} */
+let semantic = null;
+let keyword = null;
 let engine = null;
 let minMajor = Infinity;
 let maxMajor = -Infinity;
@@ -127,14 +130,12 @@ async function loadDataset() {
   // Resolve relative to this module's own URL (not the page URL), so
   // this works regardless of which page loads app.js.
   const dataUrl = (name) => new URL(`${LOCALE.dataDir}${name}`, import.meta.url);
-  const [metaRes, binRes] = await Promise.all([
-    fetch(dataUrl("meta.json")),
-    fetch(dataUrl("embeddings.bin")),
-  ]);
+  const metaRes = await fetch(dataUrl("meta.json"));
+  if (!metaRes.ok) throw new Error(`Dataset HTTP ${metaRes.status}`);
   meta = await metaRes.json();
-  const buf = await binRes.arrayBuffer();
-  embeddings = new Float32Array(buf);
   commandIndex = buildCommandIndex(meta);
+  keyword = createKeywordSearch(meta, LOCALE.lang);
+  semantic = new SemanticSearch({ dataUrl, records: meta, onState: showSearchState });
   for (const bug of meta) {
     for (const v of bug.versions || []) {
       const m = v.match(/^(\d+)/);
@@ -146,12 +147,41 @@ async function loadDataset() {
   }
 }
 
-async function loadEmbedder() {
-  setBootStatus(T.loadingModel);
-  const { pipeline, env } = await import(LOCALE.embedding.library);
-  env.allowLocalModels = false;
-  env.useBrowserCache = true;
-  embedder = await pipeline("feature-extraction", LOCALE.embedding.model, LOCALE.embedding.options);
+const searchStatus = document.createElement("div");
+searchStatus.className = "status search-status";
+const searchLabel = document.createElement("span");
+searchLabel.id = "search-status";
+searchLabel.setAttribute("role", "status");
+const searchProgress = document.createElement("progress");
+searchProgress.id = "search-progress";
+searchProgress.max = 100;
+searchProgress.hidden = true;
+searchProgress.setAttribute("aria-label", T.loadingModel);
+const searchRetry = document.createElement("button");
+searchRetry.id = "search-retry";
+searchRetry.type = "button";
+searchRetry.textContent = T.semanticRetry;
+searchRetry.hidden = true;
+searchRetry.addEventListener("click", () => semantic.start());
+searchStatus.append(searchLabel, searchProgress, searchRetry);
+bootStatusEl.after(searchStatus);
+
+function showSearchState({ status, error, progress, file }) {
+  searchLabel.dataset.state = status;
+  searchProgress.hidden = status !== "loading";
+  searchRetry.hidden = status !== "error";
+  if (status === "loading") {
+    if (Number.isFinite(progress)) {
+      searchProgress.value = Math.max(0, Math.min(100, progress));
+      searchLabel.textContent = T.semanticProgress(file || "EmbeddingGemma 2", Math.round(progress));
+    } else {
+      searchProgress.removeAttribute("value");
+      searchLabel.textContent = T.semanticLoading;
+    }
+  } else {
+    searchLabel.textContent = status === "ready" ? T.semanticReady
+      : status === "unavailable" ? T.semanticUnavailable : T.semanticError(error);
+  }
 }
 
 async function loadChatEngine() {
@@ -189,7 +219,7 @@ async function retrieve(query) {
       .filter(Boolean);
     const notFound = explicitRefs.filter((ref) => !found.some((b) => b.reference === ref));
     if (found.length > 0) {
-      const results = found.map((b) => ({ ...b, score: 1 }));
+      const results = found.map((b) => ({ ...b, score: 1, matchType: "exact" }));
       return {
         results,
         intent: null,
@@ -230,13 +260,35 @@ async function retrieve(query) {
     }
   }
 
-  const output = await embedder(LOCALE.embedding.queryPrefix + query, { pooling: "mean", normalize: true });
-  const queryVec = output.data;
-  const scored = pool.map((i) => ({ index: i, score: dot(embeddings, i * EMBED_DIM, queryVec) }));
-  scored.sort((a, b) => b.score - a.score);
-  const relevant = scored.filter((s) => s.score >= MIN_SCORE);
+  const hasEffectiveFilters = (commandMentions.length > 0 && !usedCommandFallback) || (intent !== null && !usedFallback);
+  const filterOnly = hasEffectiveFilters && keyword.isFilterOnly(query, commandMentions);
+  let queryVec = null;
+  if (!filterOnly && semantic.status === "ready") {
+    try {
+      queryVec = await semantic.encode(query);
+      if (queryVec.length !== EMBED_DIM || !Array.from(queryVec).every(Number.isFinite)) {
+        throw new Error("Invalid query embedding");
+      }
+    } catch (error) {
+      // Surface a query-time device failure, then run this same query lexically.
+      queryVec = null;
+      if (semantic.status !== "error") semantic.fail(error);
+    }
+  }
+  const matchType = filterOnly ? "filter" : queryVec ? "semantic" : "keyword";
+  const scored = filterOnly
+    ? pool.map((index) => ({ index, score: 0 }))
+    : queryVec
+    ? pool.map((i) => ({ index: i, score: dot(semantic.vectors, i * EMBED_DIM, queryVec) }))
+      .sort((a, b) => b.score - a.score)
+    : keyword.rank(query, pool, {
+      filtered: hasEffectiveFilters,
+      commands: usedCommandFallback ? [] : commandMentions,
+      versionFilter: intent !== null,
+    });
+  const relevant = queryVec ? scored.filter((s) => s.score >= MIN_SCORE) : scored;
   const noRelevantResults = scored.length > 0 && relevant.length === 0;
-  const results = relevant.slice(0, TOP_K).map((s) => ({ ...meta[s.index], score: s.score }));
+  const results = relevant.slice(0, TOP_K).map((s) => ({ ...meta[s.index], score: s.score, matchType }));
   return {
     results,
     intent,
@@ -357,8 +409,10 @@ function buildDeterministicReply(retrieval) {
  * links to developer.4d.com) — built directly from the retrieval data
  * rather than reproduced by the model, since a small local model can't be
  * relied on to faithfully echo every result, reference, and link. */
-function renderMatchBadge(score) {
+function renderMatchBadge(score, matchType) {
   if (score === undefined) return "";
+  if (matchType === "filter") return `<span class="match-badge filter">${T.filterMatch}</span>`;
+  if (matchType === "keyword") return `<span class="match-badge keyword">${T.keywordMatch}</span>`;
   // An explicit ACI-reference lookup (score === 1) is an exact match, not
   // a semantic ranking — label it distinctly rather than showing "100%".
   if (score === 1) return `<span class="match-badge exact">${T.exact}</span>`;
@@ -372,7 +426,7 @@ function renderHitsTable(bugs) {
     .slice(0, TABLE_TOP_N)
     .map(
       (b) =>
-        `<tr><td class="hit-ref">${b.reference}</td><td class="hit-match">${renderMatchBadge(b.score)}</td><td class="hit-versions">${renderVersions(b.versions)}</td><td class="hit-summary">${renderSummary(b.summary)}</td></tr>`
+        `<tr><td class="hit-ref">${b.reference}</td><td class="hit-match">${renderMatchBadge(b.score, b.matchType)}</td><td class="hit-versions">${renderVersions(b.versions)}</td><td class="hit-summary">${renderSummary(b.summary)}</td></tr>`
     )
     .join("");
   return (
@@ -535,8 +589,10 @@ function escapeMdCell(text) {
 /** Build the same match label shown in the on-screen badge ("Exact" for
  * a direct ACI lookup, otherwise a rounded percentage), as plain text
  * for the markdown table. */
-function matchLabel(score) {
+function matchLabel(score, matchType) {
   if (score === undefined) return "";
+  if (matchType === "filter") return T.filterMatch;
+  if (matchType === "keyword") return T.keywordMatch;
   if (score === 1) return T.exact;
   return `${Math.round(score * 100)}%`;
 }
@@ -551,7 +607,7 @@ function buildResultsMarkdownTable(bugs) {
   const body = rows
     .map(
       (b) =>
-        `| ${b.reference} | ${matchLabel(b.score)} | ${escapeMdCell((b.versions || []).join(", ") || "—")} | ${escapeMdCell(stripLinks(b.summary))} |`
+        `| ${b.reference} | ${matchLabel(b.score, b.matchType)} | ${escapeMdCell((b.versions || []).join(", ") || "—")} | ${escapeMdCell(stripLinks(b.summary))} |`
     )
     .join("\n");
   return `${header}\n${body}`;
@@ -586,12 +642,12 @@ copyBtn.addEventListener("click", async () => {
 async function boot() {
   try {
     await loadDataset();
-    await loadEmbedder();
     if (CHAT_ENGINE !== "deterministic") {
       await loadChatEngine();
     }
     setBootStatus(T.ready(meta.length, minMajor, maxMajor));
     setReady(true);
+    void semantic.start();
   } catch (err) {
     console.error(err);
     setBootStatus(T.failed(err.message));

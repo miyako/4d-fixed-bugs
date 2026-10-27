@@ -1,0 +1,29 @@
+{
+  "contract": {
+    "schema": 1,
+    "model": "onnx-community/embeddinggemma-2-ONNX",
+    "revision": "daa72c51243991dfcaf9f9137d2c573d8f7790c0",
+    "dimensions": 768,
+    "precision": "q4",
+    "maxTokens": 512,
+    "queryPrefix": "task: search result | query: ",
+    "documentFormat": "title: {reference} | text: {summary}\\n{commands}",
+    "pooling": "exported sentence_embedding",
+    "normalization": "l2",
+    "runtime": {
+      "transformers": "4.3.1",
+      "onnxruntime": "1.31.0-dev.20260914-8d85527a0"
+    },
+    "artifacts": {
+      "config.json": "8d011bfe08b5e345bbe0b81e5c6fd02c381920b345b986047bc2a33ce7b90d1d",
+      "tokenizer.json": "4d777ef5bdc1aa36227abdfb77c3e49e7b9c892d16e1b6bda41c393504828be4",
+      "tokenizer_config.json": "17bd5d6e9364ca49a534e1502076593317c298d4a663623091ed45388f004874",
+      "onnx/model_q4.onnx": "f9eeba97acddf139b8ee2ddf04bc30dceafa88de93fadf74d7644e0d61a477a9",
+      "onnx/model_q4.onnx_data": "c3975f2d1ab7a1878ae31a7d7a9b7804a827aff3800b60dfceafce21cac3df49"
+    }
+  },
+  "count": 2467,
+  "bytes": 7578624,
+  "metadata_sha256": "5aae249bb46b1b1ccc04d201c121139a7065a85d323b6e960f00c0f25c14eb87",
+  "vectors_sha256": "156c7e56f9eeb8af672876ed34374c2782652d3fc3747a71f5e38a7387a1c35e"
+}

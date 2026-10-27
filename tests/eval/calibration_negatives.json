@@ -1,0 +1,32 @@
+{
+  "en": [
+    "Hello, how are you?",
+    "Good morning!",
+    "Thank you for your help",
+    "What is the capital of Canada?",
+    "How can I grow tomatoes on my balcony?",
+    "How long should I boil an egg?",
+    "Why is the sky blue?",
+    "Can you recommend a book for my holiday?"
+  ],
+  "fr": [
+    "Bonjour, comment allez-vous ?",
+    "Bonsoir !",
+    "Merci pour votre aide",
+    "Quelle est la capitale du Canada ?",
+    "Comment cultiver des tomates sur mon balcon ?",
+    "Combien de temps faut-il cuire un œuf ?",
+    "Pourquoi le ciel est-il bleu ?",
+    "Pouvez-vous me conseiller un livre pour les vacances ?"
+  ],
+  "ja": [
+    "こんにちは、お元気ですか？",
+    "おはようございます",
+    "助けてくれてありがとう",
+    "カナダの首都はどこですか？",
+    "ベランダでトマトを育てる方法を教えて",
+    "卵は何分ゆでればいいですか？",
+    "空はどうして青いのですか？",
+    "休暇中に読むおすすめの本はありますか？"
+  ]
+}

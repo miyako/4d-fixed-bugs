@@ -7,7 +7,8 @@
 <title>4D Fixed Bugs — Search</title>
 <link rel="alternate" hreflang="en" href="https://miyako.github.io/4d-fixed-bugs/" />
 <link rel="alternate" hreflang="ja" href="https://miyako.github.io/4d-fixed-bugs/ja/" />
-<link rel="stylesheet" href="style.css?v=16" />
+<link rel="alternate" hreflang="fr" href="https://miyako.github.io/4d-fixed-bugs/fr/" />
+<link rel="stylesheet" href="style.css?v=19" />
 </head>
 <body>
   <header class="app-bar">
@@ -38,7 +39,7 @@
   </header>
 
   <main>
-    <nav class="lang-switch" aria-label="Language"><span aria-current="page">English</span> · <a href="ja/" hreflang="ja" lang="ja">日本語</a></nav>
+    <nav class="lang-switch" aria-label="Language"><span aria-current="page">English</span> · <a href="ja/" hreflang="ja" lang="ja">日本語</a> · <a href="fr/" hreflang="fr" lang="fr">Français</a></nav>
     <p class="subtitle">
       Describe a 4D bug in natural language, by version (e.g. "v20",
       "around v18", "before 17"), by exact command name (e.g. GOTO OBJECT),
@@ -53,11 +54,12 @@
   <footer>
     <p>
       Data crawled from <a href="https://bugs.4d.com" target="_blank" rel="noopener noreferrer">bugs.4d.com</a>.
-      Embeddings: all-MiniLM-L6-v2 via
+      Text-only search: <a href="https://huggingface.co/onnx-community/embeddinggemma-2-ONNX" target="_blank" rel="noopener noreferrer">EmbeddingGemma 2</a>
+      (270M, WebGPU; keyword search when unavailable) via
       <a href="https://huggingface.co/docs/transformers.js" target="_blank" rel="noopener noreferrer">transformers.js</a>.
     </p>
   </footer>
 
-  <script type="module" src="src/app.js?v=16"></script>
+  <script type="module" src="src/app.js?v=19"></script>
 </body>
 </html>

@@ -83,26 +83,22 @@ def is_polite(sentence: str) -> bool:
     return s.rstrip(SENTENCE_TRAILERS).rstrip("。").endswith(POLITE_ENDINGS)
 
 
-def validate_translation(summary_ja, en_record):
-    """Return (errors, warnings) for one Japanese summary.
-
-    `en_record` is the English dataset record: {reference, summary, commands}.
-    """
+def validate_structure(summary, en_record, *, localize_url=to_ja_url):
+    """Validate shared markup invariants, optionally localizing documentation URLs."""
     errors, warnings = [], []
-    if not isinstance(summary_ja, str) or len(summary_ja.strip()) < 10:
+    if not isinstance(summary, str) or len(summary.strip()) < 10:
         return ["summary missing or too short"], warnings
-    text = summary_ja.strip()
+    text = summary.strip()
     en = en_record["summary"]
 
-    # Links: same link texts, same targets moved under /docs/ja/.
-    expected = collections.Counter((t, to_ja_url(u)) for t, u in LINK_RE.findall(en))
+    expected = collections.Counter((t, localize_url(u)) for t, u in LINK_RE.findall(en))
     actual = _links(text)
     for (t, u), n in (expected - actual).items():
         errors.append(f"missing link [{t}]({u})")
     for (t, u), n in (actual - expected).items():
         if not u.startswith(ALLOWED_LINK_PREFIX):
             errors.append(f"link href not on developer.4d.com: {u}")
-        elif u.startswith(DOCS_PREFIX) and not u.startswith(DOCS_JA_PREFIX):
+        elif localize_url is to_ja_url and u.startswith(DOCS_PREFIX) and not u.startswith(DOCS_JA_PREFIX):
             errors.append(f"link not localized to /docs/ja/: {u}")
         else:
             errors.append(f"unexpected link [{t}]({u})")
@@ -126,6 +122,16 @@ def validate_translation(summary_ja, en_record):
     if "\n" in text:
         errors.append("summary must be a single paragraph")
 
+    return errors, warnings
+
+
+def validate_translation(summary_ja, en_record):
+    """Return (errors, warnings) for one Japanese summary."""
+    errors, warnings = validate_structure(summary_ja, en_record)
+    if not isinstance(summary_ja, str) or len(summary_ja.strip()) < 10:
+        return errors, warnings
+    text = summary_ja.strip()
+    en = en_record["summary"]
     plain = _strip_markup(text)
     ja_chars = len(JA_CHAR_RE.findall(plain))
     letters = len(LETTER_RE.findall(plain))

@@ -16,6 +16,9 @@
  * (up to and including 17), "20より後"/"20より新しい" (strictly after),
  * "20以降"/"20以上" (20 and later), "バージョン20" (exact). The message is
  * NFKC-normalized first, so full-width digits and letters ("Ｖ２０") work.
+ * French: "autour de v18"/"environ 18" (approximate), "avant 17"/
+ * "après 20" (strict), "jusqu'à 17" (inclusive before), and "depuis 20"/
+ * "à partir de 20" (inclusive after). "version" may precede the number.
  *
  * These patterns cover the phrasings given as examples. Anything else
  * (no recognizable version reference) returns `null`, and the caller
@@ -49,6 +52,20 @@ export function parseVersionIntent(text, minMajor, maxMajor) {
   m = t.match(/\b(?:around|about|approx(?:imately)?|roughly)\s+v?(\d{2})\b/);
   if (m && inRange(parseInt(m[1], 10))) {
     return { type: "approx", major: parseInt(m[1], 10) };
+  }
+
+  // French: approximate, strict bounds, and inclusive bounds.
+  m = t.match(/\b(?:autour\s+de|aux\s+alentours\s+de|environ|vers|approximativement)\s+(?:la\s+)?(?:version\s+|v\s*)?(\d{2})\b/);
+  if (m && inRange(parseInt(m[1], 10))) {
+    return { type: "approx", major: parseInt(m[1], 10) };
+  }
+  m = t.match(/(?<![\p{L}\p{N}_])(avant|après|depuis|jusqu['’]à|à\s+partir\s+de)\s+(?:la\s+)?(?:version\s+|v\s*)?(\d{2})\b/u);
+  if (m && inRange(parseInt(m[2], 10))) {
+    return {
+      type: /^(avant|jusqu)/.test(m[1]) ? "before" : "after",
+      major: parseInt(m[2], 10),
+      inclusive: /^(depuis|jusqu|à)/.test(m[1]),
+    };
   }
 
   // "18 or thereabouts", "18ish".
@@ -140,6 +157,7 @@ export function bugMatchesIntent(bug, intent) {
 export function describeIntent(intent, lang = "en") {
   if (!intent) return null;
   if (lang === "ja") return describeIntentJa(intent);
+  if (lang === "fr") return describeIntentFr(intent);
   switch (intent.type) {
     case "exact":
       return `version ${intent.major} (and its releases/hotfixes)`;
@@ -151,6 +169,24 @@ export function describeIntent(intent, lang = "en") {
       return intent.inclusive ? `version ${intent.major} and later` : `versions after ${intent.major}`;
     case "r-release":
       return `${intent.major}_r${intent.rNum} and all of version ${intent.major + 1} (R-releases preview the next major)`;
+    default:
+      return null;
+  }
+}
+
+function describeIntentFr(intent) {
+  const { major } = intent;
+  switch (intent.type) {
+    case "exact":
+      return `la version ${major} (y compris ses mises à jour et correctifs)`;
+    case "approx":
+      return `les versions autour de ${major} (versions majeures ${major - 1}-${major + 1})`;
+    case "before":
+      return intent.inclusive ? `les versions jusqu’à ${major} inclus` : `les versions avant ${major}`;
+    case "after":
+      return intent.inclusive ? `la version ${major} et les suivantes` : `les versions après ${major}`;
+    case "r-release":
+      return `${major}_r${intent.rNum} et toute la version ${major + 1} (les versions R préfigurent la version majeure suivante)`;
     default:
       return null;
   }

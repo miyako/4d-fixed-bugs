@@ -1,63 +1,59 @@
 #!/usr/bin/env node
 /**
- * Step 6 — build the client-side dataset (incremental).
+ * Build each localized corpus with the shared pinned text-only encoder.
  *
  * Reads data/all_bugs_enriched.json (summary + linked commands per bug) and
  * data/all_bugs_context.json (versions per bug), joins them by `reference`,
  * and writes the two files the browser actually loads:
  *
  *   docs/data/meta.json       [{ reference, summary, commands, versions }]
- *   docs/data/embeddings.bin  raw Float32Array, row-major [N x 384], L2-normalized
+ *   docs/data/embeddings.bin  raw Float32Array, row-major [N x 768], L2-normalized
+ *   docs/data/search-index.json  model contract and corpus/vector checksums
  *
  * plus docs/src/beta-versions.js, the generated list of versions that only
  * exist as a bugs.4d.com *beta branch* (?branch=…) and have no released
  * listing (?version=… returns the error page), so version links point
  * somewhere real.
  *
- * Incremental: a bug whose `summary` is byte-identical to the one in the
- * existing meta.json keeps its existing embedding row, copied straight across.
+ * Incremental: an unchanged document keeps its vector only after the previous
+ * index's full model contract and checksums are verified.
  * Only new or rewritten summaries are actually run through the model, so a
  * routine update embeds a hundred bugs instead of two and a half thousand.
  * Pass --force to re-embed everything (e.g. after a model change).
  *
- * --lang ja builds the Japanese site's dataset instead: summaries come from
- * data/all_bugs_ja.json (commands and versions are shared with English), are
- * embedded with the Japanese ruri-v3-30m model, and land in docs/data/ja/.
+ * --lang ja builds the Japanese dataset from data/all_bugs_ja.json.
  * Every bug must have a translation (see merge_translation.py).
+ * --lang fr instead reads data/all_bugs_fr.json and writes docs/data/fr/
+ * All languages share docs/src/search-config.js with the browser.
  *
- * The model settings per language must match docs/src/i18n.js exactly, or
- * query and corpus vectors stop being comparable.
- *
- * Run from scripts/: `npm install && node update/generate_embeddings.mjs [--lang ja]`
+ * Run from scripts/: `npm install && node update/generate_embeddings.mjs [--lang ja|fr]`
  */
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
+import { SEARCH_CONFIG, documentText, assertIndexContract } from "../../docs/src/search-config.js";
+import { loadEncoder } from "./search-encoder.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, "..", "..");
-const BATCH_SIZE = 32;
+const BATCH_SIZE = 8;
+const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
 const langArg = process.argv.indexOf("--lang");
 const LANG = langArg >= 0 ? process.argv[langArg + 1] : "en";
 
 const LANGS = {
   en: {
-    library: "@xenova/transformers",
-    model: "Xenova/all-MiniLM-L6-v2",
-    options: { quantized: true },
-    dim: 384,
-    docPrefix: "",
     outDir: path.join(REPO_ROOT, "docs", "data"),
   },
   ja: {
-    library: "@huggingface/transformers",
-    model: "sirasagi62/ruri-v3-30m-ONNX",
-    options: { dtype: "q8", revision: "cdf9391f1ff2198daa8f63f7ccf97d7b3e7415a0" },
-    dim: 256,
-    docPrefix: "検索文書: ",
     outDir: path.join(REPO_ROOT, "docs", "data", "ja"),
     summaries: path.join(REPO_ROOT, "data", "all_bugs_ja.json"),
+  },
+  fr: {
+    outDir: path.join(REPO_ROOT, "docs", "data", "fr"),
+    summaries: path.join(REPO_ROOT, "data", "all_bugs_fr.json"),
   },
 };
 const CONFIG = LANGS[LANG];
@@ -65,7 +61,7 @@ if (!CONFIG) {
   console.error(`Unknown --lang ${LANG}; expected one of ${Object.keys(LANGS).join(", ")}`);
   process.exit(2);
 }
-const EMBED_DIM = CONFIG.dim;
+const EMBED_DIM = SEARCH_CONFIG.dimensions;
 
 const ENRICHED_PATH = path.join(REPO_ROOT, "data", "all_bugs_enriched.json");
 const CONTEXT_PATH = path.join(REPO_ROOT, "data", "all_bugs_context.json");
@@ -73,17 +69,10 @@ const STATE_PATH = path.join(REPO_ROOT, "data", "update_state.json");
 const OUT_DIR = CONFIG.outDir;
 const OUT_BIN = path.join(OUT_DIR, "embeddings.bin");
 const OUT_META = path.join(OUT_DIR, "meta.json");
+const OUT_MANIFEST = path.join(OUT_DIR, "search-index.json");
 const OUT_BETA = path.join(REPO_ROOT, "docs", "src", "beta-versions.js");
 
 const FORCE = process.argv.includes("--force");
-
-/** Strip markdown link syntax `[text](url)` down to just `text`, so the
- * embedding model sees clean prose instead of URLs/markdown noise. This must
- * stay identical to the client's `stripLinks`, or query and corpus vectors
- * stop being comparable. */
-function stripMarkdownLinks(text) {
-  return text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1");
-}
 
 async function readJson(file, fallback) {
   try {
@@ -96,6 +85,13 @@ async function readJson(file, fallback) {
 
 async function readExistingEmbeddings(meta) {
   if (!meta.length) return null;
+  const manifest = await readJson(OUT_MANIFEST, null);
+  try {
+    assertIndexContract(manifest, meta.length);
+  } catch (error) {
+    console.warn(`${LANG}: ${error.message}; recomputing every vector.`);
+    return null;
+  }
   try {
     const buf = await readFile(OUT_BIN);
     const expected = meta.length * EMBED_DIM * 4;
@@ -103,6 +99,10 @@ async function readExistingEmbeddings(meta) {
       console.warn(
         `Existing ${LANG} embeddings.bin is ${buf.byteLength} bytes but meta.json implies ${expected}; re-embedding everything.`
       );
+      return null;
+    }
+    if (hash(JSON.stringify(meta)) !== manifest.metadata_sha256 || hash(buf) !== manifest.vectors_sha256) {
+      console.warn(`${LANG}: cached index checksum mismatch; recomputing every vector.`);
       return null;
     }
     return new Float32Array(buf.buffer, buf.byteOffset, meta.length * EMBED_DIM);
@@ -166,7 +166,7 @@ async function main() {
   const previousEmbeddings = FORCE ? null : await readExistingEmbeddings(previousMeta);
   const previousRows = new Map();
   if (previousEmbeddings) {
-    previousMeta.forEach((rec, i) => previousRows.set(rec.reference, { row: i, summary: rec.summary }));
+    previousMeta.forEach((rec, i) => previousRows.set(rec.reference, { row: i, text: documentText(rec) }));
   }
 
   const floatArray = new Float32Array(records.length * EMBED_DIM);
@@ -174,7 +174,7 @@ async function main() {
   let reused = 0;
   records.forEach((record, i) => {
     const previous = previousRows.get(record.reference);
-    if (previous && previous.summary === record.summary) {
+    if (previous && previous.text === documentText(record)) {
       floatArray.set(
         previousEmbeddings.subarray(previous.row * EMBED_DIM, (previous.row + 1) * EMBED_DIM),
         i * EMBED_DIM
@@ -188,20 +188,19 @@ async function main() {
   console.log(`${records.length} bugs: reusing ${reused} embeddings, computing ${toEmbed.length}.`);
 
   if (toEmbed.length) {
-    console.log(`Loading embedding model ${CONFIG.model}...`);
-    const { pipeline } = await import(CONFIG.library);
-    const embedder = await pipeline("feature-extraction", CONFIG.model, CONFIG.options);
-    for (let start = 0; start < toEmbed.length; start += BATCH_SIZE) {
-      const slice = toEmbed.slice(start, start + BATCH_SIZE);
-      const texts = slice.map((i) => CONFIG.docPrefix + stripMarkdownLinks(records[i].summary));
-      const output = await embedder(texts, { pooling: "mean", normalize: true });
-      slice.forEach((recordIndex, j) => {
-        floatArray.set(
-          output.data.subarray(j * EMBED_DIM, (j + 1) * EMBED_DIM),
-          recordIndex * EMBED_DIM
-        );
-      });
-      process.stdout.write(`\r  ${Math.min(start + BATCH_SIZE, toEmbed.length)}/${toEmbed.length}`);
+    console.log(`Loading text-only model ${SEARCH_CONFIG.model} (${SEARCH_CONFIG.precision})...`);
+    const encoder = await loadEncoder();
+    try {
+      for (let start = 0; start < toEmbed.length; start += BATCH_SIZE) {
+        const slice = toEmbed.slice(start, start + BATCH_SIZE);
+        const vectors = await encoder.encodeMany(slice.map((i) => documentText(records[i])));
+        slice.forEach((recordIndex, j) => floatArray.set(vectors[j], recordIndex * EMBED_DIM));
+        if (start % 80 === 0 || start + BATCH_SIZE >= toEmbed.length) {
+          console.log(`  ${Math.min(start + BATCH_SIZE, toEmbed.length)}/${toEmbed.length}`);
+        }
+      }
+    } finally {
+      await encoder.dispose();
     }
     console.log("\nDone embedding.");
   }
@@ -209,6 +208,13 @@ async function main() {
   await mkdir(OUT_DIR, { recursive: true });
   await writeFile(OUT_BIN, Buffer.from(floatArray.buffer));
   await writeFile(OUT_META, JSON.stringify(records));
+  await writeFile(OUT_MANIFEST, JSON.stringify({
+    contract: SEARCH_CONFIG,
+    count: records.length,
+    bytes: floatArray.byteLength,
+    metadata_sha256: hash(JSON.stringify(records)),
+    vectors_sha256: hash(Buffer.from(floatArray.buffer)),
+  }, null, 2) + "\n");
   console.log(`Wrote ${OUT_BIN} (${floatArray.byteLength} bytes)`);
   console.log(`Wrote ${OUT_META} (${records.length} records)`);
 
