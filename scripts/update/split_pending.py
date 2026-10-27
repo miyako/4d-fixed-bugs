@@ -23,6 +23,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from common import DATA_DIR, PENDING_PATH, PENDING_TRANSLATION_PATH, load_json, write_json  # noqa: E402
+from translation_common import config  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 KINDS = {
@@ -46,9 +47,16 @@ def main() -> int:
     parser.add_argument("--chunks", type=int, default=4)
     parser.add_argument("--max-per-chunk", type=int, default=40)
     parser.add_argument("--kind", choices=sorted(KINDS), default="enrichment")
+    parser.add_argument("--lang", choices=("ja", "fr"), default="ja", help="translation language")
     parser.add_argument("--out-dir", default=None)
     args = parser.parse_args()
-    kind = KINDS[args.kind]
+    kind = dict(KINDS[args.kind])
+    if args.kind == "translation" and args.lang == "fr":
+        kind.update(
+            pending=config(args.lang)[1],
+            out_dir=os.path.join(DATA_DIR, "translation_fr"),
+            prompt=os.path.join(HERE, "TRANSLATION_PROMPT_FR.md"),
+        )
     args.out_dir = args.out_dir or kind["out_dir"]
 
     pending = load_json(kind["pending"], []) or []
@@ -74,7 +82,8 @@ def main() -> int:
         print(f"  {os.path.relpath(path)}  ({count} bugs)")
     print(f"\nInstructions for each chunk: {os.path.relpath(kind['prompt'])}")
     print("Write chunk_N.out.json alongside each input, then:")
-    print(f"  python3 scripts/update/{kind['merge']} {os.path.relpath(args.out_dir)}/chunk_N.out.json --partial")
+    lang_flag = " --lang fr" if args.kind == "translation" and args.lang == "fr" else ""
+    print(f"  python3 scripts/update/{kind['merge']} {os.path.relpath(args.out_dir)}/chunk_N.out.json --partial{lang_flag}")
     return 0
 
 

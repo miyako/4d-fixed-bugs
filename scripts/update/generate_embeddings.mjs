@@ -24,11 +24,14 @@
  * data/all_bugs_ja.json (commands and versions are shared with English), are
  * embedded with the Japanese ruri-v3-30m model, and land in docs/data/ja/.
  * Every bug must have a translation (see merge_translation.py).
+ * --lang fr instead reads data/all_bugs_fr.json and writes docs/data/fr/
+ * with quantized multilingual E5-small (384-dim, passage: document prefix;
+ * the browser uses the corresponding query: prefix).
  *
  * The model settings per language must match docs/src/i18n.js exactly, or
  * query and corpus vectors stop being comparable.
  *
- * Run from scripts/: `npm install && node update/generate_embeddings.mjs [--lang ja]`
+ * Run from scripts/: `npm install && node update/generate_embeddings.mjs [--lang ja|fr]`
  */
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -58,6 +61,15 @@ const LANGS = {
     docPrefix: "検索文書: ",
     outDir: path.join(REPO_ROOT, "docs", "data", "ja"),
     summaries: path.join(REPO_ROOT, "data", "all_bugs_ja.json"),
+  },
+  fr: {
+    library: "@xenova/transformers",
+    model: "Xenova/multilingual-e5-small",
+    options: { quantized: true },
+    dim: 384,
+    docPrefix: "passage: ",
+    outDir: path.join(REPO_ROOT, "docs", "data", "fr"),
+    summaries: path.join(REPO_ROOT, "data", "all_bugs_fr.json"),
   },
 };
 const CONFIG = LANGS[LANG];

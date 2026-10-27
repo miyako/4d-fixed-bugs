@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="light dark" />
+<title>Bugs 4D corrigés — Recherche</title>
+<link rel="alternate" hreflang="en" href="https://miyako.github.io/4d-fixed-bugs/" />
+<link rel="alternate" hreflang="ja" href="https://miyako.github.io/4d-fixed-bugs/ja/" />
+<link rel="alternate" hreflang="fr" href="https://miyako.github.io/4d-fixed-bugs/fr/" />
+<link rel="stylesheet" href="../style.css?v=17" />
+</head>
+<body>
+  <header class="app-bar">
+    <div class="app-bar-inner">
+      <img class="app-bar-logo" src="../assets/banner.png" alt="Bugs 4D corrigés" />
+      <form id="chat-form" class="app-bar-form">
+        <input
+          id="chat-input"
+          type="text"
+          placeholder="Décrivez un bug 4D…"
+          autocomplete="off"
+          disabled
+        />
+        <button type="submit" class="icon-btn icon-btn-primary" disabled title="Rechercher">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2a8 8 0 1 0 4.9 14.32l5.39 5.39 1.42-1.42-5.39-5.39A8 8 0 0 0 10 2zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12z"/></svg>
+          <span>Rechercher</span>
+        </button>
+        <button id="clear-btn" type="button" class="icon-btn" title="Effacer la conversation">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3l1-1h4l1 1h4v2H5V3h4zM6 7h12l-1 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 7zm3 3v9h1v-9H9zm5 0v9h1v-9h-1z"/></svg>
+          <span>Effacer</span>
+        </button>
+        <button id="copy-btn" type="button" class="icon-btn" title="Copier les résultats au format Markdown">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 2a2 2 0 0 0-2 2H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1a2 2 0 0 0-2-2H9zm0 2h4v2H9V4zM6 6h1v2h6V6h1v14H6V6z"/></svg>
+          <span>Copier</span>
+        </button>
+      </form>
+    </div>
+  </header>
+
+  <main>
+    <nav class="lang-switch" aria-label="Langue"><a href="../" hreflang="en" lang="en">English</a> · <a href="../ja/" hreflang="ja" lang="ja">日本語</a> · <span aria-current="page">Français</span></nav>
+    <p class="subtitle">
+      Décrivez un bug 4D en français, précisez une version (par exemple « v20 »,
+      « autour de v18 », « avant 17 », « depuis 20 », « jusqu’à 17 »), un nom de commande
+      exact en anglais (par exemple GOTO OBJECT) ou une référence ACI.
+      Tout fonctionne dans votre navigateur — sans serveur, sans envoi de données
+      et sans grand modèle de langage (LLM).
+    </p>
+    <div id="boot-status" class="status" role="status">Démarrage…</div>
+
+    <div id="chat" class="chat-container"></div>
+  </main>
+
+  <footer>
+    <p>
+      Données extraites de <a href="https://bugs.4d.com" target="_blank" rel="noopener noreferrer">bugs.4d.com</a>.
+      Résumés traduits en français ; noms des commandes et liens vers la documentation conservés en anglais.
+      Modèle de recherche : <a href="https://huggingface.co/Xenova/multilingual-e5-small" target="_blank" rel="noopener noreferrer">multilingual-e5-small</a>
+      via <a href="https://huggingface.co/docs/transformers.js" target="_blank" rel="noopener noreferrer">transformers.js</a>.
+    </p>
+  </footer>
+
+  <script type="module" src="../src/app.js?v=17"></script>
+</body>
+</html>

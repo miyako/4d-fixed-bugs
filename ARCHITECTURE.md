@@ -33,6 +33,8 @@ docs/                      # GitHub Pages root (served as /)
   index.html                # the English page
   ja/
     index.html               # the Japanese page (same JS/CSS, <html lang="ja">; see §11)
+  fr/
+    index.html               # the French page (same JS/CSS, <html lang="fr">; see §12)
   style.css                 # all styling (light + dark)
   assets/
     banner.png               # 128x128 app-bar logo/icon
@@ -42,6 +44,9 @@ docs/                      # GitHub Pages root (served as /)
     ja/
       meta.json                 # same records with Japanese summaries
       embeddings.bin            # N rows x 256 cols (ruri-v3-30m), L2-normalized
+    fr/
+      meta.json                 # same records with French summaries
+      embeddings.bin            # N rows x 384 cols (multilingual E5-small), L2-normalized
   src/
     app.js                     # entry point: boot, retrieval, chat UI, deterministic reply builder
     i18n.js                    # per-language dataset dir, embedding model settings, score thresholds, UI strings
@@ -61,6 +66,9 @@ data/                       # source dataset + offline precompute inputs (NOT se
   jp_notes.json               # Japanese cross-reference notes keyed by ACI reference
   all_bugs_ja.json            # [{reference, summary (Japanese), source_fingerprint}] — see §11
   pending_translation.json    # bugs whose Japanese summary still needs writing
+  all_bugs_fr.json            # [{reference, summary (French), source_fingerprint}] — see §12
+  pending_translation_fr.json # bugs whose French summary still needs writing
+  translation_fr/            # French input/output chunks (Japanese: translation/)
   update_state.json           # incremental-update memory: page hashes, enrichment fingerprints, JP repo SHAs, link checks
   version_sources.json        # {version: ["version"|"branch"]} — which bugs.4d.com listing serves each version
   pending_enrichment.json     # bugs whose English summary still needs writing (empty after a completed update)
@@ -78,19 +86,22 @@ scripts/
     split_pending.py           # splits pending work into per-worker chunks
     merge_enrichment.py        # validates and merges written summaries back in
     check_links.py             # re-verifies every developer.4d.com URL still resolves
-    build_translation.py       # Japanese translation delta -> data/pending_translation.json
-    merge_translation.py       # validates and merges written Japanese summaries
-    ja_common.py               # translation fingerprint + validator
+    build_translation.py       # translation delta (default ja; --lang fr for French)
+    merge_translation.py       # validates and merges written Japanese/French summaries
+    ja_common.py               # Japanese fingerprint/validator + shared structural checks
+    fr_common.py               # English-only French fingerprint + prose validation
+    translation_common.py      # language-specific paths and helpers
     TRANSLATION_PROMPT.md      # instructions handed to each translation worker
-    generate_embeddings.mjs    # incremental build of docs/data/{meta.json,embeddings.bin} (--lang ja: docs/data/ja/)
-    bump_cache_bust.py         # bumps ?v=N on docs/index.html asset URLs
+    TRANSLATION_PROMPT_FR.md   # French writing contract; canonical English commands/links
+    generate_embeddings.mjs    # incremental build of docs/data/ (--lang ja/fr: docs/data/ja/ or fr/)
+    bump_cache_bust.py         # bumps shared ?v=N on all three pages' asset URLs
     ENRICHMENT_PROMPT.md       # the prose-writing instructions handed to each worker
-  package.json                 # scripts-only deps: @xenova/transformers@2.17.2 (English), @huggingface/transformers@3.8.1 (Japanese); playwright (dev, smoke test)
+  package.json                 # scripts-only deps: @xenova/transformers@2.17.2 (English/French), @huggingface/transformers@3.8.1 (Japanese); playwright (dev, smoke test)
 
 tests/
   js/                         # node:test unit tests for docs/src (version/command parsing, rendering, i18n)
   python/                     # unittest for the translation validator
-  eval/                       # Japanese retrieval-quality eval set + script
+  eval/                       # Japanese/French retrieval-quality query sets + --lang evaluator
   browser/smoke.mjs           # headless-browser smoke test of both pages
   generate_embeddings.mjs      # original non-incremental build (superseded by update/generate_embeddings.mjs)
   crawl_4d_bugs.sh             # original crawler, kept for reference (superseded by update/crawl.py)
@@ -684,3 +695,49 @@ enforces this; see `UPDATING.md` → *The Japanese site*.
 
 In WebLLM mode the system prompt stays in English with an added instruction to
 reply in Japanese.
+
+## 12. French version (`docs/fr/`)
+
+The French page shares the app and language configuration in `docs/src/i18n.js`.
+Its full dataset is `docs/data/fr/meta.json` + `embeddings.bin`, with the same
+references, commands, versions and ordering as English, but French summaries.
+Offline and browser embedding settings must match: `@xenova/transformers`,
+`Xenova/multilingual-e5-small`, `quantized: true`, 384 dimensions,
+mean pooling and L2 normalization. Prefix every corpus summary with `"passage: "`
+after stripping Markdown links; prefix every browser query with `"query: "`.
+These task prefixes are required even though both texts are French.
+
+French prose is translated **only from canonical English**, not from Japanese
+notes or Japanese summaries. `build_translation.py --lang fr` fingerprints
+the English summary and command set; Japanese-note-only changes cannot enqueue
+French work. It writes `data/pending_translation_fr.json`, split into
+`data/translation_fr/` chunks. `merge_translation.py --lang fr` validates and
+stores `data/all_bugs_fr.json` records with their source fingerprints.
+The merge rejects stale pending fingerprints if English changed after queuing.
+
+Shared structural validation preserves Markdown links (both label and original
+English URL), inline code, verbatim command names and ACI references. French
+does not rewrite URLs to `/docs/fr/` and does not apply Japanese character or
+politeness heuristics. It requires a French prose signal, rejects unchanged
+English, and permits genuine French without accented characters.
+`scripts/update/TRANSLATION_PROMPT_FR.md` gives the writing contract.
+
+`update.sh` computes both translation queues before stopping at their manual
+gate, builds all three datasets only when both queues are empty, checks links
+from all three corpora, and synchronizes asset cache versions on all three pages.
+French URLs are the canonical English ones, so link checks share cached results.
+
+After generating French data, validate retrieval from `scripts/` with
+`node ../tests/eval/eval_retrieval.mjs --lang fr --min-recall8 0.8 --min-visible-recall8 0.8 --max-off-topic-hits 0`.
+The 43 French query cases correspond to the Japanese evaluation set; both
+raw top-eight recall and recall among client-visible results must reach 80%,
+and none of the four off-topic queries may pass the score floor.
+
+On the 2,467-summary corpus, quantized E5-small measured **88.4% recall@8**,
+**72.1% recall@1** and **0.805 MRR** over these 43 queries using single-query
+inference, as in the browser. The previous multilingual MiniLM measured 83.7%,
+62.8% and 0.700 respectively. E5 correct-hit cosine scores ranged from 0.854 to
+0.932; the four off-topic top scores ranged from 0.784 to 0.838. French uses
+`min: 0.85`, `medium: 0.88`, `high: 0.90`: all 38 correct top-eight hits remain
+visible and all four off-topic queries are rejected on this evaluation set.
+These scores are model-specific, not interchangeable with English or Japanese.

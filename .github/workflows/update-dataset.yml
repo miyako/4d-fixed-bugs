@@ -6,7 +6,7 @@ name: Update dataset
 #   context, and open a PR. If bugs need English summaries the pipeline stops
 #   at the enrichment gate and the PR lists them; write the prose on that
 #   branch (merge_enrichment.py), then re-run this workflow on that branch
-#   with mode "build-only". The same applies to the Japanese translation gate
+#   with mode "build-only". The same applies to the Japanese/French translation gate
 #   (merge_translation.py) that follows it.
 # - mode "build-only": skip crawling and finish the build (link check,
 #   embeddings, cache-bust) on the selected branch, committing the result.
@@ -79,10 +79,15 @@ jobs:
           pending=$(python3 -c "import json;print(len(json.load(open('data/pending_enrichment.json'))))")
           echo "pending=$pending" >> "$GITHUB_OUTPUT"
           pending_ja=0
+          pending_fr=0
           if [ "$pending" = "0" ] && [ -f data/pending_translation.json ]; then
             pending_ja=$(python3 -c "import json;print(len(json.load(open('data/pending_translation.json'))))")
           fi
           echo "pending_ja=$pending_ja" >> "$GITHUB_OUTPUT"
+          if [ "$pending" = "0" ] && [ -f data/pending_translation_fr.json ]; then
+            pending_fr=$(python3 -c "import json;print(len(json.load(open('data/pending_translation_fr.json'))))")
+          fi
+          echo "pending_fr=$pending_fr" >> "$GITHUB_OUTPUT"
           if [ -n "$(git status --porcelain)" ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
@@ -108,20 +113,25 @@ jobs:
                   s = b["raw_summary"].replace("|", "\\|").replace("\n", " ")
                   print(f"| {b['reference']} | {b['reason']} | {', '.join(b['versions'])} | {s} |")
           else:
-              pending_ja = []
-              if os.path.exists("data/pending_translation.json"):
-                  pending_ja = json.load(open("data/pending_translation.json"))
-              if pending_ja:
-                  print(f"**{len(pending_ja)} bug(s) need a Japanese summary before the site can be rebuilt.**\n")
-                  print("Split them with `python3 scripts/update/split_pending.py --kind translation`, write "
-                        "each chunk per `scripts/update/TRANSLATION_PROMPT.md`, merge with "
-                        "`python3 scripts/update/merge_translation.py <chunk.out.json> --partial`, then re-run "
+              total = 0
+              for lang, name, suffix in (("ja", "Japanese", ""), ("fr", "French", "_fr")):
+                  path = f"data/pending_translation{suffix}.json"
+                  translations = json.load(open(path)) if os.path.exists(path) else []
+                  total += len(translations)
+                  if not translations:
+                      continue
+                  prompt = "TRANSLATION_PROMPT_FR.md" if lang == "fr" else "TRANSLATION_PROMPT.md"
+                  print(f"**{len(translations)} bug(s) need a {name} summary before the site can be rebuilt.**\n")
+                  print(f"Split them with `python3 scripts/update/split_pending.py --kind translation --lang {lang}`, write "
+                        f"each chunk per `scripts/update/{prompt}`, merge with "
+                        f"`python3 scripts/update/merge_translation.py --lang {lang} <chunk.out.json> --partial`, then re-run "
                         "the *Update dataset* workflow on this branch with mode `build-only`.\n")
                   print("| Reference | Reason |")
                   print("|---|---|")
-                  for b in pending_ja:
+                  for b in translations:
                       print(f"| {b['reference']} | {b['reason']} |")
-              else:
+                  print()
+              if not total:
                   print("No enrichment or translation pending; site data has been rebuilt.")
           EOF
           cat "$RUNNER_TEMP/pr_body.md" >> "$GITHUB_STEP_SUMMARY"
@@ -142,6 +152,6 @@ jobs:
           branch: dataset-update/${{ github.run_id }}
           commit-message: Update dataset from bugs.4d.com and 4D-JP notes
           title: >-
-            Update dataset${{ steps.run.outputs.pending != '0' && format(' ({0} bugs pending enrichment)', steps.run.outputs.pending) || (steps.run.outputs.pending_ja != '0' && format(' ({0} bugs pending translation)', steps.run.outputs.pending_ja)) || '' }}
+            Update dataset${{ steps.run.outputs.pending != '0' && format(' ({0} bugs pending enrichment)', steps.run.outputs.pending) || ((steps.run.outputs.pending_ja != '0' || steps.run.outputs.pending_fr != '0') && format(' (JA: {0}, FR: {1} pending translation)', steps.run.outputs.pending_ja, steps.run.outputs.pending_fr)) || '' }}
           body-path: ${{ runner.temp }}/pr_body.md
           delete-branch: true

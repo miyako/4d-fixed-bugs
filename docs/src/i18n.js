@@ -1,8 +1,8 @@
 /**
  * Per-language configuration and UI strings.
  *
- * The same app.js serves both docs/index.html (English) and
- * docs/ja/index.html (Japanese); the page's <html lang> picks the locale.
+ * The same app.js serves the English, Japanese and French pages;
+ * the page's <html lang> picks the locale.
  * A locale decides which dataset is loaded (each has its own summaries and
  * its own embeddings), which embedding model encodes the query, and every
  * user-visible string app.js produces.
@@ -109,7 +109,55 @@ const JA = {
   },
 };
 
-export const LOCALES = { en: EN, ja: JA };
+const FR = {
+  lang: "fr",
+  dataDir: "../data/fr/",
+  embedding: {
+    library: "https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/dist/transformers.min.js",
+    model: "Xenova/multilingual-e5-small",
+    options: { quantized: true },
+    dim: 384,
+    queryPrefix: "query: ",
+  },
+  // French evaluation: correct hits score 0.854-0.932; off-topic queries
+  // score 0.784-0.838. Keep the floor between these measured ranges.
+  scores: { min: 0.85, high: 0.90, medium: 0.88 },
+  t: {
+    loadingData: "Chargement de la base de bugs…",
+    loadingModel: "Chargement du modèle de recherche sémantique…",
+    loadingChat: "Téléchargement du modèle d’IA local… cela peut prendre du temps la première fois.",
+    loadingChatShort: "Chargement du modèle d’IA local…",
+    ready: (n, min, max) => `Prêt. ${n} bugs 4D corrigés chargés (versions ${min}-${max}). Décrivez un bug pour lancer la recherche.`,
+    failed: (msg) => `Échec du démarrage : ${msg}`,
+    searching: "Recherche dans la base de bugs…",
+    thinking: "Réflexion en cours…",
+    error: (msg) => `Erreur : ${msg}`,
+    showReasoning: "Afficher le raisonnement",
+    exact: "Exact",
+    headers: ["ACI", "Pertinence", "Versions", "Résumé"],
+    foundDirect: (refs) => `${refs.join(", ")} trouvé${refs.length > 1 ? "s" : ""} directement — consultez les détails ci-dessous.`,
+    notFoundWithResults: (refs) =>
+      `${refs.join(", ")} : aucune référence correspondante dans la base. Voici les résultats les plus proches :`,
+    notFoundNoResults: (refs) =>
+      `${refs.join(", ")} : aucune référence correspondante dans la base et aucun bug similaire trouvé.`,
+    noRelevant: "Aucun bug ne correspond suffisamment à cette recherche — reformulez votre demande ou décrivez le bug plus en détail.",
+    noResults: "Aucun bug ne correspond à cette recherche.",
+    mentioning: (cmds) => `mentionnant ${cmds.join(", ")}`,
+    fixedIn: (desc) => `corrigé(s) dans ${desc}`,
+    noExactMatchFor: (what) => `aucune correspondance exacte pour ${what}`,
+    found: (n, criteria) =>
+      `${n} bug${n === 1 ? "" : "s"} trouvé${n === 1 ? "" : "s"}${criteria.length ? " " + criteria.join(" et ") : ""}.`,
+    fallback: (notes) =>
+      ` Aucune correspondance exacte${notes.length > 1 ? " (" + notes.join(" ; ") + ")" : ""} — les résultats globalement les plus proches sont affichés.`,
+    nothingToCopy: "Aucun résultat à copier pour le moment.",
+    copied: "Tableau des résultats copié dans le presse-papiers.",
+    copyFailed: (msg) => `Échec de la copie : ${msg}`,
+    copyRejected: "La copie a été refusée par le navigateur.",
+    replyLanguage: "Write your reply in French.\n\n",
+  },
+};
+
+export const LOCALES = { en: EN, ja: JA, fr: FR };
 
 export function getLocale(lang) {
   return LOCALES[(lang || "en").slice(0, 2)] || EN;

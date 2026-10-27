@@ -22,7 +22,7 @@ import subprocess
 import sys
 from concurrent.futures import ThreadPoolExecutor
 
-from common import ENRICHED_PATH, JA_PATH, USER_AGENT, load_json, load_state, save_state
+from common import ENRICHED_PATH, JA_PATH, FR_PATH, USER_AGENT, load_json, load_state, save_state
 
 LINK_RE = re.compile(r"\]\((https?://[^)\s]+)\)")
 
@@ -64,8 +64,8 @@ def main():
     if not bugs:
         sys.exit(f"No enriched bugs found at {ENRICHED_PATH}")
 
-    # The Japanese summaries carry the same links under /docs/ja/.
-    links = collect_links(bugs + (load_json(JA_PATH, []) or []))
+    # Japanese localizes /docs/ja/; French preserves the canonical English URLs.
+    links = collect_links(bugs + (load_json(JA_PATH, []) or []) + (load_json(FR_PATH, []) or []))
     state = load_state()
     cache = {} if args.recheck_all else state.get("link_checks", {})
 
@@ -94,7 +94,7 @@ def main():
         shown = ", ".join(refs[:5]) + (f" (+{len(refs) - 5} more)"
                                        if len(refs) > 5 else "")
         print(f"  {code}  {url}\n        cited by {shown}", file=sys.stderr)
-    print("\nFix the URLs in data/all_bugs_enriched.json / data/all_bugs_ja.json (and in "
+    print("\nFix the URLs in data/all_bugs_enriched.json / data/all_bugs_ja.json / data/all_bugs_fr.json (and in "
           "data/command_index.json if a whole command family moved), then "
           "re-run generate_embeddings.mjs to re-embed the edited summaries.",
           file=sys.stderr)

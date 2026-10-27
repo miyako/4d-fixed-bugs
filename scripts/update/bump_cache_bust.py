@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Step 8 — bump the cache-busting query string on every page's asset URLs
-(docs/index.html and docs/ja/index.html share one version number, since they
+(docs/index.html, docs/ja/index.html and docs/fr/index.html share one version number, since they
 load the same JS/CSS).
 
 GitHub Pages serves static assets with `Cache-Control: max-age=600` and offers
@@ -22,6 +22,7 @@ from common import BASE  # noqa: E402
 PAGES = [
     os.path.join(BASE, "docs", "index.html"),
     os.path.join(BASE, "docs", "ja", "index.html"),
+    os.path.join(BASE, "docs", "fr", "index.html"),
 ]
 ASSET_RE = re.compile(r'((?:href|src)="[^"]+?\?v=)(\d+)(")')
 

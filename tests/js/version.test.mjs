@@ -40,6 +40,53 @@ test("out-of-range numbers are ignored", () => {
   assert.equal(parse("エラー50件"), null);
 });
 
+test("French approximate and exact versions", () => {
+  for (const q of ["autour de v18", "autour de la version 18", "environ 18", "vers v18", "aux alentours de 18", "approximativement 18"]) {
+    assert.deepEqual(parse(q), { type: "approx", major: 18 }, q);
+  }
+  assert.deepEqual(parse("plantage dans la version 20"), { type: "exact", major: 20 });
+  assert.deepEqual(parse("version 20.1"), { type: "exact", major: 20 });
+  assert.deepEqual(parse("depuis la version 19 R8"), { type: "r-release", major: 19, rNum: 8 });
+});
+
+test("French before/after distinguish exclusive and inclusive bounds", () => {
+  for (const [query, type, major, inclusive] of [
+    ["avant 17", "before", 17, false],
+    ["avant la version 17", "before", 17, false],
+    ["après v20", "after", 20, false],
+    ["APRÈS LA VERSION 20", "after", 20, false],
+    ["depuis 20", "after", 20, true],
+    ["depuis la version 20", "after", 20, true],
+    ["à partir de v20", "after", 20, true],
+    ["plantage à partir de la version 20", "after", 20, true],
+    ["jusqu'à 17", "before", 17, true],
+    ["jusqu’à la version 17", "before", 17, true],
+    ["jusqu’à Ｖ１７", "before", 17, true],
+  ]) {
+    const intent = { type, major, inclusive };
+    assert.deepEqual(parse(query), intent, query);
+    assert.equal(bugMatchesIntent({ versions: [`${major}.1_hf1`] }, parse(query)), inclusive, query);
+    assert.equal(bugMatchesIntent({ versions: [`${major - 1}`] }, intent), type === "before", query);
+    assert.equal(bugMatchesIntent({ versions: [`${major + 1}`] }, intent), type === "after", query);
+  }
+  assert.equal(parse("avant 99"), null);
+  assert.equal(parse("depuis 50"), null);
+  assert.equal(parse("jusqu’à 99"), null);
+});
+
+test("French intent descriptions cover all intent types", () => {
+  const describe = (intent) => describeIntent(intent, "fr");
+  assert.equal(describe({ type: "exact", major: 20 }), "la version 20 (y compris ses mises à jour et correctifs)");
+  assert.equal(describe({ type: "approx", major: 18 }), "les versions autour de 18 (versions majeures 17-19)");
+  assert.equal(describe({ type: "before", major: 17 }), "les versions avant 17");
+  assert.equal(describe({ type: "before", major: 17, inclusive: true }), "les versions jusqu’à 17 inclus");
+  assert.equal(describe({ type: "after", major: 20 }), "les versions après 20");
+  assert.equal(describe({ type: "after", major: 20, inclusive: true }), "la version 20 et les suivantes");
+  assert.equal(describe({ type: "r-release", major: 19, rNum: 8 }), "19_r8 et toute la version 20 (les versions R préfigurent la version majeure suivante)");
+  assert.equal(describe(null), null);
+  assert.equal(describe({ type: "unknown", major: 20 }), null);
+});
+
 test("inclusive bounds match the boundary major", () => {
   const bug = { versions: ["17.3"] };
   assert.equal(bugMatchesIntent(bug, { type: "before", major: 17, inclusive: true }), true);

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Browser smoke test for both pages: serves docs/ locally, loads / and /ja/
+ * Browser smoke test for all pages: serves docs/ locally, loads /, /ja/ and /fr/
  * in headless Chromium, waits for the dataset + embedding model to load
  * (fetched from the CDN / Hugging Face, so this needs network), runs a few
  * queries and checks the rendered replies and results tables.
@@ -66,6 +66,14 @@ async function ask(page, query) {
   return bubble;
 }
 
+async function replyText(bubble) {
+  return bubble.evaluate((element) => {
+    const prose = element.cloneNode(true);
+    prose.querySelectorAll(".hits-table, .reasoning").forEach((node) => node.remove());
+    return prose.textContent.trim();
+  });
+}
+
 await check("English page boots and searches", async (page) => {
   await page.goto(`${base}/`);
   await page.waitForFunction(() => document.querySelector("#boot-status").textContent.startsWith("Ready."), null, { timeout: 180_000 });
@@ -73,11 +81,13 @@ await check("English page boots and searches", async (page) => {
   assert.ok((await bubble.locator(".hits-table tbody tr").count()) > 0, "no result rows");
   assert.match(await bubble.locator("thead").innerText(), /Summary/);
   assert.equal(await page.locator(".lang-switch a[href='ja/']").count(), 1);
+  assert.equal(await page.locator(".lang-switch a[href='fr/']").count(), 1);
 });
 
 await check("Japanese page boots and searches", async (page) => {
   await page.goto(`${base}/ja/`);
   await page.waitForFunction(() => document.querySelector("#boot-status").textContent.startsWith("準備ができました"), null, { timeout: 180_000 });
+  assert.equal(await page.locator(".lang-switch a[href='../fr/']").count(), 1);
 
   let bubble = await ask(page, "フォームを印刷するとアプリケーションがクラッシュする");
   const rows = bubble.locator(".hits-table tbody tr");
@@ -99,6 +109,39 @@ await check("Japanese page boots and searches", async (page) => {
   bubble = await ask(page, "今日の東京の天気は？");
   assert.match(await bubble.innerText(), /近いバグは見つかりませんでした/);
   assert.equal(await bubble.locator(".hits-table tbody tr").count(), 0);
+});
+
+await check("French page boots and searches", async (page) => {
+  await page.goto(`${base}/fr/`);
+  await page.waitForFunction(() => document.querySelector("#boot-status").textContent.startsWith("Prêt."), null, { timeout: 180_000 });
+  assert.equal(await page.locator("html").getAttribute("lang"), "fr");
+  assert.equal(await page.locator(".lang-switch a[href='../']").count(), 1);
+  assert.equal(await page.locator(".lang-switch a[href='../ja/']").count(), 1);
+  assert.equal(await page.locator(".lang-switch [aria-current=page]").innerText(), "Français");
+
+  let bubble = await ask(page, "L’application plante lors de l’impression d’un formulaire");
+  assert.ok((await bubble.locator(".hits-table tbody tr").count()) > 0, "no French search results");
+  assert.match(await bubble.locator("thead").innerText(), /Résumé/);
+
+  // Unfiltered semantic searches intentionally omit the generic reply.
+  // A command/version filter produces prose; assert it separately from the table.
+  bubble = await ask(page, "depuis v20 avec Print form");
+  const reply = await replyText(bubble);
+  assert.match(reply, /^\d+ bugs? trouvés? mentionnant Print form et corrigé\(s\) dans la version 20 et les suivantes\.$/);
+  assert.ok((await bubble.locator(".hits-table tbody tr").count()) > 0, "no French filtered results");
+  const links = await bubble.locator(".hit-summary a").evaluateAll((as) => as.map((a) => ({ href: a.href, text: a.textContent })));
+  assert.ok(links.some((a) => a.text === "Print form"), "canonical English command name missing");
+  assert.ok(links.length > 0 && links.every((a) =>
+    a.href.startsWith("https://developer.4d.com/") && !/\/docs\/(?:fr|ja)\//.test(a.href)
+  ), `links must preserve original English documentation: ${JSON.stringify(links)}`);
+
+  bubble = await ask(page, "ACI0092218");
+  assert.match(await replyText(bubble), /^ACI0092218 trouvé directement/);
+  assert.equal(await bubble.locator(".hits-table tbody tr").count(), 1);
+  assert.equal(await bubble.locator(".match-badge").first().innerText(), "Exact");
+
+  await page.click("#clear-btn");
+  assert.equal(await page.locator(".chat-message").count(), 0);
 });
 
 await browser.close();

@@ -23,9 +23,10 @@ same pipeline on demand (Actions → Update dataset → Run workflow):
   merge it with `merge_enrichment.py`, push, then re-run the workflow **on
   that branch** with mode `build-only`. If nothing is pending, the PR already
   contains the rebuilt site data.
-- **mode `build-only`** runs stages 6–11 on the selected branch and commits the
-  result back to it. If Japanese summaries are pending it stops at the
-  translation gate instead (see [The Japanese site](#the-japanese-site)).
+- **mode `build-only`** runs stages 6–12 on the selected branch and commits the
+  result back to it. If Japanese or French summaries are pending it stops at the
+  translation gate instead (see [The Japanese site](#the-japanese-site) and
+  [The French site](#the-french-site)). PR messaging lists both queues.
 
 The repository must allow *GitHub Actions to create and approve pull requests*
 (Settings → Actions → General → Workflow permissions).
@@ -40,13 +41,14 @@ The repository must allow *GitHub Actions to create and approve pull requests*
 | 4 | Context | `scripts/update/build_context.py` | `data/all_bugs_context.json`, `data/pending_enrichment.json` |
 | — | **Enrichment (manual gate)** | `scripts/update/ENRICHMENT_PROMPT.md` | `data/enrichment/chunk_N.out.json` |
 | 5 | Merge | `scripts/update/merge_enrichment.py` | `data/all_bugs_enriched.json` |
-| 6 | Translation context | `scripts/update/build_translation.py` | `data/pending_translation.json` |
-| — | **Translation (manual gate)** | `scripts/update/TRANSLATION_PROMPT.md` | `data/translation/chunk_N.out.json` |
-| 7 | Merge translation | `scripts/update/merge_translation.py` | `data/all_bugs_ja.json` |
+| 6 | Translation context | `scripts/update/build_translation.py` (also `--lang fr`) | `data/pending_translation.json`, `data/pending_translation_fr.json` |
+| — | **Translation (manual gate)** | `scripts/update/TRANSLATION_PROMPT.md`, `scripts/update/TRANSLATION_PROMPT_FR.md` | `data/translation/chunk_N.out.json`, `data/translation_fr/chunk_N.out.json` |
+| 7 | Merge translation | `scripts/update/merge_translation.py` (also `--lang fr`) | `data/all_bugs_ja.json`, `data/all_bugs_fr.json` |
 | 8 | Link check | `scripts/update/check_links.py` | verified URLs cached in `data/update_state.json` |
 | 9 | Build | `scripts/update/generate_embeddings.mjs` | `docs/data/meta.json`, `docs/data/embeddings.bin`, `docs/src/beta-versions.js` |
 | 10 | Build (ja) | `scripts/update/generate_embeddings.mjs --lang ja` | `docs/data/ja/meta.json`, `docs/data/ja/embeddings.bin` |
-| 11 | Cache-bust | `scripts/update/bump_cache_bust.py` | `docs/index.html`, `docs/ja/index.html` `?v=N` |
+| 11 | Build (fr) | `scripts/update/generate_embeddings.mjs --lang fr` | `docs/data/fr/meta.json`, `docs/data/fr/embeddings.bin` |
+| 12 | Cache-bust | `scripts/update/bump_cache_bust.py` | English, Japanese and French `index.html` `?v=N` |
 
 `html/` and `vendor/` are gitignored — both are large and fully reproducible.
 
@@ -114,8 +116,8 @@ whole dataset and trigger a full 2,400-bug rewrite.
 
 ## Writing the enrichment
 
-This is the only step that needs judgement, and the only one where written
-content enters the dataset.
+Enrichment and translation are the manual steps where written content enters
+the dataset.
 
 ```
 python3 scripts/update/split_pending.py --chunks 4
@@ -179,17 +181,76 @@ pinned to a commit) via `@huggingface/transformers`, with the model's
 in both `generate_embeddings.mjs` and `docs/src/i18n.js` and must match; a unit
 test checks that.
 
+## The French site
+
+`docs/fr/` has a full French summary for every canonical English bug.
+French translation uses **only `summary_en` and `commands`**, never Japanese
+notes or Japanese summaries. These scripts default to `--lang ja` for backwards
+compatibility; select French explicitly:
+
+```sh
+python3 scripts/update/build_translation.py --lang fr
+python3 scripts/update/split_pending.py --kind translation --lang fr
+# translate each data/translation_fr/chunk_N.json per scripts/update/TRANSLATION_PROMPT_FR.md
+python3 scripts/update/merge_translation.py --lang fr data/translation_fr/chunk_N.out.json --partial --strict
+./scripts/update.sh --build-only
+```
+
+The queue is `data/pending_translation_fr.json`; merged records live in
+`data/all_bugs_fr.json`. The SHA-256 source fingerprint covers the English
+summary and command set, not JP notes. Only changed inputs are requeued;
+removed bugs lose their translations. A stale queue is rejected at merge if
+English or commands changed: rebuild the context and translate the new input.
+`--dry-run`, `--partial`, `--strict`, `--force-all` and `--max-pending` behave as
+for Japanese. Drop `--partial` on the final merge to require full coverage.
+
+Preserve command names, inline code, ACI references and every Markdown link's
+label and **original English URL exactly**; no `/docs/fr/` localization.
+Summaries must be single-paragraph French prose. Validation shares Japanese's
+structural invariants but not Japanese character/politeness heuristics; French
+without accents is valid, identical English is rejected, and missing numbers
+produce warnings (`--strict` makes them errors).
+
+Both queues are refreshed before the translation gate. Neither site's build
+runs until both queues are empty. French embeddings use
+`Xenova/multilingual-e5-small` via `@xenova/transformers`,
+`quantized: true`, 384 dimensions, mean pooling and L2 normalization.
+Corpus inputs must be `"passage: " + stripLinks(summary)`; browser query inputs
+must be `"query: " + query`. Keep model settings and the corresponding task
+prefixes aligned with the client in `docs/src/i18n.js`. `--force` re-embeds all
+French rows after a model or prefix change, even if dimensions are unchanged:
+
+```sh
+(cd scripts && node update/generate_embeddings.mjs --lang fr --force)
+```
+
 ## Tests
 
 ```
 cd scripts && npm install && npm test             # unit tests (JS + Python)
 node ../tests/eval/eval_retrieval.mjs             # Japanese retrieval quality (recall@8, MRR)
+node ../tests/eval/eval_retrieval.mjs --lang fr --min-recall8 0.8 --min-visible-recall8 0.8 --max-off-topic-hits 0
 PW_CHANNEL=chrome node ../tests/browser/smoke.mjs # both pages in headless Chrome (needs network)
 ```
 
 `eval_retrieval.mjs` also prints the score distribution of correct hits versus
 off-topic queries — re-check the `scores` thresholds in `docs/src/i18n.js`
 against it after any embedding-model change.
+
+The French evaluation uses `tests/eval/fr_queries.json` (43 French counterparts
+of the Japanese queries) and the generated `docs/data/fr/` corpus. Run it after
+building the French embeddings. The command above enforces an 80% floor for
+both recall@8 and visible recall@8, so a good ranking that the client's score
+threshold hides does not pass unnoticed. It also requires all four off-topic
+queries to remain below the score floor.
+
+The 2,467-summary E5-small benchmark measured **88.4% recall@8**, **72.1%
+recall@1**, and **0.805 MRR** with single-query inference matching the browser.
+The French thresholds are `min: 0.85`, `medium: 0.88`, `high: 0.90`; the minimum
+retains all 38 correct top-eight hits and rejects all four off-topic queries.
+Correct-hit scores ranged from 0.854–0.932, versus 0.784–0.838 for off-topic
+top hits. Re-run the evaluation rather than carrying these thresholds over to
+a different model.
 
 ## Command matching
 
@@ -226,6 +287,9 @@ python3 scripts/update/build_context.py --force-all
 python3 scripts/update/build_translation.py --force-all
 # …write all ~2,400 Japanese summaries…
 (cd scripts && node update/generate_embeddings.mjs --lang ja --force)
+python3 scripts/update/build_translation.py --lang fr --force-all
+# …write all French summaries from canonical English…
+(cd scripts && node update/generate_embeddings.mjs --lang fr --force)
 ```
 
 `--force-all` and `--force` bypass the fingerprint and row-reuse logic
@@ -236,7 +300,7 @@ the summaries are unchanged but every vector must be recomputed.
 
 Every documentation URL in a summary points at developer.4d.com, and 4D
 reorganizes that site occasionally, so links that were correct when they were
-written can quietly start 404ing. Stage 8 re-checks them (English and Japanese
+written can quietly start 404ing. Stage 8 re-checks them (English, Japanese and French
 summaries alike):
 
 ```
@@ -298,4 +362,3 @@ making a plain re-parse of unchanged HTML non-deterministic — it could flip
 the chosen variant and spuriously mark a bug `source-changed`, pointlessly
 demanding re-enrichment. Ties now break alphabetically, so re-parsing the
 same HTML always yields the same `bugs_raw.json`.
-

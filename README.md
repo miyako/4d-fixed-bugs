@@ -19,6 +19,11 @@ in-browser.
 written from the English summaries and 4D Japan's original release notes,
 searched with the Japanese [ruri-v3-30m](https://huggingface.co/cl-nagoya/ruri-v3-30m)
 embedding model)
+· **Français:** https://miyako.github.io/4d-fixed-bugs/fr/ (full French
+summaries translated only from canonical English, searched with multilingual
+E5-small). Commands, code and documentation links stay exactly as in English.
+The 43-query French evaluation measures 88.4% recall@8, 72.1% recall@1 and
+0.805 MRR; see `UPDATING.md` for the evaluation command and score thresholds.
 
 See [`ARCHITECTURE.md`](ARCHITECTURE.md) for a full technical writeup
 of how the app works (data model, embedding pipeline, retrieval logic,
