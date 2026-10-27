@@ -4,31 +4,32 @@
  * The same app.js serves the English, Japanese and French pages;
  * the page's <html lang> picks the locale.
  * A locale decides which dataset is loaded (each has its own summaries and
- * its own embeddings), which embedding model encodes the query, and every
+ * its own embeddings), relevance thresholds, and every
  * user-visible string app.js produces.
  *
- * The embedding settings here must stay identical to the ones used to build
- * the corpus in scripts/update/generate_embeddings.mjs, or query and corpus
- * vectors stop being comparable.
+ * All three languages share the pinned encoder in search-config.js.
  */
 
 const EN = {
   lang: "en",
   dataDir: "../data/",
-  embedding: {
-    library: "https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/dist/transformers.min.js",
-    model: "Xenova/all-MiniLM-L6-v2",
-    options: { quantized: true },
-    dim: 384,
-    queryPrefix: "",
-  },
   // Cosine-similarity floor below which a match is dropped, and the bands
   // used to color the "Match" badge. Calibrated per model: scores from
   // different models are not on the same scale.
-  scores: { min: 0.35, high: 0.55, medium: 0.45 },
+  // Calibrated against 43 bug queries and 12 unrelated queries per language;
+  // see tests/eval/embeddinggemma-comparison.json.
+  scores: { min: 0.705, high: 0.841, medium: 0.799 },
   t: {
     loadingData: "Loading bug database…",
     loadingModel: "Loading semantic search model…",
+    semanticLoading: "Loading semantic search. Keyword search is available while the model downloads.",
+    semanticProgress: (file, n) => `Loading ${file}: ${n}%. Keyword search is available.`,
+    semanticReady: "Semantic search ready — EmbeddingGemma 2 (WebGPU).",
+    semanticUnavailable: "WebGPU is unavailable. Keyword search is active; ACI, command, and version filters still work.",
+    semanticError: (msg) => `Semantic search failed: ${msg}. Keyword search remains available.`,
+    semanticRetry: "Retry semantic search",
+    keywordMatch: "Keyword",
+    filterMatch: "Filter",
     loadingChat: "Downloading local AI model… this can take a while the first time.",
     loadingChatShort: "Loading local AI model…",
     ready: (n, min, max) => `Ready. ${n} fixed 4D bugs loaded (versions ${min}-${max}). Describe a bug to search.`,
@@ -62,22 +63,18 @@ const EN = {
 const JA = {
   lang: "ja",
   dataDir: "../data/ja/",
-  embedding: {
-    library: "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1/dist/transformers.min.js",
-    // Japanese-specific (cl-nagoya/ruri-v3-30m), ONNX export pinned to a
-    // commit so a re-upload can't silently change the vectors.
-    model: "sirasagi62/ruri-v3-30m-ONNX",
-    options: { dtype: "q8", revision: "cdf9391f1ff2198daa8f63f7ccf97d7b3e7415a0" },
-    dim: 256,
-    queryPrefix: "検索クエリ: ",
-  },
-  // ruri scores sit high: off-topic queries and greetings top out around
-  // 0.80-0.81, one-word queries (印刷) around 0.84, and correct hits in
-  // tests/eval/ja_queries.json score 0.87-0.96 (median 0.93).
-  scores: { min: 0.82, high: 0.9, medium: 0.86 },
+  scores: { min: 0.715, high: 0.845, medium: 0.798 },
   t: {
     loadingData: "バグデータベースを読み込んでいます…",
     loadingModel: "検索モデルを読み込んでいます…",
+    semanticLoading: "意味検索モデルを読み込んでいます。ダウンロード中もキーワード検索を利用できます。",
+    semanticProgress: (file, n) => `${file} を読み込み中: ${n}%。キーワード検索を利用できます。`,
+    semanticReady: "意味検索の準備ができました — EmbeddingGemma 2（WebGPU）。",
+    semanticUnavailable: "WebGPU を利用できないため、キーワード検索を使用しています。ACI・コマンド名・バージョンでの絞り込みも利用できます。",
+    semanticError: (msg) => `意味検索を開始できませんでした: ${msg}。キーワード検索は引き続き利用できます。`,
+    semanticRetry: "意味検索を再試行",
+    keywordMatch: "キーワード",
+    filterMatch: "条件一致",
     loadingChat: "ローカル AI モデルをダウンロードしています… 初回は時間がかかります。",
     loadingChatShort: "ローカル AI モデルを読み込んでいます…",
     ready: (n, min, max) =>
@@ -112,19 +109,18 @@ const JA = {
 const FR = {
   lang: "fr",
   dataDir: "../data/fr/",
-  embedding: {
-    library: "https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/dist/transformers.min.js",
-    model: "Xenova/multilingual-e5-small",
-    options: { quantized: true },
-    dim: 384,
-    queryPrefix: "query: ",
-  },
-  // French evaluation: correct hits score 0.854-0.932; off-topic queries
-  // score 0.784-0.838. Keep the floor between these measured ranges.
-  scores: { min: 0.85, high: 0.90, medium: 0.88 },
+  scores: { min: 0.702, high: 0.841, medium: 0.800 },
   t: {
     loadingData: "Chargement de la base de bugs…",
     loadingModel: "Chargement du modèle de recherche sémantique…",
+    semanticLoading: "Chargement de la recherche sémantique. La recherche par mots-clés reste disponible pendant le téléchargement.",
+    semanticProgress: (file, n) => `Chargement de ${file} : ${n} %. La recherche par mots-clés reste disponible.`,
+    semanticReady: "Recherche sémantique prête — EmbeddingGemma 2 (WebGPU).",
+    semanticUnavailable: "WebGPU est indisponible. La recherche par mots-clés est active ; les filtres ACI, commande et version restent disponibles.",
+    semanticError: (msg) => `Échec de la recherche sémantique : ${msg}. La recherche par mots-clés reste disponible.`,
+    semanticRetry: "Réessayer la recherche sémantique",
+    keywordMatch: "Mot-clé",
+    filterMatch: "Filtre",
     loadingChat: "Téléchargement du modèle d’IA local… cela peut prendre du temps la première fois.",
     loadingChatShort: "Chargement du modèle d’IA local…",
     ready: (n, min, max) => `Prêt. ${n} bugs 4D corrigés chargés (versions ${min}-${max}). Décrivez un bug pour lancer la recherche.`,

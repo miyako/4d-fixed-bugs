@@ -1,0 +1,450 @@
+{
+  "description": "Final actual CPU EmbeddingGemma evaluation at active, measured per-locale production thresholds against unchanged 43-query intentions. All twelve negatives per language are gated. Original four off-topic metrics remain baseline-comparable.",
+  "locales": {
+    "en": {
+      "report": "embeddinggemma-en.json",
+      "oldActual": {
+        "queries": 43,
+        "recall1": 0.9534883720930233,
+        "recall8": 1,
+        "mrr": 0.9709302325581395,
+        "visibleRecall8": 1,
+        "offTopicHits": 1
+      },
+      "newActualAtCapturedProductionFloor": {
+        "queries": 43,
+        "recall1": 0.8837209302325582,
+        "recall8": 1,
+        "mrr": 0.9418604651162791,
+        "visibleRecall8": 1,
+        "offTopicHits": 0,
+        "expandedOffTopicHits": 0
+      },
+      "capturedProductionScores": {
+        "min": 0.705,
+        "high": 0.841,
+        "medium": 0.799
+      },
+      "recommendedScores": {
+        "min": 0.705,
+        "medium": 0.799,
+        "high": 0.841
+      },
+      "metricsAtRecommendedFloor": {
+        "queries": 43,
+        "recall1": 0.8837209302325582,
+        "recall8": 1,
+        "mrr": 0.9418604651162791,
+        "visibleRecall8": 1,
+        "offTopicHits": 0,
+        "expandedOffTopicHits": 0
+      },
+      "regressionsAfterCalibration": [
+        "recall1",
+        "mrr"
+      ],
+      "calibration": {
+        "correct": {
+          "min": 0.7476996650155772,
+          "p10": 0.7729726309413768,
+          "p25": 0.7989808473102434,
+          "median": 0.8263838810732277,
+          "p75": 0.8405860236707767,
+          "max": 0.8778521394253073
+        },
+        "negatives": {
+          "count": 12,
+          "min": 0.577479160086583,
+          "median": 0.595964999782948,
+          "max": 0.6616771742210616
+        },
+        "separation": 0.08602249079451552,
+        "recommendation": {
+          "scores": {
+            "min": 0.7046884196183194,
+            "medium": 0.7989808473102434,
+            "high": 0.8405860236707767
+          },
+          "rationale": "Floor midway between maximum negative and minimum correct score",
+          "visibleRecall8": 1,
+          "offTopicHits": 0
+        }
+      },
+      "rankChanges": [
+        {
+          "query": "Labels at the bottom of the Find in Design tool are cut off",
+          "expected": [
+            "ACI0105986"
+          ],
+          "oldRank": 1,
+          "newRank": 2,
+          "score": 0.7519155336464711
+        },
+        {
+          "query": "An email subject has broken encoding and appears garbled in Mail on iPhone",
+          "expected": [
+            "ACI0100111"
+          ],
+          "oldRank": 1,
+          "newRank": 2,
+          "score": 0.7592834401784214
+        },
+        {
+          "query": "Cannot change the text color of a hyperlink",
+          "expected": [
+            "ACI0102528"
+          ],
+          "oldRank": 1,
+          "newRank": 2,
+          "score": 0.7606978255143417
+        },
+        {
+          "query": "Holding down a key on Mac does not let me enter an accented character",
+          "expected": [
+            "ACI0103071"
+          ],
+          "oldRank": 4,
+          "newRank": 1,
+          "score": 0.8265789368173981
+        },
+        {
+          "query": "On Mac, opening a new window from a list subform prevents the remaining rows from being drawn",
+          "expected": [
+            "ACI0101799"
+          ],
+          "oldRank": 1,
+          "newRank": 2,
+          "score": 0.8132149622998256
+        }
+      ],
+      "capturedAt": "2026-10-27T05:48:40.709Z",
+      "qualityGates": {
+        "minRecall8": 0.95,
+        "minVisibleRecall8": 0.95,
+        "maxOffTopicHits": 0,
+        "negativeQueries": 12,
+        "requireBaseline": false,
+        "passed": true
+      },
+      "baselineDelta": {
+        "recall1": -0.06976744186046513,
+        "recall8": 0,
+        "mrr": -0.029069767441860406,
+        "visibleRecall8": 0,
+        "offTopicHits": -1
+      }
+    },
+    "fr": {
+      "report": "embeddinggemma-fr.json",
+      "oldActual": {
+        "queries": 43,
+        "recall1": 0.7209302325581395,
+        "recall8": 0.8837209302325582,
+        "mrr": 0.8050236585120307,
+        "visibleRecall8": 0.8837209302325582,
+        "offTopicHits": 0
+      },
+      "newActualAtCapturedProductionFloor": {
+        "queries": 43,
+        "recall1": 0.8604651162790697,
+        "recall8": 0.9767441860465116,
+        "mrr": 0.9112160852713179,
+        "visibleRecall8": 0.9767441860465116,
+        "offTopicHits": 0,
+        "expandedOffTopicHits": 0
+      },
+      "capturedProductionScores": {
+        "min": 0.702,
+        "high": 0.841,
+        "medium": 0.8
+      },
+      "recommendedScores": {
+        "min": 0.702,
+        "medium": 0.8,
+        "high": 0.841
+      },
+      "metricsAtRecommendedFloor": {
+        "queries": 43,
+        "recall1": 0.8604651162790697,
+        "recall8": 0.9767441860465116,
+        "mrr": 0.9112160852713179,
+        "visibleRecall8": 0.9767441860465116,
+        "offTopicHits": 0,
+        "expandedOffTopicHits": 0
+      },
+      "regressionsAfterCalibration": [],
+      "calibration": {
+        "correct": {
+          "min": 0.7152818758123961,
+          "p10": 0.7761701163398785,
+          "p25": 0.800486817541879,
+          "median": 0.8188937893800297,
+          "p75": 0.8408014773285895,
+          "max": 0.873463915851764
+        },
+        "negatives": {
+          "count": 12,
+          "min": 0.5714636253494061,
+          "median": 0.6208837790823817,
+          "max": 0.6884790122906472
+        },
+        "separation": 0.026802863521748876,
+        "recommendation": {
+          "scores": {
+            "min": 0.7018804440515216,
+            "medium": 0.800486817541879,
+            "high": 0.8408014773285895
+          },
+          "rationale": "Floor midway between maximum negative and minimum correct score",
+          "visibleRecall8": 0.9767441860465116,
+          "offTopicHits": 0
+        }
+      },
+      "rankChanges": [
+        {
+          "query": "Une requête ORDA avec un joker ne trouve pas les enregistrements ajoutés dans la transaction",
+          "expected": [
+            "ACI0100227"
+          ],
+          "oldRank": 12,
+          "newRank": 1,
+          "score": 0.8212607017826665
+        },
+        {
+          "query": "Le bas des libellés de l'outil de recherche en mode développement est tronqué",
+          "expected": [
+            "ACI0105986"
+          ],
+          "oldRank": 21,
+          "newRank": 64,
+          "score": 0.7152818758123961
+        },
+        {
+          "query": "Déplacer une ligne de list box déclenche un événement On Clicked inattendu",
+          "expected": [
+            "ACI0104021"
+          ],
+          "oldRank": 2,
+          "newRank": 1,
+          "score": 0.854422198197191
+        },
+        {
+          "query": "Déréférencer un pointeur pendant une déclaration var provoque un plantage",
+          "expected": [
+            "ACI0105569"
+          ],
+          "oldRank": 1,
+          "newRank": 3,
+          "score": 0.752799885335537
+        },
+        {
+          "query": "Impossible de désactiver l'avertissement de compilation 550.10 pour toute l'application",
+          "expected": [
+            "ACI0104531"
+          ],
+          "oldRank": 14,
+          "newRank": 1,
+          "score": 0.7879902880065482
+        },
+        {
+          "query": "Sur Mac, BEST OBJECT SIZE renvoie une largeur trop petite pour un bouton radio et coupe son titre",
+          "expected": [
+            "ACI0104590"
+          ],
+          "oldRank": 2,
+          "newRank": 1,
+          "score": 0.8614792902716689
+        },
+        {
+          "query": "Les pointeurs des champs objets disparaissent après compactage du fichier de données",
+          "expected": [
+            "ACI0106326"
+          ],
+          "oldRank": 2,
+          "newRank": 1,
+          "score": 0.8332023663192614
+        },
+        {
+          "query": "Une police installée après le lancement n'est pas disponible pour les objets de formulaire",
+          "expected": [
+            "ACI0101239"
+          ],
+          "oldRank": 3,
+          "newRank": 1,
+          "score": 0.8293677808817616
+        },
+        {
+          "query": "Sur Mac, maintenir une touche enfoncée ne permet pas de saisir un caractère accentué",
+          "expected": [
+            "ACI0103071"
+          ],
+          "oldRank": 20,
+          "newRank": 3,
+          "score": 0.796454949732369
+        },
+        {
+          "query": "Après export DOCX, la numérotation des listes est incorrecte dans Word",
+          "expected": [
+            "ACI0101334"
+          ],
+          "oldRank": 1,
+          "newRank": 2,
+          "score": 0.7683413296170964
+        },
+        {
+          "query": "La complétion de code n'insère pas correctement les constantes",
+          "expected": [
+            "ACI0101037"
+          ],
+          "oldRank": 33,
+          "newRank": 1,
+          "score": 0.806170911028649
+        },
+        {
+          "query": "Le titre de la fenêtre d'administration d'une application construite reste 4D Server",
+          "expected": [
+            "ACI0106252"
+          ],
+          "oldRank": 2,
+          "newRank": 1,
+          "score": 0.8376733215841937
+        }
+      ],
+      "capturedAt": "2026-10-27T05:48:44.988Z",
+      "qualityGates": {
+        "minRecall8": 0.95,
+        "minVisibleRecall8": 0.95,
+        "maxOffTopicHits": 0,
+        "negativeQueries": 12,
+        "requireBaseline": false,
+        "passed": true
+      },
+      "baselineDelta": {
+        "recall1": 0.13953488372093026,
+        "recall8": 0.09302325581395343,
+        "mrr": 0.1061924267592872,
+        "visibleRecall8": 0.09302325581395343,
+        "offTopicHits": 0
+      }
+    },
+    "ja": {
+      "report": "embeddinggemma-ja.json",
+      "oldActual": {
+        "queries": 43,
+        "recall1": 0.9534883720930233,
+        "recall8": 1,
+        "mrr": 0.9680232558139535,
+        "visibleRecall8": 1,
+        "offTopicHits": 0
+      },
+      "newActualAtCapturedProductionFloor": {
+        "queries": 43,
+        "recall1": 0.9302325581395349,
+        "recall8": 0.9767441860465116,
+        "mrr": 0.9545957918050942,
+        "visibleRecall8": 0.9767441860465116,
+        "offTopicHits": 0,
+        "expandedOffTopicHits": 0
+      },
+      "capturedProductionScores": {
+        "min": 0.715,
+        "high": 0.845,
+        "medium": 0.798
+      },
+      "recommendedScores": {
+        "min": 0.715,
+        "medium": 0.798,
+        "high": 0.845
+      },
+      "metricsAtRecommendedFloor": {
+        "queries": 43,
+        "recall1": 0.9302325581395349,
+        "recall8": 0.9767441860465116,
+        "mrr": 0.9545957918050942,
+        "visibleRecall8": 0.9767441860465116,
+        "offTopicHits": 0,
+        "expandedOffTopicHits": 0
+      },
+      "regressionsAfterCalibration": [
+        "recall1",
+        "recall8",
+        "mrr",
+        "visibleRecall8"
+      ],
+      "calibration": {
+        "correct": {
+          "min": 0.7627813708329721,
+          "p10": 0.7804176549516708,
+          "p25": 0.7980679727440573,
+          "median": 0.8218323054564373,
+          "p75": 0.8446952568200168,
+          "max": 0.8756664610564436
+        },
+        "negatives": {
+          "count": 12,
+          "min": 0.5565661608597255,
+          "median": 0.5995160525631382,
+          "max": 0.6671710818679465
+        },
+        "separation": 0.09561028896502566,
+        "recommendation": {
+          "scores": {
+            "min": 0.7149762263504593,
+            "medium": 0.7980679727440573,
+            "high": 0.8446952568200168
+          },
+          "rationale": "Floor midway between maximum negative and minimum correct score",
+          "visibleRecall8": 0.9767441860465116,
+          "offTopicHits": 0
+        }
+      },
+      "rankChanges": [
+        {
+          "query": "リストボックスの行を移動したらOn Clickedイベントが発生してしまう",
+          "expected": [
+            "ACI0104021"
+          ],
+          "oldRank": 2,
+          "newRank": 21,
+          "score": 0.7627813708329721
+        },
+        {
+          "query": "フォントサイズを変えた直後にフォントスタイルを設定するとWindowsで落ちる",
+          "expected": [
+            "ACI0100367"
+          ],
+          "oldRank": 8,
+          "newRank": 2,
+          "score": 0.7873626871709805
+        },
+        {
+          "query": "コード補完で定数がうまく入力できない",
+          "expected": [
+            "ACI0101037"
+          ],
+          "oldRank": 1,
+          "newRank": 2,
+          "score": 0.7646970282396156
+        }
+      ],
+      "capturedAt": "2026-10-27T05:48:49.087Z",
+      "qualityGates": {
+        "minRecall8": 0.95,
+        "minVisibleRecall8": 0.95,
+        "maxOffTopicHits": 0,
+        "negativeQueries": 12,
+        "requireBaseline": false,
+        "passed": true
+      },
+      "baselineDelta": {
+        "recall1": -0.023255813953488413,
+        "recall8": -0.023255813953488413,
+        "mrr": -0.013427464008859302,
+        "visibleRecall8": -0.023255813953488413,
+        "offTopicHits": 0
+      }
+    }
+  },
+  "acceptancePolicy": "Require ranked and visible recall@8 >= .95 and zero hits across all twelve negatives. Do not require baseline parity: model unification intentionally accepts lower EN top-1/MRR and one JA top-eight miss for multilingual gains. These regressions are retained explicitly, not concealed or treated as baseline improvements.",
+  "command": "for lang in en fr ja; do node tests/eval/eval_retrieval.mjs --lang \"$lang\" --report \"tests/eval/embeddinggemma-$lang.json\" --min-recall8 .95 --min-visible-recall8 .95 --max-off-topic-hits 0 || exit $?; done"
+}

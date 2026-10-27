@@ -52,13 +52,13 @@ jobs:
           cache: npm
           cache-dependency-path: scripts/package-lock.json
 
-      - name: Cache embedding model
+      - name: Cache verified search model and runtime
         uses: actions/cache@v4
         with:
           path: |
-            scripts/node_modules/@xenova/transformers/.cache
-            scripts/node_modules/@huggingface/transformers/.cache
-          key: transformers-models-${{ hashFiles('scripts/package-lock.json') }}
+            .cache/search-model
+            .cache/search-runtime
+          key: search-artifacts-${{ hashFiles('docs/src/search-config.js', 'docs/src/runtime-config.js', 'scripts/package-lock.json') }}
 
       - name: Unit tests
         run: |

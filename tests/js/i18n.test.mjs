@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { LOCALES, getLocale } from "../../docs/src/i18n.js";
+import { SEARCH_CONFIG, documentText, queryText } from "../../docs/src/search-config.js";
 
 test("getLocale picks by language prefix, defaults to English", () => {
   assert.equal(getLocale("ja").lang, "ja");
@@ -49,16 +50,49 @@ test("French reply templates preserve canonical command names and references", (
   assert.match(t.replyLanguage, /French/);
 });
 
-test("French embedding settings use the multilingual corpus and pinned Xenova runtime", () => {
-  const locale = LOCALES.fr;
-  assert.equal(locale.dataDir, "../data/fr/");
-  assert.equal(locale.embedding.library, LOCALES.en.embedding.library);
-  assert.equal(locale.embedding.library, "https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/dist/transformers.min.js");
-  assert.equal(locale.embedding.model, "Xenova/multilingual-e5-small");
-  assert.deepEqual(locale.embedding.options, { quantized: true });
-  assert.equal(locale.embedding.dim, 384);
-  assert.equal(locale.embedding.queryPrefix, "query: ");
-  assert.deepEqual(locale.scores, { min: 0.85, high: 0.90, medium: 0.88 });
+test("all locales share the pinned normalized text-only EmbeddingGemma contract", () => {
+  assert.equal(SEARCH_CONFIG.model, "onnx-community/embeddinggemma-2-ONNX");
+  assert.equal(SEARCH_CONFIG.revision, "daa72c51243991dfcaf9f9137d2c573d8f7790c0");
+  assert.equal(SEARCH_CONFIG.precision, "q4");
+  assert.equal(SEARCH_CONFIG.dimensions, 768);
+  assert.equal(SEARCH_CONFIG.normalization, "l2");
+  assert.equal(SEARCH_CONFIG.pooling, "exported sentence_embedding");
+  assert.equal(SEARCH_CONFIG.runtime.transformers, "4.3.1");
+  for (const [lang, locale] of Object.entries(LOCALES)) {
+    assert.ok(!Object.hasOwn(locale, "embedding"), `${lang} must not override the shared encoder`);
+    assert.equal(locale.dataDir, lang === "en" ? "../data/" : `../data/${lang}/`);
+    assert.ok(locale.scores.min <= locale.scores.medium && locale.scores.medium <= locale.scores.high, lang);
+  }
+});
+
+test("shared prompts preserve localized summaries, references and English command names", () => {
+  for (const [lang, summary] of [
+    ["en", "A crash with [Print form](https://developer.4d.com/docs/commands/print-form)."],
+    ["fr", "Un plantage avec [Print form](https://developer.4d.com/docs/commands/print-form)."],
+    ["ja", "[Print form](https://developer.4d.com/docs/ja/commands/print-form)でクラッシュ。"],
+  ]) {
+    const stripped = summary.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
+    assert.equal(documentText({ reference: "ACI0092218", summary, commands: ["Print form", "GOTO OBJECT"] }),
+      `title: ACI0092218 | text: ${stripped}\nPrint form · GOTO OBJECT`, lang);
+    assert.equal(queryText(summary), `task: search result | query: ${summary}`, lang);
+  }
+});
+
+test("semantic availability and fallback messages are localized in every locale", () => {
+  for (const [lang, { t }] of Object.entries(LOCALES)) {
+    for (const key of ["semanticLoading", "semanticReady", "semanticUnavailable", "semanticRetry", "keywordMatch", "filterMatch"]) {
+      assert.equal(typeof t[key], "string", `${lang}: ${key}`);
+      assert.ok(t[key].length, `${lang}: ${key}`);
+      if (lang !== "en") assert.notEqual(t[key], LOCALES.en.t[key], `${lang}: ${key}`);
+    }
+    assert.ok(t.semanticError("TEST").includes("TEST"), lang);
+    assert.ok(t.semanticProgress("model_q4.onnx", 42).includes("42"), lang);
+    assert.ok(t.semanticProgress("model_q4.onnx", 42).includes("model_q4.onnx"), lang);
+    assert.notEqual(t.keywordMatch, t.exact, lang);
+    assert.ok(!t.keywordMatch.includes("%"), lang);
+    assert.notEqual(t.filterMatch, t.exact, lang);
+    assert.ok(!t.filterMatch.includes("%"), lang);
+  }
 });
 
 test("all locale pages expose navigation and alternate links for all three languages", async () => {
@@ -80,21 +114,10 @@ test("all locale pages expose navigation and alternate links for all three langu
   }
 });
 
-test("embedding settings match the corpus build", async () => {
+test("browser worker and corpus builder import the same shared encoder contract", async () => {
   const { readFile } = await import("node:fs/promises");
-  const src = await readFile(new URL("../../scripts/update/generate_embeddings.mjs", import.meta.url), "utf8");
-  const prefixes = {
-    en: { query: "", document: "" },
-    ja: { query: "検索クエリ: ", document: "検索文書: " },
-    fr: { query: "query: ", document: "passage: " },
-  };
-  for (const locale of Object.values(LOCALES)) {
-    const config = src.match(new RegExp(`\\b${locale.lang}: \\{([\\s\\S]*?)\\n  \\},`))?.[1];
-    assert.ok(config, `${locale.lang} corpus configuration`);
-    assert.ok(config.includes(`"${locale.embedding.model}"`), `${locale.lang} model id`);
-    assert.ok(config.includes(`dim: ${locale.embedding.dim}`), `${locale.lang} dim`);
-    if (locale.embedding.options.revision) assert.ok(config.includes(locale.embedding.options.revision));
-    assert.equal(locale.embedding.queryPrefix, prefixes[locale.lang].query, `${locale.lang} query prefix`);
-    assert.ok(config.includes(`docPrefix: "${prefixes[locale.lang].document}"`), `${locale.lang} document prefix`);
+  for (const file of ["docs/src/search-worker.js", "scripts/update/search-encoder.mjs", "scripts/update/generate_embeddings.mjs"]) {
+    const src = await readFile(new URL(`../../${file}`, import.meta.url), "utf8");
+    assert.match(src, /import\s*\{[^}]*SEARCH_CONFIG[^}]*\}\s*from\s*["'][^"']*search-config\.js["']/, file);
   }
 });

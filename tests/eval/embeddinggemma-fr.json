@@ -1,0 +1,2076 @@
+{
+  "lang": "fr",
+  "capturedAt": "2026-10-27T05:48:44.988Z",
+  "library": "@huggingface/transformers",
+  "embedding": {
+    "schema": 1,
+    "model": "onnx-community/embeddinggemma-2-ONNX",
+    "revision": "daa72c51243991dfcaf9f9137d2c573d8f7790c0",
+    "dimensions": 768,
+    "precision": "q4",
+    "maxTokens": 512,
+    "queryPrefix": "task: search result | query: ",
+    "documentFormat": "title: {reference} | text: {summary}\\n{commands}",
+    "pooling": "exported sentence_embedding",
+    "normalization": "l2",
+    "runtime": {
+      "transformers": "4.3.1",
+      "onnxruntime": "1.31.0-dev.20260914-8d85527a0"
+    },
+    "artifacts": {
+      "config.json": "8d011bfe08b5e345bbe0b81e5c6fd02c381920b345b986047bc2a33ce7b90d1d",
+      "tokenizer.json": "4d777ef5bdc1aa36227abdfb77c3e49e7b9c892d16e1b6bda41c393504828be4",
+      "tokenizer_config.json": "17bd5d6e9364ca49a534e1502076593317c298d4a663623091ed45388f004874",
+      "onnx/model_q4.onnx": "f9eeba97acddf139b8ee2ddf04bc30dceafa88de93fadf74d7644e0d61a477a9",
+      "onnx/model_q4.onnx_data": "c3975f2d1ab7a1878ae31a7d7a9b7804a827aff3800b60dfceafce21cac3df49"
+    }
+  },
+  "scores": {
+    "min": 0.702,
+    "high": 0.841,
+    "medium": 0.8
+  },
+  "corpus": {
+    "records": 2467,
+    "dim": 768,
+    "sha256": "38df23a2ab1e50ef52e238093b2f954cb17184be45a255dca17e027a7cf1c9b7"
+  },
+  "metrics": {
+    "queries": 43,
+    "recall1": 0.8604651162790697,
+    "recall8": 0.9767441860465116,
+    "mrr": 0.9112160852713179,
+    "visibleRecall8": 0.9767441860465116,
+    "offTopicHits": 0,
+    "expandedOffTopicHits": 0
+  },
+  "baseline": {
+    "sourceCommit": "3544f9478f33958c75ad067f4823b6030724aea5",
+    "metrics": {
+      "queries": 43,
+      "recall1": 0.7209302325581395,
+      "recall8": 0.8837209302325582,
+      "mrr": 0.8050236585120307,
+      "visibleRecall8": 0.8837209302325582,
+      "offTopicHits": 0
+    },
+    "delta": {
+      "recall1": 0.13953488372093026,
+      "recall8": 0.09302325581395343,
+      "mrr": 0.1061924267592872,
+      "visibleRecall8": 0.09302325581395343,
+      "offTopicHits": 0
+    },
+    "regressions": []
+  },
+  "qualityGates": {
+    "minRecall8": 0.95,
+    "minVisibleRecall8": 0.95,
+    "maxOffTopicHits": 0,
+    "negativeQueries": 12,
+    "requireBaseline": false,
+    "passed": true
+  },
+  "correctScores": {
+    "min": 0.7152818758123961,
+    "p10": 0.7761701163398785,
+    "median": 0.8188937893800297
+  },
+  "results": [
+    {
+      "query": "Sous Windows, un double-clic avec Alt sur un nom de méthode n'ouvre pas l'éditeur",
+      "expected": [
+        "ACI0103587"
+      ],
+      "rank": 1,
+      "reference": "ACI0103587",
+      "score": 0.8607767272531016,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0103587",
+          "score": 0.8607767272531016
+        },
+        {
+          "ref": "ACI0106277",
+          "score": 0.8089590887762084
+        },
+        {
+          "ref": "ACI0102780",
+          "score": 0.7865976525879046
+        },
+        {
+          "ref": "ACI0099616",
+          "score": 0.7737873129625975
+        },
+        {
+          "ref": "ACI0104489",
+          "score": 0.7719239308833424
+        },
+        {
+          "ref": "ACI0103400",
+          "score": 0.7473943032103508
+        },
+        {
+          "ref": "ACI0106214",
+          "score": 0.7463040865599936
+        },
+        {
+          "ref": "ACI0102468",
+          "score": 0.7459023001841453
+        }
+      ]
+    },
+    {
+      "query": "Le paramètre name de l'en-tête MIME Content-Disposition est mal lu",
+      "expected": [
+        "ACI0101414"
+      ],
+      "rank": 1,
+      "reference": "ACI0101414",
+      "score": 0.8279303847294543,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0101414",
+          "score": 0.8279303847294543
+        },
+        {
+          "ref": "ACI0106424",
+          "score": 0.8108622053726239
+        },
+        {
+          "ref": "ACI0106494",
+          "score": 0.7664946062965869
+        },
+        {
+          "ref": "ACI0100121",
+          "score": 0.752250097013219
+        },
+        {
+          "ref": "ACI0103045",
+          "score": 0.7515907236360055
+        },
+        {
+          "ref": "ACI0100616",
+          "score": 0.7459407481530412
+        },
+        {
+          "ref": "ACI0102142",
+          "score": 0.7423353529297329
+        },
+        {
+          "ref": "ACI0103038",
+          "score": 0.7384396740613598
+        }
+      ]
+    },
+    {
+      "query": "L'infobulle affiche un type de tableau incorrect",
+      "expected": [
+        "ACI0104285"
+      ],
+      "rank": 1,
+      "reference": "ACI0104285",
+      "score": 0.7929291191132979,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0104285",
+          "score": 0.7929291191132979
+        },
+        {
+          "ref": "ACI0104078",
+          "score": 0.780075344956943
+        },
+        {
+          "ref": "ACI0103880",
+          "score": 0.758346927326344
+        },
+        {
+          "ref": "ACI0105908",
+          "score": 0.7513628038019821
+        },
+        {
+          "ref": "ACI0104079",
+          "score": 0.7446237942012491
+        },
+        {
+          "ref": "ACI0102529",
+          "score": 0.7398534583860522
+        },
+        {
+          "ref": "ACI0102374",
+          "score": 0.7342110116425202
+        },
+        {
+          "ref": "ACI0102580",
+          "score": 0.7309286732051866
+        }
+      ]
+    },
+    {
+      "query": "Une requête ORDA avec un joker ne trouve pas les enregistrements ajoutés dans la transaction",
+      "expected": [
+        "ACI0100227"
+      ],
+      "rank": 1,
+      "reference": "ACI0100227",
+      "score": 0.8212607017826665,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0100227",
+          "score": 0.8212607017826665
+        },
+        {
+          "ref": "ACI0101333",
+          "score": 0.7955117310507159
+        },
+        {
+          "ref": "ACI0100614",
+          "score": 0.7890097209745399
+        },
+        {
+          "ref": "ACI0105022",
+          "score": 0.7666052652218361
+        },
+        {
+          "ref": "ACI0105351",
+          "score": 0.7621460546786587
+        },
+        {
+          "ref": "ACI0103221",
+          "score": 0.7617571321708925
+        },
+        {
+          "ref": "ACI0104799",
+          "score": 0.7605123296656903
+        },
+        {
+          "ref": "ACI0100692",
+          "score": 0.7602557809865501
+        }
+      ]
+    },
+    {
+      "query": "Après insertion d'un caractère nul dans Write Pro, le texte ne peut plus être modifié",
+      "expected": [
+        "ACI0100533"
+      ],
+      "rank": 2,
+      "reference": "ACI0100533",
+      "score": 0.8097448220075103,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0101359",
+          "score": 0.8156390844234808
+        },
+        {
+          "ref": "ACI0100533",
+          "score": 0.8097448220075103
+        },
+        {
+          "ref": "ACI0102181",
+          "score": 0.8029662333337623
+        },
+        {
+          "ref": "ACI0100179",
+          "score": 0.7992722420469333
+        },
+        {
+          "ref": "ACI0100229",
+          "score": 0.7937447751549166
+        },
+        {
+          "ref": "ACI0102284",
+          "score": 0.7851064538700001
+        },
+        {
+          "ref": "ACI0106080",
+          "score": 0.7847156491749224
+        },
+        {
+          "ref": "ACI0103341",
+          "score": 0.7843894504588703
+        }
+      ]
+    },
+    {
+      "query": "Le bas des libellés de l'outil de recherche en mode développement est tronqué",
+      "expected": [
+        "ACI0105986"
+      ],
+      "rank": 64,
+      "reference": "ACI0105986",
+      "score": 0.7152818758123961,
+      "visible": false,
+      "top": [
+        {
+          "ref": "ACI0104957",
+          "score": 0.7644972760169451
+        },
+        {
+          "ref": "ACI0104936",
+          "score": 0.7573825412387514
+        },
+        {
+          "ref": "ACI0101593",
+          "score": 0.7524708063545548
+        },
+        {
+          "ref": "ACI0106214",
+          "score": 0.7513988191731327
+        },
+        {
+          "ref": "ACI0096534",
+          "score": 0.7511708682349199
+        },
+        {
+          "ref": "ACI0099378",
+          "score": 0.7458796896443621
+        },
+        {
+          "ref": "ACI0104432",
+          "score": 0.7409285234249925
+        },
+        {
+          "ref": "ACI0106015",
+          "score": 0.7401830782680241
+        }
+      ]
+    },
+    {
+      "query": "La saisie de caractères au début d'un document Write Pro s'affiche avec du retard",
+      "expected": [
+        "ACI0100757"
+      ],
+      "rank": 2,
+      "reference": "ACI0100757",
+      "score": 0.80358558584489,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0100179",
+          "score": 0.8049756162992358
+        },
+        {
+          "ref": "ACI0100757",
+          "score": 0.80358558584489
+        },
+        {
+          "ref": "ACI0102181",
+          "score": 0.7981381299906883
+        },
+        {
+          "ref": "ACI0102284",
+          "score": 0.7895779894418171
+        },
+        {
+          "ref": "ACI0100308",
+          "score": 0.789290564800508
+        },
+        {
+          "ref": "ACI0106080",
+          "score": 0.7825101802315053
+        },
+        {
+          "ref": "ACI0100229",
+          "score": 0.7796420505595821
+        },
+        {
+          "ref": "ACI0100723",
+          "score": 0.7760877573155601
+        }
+      ]
+    },
+    {
+      "query": "Déplacer une ligne de list box déclenche un événement On Clicked inattendu",
+      "expected": [
+        "ACI0104021"
+      ],
+      "rank": 1,
+      "reference": "ACI0104021",
+      "score": 0.854422198197191,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0104021",
+          "score": 0.854422198197191
+        },
+        {
+          "ref": "ACI0103898",
+          "score": 0.8522366796087496
+        },
+        {
+          "ref": "ACI0101418",
+          "score": 0.8241949663966058
+        },
+        {
+          "ref": "ACI0101642",
+          "score": 0.7990484335546849
+        },
+        {
+          "ref": "ACI0102397",
+          "score": 0.7926191365194865
+        },
+        {
+          "ref": "ACI0102010",
+          "score": 0.7913173668026177
+        },
+        {
+          "ref": "ACI0100575",
+          "score": 0.7906911360995923
+        },
+        {
+          "ref": "ACI0101810",
+          "score": 0.7887607932440945
+        }
+      ]
+    },
+    {
+      "query": "Le CSM plante pendant la vérification ou la réparation à cause d'un format d'affichage",
+      "expected": [
+        "ACI0106526"
+      ],
+      "rank": 1,
+      "reference": "ACI0106526",
+      "score": 0.8106725880756296,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0106526",
+          "score": 0.8106725880756296
+        },
+        {
+          "ref": "ACI0101608",
+          "score": 0.7922952043516063
+        },
+        {
+          "ref": "ACI0101556",
+          "score": 0.7859382811279033
+        },
+        {
+          "ref": "ACI0106545",
+          "score": 0.7764728055492325
+        },
+        {
+          "ref": "ACI0102622",
+          "score": 0.771542360514003
+        },
+        {
+          "ref": "ACI0102428",
+          "score": 0.7682077583056487
+        },
+        {
+          "ref": "ACI0101540",
+          "score": 0.7678501722896499
+        },
+        {
+          "ref": "ACI0105858",
+          "score": 0.7650840656260787
+        }
+      ]
+    },
+    {
+      "query": "Sur Mac, le titre des cases à cocher et des boutons radio n'est pas souligné",
+      "expected": [
+        "ACI0100348"
+      ],
+      "rank": 1,
+      "reference": "ACI0100348",
+      "score": 0.8282676754937761,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0100348",
+          "score": 0.8282676754937761
+        },
+        {
+          "ref": "ACI0104101",
+          "score": 0.8007821068688455
+        },
+        {
+          "ref": "ACI0104071",
+          "score": 0.798283649516977
+        },
+        {
+          "ref": "ACI0105167",
+          "score": 0.7964213460848599
+        },
+        {
+          "ref": "ACI0104590",
+          "score": 0.7956130422797305
+        },
+        {
+          "ref": "ACI0105328",
+          "score": 0.7840847666611582
+        },
+        {
+          "ref": "ACI0101786",
+          "score": 0.7816006536682802
+        },
+        {
+          "ref": "ACI0102481",
+          "score": 0.7744475124300141
+        }
+      ]
+    },
+    {
+      "query": "Déréférencer un pointeur pendant une déclaration var provoque un plantage",
+      "expected": [
+        "ACI0105569"
+      ],
+      "rank": 3,
+      "reference": "ACI0105569",
+      "score": 0.752799885335537,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0104030",
+          "score": 0.7596697073657012
+        },
+        {
+          "ref": "ACI0104426",
+          "score": 0.7534725064507323
+        },
+        {
+          "ref": "ACI0105569",
+          "score": 0.752799885335537
+        },
+        {
+          "ref": "ACI0104731",
+          "score": 0.7404348971922409
+        },
+        {
+          "ref": "ACI0102447",
+          "score": 0.7349120001669115
+        },
+        {
+          "ref": "ACI0105455",
+          "score": 0.7316101532664211
+        },
+        {
+          "ref": "ACI0101458",
+          "score": 0.7274991241262138
+        },
+        {
+          "ref": "ACI0102565",
+          "score": 0.7241802105456616
+        }
+      ]
+    },
+    {
+      "query": "Impossible de faire glisser une zone de plug-in avec la touche Option",
+      "expected": [
+        "ACI0102230"
+      ],
+      "rank": 1,
+      "reference": "ACI0102230",
+      "score": 0.7875146870198401,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0102230",
+          "score": 0.7875146870198401
+        },
+        {
+          "ref": "ACI0099805",
+          "score": 0.7513558667279755
+        },
+        {
+          "ref": "ACI0102261",
+          "score": 0.7365458936069602
+        },
+        {
+          "ref": "ACI0106277",
+          "score": 0.7352763041618335
+        },
+        {
+          "ref": "ACI0104950",
+          "score": 0.7311327707410638
+        },
+        {
+          "ref": "ACI0104307",
+          "score": 0.7295120603754833
+        },
+        {
+          "ref": "ACI0103643",
+          "score": 0.7293440196255083
+        },
+        {
+          "ref": "ACI0105243",
+          "score": 0.7267724829386346
+        }
+      ]
+    },
+    {
+      "query": "L'objet d'un courriel est mal encodé et illisible dans Mail sur iPhone",
+      "expected": [
+        "ACI0100111"
+      ],
+      "rank": 1,
+      "reference": "ACI0100111",
+      "score": 0.7761701163398785,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0100111",
+          "score": 0.7761701163398785
+        },
+        {
+          "ref": "ACI0100445",
+          "score": 0.7419620620071538
+        },
+        {
+          "ref": "ACI0100381",
+          "score": 0.7369010915141214
+        },
+        {
+          "ref": "ACI0106061",
+          "score": 0.735757414349805
+        },
+        {
+          "ref": "ACI0104022",
+          "score": 0.7274702191533823
+        },
+        {
+          "ref": "ACI0102319",
+          "score": 0.727107762950452
+        },
+        {
+          "ref": "ACI0104775",
+          "score": 0.726709592126989
+        },
+        {
+          "ref": "ACI0100845",
+          "score": 0.7189823666532882
+        }
+      ]
+    },
+    {
+      "query": "Un lien symbolique cassé dans les fichiers à sauvegarder provoque l'erreur 1409",
+      "expected": [
+        "ACI0100675"
+      ],
+      "rank": 1,
+      "reference": "ACI0100675",
+      "score": 0.8519404771169723,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0100675",
+          "score": 0.8519404771169723
+        },
+        {
+          "ref": "ACI0104888",
+          "score": 0.7435220688776013
+        },
+        {
+          "ref": "ACI0100195",
+          "score": 0.7424622132180478
+        },
+        {
+          "ref": "ACI0105050",
+          "score": 0.729061965114171
+        },
+        {
+          "ref": "ACI0104639",
+          "score": 0.724028873523757
+        },
+        {
+          "ref": "ACI0100054",
+          "score": 0.723797868742418
+        },
+        {
+          "ref": "ACI0099745",
+          "score": 0.7231294790472833
+        },
+        {
+          "ref": "ACI0106262",
+          "score": 0.7213480385213094
+        }
+      ]
+    },
+    {
+      "query": "Une image stockée hors du fichier de données se retrouve avec une taille de zéro octet",
+      "expected": [
+        "ACI0104719"
+      ],
+      "rank": 1,
+      "reference": "ACI0104719",
+      "score": 0.7982882408745364,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0104719",
+          "score": 0.7982882408745364
+        },
+        {
+          "ref": "ACI0101115",
+          "score": 0.7930439967138196
+        },
+        {
+          "ref": "ACI0102153",
+          "score": 0.7440827357851694
+        },
+        {
+          "ref": "ACI0106502",
+          "score": 0.7429071349812325
+        },
+        {
+          "ref": "ACI0104812",
+          "score": 0.7384513592145336
+        },
+        {
+          "ref": "ACI0105403",
+          "score": 0.7358377737628643
+        },
+        {
+          "ref": "ACI0103384",
+          "score": 0.7351784268339029
+        },
+        {
+          "ref": "ACI0105503",
+          "score": 0.7335841732749456
+        }
+      ]
+    },
+    {
+      "query": "Impossible de désactiver l'avertissement de compilation 550.10 pour toute l'application",
+      "expected": [
+        "ACI0104531"
+      ],
+      "rank": 1,
+      "reference": "ACI0104531",
+      "score": 0.7879902880065482,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0104531",
+          "score": 0.7879902880065482
+        },
+        {
+          "ref": "ACI0102792",
+          "score": 0.7385362412098649
+        },
+        {
+          "ref": "ACI0105325",
+          "score": 0.7341153409310041
+        },
+        {
+          "ref": "ACI0105765",
+          "score": 0.733779103742461
+        },
+        {
+          "ref": "ACI0105455",
+          "score": 0.7321437967440168
+        },
+        {
+          "ref": "ACI0102434",
+          "score": 0.7295867525251079
+        },
+        {
+          "ref": "ACI0101690",
+          "score": 0.7264300416588403
+        },
+        {
+          "ref": "ACI0101219",
+          "score": 0.7258123182902338
+        }
+      ]
+    },
+    {
+      "query": "Dans un état rapide, le numéro de page placé dans l'en-tête droit apparaît à gauche",
+      "expected": [
+        "ACI0100497"
+      ],
+      "rank": 1,
+      "reference": "ACI0100497",
+      "score": 0.8179571901938745,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0100497",
+          "score": 0.8179571901938745
+        },
+        {
+          "ref": "ACI0100498",
+          "score": 0.7672622593119611
+        },
+        {
+          "ref": "ACI0099839",
+          "score": 0.764532054159028
+        },
+        {
+          "ref": "ACI0104732",
+          "score": 0.7599522106942953
+        },
+        {
+          "ref": "ACI0103452",
+          "score": 0.7521818517593699
+        },
+        {
+          "ref": "ACI0100723",
+          "score": 0.7376266482334775
+        },
+        {
+          "ref": "ACI0102382",
+          "score": 0.7351238959092168
+        },
+        {
+          "ref": "ACI0102956",
+          "score": 0.735090690848266
+        }
+      ]
+    },
+    {
+      "query": "La couleur du texte d'un lien hypertexte ne peut pas être changée",
+      "expected": [
+        "ACI0102528"
+      ],
+      "rank": 1,
+      "reference": "ACI0102528",
+      "score": 0.7441614678514741,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0102528",
+          "score": 0.7441614678514741
+        },
+        {
+          "ref": "ACI0102426",
+          "score": 0.7321714966460269
+        },
+        {
+          "ref": "ACI0102323",
+          "score": 0.7317705191552966
+        },
+        {
+          "ref": "ACI0102618",
+          "score": 0.7252761812572647
+        },
+        {
+          "ref": "ACI0101228",
+          "score": 0.7204172070742838
+        },
+        {
+          "ref": "ACI0102169",
+          "score": 0.7179746359471809
+        },
+        {
+          "ref": "ACI0100942",
+          "score": 0.7149501696205937
+        },
+        {
+          "ref": "ACI0103920",
+          "score": 0.7140790730412231
+        }
+      ]
+    },
+    {
+      "query": "Le défilement d'un document Write Pro contenant des numéros de page est lent",
+      "expected": [
+        "ACI0100723"
+      ],
+      "rank": 1,
+      "reference": "ACI0100723",
+      "score": 0.8443627725016152,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0100723",
+          "score": 0.8443627725016152
+        },
+        {
+          "ref": "ACI0104620",
+          "score": 0.7881894552430198
+        },
+        {
+          "ref": "ACI0100981",
+          "score": 0.7814418355961327
+        },
+        {
+          "ref": "ACI0099839",
+          "score": 0.7770306107933211
+        },
+        {
+          "ref": "ACI0105903",
+          "score": 0.7754249176216702
+        },
+        {
+          "ref": "ACI0103925",
+          "score": 0.7742611891350327
+        },
+        {
+          "ref": "ACI0102442",
+          "score": 0.7709220387091119
+        },
+        {
+          "ref": "ACI0105125",
+          "score": 0.770495075407357
+        }
+      ]
+    },
+    {
+      "query": "Une matrice Qodly imbriquée produit une erreur quand on change la largeur de la boîte de style",
+      "expected": [
+        "ACI0106158"
+      ],
+      "rank": 1,
+      "reference": "ACI0106158",
+      "score": 0.8408014773285895,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0106158",
+          "score": 0.8408014773285895
+        },
+        {
+          "ref": "ACI0106155",
+          "score": 0.7607219362823727
+        },
+        {
+          "ref": "ACI0106160",
+          "score": 0.7529670363778984
+        },
+        {
+          "ref": "ACI0106510",
+          "score": 0.7493666806209488
+        },
+        {
+          "ref": "ACI0105379",
+          "score": 0.745547347214284
+        },
+        {
+          "ref": "ACI0103956",
+          "score": 0.744711043645734
+        },
+        {
+          "ref": "ACI0099876",
+          "score": 0.7444911938347721
+        },
+        {
+          "ref": "ACI0106039",
+          "score": 0.7429490273782461
+        }
+      ]
+    },
+    {
+      "query": "Sur Mac, BEST OBJECT SIZE renvoie une largeur trop petite pour un bouton radio et coupe son titre",
+      "expected": [
+        "ACI0104590"
+      ],
+      "rank": 1,
+      "reference": "ACI0104590",
+      "score": 0.8614792902716689,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0104590",
+          "score": 0.8614792902716689
+        },
+        {
+          "ref": "ACI0104075",
+          "score": 0.8279660303481712
+        },
+        {
+          "ref": "ACI0102481",
+          "score": 0.8043125729021684
+        },
+        {
+          "ref": "ACI0103819",
+          "score": 0.8025954657385665
+        },
+        {
+          "ref": "ACI0106254",
+          "score": 0.7804574185333785
+        },
+        {
+          "ref": "ACI0105236",
+          "score": 0.7733662097517104
+        },
+        {
+          "ref": "ACI0104127",
+          "score": 0.7675012791942213
+        },
+        {
+          "ref": "ACI0101402",
+          "score": 0.7630323780926579
+        }
+      ]
+    },
+    {
+      "query": "Sous Windows, définir le style de police juste après sa taille fait planter l'application",
+      "expected": [
+        "ACI0100367"
+      ],
+      "rank": 1,
+      "reference": "ACI0100367",
+      "score": 0.8133267376330663,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0100367",
+          "score": 0.8133267376330663
+        },
+        {
+          "ref": "ACI0103756",
+          "score": 0.7886278999299448
+        },
+        {
+          "ref": "ACI0101766",
+          "score": 0.7841955442917585
+        },
+        {
+          "ref": "ACI0102381",
+          "score": 0.7724074105722912
+        },
+        {
+          "ref": "ACI0102553",
+          "score": 0.7677559113509738
+        },
+        {
+          "ref": "ACI0100592",
+          "score": 0.7575705806433927
+        },
+        {
+          "ref": "ACI0098479",
+          "score": 0.7560698913490201
+        },
+        {
+          "ref": "ACI0105073",
+          "score": 0.7518465004787456
+        }
+      ]
+    },
+    {
+      "query": "Les pointeurs des champs objets disparaissent après compactage du fichier de données",
+      "expected": [
+        "ACI0106326"
+      ],
+      "rank": 1,
+      "reference": "ACI0106326",
+      "score": 0.8332023663192614,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0106326",
+          "score": 0.8332023663192614
+        },
+        {
+          "ref": "ACI0106545",
+          "score": 0.8087693310234093
+        },
+        {
+          "ref": "ACI0102748",
+          "score": 0.7655852562794109
+        },
+        {
+          "ref": "ACI0105050",
+          "score": 0.7650845767008012
+        },
+        {
+          "ref": "ACI0102428",
+          "score": 0.7611130257204517
+        },
+        {
+          "ref": "ACI0103485",
+          "score": 0.7590203467804781
+        },
+        {
+          "ref": "ACI0102861",
+          "score": 0.7504752810328109
+        },
+        {
+          "ref": "ACI0102622",
+          "score": 0.7499892112783019
+        }
+      ]
+    },
+    {
+      "query": "Un composant dont le nom contient des caractères japonais empêche le démarrage en mode compilé",
+      "expected": [
+        "ACI0101116"
+      ],
+      "rank": 1,
+      "reference": "ACI0101116",
+      "score": 0.8579464558375149,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0101116",
+          "score": 0.8579464558375149
+        },
+        {
+          "ref": "ACI0101004",
+          "score": 0.7990853513102026
+        },
+        {
+          "ref": "ACI0102556",
+          "score": 0.7952652991248376
+        },
+        {
+          "ref": "ACI0104949",
+          "score": 0.7887239954560712
+        },
+        {
+          "ref": "ACI0103790",
+          "score": 0.7775217853241484
+        },
+        {
+          "ref": "ACI0105325",
+          "score": 0.7658266763707497
+        },
+        {
+          "ref": "ACI0102606",
+          "score": 0.7641478759806012
+        },
+        {
+          "ref": "ACI0104689",
+          "score": 0.7629849458891428
+        }
+      ]
+    },
+    {
+      "query": "La couleur de fond d'une colonne de list box définie en CSS ne s'affiche pas dans l'éditeur",
+      "expected": [
+        "ACI0102331"
+      ],
+      "rank": 1,
+      "reference": "ACI0102331",
+      "score": 0.8188937893800297,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0102331",
+          "score": 0.8188937893800297
+        },
+        {
+          "ref": "ACI0103629",
+          "score": 0.8014134088285761
+        },
+        {
+          "ref": "ACI0104686",
+          "score": 0.7711771958941891
+        },
+        {
+          "ref": "ACI0102465",
+          "score": 0.7660695644247788
+        },
+        {
+          "ref": "ACI0102903",
+          "score": 0.7653018744825939
+        },
+        {
+          "ref": "ACI0101220",
+          "score": 0.7617390861256236
+        },
+        {
+          "ref": "ACI0101541",
+          "score": 0.7604891978606132
+        },
+        {
+          "ref": "ACI0103412",
+          "score": 0.7576016010913865
+        }
+      ]
+    },
+    {
+      "query": "L'export en projet génère une erreur CSS car le nom de police n'est pas échappé",
+      "expected": [
+        "ACI0100410"
+      ],
+      "rank": 1,
+      "reference": "ACI0100410",
+      "score": 0.8465807487889954,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0100410",
+          "score": 0.8465807487889954
+        },
+        {
+          "ref": "ACI0102486",
+          "score": 0.8353143137911033
+        },
+        {
+          "ref": "ACI0104997",
+          "score": 0.8037179578454128
+        },
+        {
+          "ref": "ACI0102465",
+          "score": 0.7837598621165074
+        },
+        {
+          "ref": "ACI0099884",
+          "score": 0.7804945257036731
+        },
+        {
+          "ref": "ACI0101220",
+          "score": 0.7756348421417986
+        },
+        {
+          "ref": "ACI0100740",
+          "score": 0.7716794104023575
+        },
+        {
+          "ref": "ACI0102601",
+          "score": 0.7703865747859998
+        }
+      ]
+    },
+    {
+      "query": "Le serveur plante en traitant une requête différée avant la connexion du client",
+      "expected": [
+        "ACI0106438"
+      ],
+      "rank": 1,
+      "reference": "ACI0106438",
+      "score": 0.8034937862996027,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0106438",
+          "score": 0.8034937862996027
+        },
+        {
+          "ref": "ACI0106313",
+          "score": 0.7794849887051923
+        },
+        {
+          "ref": "ACI0101796",
+          "score": 0.7790911342269263
+        },
+        {
+          "ref": "ACI0104960",
+          "score": 0.7746398970520028
+        },
+        {
+          "ref": "ACI0101719",
+          "score": 0.7745700321785357
+        },
+        {
+          "ref": "ACI0100118",
+          "score": 0.7727099160430726
+        },
+        {
+          "ref": "ACI0103866",
+          "score": 0.7693657624311917
+        },
+        {
+          "ref": "ACI0104088",
+          "score": 0.7669128307968671
+        }
+      ]
+    },
+    {
+      "query": "En mode trace, les commentaires de bloc décalent la position du curseur",
+      "expected": [
+        "ACI0100238"
+      ],
+      "rank": 1,
+      "reference": "ACI0100238",
+      "score": 0.8311204958055599,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0100238",
+          "score": 0.8311204958055599
+        },
+        {
+          "ref": "ACI0100557",
+          "score": 0.7818466873300537
+        },
+        {
+          "ref": "ACI0106336",
+          "score": 0.7809616748236479
+        },
+        {
+          "ref": "ACI0105561",
+          "score": 0.7736927419557498
+        },
+        {
+          "ref": "ACI0105178",
+          "score": 0.764258424482795
+        },
+        {
+          "ref": "ACI0102431",
+          "score": 0.7634534989901267
+        },
+        {
+          "ref": "ACI0105233",
+          "score": 0.7624458774844882
+        },
+        {
+          "ref": "ACI0100906",
+          "score": 0.7562264122743111
+        }
+      ]
+    },
+    {
+      "query": "Des appels successifs à HTTP Request renvoient l'erreur 17",
+      "expected": [
+        "ACI0102310"
+      ],
+      "rank": 1,
+      "reference": "ACI0102310",
+      "score": 0.806602235937781,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0102310",
+          "score": 0.806602235937781
+        },
+        {
+          "ref": "ACI0105237",
+          "score": 0.7456128284332134
+        },
+        {
+          "ref": "ACI0105504",
+          "score": 0.7444388872652359
+        },
+        {
+          "ref": "ACI0102600",
+          "score": 0.7386737115359391
+        },
+        {
+          "ref": "ACI0104933",
+          "score": 0.7349857340413003
+        },
+        {
+          "ref": "ACI0100343",
+          "score": 0.7344776990846422
+        },
+        {
+          "ref": "ACI0103642",
+          "score": 0.7333323398427964
+        },
+        {
+          "ref": "ACI0105105",
+          "score": 0.715812729253946
+        }
+      ]
+    },
+    {
+      "query": "La conversion de 4D View en View Pro donne des tailles de police incorrectes",
+      "expected": [
+        "ACI0100206"
+      ],
+      "rank": 1,
+      "reference": "ACI0100206",
+      "score": 0.8586904300915249,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0100206",
+          "score": 0.8586904300915249
+        },
+        {
+          "ref": "ACI0100286",
+          "score": 0.8228976985134647
+        },
+        {
+          "ref": "ACI0101280",
+          "score": 0.8167628311256023
+        },
+        {
+          "ref": "ACI0104843",
+          "score": 0.81398395819003
+        },
+        {
+          "ref": "ACI0100217",
+          "score": 0.8083362410458387
+        },
+        {
+          "ref": "ACI0100209",
+          "score": 0.8082998823061152
+        },
+        {
+          "ref": "ACI0106482",
+          "score": 0.8067784297261014
+        },
+        {
+          "ref": "ACI0104747",
+          "score": 0.8059237596258646
+        }
+      ]
+    },
+    {
+      "query": "Dans le dialogue d'export, choisir une table sans formulaire de sortie bloque le choix des autres tables",
+      "expected": [
+        "ACI0106212"
+      ],
+      "rank": 1,
+      "reference": "ACI0106212",
+      "score": 0.8438318046332949,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0106212",
+          "score": 0.8438318046332949
+        },
+        {
+          "ref": "ACI0106211",
+          "score": 0.8258825824444971
+        },
+        {
+          "ref": "ACI0103726",
+          "score": 0.7924755902178061
+        },
+        {
+          "ref": "ACI0099884",
+          "score": 0.7909716434585725
+        },
+        {
+          "ref": "ACI0106180",
+          "score": 0.7690604840746876
+        },
+        {
+          "ref": "ACI0097540",
+          "score": 0.766874888812363
+        },
+        {
+          "ref": "ACI0103660",
+          "score": 0.7654008579658129
+        },
+        {
+          "ref": "ACI0101218",
+          "score": 0.7608151543211501
+        }
+      ]
+    },
+    {
+      "query": "Une police installée après le lancement n'est pas disponible pour les objets de formulaire",
+      "expected": [
+        "ACI0101239"
+      ],
+      "rank": 1,
+      "reference": "ACI0101239",
+      "score": 0.8293677808817616,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0101239",
+          "score": 0.8293677808817616
+        },
+        {
+          "ref": "ACI0106015",
+          "score": 0.7867002412454472
+        },
+        {
+          "ref": "ACI0102965",
+          "score": 0.7773994832074721
+        },
+        {
+          "ref": "ACI0104409",
+          "score": 0.7739903389599913
+        },
+        {
+          "ref": "ACI0104603",
+          "score": 0.7707851088539743
+        },
+        {
+          "ref": "ACI0105788",
+          "score": 0.767016697489018
+        },
+        {
+          "ref": "ACI0099771",
+          "score": 0.7630613577688242
+        },
+        {
+          "ref": "ACI0100601",
+          "score": 0.7610755905648817
+        }
+      ]
+    },
+    {
+      "query": "Sur Mac, maintenir une touche enfoncée ne permet pas de saisir un caractère accentué",
+      "expected": [
+        "ACI0103071"
+      ],
+      "rank": 3,
+      "reference": "ACI0103071",
+      "score": 0.796454949732369,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0103975",
+          "score": 0.8367808570242592
+        },
+        {
+          "ref": "ACI0099046",
+          "score": 0.8036097412215788
+        },
+        {
+          "ref": "ACI0103071",
+          "score": 0.796454949732369
+        },
+        {
+          "ref": "ACI0100649",
+          "score": 0.7898272211776667
+        },
+        {
+          "ref": "ACI0103776",
+          "score": 0.7826209189705806
+        },
+        {
+          "ref": "ACI0100348",
+          "score": 0.7647382150418441
+        },
+        {
+          "ref": "ACI0102355",
+          "score": 0.7625979207807494
+        },
+        {
+          "ref": "ACI0102350",
+          "score": 0.760294967167628
+        }
+      ]
+    },
+    {
+      "query": "L'appel de PA_GetMainWindowsHWND depuis un thread préemptif provoque un plantage",
+      "expected": [
+        "ACI0104539"
+      ],
+      "rank": 1,
+      "reference": "ACI0104539",
+      "score": 0.873463915851764,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0104539",
+          "score": 0.873463915851764
+        },
+        {
+          "ref": "ACI0103575",
+          "score": 0.728292149352798
+        },
+        {
+          "ref": "ACI0104097",
+          "score": 0.7267839013616626
+        },
+        {
+          "ref": "ACI0101958",
+          "score": 0.7251024927638762
+        },
+        {
+          "ref": "ACI0100844",
+          "score": 0.7220868090685619
+        },
+        {
+          "ref": "ACI0101219",
+          "score": 0.721556028445765
+        },
+        {
+          "ref": "ACI0106066",
+          "score": 0.7189401821375613
+        },
+        {
+          "ref": "ACI0105832",
+          "score": 0.7185709959143589
+        }
+      ]
+    },
+    {
+      "query": "Après export DOCX, la numérotation des listes est incorrecte dans Word",
+      "expected": [
+        "ACI0101334"
+      ],
+      "rank": 2,
+      "reference": "ACI0101334",
+      "score": 0.7683413296170964,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0106405",
+          "score": 0.7779500636766618
+        },
+        {
+          "ref": "ACI0101334",
+          "score": 0.7683413296170964
+        },
+        {
+          "ref": "ACI0104620",
+          "score": 0.7532495871264111
+        },
+        {
+          "ref": "ACI0099998",
+          "score": 0.7371446793272598
+        },
+        {
+          "ref": "ACI0100840",
+          "score": 0.7296749897582103
+        },
+        {
+          "ref": "ACI0100841",
+          "score": 0.7190359397986205
+        },
+        {
+          "ref": "ACI0102486",
+          "score": 0.7183925364312388
+        },
+        {
+          "ref": "ACI0103757",
+          "score": 0.7162735882566066
+        }
+      ]
+    },
+    {
+      "query": "La complétion de code n'insère pas correctement les constantes",
+      "expected": [
+        "ACI0101037"
+      ],
+      "rank": 1,
+      "reference": "ACI0101037",
+      "score": 0.806170911028649,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0101037",
+          "score": 0.806170911028649
+        },
+        {
+          "ref": "ACI0102522",
+          "score": 0.788042325508878
+        },
+        {
+          "ref": "ACI0102206",
+          "score": 0.7808102805565277
+        },
+        {
+          "ref": "ACI0103910",
+          "score": 0.7793766081580011
+        },
+        {
+          "ref": "ACI0103003",
+          "score": 0.7751929355932518
+        },
+        {
+          "ref": "ACI0104089",
+          "score": 0.771093497051059
+        },
+        {
+          "ref": "ACI0105657",
+          "score": 0.7695195552443697
+        },
+        {
+          "ref": "ACI0100703",
+          "score": 0.7679824441291527
+        }
+      ]
+    },
+    {
+      "query": "Sous macOS Tahoe avec Liquid Glass, cliquer sur les cases à cocher d'une list box est lent",
+      "expected": [
+        "ACI0106366"
+      ],
+      "rank": 1,
+      "reference": "ACI0106366",
+      "score": 0.8595860233550217,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0106366",
+          "score": 0.8595860233550217
+        },
+        {
+          "ref": "ACI0106389",
+          "score": 0.7815585495453088
+        },
+        {
+          "ref": "ACI0101799",
+          "score": 0.7588275308647666
+        },
+        {
+          "ref": "ACI0106054",
+          "score": 0.754983312495708
+        },
+        {
+          "ref": "ACI0100968",
+          "score": 0.7395292961020665
+        },
+        {
+          "ref": "ACI0100633",
+          "score": 0.7386755810283145
+        },
+        {
+          "ref": "ACI0105565",
+          "score": 0.7351466392169208
+        },
+        {
+          "ref": "ACI0103984",
+          "score": 0.7328279541604941
+        }
+      ]
+    },
+    {
+      "query": "Après activation de la hauteur automatique des lignes, impossible de revenir à lk no",
+      "expected": [
+        "ACI0103419"
+      ],
+      "rank": 1,
+      "reference": "ACI0103419",
+      "score": 0.8121663865677866,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0103419",
+          "score": 0.8121663865677866
+        },
+        {
+          "ref": "ACI0104007",
+          "score": 0.8014271579799511
+        },
+        {
+          "ref": "ACI0101305",
+          "score": 0.792406958986898
+        },
+        {
+          "ref": "ACI0104047",
+          "score": 0.7863264991625591
+        },
+        {
+          "ref": "ACI0103946",
+          "score": 0.7796673483774174
+        },
+        {
+          "ref": "ACI0104046",
+          "score": 0.7759084206576154
+        },
+        {
+          "ref": "ACI0104513",
+          "score": 0.7702571741300318
+        },
+        {
+          "ref": "ACI0099791",
+          "score": 0.7613418294606992
+        }
+      ]
+    },
+    {
+      "query": "Le titre de la fenêtre d'administration d'une application construite reste 4D Server",
+      "expected": [
+        "ACI0106252"
+      ],
+      "rank": 1,
+      "reference": "ACI0106252",
+      "score": 0.8376733215841937,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0106252",
+          "score": 0.8376733215841937
+        },
+        {
+          "ref": "ACI0100617",
+          "score": 0.7965805989567433
+        },
+        {
+          "ref": "ACI0103998",
+          "score": 0.7726393107557814
+        },
+        {
+          "ref": "ACI0105669",
+          "score": 0.7698257296009199
+        },
+        {
+          "ref": "ACI0106140",
+          "score": 0.7675590999932709
+        },
+        {
+          "ref": "ACI0100452",
+          "score": 0.7608382442713371
+        },
+        {
+          "ref": "ACI0100188",
+          "score": 0.7575051076136273
+        },
+        {
+          "ref": "ACI0105383",
+          "score": 0.7555525126439655
+        }
+      ]
+    },
+    {
+      "query": "Sur Mac, ouvrir une nouvelle fenêtre depuis un sous-formulaire liste empêche le dessin des lignes restantes",
+      "expected": [
+        "ACI0101799"
+      ],
+      "rank": 1,
+      "reference": "ACI0101799",
+      "score": 0.820383642453405,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0101799",
+          "score": 0.820383642453405
+        },
+        {
+          "ref": "ACI0102858",
+          "score": 0.8038697780358953
+        },
+        {
+          "ref": "ACI0100633",
+          "score": 0.7969014268730369
+        },
+        {
+          "ref": "ACI0101849",
+          "score": 0.7783921167169529
+        },
+        {
+          "ref": "ACI0103124",
+          "score": 0.7775539002118378
+        },
+        {
+          "ref": "ACI0106118",
+          "score": 0.7682571100379519
+        },
+        {
+          "ref": "ACI0103645",
+          "score": 0.7660616804415095
+        },
+        {
+          "ref": "ACI0102671",
+          "score": 0.7659218711129664
+        }
+      ]
+    },
+    {
+      "query": "Dans Write Pro sur un moniteur externe, créer une feuille de style ouvre le dialogue sur l'écran principal",
+      "expected": [
+        "ACI0100879"
+      ],
+      "rank": 1,
+      "reference": "ACI0100879",
+      "score": 0.800486817541879,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0100879",
+          "score": 0.800486817541879
+        },
+        {
+          "ref": "ACI0100828",
+          "score": 0.7382871050554966
+        },
+        {
+          "ref": "ACI0100270",
+          "score": 0.7373380329316941
+        },
+        {
+          "ref": "ACI0104857",
+          "score": 0.7359607026714399
+        },
+        {
+          "ref": "ACI0100924",
+          "score": 0.7350930209592189
+        },
+        {
+          "ref": "ACI0101766",
+          "score": 0.7320026573904729
+        },
+        {
+          "ref": "ACI0106251",
+          "score": 0.7293979960533564
+        },
+        {
+          "ref": "ACI0102181",
+          "score": 0.7246802844568462
+        }
+      ]
+    },
+    {
+      "query": "Supprimer une sélection d'entités vide prend 500 millisecondes",
+      "expected": [
+        "ACI0106507"
+      ],
+      "rank": 1,
+      "reference": "ACI0106507",
+      "score": 0.8039145422605614,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0106507",
+          "score": 0.8039145422605614
+        },
+        {
+          "ref": "ACI0105137",
+          "score": 0.7783213136664113
+        },
+        {
+          "ref": "ACI0106186",
+          "score": 0.7588153440336509
+        },
+        {
+          "ref": "ACI0105090",
+          "score": 0.7523411447028661
+        },
+        {
+          "ref": "ACI0104862",
+          "score": 0.7494958103776297
+        },
+        {
+          "ref": "ACI0105118",
+          "score": 0.7484604627089734
+        },
+        {
+          "ref": "ACI0101321",
+          "score": 0.7426126750081469
+        },
+        {
+          "ref": "ACI0105011",
+          "score": 0.7408675084965359
+        }
+      ]
+    },
+    {
+      "query": "Une propriété de type heure ne s'affiche pas correctement si le type de l'expression n'est pas précisé",
+      "expected": [
+        "ACI0106367"
+      ],
+      "rank": 1,
+      "reference": "ACI0106367",
+      "score": 0.8329021098676129,
+      "visible": true,
+      "top": [
+        {
+          "ref": "ACI0106367",
+          "score": 0.8329021098676129
+        },
+        {
+          "ref": "ACI0105759",
+          "score": 0.7618648783554465
+        },
+        {
+          "ref": "ACI0106167",
+          "score": 0.7607697741749975
+        },
+        {
+          "ref": "ACI0101670",
+          "score": 0.7572987299598805
+        },
+        {
+          "ref": "ACI0106499",
+          "score": 0.7542307730544684
+        },
+        {
+          "ref": "ACI0102183",
+          "score": 0.7512896407808295
+        },
+        {
+          "ref": "ACI0100431",
+          "score": 0.7486049300519094
+        },
+        {
+          "ref": "ACI0104389",
+          "score": 0.7394743316482648
+        }
+      ]
+    }
+  ],
+  "offTopic": [
+    {
+      "query": "Quel temps fera-t-il demain à Paris ?",
+      "ref": "ACI0100431",
+      "score": 0.5932173368557822,
+      "passesFloor": false
+    },
+    {
+      "query": "Une recette de tarte aux pommes",
+      "ref": "ACI0100686",
+      "score": 0.6171702157422435,
+      "passesFloor": false
+    },
+    {
+      "query": "Comment nourrir mon chat ?",
+      "ref": "ACI0100214",
+      "score": 0.5714636253494061,
+      "passesFloor": false
+    },
+    {
+      "query": "Qui a gagné le dernier match de football ?",
+      "ref": "ACI0101234",
+      "score": 0.6438183168375902,
+      "passesFloor": false
+    }
+  ],
+  "supplementalNegatives": [
+    {
+      "query": "Bonjour, comment allez-vous ?",
+      "ref": "ACI0103948",
+      "score": 0.6482598228600553,
+      "passesFloor": false
+    },
+    {
+      "query": "Bonsoir !",
+      "ref": "ACI0105874",
+      "score": 0.6689302288094227,
+      "passesFloor": false
+    },
+    {
+      "query": "Merci pour votre aide",
+      "ref": "ACI0105874",
+      "score": 0.6884790122906472,
+      "passesFloor": false
+    },
+    {
+      "query": "Quelle est la capitale du Canada ?",
+      "ref": "ACI0105308",
+      "score": 0.5761951780768753,
+      "passesFloor": false
+    },
+    {
+      "query": "Comment cultiver des tomates sur mon balcon ?",
+      "ref": "ACI0102249",
+      "score": 0.62560812169184,
+      "passesFloor": false
+    },
+    {
+      "query": "Combien de temps faut-il cuire un œuf ?",
+      "ref": "ACI0103028",
+      "score": 0.6068601393551145,
+      "passesFloor": false
+    },
+    {
+      "query": "Pourquoi le ciel est-il bleu ?",
+      "ref": "ACI0104257",
+      "score": 0.6208837790823817,
+      "passesFloor": false
+    },
+    {
+      "query": "Pouvez-vous me conseiller un livre pour les vacances ?",
+      "ref": "ACI0105874",
+      "score": 0.6233033228993435,
+      "passesFloor": false
+    }
+  ],
+  "calibration": {
+    "correct": {
+      "min": 0.7152818758123961,
+      "p10": 0.7761701163398785,
+      "p25": 0.800486817541879,
+      "median": 0.8188937893800297,
+      "p75": 0.8408014773285895,
+      "max": 0.873463915851764
+    },
+    "negatives": {
+      "count": 12,
+      "min": 0.5714636253494061,
+      "median": 0.6208837790823817,
+      "max": 0.6884790122906472
+    },
+    "separation": 0.026802863521748876,
+    "recommendation": {
+      "scores": {
+        "min": 0.7018804440515216,
+        "medium": 0.800486817541879,
+        "high": 0.8408014773285895
+      },
+      "rationale": "Floor midway between maximum negative and minimum correct score",
+      "visibleRecall8": 0.9767441860465116,
+      "offTopicHits": 0
+    }
+  }
+}

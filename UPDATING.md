@@ -9,7 +9,8 @@ when 4D ships new fixes.
 
 That runs the deterministic stages, stops at the enrichment gate if there is
 prose to write, and tells you what to do next. Everything is incremental: only
-bugs whose source text actually changed get re-written and re-embedded.
+bugs whose source text actually changed get re-written. Search vectors are
+reused only after their shared model contract and corpus integrity verify.
 
 ## Running it on GitHub Actions
 
@@ -23,7 +24,7 @@ same pipeline on demand (Actions → Update dataset → Run workflow):
   merge it with `merge_enrichment.py`, push, then re-run the workflow **on
   that branch** with mode `build-only`. If nothing is pending, the PR already
   contains the rebuilt site data.
-- **mode `build-only`** runs stages 6–12 on the selected branch and commits the
+- **mode `build-only`** runs stages 6–13 on the selected branch and commits the
   result back to it. If Japanese or French summaries are pending it stops at the
   translation gate instead (see [The Japanese site](#the-japanese-site) and
   [The French site](#the-french-site)). PR messaging lists both queues.
@@ -45,10 +46,11 @@ The repository must allow *GitHub Actions to create and approve pull requests*
 | — | **Translation (manual gate)** | `scripts/update/TRANSLATION_PROMPT.md`, `scripts/update/TRANSLATION_PROMPT_FR.md` | `data/translation/chunk_N.out.json`, `data/translation_fr/chunk_N.out.json` |
 | 7 | Merge translation | `scripts/update/merge_translation.py` (also `--lang fr`) | `data/all_bugs_ja.json`, `data/all_bugs_fr.json` |
 | 8 | Link check | `scripts/update/check_links.py` | verified URLs cached in `data/update_state.json` |
-| 9 | Build | `scripts/update/generate_embeddings.mjs` | `docs/data/meta.json`, `docs/data/embeddings.bin`, `docs/src/beta-versions.js` |
-| 10 | Build (ja) | `scripts/update/generate_embeddings.mjs --lang ja` | `docs/data/ja/meta.json`, `docs/data/ja/embeddings.bin` |
-| 11 | Build (fr) | `scripts/update/generate_embeddings.mjs --lang fr` | `docs/data/fr/meta.json`, `docs/data/fr/embeddings.bin` |
-| 12 | Cache-bust | `scripts/update/bump_cache_bust.py` | English, Japanese and French `index.html` `?v=N` |
+| 9 | Locked dependencies + CDN runtime verification | `npm ci --prefix scripts` then `npm run build:search-runtime --prefix scripts` | verified gitignored runtime cache; committed licenses/versions only |
+| 10 | Build (en) | `scripts/update/generate_embeddings.mjs` | `docs/data/{meta.json,embeddings.bin,search-index.json}`, `docs/src/beta-versions.js` |
+| 11 | Build (ja) | `scripts/update/generate_embeddings.mjs --lang ja` | `docs/data/ja/{meta.json,embeddings.bin,search-index.json}` |
+| 12 | Build (fr) | `scripts/update/generate_embeddings.mjs --lang fr` | `docs/data/fr/{meta.json,embeddings.bin,search-index.json}` |
+| 13 | Cache-bust | `scripts/update/bump_cache_bust.py` | English, Japanese and French `index.html` `?v=N` |
 
 `html/` and `vendor/` are gitignored — both are large and fully reproducible.
 
@@ -91,8 +93,12 @@ usable CA trust store.
 
 A bug is queued for enrichment only when it is new, or when its fingerprint
 differs from the one recorded at its last enrichment. The embedding step is
-incremental on the same principle: a bug whose `summary` is byte-identical to
-the one in the existing `docs/data/meta.json` keeps its existing vector row.
+incremental only after the previous `search-index.json` contract, record
+count/bytes and metadata/vector SHA-256 checksums verify. Under that verified
+contract, an unchanged `documentText(record)` keeps its existing vector row;
+reference, summary and command changes can invalidate it. Version-only changes
+do not alter the embedded document. Missing/mismatched contract or integrity
+automatically forces full recomputation, even if dimensions match.
 
 On the very first run there are no fingerprints, so they are bootstrapped from
 the existing `data/all_bugs_context.json` — that file is the record of what the
@@ -173,13 +179,10 @@ markdown subset. Warnings flag sentences not in polite form (です・ます調)
 numbers dropped from the English, and long untranslated English runs; pass
 `--strict` to make them errors.
 
-The Japanese dataset is embedded with
-[ruri-v3-30m](https://huggingface.co/cl-nagoya/ruri-v3-30m) (256-dim, a
-Japanese-specific model; the ONNX export `sirasagi62/ruri-v3-30m-ONNX` is
-pinned to a commit) via `@huggingface/transformers`, with the model's
-`検索文書: ` / `検索クエリ: ` document/query prefixes. The model settings live
-in both `generate_embeddings.mjs` and `docs/src/i18n.js` and must match; a unit
-test checks that.
+The Japanese dataset retains every localized summary but now uses the same
+text-only EmbeddingGemma 2 contract as English and French. The old ruri model
+and its Japanese document/query prefixes are historical, not current settings.
+See [Unified search build](#unified-search-build) below.
 
 ## The French site
 
@@ -211,46 +214,130 @@ structural invariants but not Japanese character/politeness heuristics; French
 without accents is valid, identical English is rejected, and missing numbers
 produce warnings (`--strict` makes them errors).
 
-Both queues are refreshed before the translation gate. Neither site's build
-runs until both queues are empty. French embeddings use
-`Xenova/multilingual-e5-small` via `@xenova/transformers`,
-`quantized: true`, 384 dimensions, mean pooling and L2 normalization.
-Corpus inputs must be `"passage: " + stripLinks(summary)`; browser query inputs
-must be `"query: " + query`. Keep model settings and the corresponding task
-prefixes aligned with the client in `docs/src/i18n.js`. `--force` re-embeds all
-French rows after a model or prefix change, even if dimensions are unchanged:
+Both queues are refreshed before the translation gate. No language's build
+runs until both queues are empty. French summaries remain French; the encoder
+is now shared with English and Japanese. The old E5 model, `"passage: "` /
+`"query: "` prefixes and E5 score cutoffs must not be used by the current
+EmbeddingGemma 2 contract.
+
+## Unified search build
+
+`docs/src/search-config.js` is the single encoder contract for all languages:
+
+- `onnx-community/embeddinggemma-2-ONNX` pinned to revision
+  `daa72c51243991dfcaf9f9137d2c573d8f7790c0`, the text-only 270M model in `q4`.
+- Clear `vision_config` and `audio_config`; use its exported
+  `sentence_embedding`, explicitly L2-normalized to **768 dimensions**,
+  with truncation at **512 tokens**. This is not generic feature-extraction
+  mean pooling.
+- `documentText(record)` formats
+  `title: ${reference} | text: ${markdown-links-stripped localized summary}`
+  followed by a newline and command names joined with `" · "`.
+- Query text is exactly `"task: search result | query: " + query`.
+
+The CPU encoder (`scripts/update/search-encoder.mjs`) downloads the pinned
+artifacts into `.cache/search-model/<revision>/` and verifies their SHA-256
+checksums. `SEARCH_MODEL_PATH=/path/to/model-directory` selects existing local
+artifacts, but does not bypass verification. The workflow caches
+`.cache/search-model` and `.cache/search-runtime` with a key including the shared
+search contract, runtime URL/hash configuration and package lock.
+
+Restore locked dependencies and verify the official CDN runtime **before** indexing:
 
 ```sh
-(cd scripts && node update/generate_embeddings.mjs --lang fr --force)
+npm ci --prefix scripts
+npm run build:search-runtime --prefix scripts
+(cd scripts && node update/generate_embeddings.mjs)
+(cd scripts && node update/generate_embeddings.mjs --lang ja)
+(cd scripts && node update/generate_embeddings.mjs --lang fr)
 ```
+
+Dependencies are pinned to `@huggingface/transformers@4.3.1`, with Playwright
+tooling. `docs/src/runtime-config.js` specifies the official immutable module
+`https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.1/dist/transformers.min.js`,
+the exact ORT `wasmPaths` base
+`https://cdn.jsdelivr.net/npm/onnxruntime-web@1.31.0-dev.20260914-8d85527a0/dist/`,
+and known SHA-256 digests for every official runtime file, including all three
+`.mjs`/`.wasm` flavors.
+
+The command name `build:search-runtime` remains compatible, but now verifies
+locked installed npm versions and upstream file hashes, downloads CDN files
+into gitignored `.cache/search-runtime/4.3.1/`, and checks their digests match.
+Cached files are revalidated rather than blindly trusted; corrupt/missing
+entries are downloaded again, and a mismatched response fails verification.
+Verification can reuse a valid cache when the CDN is unavailable; with no valid
+cache, an unavailable CDN file stops the stage rather than selecting a different
+version. Browser CDN failures use the explicit keyword fallback described below.
+There is no bundling or executable runtime vendoring. Commit only the retained
+Transformers.js, tokenizer, Jinja and ORT licenses/notices and `versions.json`
+in `docs/search-runtime/4.3.1/` alongside
+the index artifacts. Deployment remains GitHub Pages from `main` / `docs`,
+not a new deployment workflow.
+
+For each of `docs/data/`, `docs/data/ja/` and `docs/data/fr/`, commit `meta.json`,
+`embeddings.bin` and `search-index.json` together. The manifest contains the
+full `contract`, `count`, `bytes`, `metadata_sha256` and `vectors_sha256`.
+The generator automatically recomputes on any contract/integrity mismatch;
+`--force` remains available to explicitly rebuild every vector. Changing model,
+revision, precision, text format or runtime is not safe just because dimensions
+happen to remain the same.
+
+The browser automatically attempts WebGPU inference in a worker. Localized
+metadata keyword search remains usable during download, on unsupported WebGPU,
+CDN/model load failure or query failure. `#search-status` shows progress/fallback state
+and a retry button allows another attempt. Keyword badges describe lexical
+matches, not semantic confidence percentages. There is no generic quantized
+WASM encoder fallback. ACI lookup, case-sensitive command matching and version
+filters remain available in either search mode.
+Queries containing only recognized command/version criteria bypass encoding
+and semantic floors, returning the exact filtered pool with a localized
+`Filter` / `Filtre` / `条件一致` badge in every loading/device state.
+Bug descriptions still use semantic ranking and thresholds; ACI lookup is
+unchanged. Unknown terms are not discarded: `weather after v20` must not turn
+into an exact version-only search, including in keyword fallback.
 
 ## Tests
 
 ```
-cd scripts && npm install && npm test             # unit tests (JS + Python)
-node ../tests/eval/eval_retrieval.mjs             # Japanese retrieval quality (recall@8, MRR)
-node ../tests/eval/eval_retrieval.mjs --lang fr --min-recall8 0.8 --min-visible-recall8 0.8 --max-off-topic-hits 0
-PW_CHANNEL=chrome node ../tests/browser/smoke.mjs # both pages in headless Chrome (needs network)
+cd scripts && npm ci && npm test                  # unit tests (JS + Python)
+node ../tests/eval/eval_retrieval.mjs --lang en --min-recall8 0.95 --min-visible-recall8 0.95 --max-off-topic-hits 0
+node ../tests/eval/eval_retrieval.mjs --lang ja --min-recall8 0.95 --min-visible-recall8 0.95 --max-off-topic-hits 0
+node ../tests/eval/eval_retrieval.mjs --lang fr --min-recall8 0.95 --min-visible-recall8 0.95 --max-off-topic-hits 0
+PW_CHANNEL=chrome node ../tests/browser/smoke.mjs # locale pages in headless Chrome (needs network)
 ```
 
 `eval_retrieval.mjs` also prints the score distribution of correct hits versus
-off-topic queries — re-check the `scores` thresholds in `docs/src/i18n.js`
-against it after any embedding-model change.
+off-topic queries. Recalibrate semantic scores in `docs/src/i18n.js` against
+measured new-model results, not the old models' thresholds. Check keyword
+fallback/retry separately; its lexical labels are not cosine-score calibration.
 
 The French evaluation uses `tests/eval/fr_queries.json` (43 French counterparts
 of the Japanese queries) and the generated `docs/data/fr/` corpus. Run it after
-building the French embeddings. The command above enforces an 80% floor for
+building the French embeddings. The commands above enforce a 95% floor for
 both recall@8 and visible recall@8, so a good ranking that the client's score
-threshold hides does not pass unnoticed. It also requires all four off-topic
-queries to remain below the score floor.
+threshold hides does not pass unnoticed. They also require zero evaluated
+off-topic queries above the score floor.
 
-The 2,467-summary E5-small benchmark measured **88.4% recall@8**, **72.1%
-recall@1**, and **0.805 MRR** with single-query inference matching the browser.
-The French thresholds are `min: 0.85`, `medium: 0.88`, `high: 0.90`; the minimum
-retains all 38 correct top-eight hits and rejects all four off-topic queries.
-Correct-hit scores ranged from 0.854–0.932, versus 0.784–0.838 for off-topic
-top hits. Re-run the evaluation rather than carrying these thresholds over to
-a different model.
+All three indexes were built and verified with metadata byte-identical to
+commit `3544f94`. Measured results on 43 aligned queries per language are:
+
+| Language | Historical R@1 / R@8 / MRR | EmbeddingGemma 2 R@1 / R@8 / MRR | Active min / medium / high |
+|---|---|---|---|
+| English (old MiniLM) | 95.35% / 100% / .97093 | 88.37% / 100% / .94186 | .705 / .799 / .841 |
+| French (old E5) | 72.09% / 88.37% / .80502 | 86.05% / 97.67% / .91122 | .702 / .800 / .841 |
+| Japanese (old ruri) | 95.35% / 100% / .96802 | 93.02% / 97.67% / .95460 | .715 / .798 / .845 |
+
+Each locale's cutoffs were independently calibrated: they retain every correct
+top-eight hit and reject all 12 expanded negative queries per language.
+This is not baseline parity: English top-one accuracy/MRR decline; Japanese
+loses the `ACI0104021` top-eight hit (rank 2 → 21). French improves overall,
+but `ACI0105986` regresses from rank 21 → 64, already outside the top eight.
+The 95% gates are explicit acceptance floors, not assertions of no regression.
+
+Durable reports are `tests/eval/embeddinggemma-{en,fr,ja}.json`,
+`tests/eval/embeddinggemma-comparison.json` and `tests/eval/baselines.json`.
+Inspect these comparisons and recalibrate after encoder or corpus changes;
+the measured negative sets do not guarantee rejection of every off-topic query.
 
 ## Command matching
 
@@ -281,6 +368,8 @@ Rarely needed, but supported:
 
 ```
 ./scripts/update.sh --full-crawl
+npm ci --prefix scripts
+npm run build:search-runtime --prefix scripts
 python3 scripts/update/build_context.py --force-all
 # …write all ~2,400 summaries…
 (cd scripts && node update/generate_embeddings.mjs --force)

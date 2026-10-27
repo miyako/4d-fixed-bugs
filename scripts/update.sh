@@ -16,10 +16,11 @@
 #   5. translate   -> data/pending_translation{,_fr}.json (Japanese and French)
 #   --- manual gate: write both languages; merge_translation.py [--lang fr]
 #   6. links       re-verify every developer.4d.com link still resolves
-#   7. build       -> docs/data/{meta.json,embeddings.bin}, docs/src/beta-versions.js
-#   8. build (ja)  -> docs/data/ja/{meta.json,embeddings.bin}
-#   9. build (fr)  -> docs/data/fr/{meta.json,embeddings.bin}
-#  10. cache-bust  bump ?v=N on English, Japanese and French pages
+#   7. runtime     restore locked deps + verify the pinned official CDN runtime
+#   8. build       -> docs/data/{meta.json,embeddings.bin,search-index.json} + beta versions
+#   9. build (ja)  -> docs/data/ja/{meta.json,embeddings.bin,search-index.json}
+#  10. build (fr)  -> docs/data/fr/{meta.json,embeddings.bin,search-index.json}
+#  11. cache-bust  bump ?v=N on English, Japanese and French pages
 #
 # Stages 1-5 are fully deterministic and safe to re-run. The script stops at
 # the enrichment gate and then at the translation gate when there is prose to
@@ -48,16 +49,16 @@ done
 step() { printf '\n\033[1m== %s\033[0m\n' "$1"; }
 
 if [ "$BUILD_ONLY" -eq 0 ]; then
-    step "1/10 Crawling bugs.4d.com"
+    step "1/11 Crawling bugs.4d.com"
     python3 scripts/update/crawl.py "${CRAWL_ARGS[@]}"
 
-    step "2/10 Parsing HTML"
+    step "2/11 Parsing HTML"
     python3 scripts/update/parse.py
 
-    step "3/10 Syncing Japanese notes"
+    step "3/11 Syncing Japanese notes"
     python3 scripts/update/sync_jp.py
 
-    step "4/10 Building enrichment context"
+    step "4/11 Building enrichment context"
     python3 scripts/update/build_context.py
 
     PENDING=$(python3 -c "import json;print(len(json.load(open('data/pending_enrichment.json'))))")
@@ -76,7 +77,7 @@ EOF
     fi
 fi
 
-step "5/10 Building Japanese and French translation contexts"
+step "5/11 Building Japanese and French translation contexts"
 python3 scripts/update/build_translation.py
 python3 scripts/update/build_translation.py --lang fr
 
@@ -113,19 +114,23 @@ if [ "$PENDING_JA" -gt 0 ] || [ "$PENDING_FR" -gt 0 ]; then
     exit 0
 fi
 
-step "6/10 Checking documentation links"
+step "6/11 Checking documentation links"
 python3 scripts/update/check_links.py
 
-step "7/10 Building embeddings + client dataset"
-(cd scripts && npm install --silent && node update/generate_embeddings.mjs ${EMBED_ARGS[@]+"${EMBED_ARGS[@]}"})
+step "7/11 Restoring dependencies + verifying pinned official CDN search runtime"
+npm ci --silent --prefix scripts
+npm run build:search-runtime --prefix scripts
 
-step "8/10 Building Japanese embeddings + client dataset"
+step "8/11 Building English embeddings + client dataset"
+(cd scripts && node update/generate_embeddings.mjs ${EMBED_ARGS[@]+"${EMBED_ARGS[@]}"})
+
+step "9/11 Building Japanese embeddings + client dataset"
 (cd scripts && node update/generate_embeddings.mjs --lang ja ${EMBED_ARGS[@]+"${EMBED_ARGS[@]}"})
 
-step "9/10 Building French embeddings + client dataset"
+step "10/11 Building French embeddings + client dataset"
 (cd scripts && node update/generate_embeddings.mjs --lang fr ${EMBED_ARGS[@]+"${EMBED_ARGS[@]}"})
 
-step "10/10 Bumping asset cache-busting version"
+step "11/11 Bumping asset cache-busting version"
 python3 scripts/update/bump_cache_bust.py
 
 step "Done"

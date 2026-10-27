@@ -5,4 +5,6 @@ vendor/
 # Per-run enrichment / translation worker scratch files
 data/enrichment/
 data/translation/
+data/translation_fr/
+.cache/
 __pycache__/

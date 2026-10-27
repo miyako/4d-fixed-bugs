@@ -40,16 +40,23 @@ docs/                      # GitHub Pages root (served as /)
     banner.png               # 128x128 app-bar logo/icon
   data/
     meta.json                 # array of {reference, summary, commands, versions}, one per bug, index-aligned with embeddings.bin
-    embeddings.bin             # raw Float32Array, row-major, N rows x 384 cols, L2-normalized
+    embeddings.bin             # raw Float32Array, row-major, N rows x 768 cols, L2-normalized
+    search-index.json          # full encoder contract, shape and metadata/vector SHA-256
     ja/
       meta.json                 # same records with Japanese summaries
-      embeddings.bin            # N rows x 256 cols (ruri-v3-30m), L2-normalized
+      embeddings.bin            # N rows x 768 cols, same text-only EmbeddingGemma 2
+      search-index.json         # Japanese index contract and integrity manifest
     fr/
       meta.json                 # same records with French summaries
-      embeddings.bin            # N rows x 384 cols (multilingual E5-small), L2-normalized
+      embeddings.bin            # N rows x 768 cols, same text-only EmbeddingGemma 2
+      search-index.json         # French index contract and integrity manifest
+  search-runtime/4.3.1/      # committed runtime licenses and versions.json only, no executables
   src/
     app.js                     # entry point: boot, retrieval, chat UI, deterministic reply builder
-    i18n.js                    # per-language dataset dir, embedding model settings, score thresholds, UI strings
+    i18n.js                    # per-language dataset dir, score calibration, UI/fallback strings
+    search-config.js           # shared pinned model/runtime/format/normalization contract
+    runtime-config.js          # exact official CDN URLs and upstream runtime-file SHA-256
+    keyword-search.js          # metadata-only fallback, not semantic confidence
     render.js                  # safe minimal-markdown renderer for summaries + version links
     beta-versions.js           # GENERATED: Set of versions that only exist as a bugs.4d.com beta branch
     version.js                 # natural-language version-reference parsing/matching
@@ -94,21 +101,24 @@ scripts/
     TRANSLATION_PROMPT.md      # instructions handed to each translation worker
     TRANSLATION_PROMPT_FR.md   # French writing contract; canonical English commands/links
     generate_embeddings.mjs    # incremental build of docs/data/ (--lang ja/fr: docs/data/ja/ or fr/)
+    search-encoder.mjs         # checksum-verified pinned text-only CPU encoder
     bump_cache_bust.py         # bumps shared ?v=N on all three pages' asset URLs
     ENRICHMENT_PROMPT.md       # the prose-writing instructions handed to each worker
-  package.json                 # scripts-only deps: @xenova/transformers@2.17.2 (English/French), @huggingface/transformers@3.8.1 (Japanese); playwright (dev, smoke test)
+  package.json                 # @huggingface/transformers@4.3.1 and playwright tooling
 
 tests/
   js/                         # node:test unit tests for docs/src (version/command parsing, rendering, i18n)
   python/                     # unittest for the translation validator
-  eval/                       # Japanese/French retrieval-quality query sets + --lang evaluator
+  eval/                       # aligned English/Japanese/French retrieval-quality query sets
   browser/smoke.mjs           # headless-browser smoke test of both pages
-  generate_embeddings.mjs      # original non-incremental build (superseded by update/generate_embeddings.mjs)
+  generate_embeddings.mjs      # compatibility entry point for the shared index generator
   crawl_4d_bugs.sh             # original crawler, kept for reference (superseded by update/crawl.py)
   parse_phase1.py              # original parser, kept for reference (superseded by update/parse.py)
 
 html/                       # gitignored: raw crawled HTML, reproducible via scripts/update/crawl.py
 vendor/                     # gitignored: shallow clones of the 4D-JP cross-reference repos
+.cache/search-model/        # gitignored: checksummed model artifacts under the pinned revision
+.cache/search-runtime/      # gitignored: verified official CDN runtime files under 4.3.1/
 ```
 
 ## 3. Data model
@@ -128,7 +138,8 @@ has this shape:
 
 - `reference`: ACI bug-tracker ID, always `"ACI"` + exactly 7 zero-padded
   digits (e.g. `ACI0092218`).
-- `summary`: English prose, a small fixed markdown subset only —
+- `summary`: localized prose (English at the root, Japanese under `ja/`,
+  French under `fr/`), a small fixed markdown subset only —
   `[text](url)` links (always to `https://developer.4d.com/...` command
   docs), `` `code` `` inline spans, and `*italic*` spans. No bold, no
   fenced code blocks, no headings, no tables appear anywhere in the
@@ -141,11 +152,14 @@ has this shape:
   (`"19.5_hf1"`), and R-release (`"19_r7"`, optionally with its own
   hotfix suffix like `"20_r10_hf2"`).
 
-Dataset size: 2,467 bugs. Embedding: 384-dim (`all-MiniLM-L6-v2`),
-Float32, L2-normalized. `embeddings.bin` is therefore exactly
-`2467 * 384 * 4` bytes = 3,789,312 bytes, row `i` (0-indexed) being the
+Dataset size: 2,467 bugs per language. Embedding: 768-dimensional text-only
+EmbeddingGemma 2, Float32, L2-normalized. Each `embeddings.bin` is therefore
+`2467 * 768 * 4` bytes = 7,578,624 bytes, row `i` (0-indexed) being the
 embedding for `meta.json[i]`. (The dataset grows as 4D ships fixes — see
-`UPDATING.md`; the invariant is `byteLength === meta.length * 384 * 4`.)
+`UPDATING.md`; the invariant is `byteLength === meta.length * 768 * 4`.)
+Each corpus also carries `search-index.json`: `contract`, `count`, `bytes`,
+`metadata_sha256` and `vectors_sha256`. Shape alone never establishes that an
+index belongs to the current model or text format.
 
 ### Source data (`data/`, not served — precompute inputs only)
 
@@ -171,8 +185,11 @@ Run whenever the dataset changes, from `scripts/`:
 
 ```
 cd scripts
-npm install         # installs @xenova/transformers@2.17.2 only
+npm ci
+npm run build:search-runtime
 node update/generate_embeddings.mjs
+node update/generate_embeddings.mjs --lang ja
+node update/generate_embeddings.mjs --lang fr
 ```
 
 It is the last stage of the dataset-refresh pipeline described in
@@ -186,19 +203,29 @@ Steps:
 3. Build the final `records` array: `{reference, summary, commands,
    versions}` — this becomes `docs/data/meta.json` verbatim
    (`JSON.stringify(records)`, no pretty-printing).
-4. Load the `Xenova/all-MiniLM-L6-v2` feature-extraction pipeline via
-   `@xenova/transformers`, quantized (`{ quantized: true }`).
-5. For each bug, strip markdown links down to plain link text (`[text
-   ](url)` → `text`) via the same regex used for stripping links at
-   query time in the client (`app.js`'s `stripLinks`), so the model
-   embeds clean prose rather than URL noise.
-6. Embed in batches of 32 with `pooling: "mean", normalize: true`
-   (mean-pooled, L2-normalized 384-dim vectors) and pack every batch's
-   flat `Float32Array` output directly into one big pre-allocated
-   `Float32Array(records.length * 384)` at the correct row offset.
+4. Load the pinned text-only CPU encoder from `search-encoder.mjs`, using
+   `@huggingface/transformers@4.3.1`. Its shared contract is
+   `docs/src/search-config.js`: model `onnx-community/embeddinggemma-2-ONNX`,
+   revision `daa72c51243991dfcaf9f9137d2c573d8f7790c0`, precision `q4`,
+   512-token maximum, 768-dimensional output. Clear `vision_config` and
+   `audio_config`; no image/audio path is loaded.
+5. Use the shared `documentText(record)` helper, not a language-specific
+   summary prefix. It preserves the reference and canonical command names:
+
+   ```text
+   title: {reference} | text: {Markdown-links-stripped localized summary}
+   {commands joined with " · "}
+   ```
+
+6. Embed batches through the exported `sentence_embedding`, then explicitly
+   L2-normalize and validate each vector. Do not substitute generic
+   `feature-extraction` mean pooling. Pack rows into
+   `Float32Array(records.length * 768)`.
 7. Write `docs/data/embeddings.bin` as the raw bytes of that
    `Float32Array` (`Buffer.from(floatArray.buffer)`) and
-   `docs/data/meta.json` as the records array.
+   `docs/data/meta.json` as the records array. Write `search-index.json`
+   with the complete shared contract, record count, binary byte length and
+   SHA-256 hashes of the serialized metadata and vector bytes.
 8. Write `docs/src/beta-versions.js`, exporting a `Set` of the versions
    bugs.4d.com only publishes as a beta branch (taken from
    `data/update_state.json`'s `beta_only_versions`). `render.js` imports
@@ -206,18 +233,43 @@ Steps:
    `?version=<v>` or `?branch=<v>` — for a version still in beta the
    former returns the site's error page.
 
-The step is **incremental**: before embedding, it reads the existing
-`docs/data/meta.json` + `embeddings.bin` and, for any bug whose `summary`
-is byte-identical to the one already built, copies that row straight
-across instead of recomputing it. A routine update therefore embeds a
-hundred bugs rather than two and a half thousand. The existing binary is
-only reused if its length matches `meta.length * 384 * 4` exactly;
-otherwise everything is recomputed. `--force` skips reuse entirely, which
-is what you want after an embedding-model change.
+The step is **incremental only after validation**: the prior manifest's full
+contract must match, shape/count/bytes must agree, and metadata/vector hashes
+must verify. A missing or mismatched contract or failed integrity check causes
+automatic full recomputation, even when vector dimensions happen to match.
+Once verified, a row is reused only when its `documentText(record)` is
+unchanged. A reference, summary or command change can therefore invalidate a
+row; a version-only update can reuse it. `--force` skips all row reuse.
 
-This script is the **only** place embeddings are ever computed — the
-browser never re-embeds the dataset, only the user's query at search
-time, using the identical model/pooling/normalization settings so query
+The CPU encoder downloads only pinned, SHA-256-verified artifacts into
+`.cache/search-model/<revision>/`. `SEARCH_MODEL_PATH` can point at a local
+model directory, but those files must pass the same checksums; it is not an
+escape hatch for unversioned weights.
+
+`docs/src/runtime-config.js` pins the official immutable CDN module
+`https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.1/dist/transformers.min.js`
+and ONNX Runtime `wasmPaths` base
+`https://cdn.jsdelivr.net/npm/onnxruntime-web@1.31.0-dev.20260914-8d85527a0/dist/`.
+It also records SHA-256 hashes for each unmodified upstream file, including
+`.mjs`/`.wasm` assets for all three ORT flavors.
+
+The compatible command `npm run build:search-runtime --prefix scripts` is now
+a **verification stage**, not a bundler: it checks installed locked npm
+versions and file hashes, downloads official CDN files into gitignored
+`.cache/search-runtime/4.3.1/`, and verifies matching digests. A cache entry
+never bypasses hash validation. A valid cache can satisfy verification without
+a CDN download; without it, unavailable CDN files fail the verification stage.
+Only licenses/notices and `versions.json` remain
+committed under `docs/search-runtime/4.3.1/`; no runtime executables are
+committed. Pages still serves `main` / `docs` directly, with no new deployment
+workflow. Browser workers import the exact-version CDN module and use its
+matching ORT paths, rather than mixing independently selected runtime versions.
+If the CDN is unavailable to the browser, explicitly labeled metadata keyword
+search remains available; no alternate unpinned runtime is substituted.
+
+Corpus embeddings are computed offline by this step — the browser never
+re-embeds the dataset, only the user's query at search time, using the
+same model/exported-output/normalization contract so query
 and corpus vectors are directly comparable via dot product.
 
 ## 5. Page structure (`docs/index.html`)
@@ -259,12 +311,14 @@ Single HTML page, no separate results page, no client-side router.
       reference ID. Runs entirely in your browser — no server, no data leaves your
       machine, no LLM required.</p>
     <div id="boot-status" class="status" role="status">Starting up…</div>
+    <div id="search-status" class="status" role="status"><!-- localized progress/fallback state --></div>
+    <!-- A manual retry control is shown for semantic-search recovery. -->
     <div id="chat" class="chat-container"></div>
   </main>
 
   <footer>
     <p>Data crawled from <a href="https://bugs.4d.com">bugs.4d.com</a>. Embeddings:
-       all-MiniLM-L6-v2 via <a href="https://huggingface.co/docs/transformers.js">transformers.js</a>.</p>
+       text-only EmbeddingGemma 2 via the pinned official Transformers.js CDN runtime.</p>
   </footer>
 
   <script type="module" src="src/app.js?v=N"></script>
@@ -280,9 +334,10 @@ Key structural points:
 - All three buttons carry an inline SVG icon (no icon font/library) plus
   a text label (`<span>Query</span>` etc.) — Query uses a
   magnifying-glass path, Clear a trash-can path, Copy a clipboard path.
-- The input and submit button start `disabled` and are only enabled once
-  `boot()` (in `app.js`) finishes loading the dataset + embedder (+
-  optional chat engine).
+- The input and submit button start `disabled` but become usable once
+  metadata keyword search is ready; model download does not block them.
+  `#search-status` and a manual retry control make semantic loading,
+  failure and recovery explicit rather than silently pretending to be semantic.
 - There is no separate "results list" UI — everything (both the
   conversational reply and the ranked-hits table) renders as chat
   bubbles inside `#chat`.
@@ -296,15 +351,19 @@ Key structural points:
 
 ```js
 const LOCALE = getLocale(document.documentElement.lang); // from i18n.js, see §11
-const EMBED_DIM = LOCALE.embedding.dim;                   // 384 (en) / 256 (ja)
+const EMBED_DIM = SEARCH_CONFIG.dimensions;               // 768 for en / ja / fr
 const TOP_K = 15;          // candidates ranked/returned by retrieve()
 const TABLE_TOP_N = 8;     // how many of those are actually rendered in the hits table
-const MIN_SCORE = LOCALE.scores.min;                      // per-model similarity floor
+const MIN_SCORE = LOCALE.scores.min;                      // calibrated semantic similarity floor
 const DEFAULT_CHAT_ENGINE = "deterministic"; // "deterministic" | "webllm"
 ```
 
-For English, `LOCALE.embedding` is the transformers.js 2.17.2 CDN URL,
-`Xenova/all-MiniLM-L6-v2`, `{ quantized: true }`, no query prefix.
+All languages use the same `SEARCH_CONFIG` model contract (§4). Query encoding
+uses `queryText(query)`, which prepends exactly `"task: search result | query: "`.
+The model's exported `sentence_embedding` is normalized to 768 dimensions,
+not inferred by a generic feature-extraction pipeline. Locale-specific UI and
+semantic score calibration remain in `i18n.js`; the active cutoffs were measured
+independently for each language (§13), not inherited from MiniLM/E5/ruri.
 
 `CHAT_ENGINE` is resolved once at load time as: `?engine=` URL query
 param → `document.body.dataset.engine` → `DEFAULT_CHAT_ENGINE`. This
@@ -313,27 +372,20 @@ lets you force WebLLM mode for testing via
 
 ### 6.2 Boot sequence (`boot()`)
 
-1. `loadDataset()` — fetch `../data/meta.json` and
-   `../data/embeddings.bin` in parallel (URLs resolved relative to
-   `import.meta.url`, i.e. relative to `app.js` itself, not the page,
-   so the same script works from any page depth). Parse JSON into
-   `meta`, wrap the binary `ArrayBuffer` in a `Float32Array` as
-   `embeddings`. Build `commandIndex` (see §6.3) and scan every bug's
-   `versions` to compute `minMajor`/`maxMajor` (the actual major-version
-   range present in the dataset, used later to sanity-check
-   version-intent parsing).
-2. `loadEmbedder()` — dynamically `import()` the transformers.js CDN
-   URL, set `env.allowLocalModels = false` (never look for local model
-   files) and `env.useBrowserCache = true` (cache the downloaded model
-   in the browser's Cache Storage across visits), then
-   `pipeline("feature-extraction", EMBED_MODEL_ID, { quantized: true })`.
-3. If `CHAT_ENGINE !== "deterministic"`, also `loadChatEngine()` (see
-   §7) — otherwise skipped entirely, so the deterministic default never
-   downloads any LLM.
-4. On success: status becomes `Ready. Ask about any of the ${N} fixed 4D
-   bugs (versions ${min}-${max}).` and the input/button are enabled. On
-   any failure: status becomes `Failed to start: ${err.message}` and the
-   UI stays disabled.
+1. Load the selected locale's `meta.json` and build its command/version
+   metadata. Make keyword search usable without waiting for model download.
+2. Load `search-index.json` and `embeddings.bin`; verify the model contract,
+   count/byte shape and metadata/vector checksums before semantic use.
+3. Automatically start semantic model loading in a WebGPU worker using
+   the official exact-version CDN runtime and shared pinned contract.
+   The worker uses the text-only `q4` model and exported sentence embedding.
+4. `#search-status` gives localized loading/progress or fallback information;
+   a manual retry button allows another semantic-load attempt. Keyword search
+   remains available while downloading and if WebGPU is unsupported, model
+   or CDN loading fails or an individual query fails. There is deliberately no
+   generic quantized feature-extraction/WASM fallback.
+5. If `CHAT_ENGINE !== "deterministic"`, separately load the opt-in chat
+   engine (§7). That engine does not replace the search encoder or index.
 
 ### 6.3 Retrieval pipeline (`retrieve(query)`)
 
@@ -390,17 +442,30 @@ delegated to an LLM "tool call". Order of precedence:
    R-release is treated as a preview of the next major version, so all
    of the next major's bugs also match). Same empty-pool-fallback rule
    as the command filter (`usedFallback`).
-4. **Semantic ranking**: embed the raw query (`embedder(query, {
-   pooling: "mean", normalize: true })`), then for every index still in
-   the (possibly filtered) pool compute a plain dot product against
-   that bug's 384-float row in `embeddings` (`dot(embeddings, i*384,
-   queryVec)` — since both vectors are L2-normalized, dot product =
+4. **Pure exact filters**: if the query consists only of recognized command
+   and/or version criteria (for example `v20`), return the exact filtered pool
+   without semantic encoding or score floors. Use a localized
+   `Filter` / `Filtre` / `条件一致` badge, not a semantic percentage or the ACI
+   `Exact` badge. This path is identical with WebGPU ready, loading or absent.
+   Do not discard unknown descriptive terms: `weather after v20` is not a
+   pure-filter query and still needs semantic or keyword matching.
+5. **Semantic ranking, when available**: encode `queryText(query)` in the
+   WebGPU worker under the verified shared contract, then for every index
+   still in the (possibly filtered) pool compute a plain dot product against
+   that bug's 768-float row in `embeddings` — since both vectors are
+   L2-normalized, dot product =
    cosine similarity, computed as a manual `for` loop, no external math
    library). Sort descending by score, take the top `TOP_K` (15),
    return `{results, intent, usedFallback, commandMentions,
    usedCommandFallback, explicitRefs, notFoundRefs}`.
 
-This is brute-force (linear scan over ≤2,467 384-dim vectors per query)
+6. **Explicit keyword fallback**: while loading or on unsupported WebGPU,
+   model-load failure, index incompatibility or query-encoding failure, rank
+   against localized metadata instead. ACI lookup, case-sensitive command
+   matching and version filtering remain available. The UI labels this mode
+   and uses lexical badges, not misleading semantic percentages.
+
+This is brute-force (linear scan over ≤2,467 768-dimensional vectors per query)
 — no vector index/ANN library, deliberately, since the corpus is small
 enough that this runs in a few milliseconds.
 
@@ -622,9 +687,10 @@ that history. It is not part of the current app.)
 - All external links (`target="_blank"`) use `rel="noopener noreferrer"`.
 - No API keys, no user data collection, no analytics, no cookies. The
   only network requests at runtime are: the app's own static assets,
-  the dataset (`meta.json`/`embeddings.bin`), the transformers.js
-  library + `all-MiniLM-L6-v2` model files (from Hugging Face's CDN via
-  `@xenova/transformers`), and — only in opt-in `?engine=webllm` mode —
+  the dataset (`meta.json`, `embeddings.bin`, `search-index.json`), the
+  official exact-version runtime files from jsDelivr, the pinned text-only EmbeddingGemma 2
+  model files (downloaded from Hugging Face), and — only in opt-in
+  `?engine=webllm` mode —
   the WebLLM library + Llama-3.2-1B-Instruct model weights.
 
 ## 10. Reproducing this app from scratch
@@ -633,9 +699,10 @@ that history. It is not part of the current app.)
    an enriched-summary file (`reference`, markdown `summary` with
    command doc-links, `commands`) and a context file (`reference`,
    `versions`) to join by `reference`.
-2. Write and run `scripts/update/generate_embeddings.mjs` (§4) to
-   produce `docs/data/meta.json`, `docs/data/embeddings.bin` and
-   `docs/src/beta-versions.js`.
+2. Restore the locked dependencies, verify the official CDN runtime and run
+   `scripts/update/generate_embeddings.mjs` (§4) for all three languages to
+   produce each locale's `meta.json`, `embeddings.bin`, `search-index.json`
+   and the shared `docs/src/beta-versions.js`.
 3. Build `docs/index.html` + `docs/style.css` per §5/§8.
 4. Implement `docs/src/version.js`, `docs/src/commands.js`,
    `docs/src/render.js` per §6.3/§6.6 (pure functions, no DOM/network
@@ -661,18 +728,14 @@ linking back), loading the same `src/app.js`. `app.js` reads
 `document.documentElement.lang` and takes everything language-specific from
 `src/i18n.js`:
 
-- **Dataset**: `docs/data/ja/meta.json` + `embeddings.bin` — the same records
+- **Dataset**: `docs/data/ja/meta.json`, `embeddings.bin`, `search-index.json` — the same records
   (same order, `commands`, `versions`) with the Japanese `summary`.
-- **Embedding model**: `sirasagi62/ruri-v3-30m-ONNX` (ONNX export of
-  cl-nagoya/ruri-v3-30m, a Japanese ModernBERT embedding model, 256-dim),
-  pinned to a commit, `dtype: "q8"` (~37 MB), loaded with
-  `@huggingface/transformers@3.8.1` from jsDelivr (2.17.2 does not support
-  ModernBERT), running on WASM. Ruri v3 is trained with task prefixes, so the
-  corpus is embedded as `"検索文書: " + text` and queries as
-  `"検索クエリ: " + query`; mean pooling, L2-normalized, like English.
-- **Score thresholds**: ruri's cosine similarities sit on a much higher scale
-  than MiniLM's, so `MIN_SCORE` and the badge bands are calibrated separately
-  (`tests/eval/eval_retrieval.mjs` prints the distributions).
+- **Embedding model**: the same pinned text-only EmbeddingGemma 2, `q4`,
+  768-dimensional normalized `sentence_embedding` and shared document/query
+  format as English and French (§4). Japanese summaries remain Japanese;
+  no translation changes are required by the encoder migration.
+- **Score calibration**: measure with the aligned evaluation queries rather
+  than copying historical ruri thresholds (§13).
 - **UI strings**: status lines, reply templates, table headers, copy messages.
   `describeIntent(intent, "ja")` in `version.js` phrases version filters in
   Japanese.
@@ -699,13 +762,14 @@ reply in Japanese.
 ## 12. French version (`docs/fr/`)
 
 The French page shares the app and language configuration in `docs/src/i18n.js`.
-Its full dataset is `docs/data/fr/meta.json` + `embeddings.bin`, with the same
+Its full dataset is `docs/data/fr/meta.json`, `embeddings.bin` and
+`search-index.json`, with the same
 references, commands, versions and ordering as English, but French summaries.
-Offline and browser embedding settings must match: `@xenova/transformers`,
-`Xenova/multilingual-e5-small`, `quantized: true`, 384 dimensions,
-mean pooling and L2 normalization. Prefix every corpus summary with `"passage: "`
-after stripping Markdown links; prefix every browser query with `"query: "`.
-These task prefixes are required even though both texts are French.
+Offline and browser embedding settings come from the same
+`docs/src/search-config.js` contract (§4): text-only EmbeddingGemma 2 `q4`,
+768 dimensions, the shared reference/summary/commands document format and
+`"task: search result | query: "` query prefix. E5's old `"passage: "` /
+`"query: "` prefixes are not used by the current model.
 
 French prose is translated **only from canonical English**, not from Japanese
 notes or Japanese summaries. `build_translation.py --lang fr` fingerprints
@@ -728,16 +792,46 @@ from all three corpora, and synchronizes asset cache versions on all three pages
 French URLs are the canonical English ones, so link checks share cached results.
 
 After generating French data, validate retrieval from `scripts/` with
-`node ../tests/eval/eval_retrieval.mjs --lang fr --min-recall8 0.8 --min-visible-recall8 0.8 --max-off-topic-hits 0`.
+`node ../tests/eval/eval_retrieval.mjs --lang fr --min-recall8 0.95 --min-visible-recall8 0.95 --max-off-topic-hits 0`.
 The 43 French query cases correspond to the Japanese evaluation set; both
-raw top-eight recall and recall among client-visible results must reach 80%,
-and none of the four off-topic queries may pass the score floor.
+raw top-eight recall and recall among client-visible results must reach 95%,
+and no evaluated off-topic query may pass the score floor.
 
-On the 2,467-summary corpus, quantized E5-small measured **88.4% recall@8**,
-**72.1% recall@1** and **0.805 MRR** over these 43 queries using single-query
-inference, as in the browser. The previous multilingual MiniLM measured 83.7%,
-62.8% and 0.700 respectively. E5 correct-hit cosine scores ranged from 0.854 to
-0.932; the four off-topic top scores ranged from 0.784 to 0.838. French uses
-`min: 0.85`, `medium: 0.88`, `high: 0.90`: all 38 correct top-eight hits remain
-visible and all four off-topic queries are rejected on this evaluation set.
-These scores are model-specific, not interchangeable with English or Japanese.
+## 13. Retrieval calibration and historical baselines
+
+All three 2,467-record indexes have been built and verified; their metadata
+remains byte-identical to commit `3544f94`. The three aligned evaluation sets
+contain 43 queries each. Actual semantic-ranking results are:
+
+| Language | Historical model | Old R@1 / R@8 / MRR | EmbeddingGemma 2 R@1 / R@8 / MRR |
+|---|---|---|---|
+| English | MiniLM | 95.35% / 100% / .97093 | 88.37% / 100% / .94186 |
+| French | multilingual E5-small | 72.09% / 88.37% / .80502 | 86.05% / 97.67% / .91122 |
+| Japanese | ruri | 95.35% / 100% / .96802 | 93.02% / 97.67% / .95460 |
+
+This is **not baseline parity**. English retains top-eight recall but loses
+top-one accuracy and MRR. Japanese loses one top-eight hit: `ACI0104021` moves
+from rank 2 to 21. French improves overall, but `ACI0105986` moves from rank 21
+to 64; it was already outside the top eight under E5.
+
+The active independently measured semantic floors and badge bands are:
+
+| Language | Minimum | Medium | High |
+|---|---:|---:|---:|
+| English | .705 | .799 | .841 |
+| French | .702 | .800 | .841 |
+| Japanese | .715 | .798 | .845 |
+
+These floors retain every correct top-eight hit and reject all 12 expanded
+negative queries **per language** on the measured sets. They do not establish
+universal off-topic rejection, and keyword-fallback badges remain lexical.
+Bare `v20` queries scored at most .677/.687/.691 in English/French/Japanese,
+below these floors; recognized command/version-only queries therefore use
+the exact-filter path (§6.3), independent of model quality. Genuine bug
+descriptions retain semantic ranking and thresholds; exact ACI lookup is unchanged.
+The final evaluation gates require ranked and visible recall@8 ≥ .95 and
+zero off-topic hits; passing these gates is not a claim of baseline parity.
+
+Durable results and calibration details are in
+`tests/eval/embeddinggemma-{en,fr,ja}.json`; comparisons and preserved baselines
+are in `tests/eval/embeddinggemma-comparison.json` and `tests/eval/baselines.json`.
