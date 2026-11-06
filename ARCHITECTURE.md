@@ -58,7 +58,7 @@ docs/                      # GitHub Pages root (served as /)
     runtime-config.js          # exact official CDN URLs and upstream runtime-file SHA-256
     keyword-search.js          # metadata-only fallback, not semantic confidence
     render.js                  # safe minimal-markdown renderer for summaries + version links
-    beta-versions.js           # GENERATED: Set of versions that only exist as a bugs.4d.com beta branch
+    beta-versions.js           # GENERATED: Set of versions that only have a nightly listing
     version.js                 # natural-language version-reference parsing/matching
     commands.js                # exact command-name mention matching
     engines/
@@ -77,7 +77,7 @@ data/                       # source dataset + offline precompute inputs (NOT se
   pending_translation_fr.json # bugs whose French summary still needs writing
   translation_fr/            # French input/output chunks (Japanese: translation/)
   update_state.json           # incremental-update memory: page hashes, enrichment fingerprints, JP repo SHAs, link checks
-  version_sources.json        # {version: ["version"|"branch"]} — which bugs.4d.com listing serves each version
+  version_sources.json        # {version: ["version"|"branch"]} — which fixed-bugs listing serves each version
   pending_enrichment.json     # bugs whose English summary still needs writing (empty after a completed update)
   pilot_bugs.json, pilot_report.md  # the 40-bug hand-reviewed pilot that set the prose style bar
 
@@ -85,7 +85,7 @@ scripts/
   update.sh                   # end-to-end dataset refresh (see UPDATING.md)
   update/
     common.py                  # shared paths, version scheme, update_state.json handling
-    crawl.py                   # probes ?version= and ?branch= listings, hashes each page
+    crawl.py                   # probes FixedBugsList/versions/ and nightly/ listings, hashes each page
     parse.py                   # both HTML layouts -> data/bugs_raw.json
     sync_jp.py                 # shallow-clones the 4D-JP repos -> data/jp_notes.json
     match_commands.py          # candidate command detection in English + Japanese text
@@ -227,11 +227,12 @@ Steps:
    with the complete shared contract, record count, binary byte length and
    SHA-256 hashes of the serialized metadata and vector bytes.
 8. Write `docs/src/beta-versions.js`, exporting a `Set` of the versions
-   bugs.4d.com only publishes as a beta branch (taken from
+   developer.4d.com only publishes as a nightly branch (taken from
    `data/update_state.json`'s `beta_only_versions`). `render.js` imports
    it to decide whether a version link should point at
-   `?version=<v>` or `?branch=<v>` — for a version still in beta the
-   former returns the site's error page.
+   `FixedBugsList/versions/<VERSION>/` or `FixedBugsList/nightly/<BRANCH>/`.
+   URL tokens use uppercase `R`/`HF`; dataset versions remain lowercase.
+   A nightly-only version has no released listing (HTTP 404).
 
 The step is **incremental only after validation**: the prior manifest's full
 contract must match, shape/count/bytes must agree, and metadata/vector hashes
@@ -317,7 +318,7 @@ Single HTML page, no separate results page, no client-side router.
   </main>
 
   <footer>
-    <p>Data crawled from <a href="https://bugs.4d.com">bugs.4d.com</a>. Embeddings:
+    <p>Data crawled from <a href="https://developer.4d.com/">developer.4d.com</a>. Embeddings:
        text-only EmbeddingGemma 2 via the pinned official Transformers.js CDN runtime.</p>
   </footer>
 
@@ -538,7 +539,8 @@ turn's `retrieval` result. Content, verbatim structure:
 - `renderHitsTable(bugs)` (`app.js`): builds an HTML `<table
   class="hits-table">` with columns **ACI** (plain reference text),
   **Versions** (`renderVersions`, from `render.js` — each version
-  string linked to `https://bugs.4d.com/fixedbugslist?version=<v>`),
+  string linked to `https://developer.4d.com/FixedBugsList/versions/<VERSION>/`
+  or the corresponding `nightly/<BRANCH>/` listing),
   **Summary** (`renderSummary`, from `render.js`). Only the first
   `TABLE_TOP_N` (8) of the `TOP_K` (15) retrieved results are shown.
 - `renderSummary(text)` (`render.js`): a small, deliberately
@@ -560,7 +562,8 @@ turn's `retrieval` result. Content, verbatim structure:
      defense-in-depth against any unexpected href in the data.
   4. Inline code / italic matches become `<code>`/`<em>` directly.
 - `renderVersions(versions)` (`render.js`): comma-joined list of
-  `<a href="https://bugs.4d.com/fixedbugslist?version=<url-encoded v>">v</a>`,
+  links under `https://developer.4d.com/FixedBugsList/versions/` (or `nightly/`
+  for nightly-only versions), with uppercase, URL-encoded tokens and a trailing slash,
   or an em-dash `"—"` if empty.
 - `highlightCitations(html, bugs)` (`app.js`): post-processes an
   assistant reply's rendered HTML, wrapping any `ACI\d+` substring that

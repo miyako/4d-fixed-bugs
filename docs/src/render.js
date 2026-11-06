@@ -62,15 +62,15 @@ export function renderSummary(text) {
 
 import { BETA_ONLY_VERSIONS } from "./beta-versions.js";
 
-const BUGS_LIST_URL = "https://bugs.4d.com/fixedbugslist?version=";
-const BUGS_BRANCH_URL = "https://bugs.4d.com/fixedbugslist?branch=";
+const BUGS_LIST_URL = "https://developer.4d.com/FixedBugsList/versions/";
+const BUGS_BRANCH_URL = "https://developer.4d.com/FixedBugsList/nightly/";
 
 /** Render a bug's `versions` array as a comma-separated list of links to
- * the matching bugs.4d.com fixed-bugs list.
+ * the matching developer.4d.com fixed-bugs list.
  *
- * Most versions live under `?version=<v>`, but a version still in beta has no
- * released listing — `?version=<v>` returns the site's error page and the real
- * list is at `?branch=<v>`. `BETA_ONLY_VERSIONS` is generated at build time
+ * Most versions live under `versions/<VERSION>/`, but a version still in beta
+ * has no released listing and uses `nightly/<BRANCH>/` instead.
+ * `BETA_ONLY_VERSIONS` is generated at build time
  * from the crawl, so those links point somewhere real. */
 export function renderVersions(versions) {
   if (!versions || versions.length === 0) return "—";
@@ -78,7 +78,7 @@ export function renderVersions(versions) {
     .map((v) => {
       const safe = escapeHtml(v);
       const base = BETA_ONLY_VERSIONS.has(v) ? BUGS_BRANCH_URL : BUGS_LIST_URL;
-      const href = base + encodeURIComponent(v);
+      const href = base + encodeURIComponent(v.toUpperCase()) + "/";
       return `<a href="${href}" target="_blank" rel="noopener noreferrer">${safe}</a>`;
     })
     .join(", ");

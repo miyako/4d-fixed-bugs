@@ -24,7 +24,7 @@ with the same `reference` values.
 }
 ```
 
-- `raw_summary` — the terse, often ungrammatical text from bugs.4d.com.
+- `raw_summary` — the terse, often ungrammatical text from developer.4d.com/FixedBugsList.
 - `jp_notes` — Japanese descriptions of the *same* bug from 4D's Japanese
   release notes. These are usually far more detailed and precise than the
   English text and are your best source of real technical detail.

@@ -2,13 +2,13 @@
 """
 Step 2 — parse crawled HTML into structured bug records.
 
-bugs.4d.com serves two different table layouts:
+The fixed-bugs site serves two different table layouts:
 
-  released (`?version=`)      <th class="title 4D">ACI…</th>
+  released (`versions/`)     <th class="title 4D">ACI…</th>
                               <td class="description">summary</td>
                               <td class="version">… "fixed also with" links …</td>
 
-  beta (`?branch=`)           <td class="title">build no</td>
+  nightly (`nightly/`)       <td class="title">build no</td>
                               <td class="title">build date</td>
                               <td class="title" style="…">ACI…</td>
                               <td class="description">summary</td>
@@ -41,6 +41,7 @@ from common import (  # noqa: E402
     SOURCE_BRANCH,
     SOURCE_VERSION,
     SOURCES,
+    VERSION_HREF_RE,
     load_state,
     normalize_version,
     save_state,
@@ -63,7 +64,7 @@ ROW_BETA_RE = re.compile(
     r'<td class="description">(?P<also>.*?)</td>',
     re.DOTALL,
 )
-HREF_RE = re.compile(r'href="/fixes\?version=([^"]+)"')
+HREF_RE = VERSION_HREF_RE
 TAG_RE = re.compile(r"<[^>]+>")
 
 # 4D's own release-numbering scheme: major[.minor][_rN][_hfM]. "Fixed also
@@ -165,9 +166,8 @@ def main() -> int:
     def page_found(source, version):
         return pages.get(f"{source}:{version}", {}).get("status") == "found"
 
-    # A version is "beta-only" when bugs.4d.com serves it as a nightly/beta
-    # branch but has no released listing for it — its canonical URL is then
-    # ?branch=<v>, not ?version=<v> (which returns the error page).
+    # A version is "beta-only" when it has a nightly listing but no release
+    # listing; link it to nightly/<BRANCH>/ rather than versions/<VERSION>/.
     all_versions = sorted(
         {v for rec in output for v in rec["versions"]}, key=version_sort_key
     )

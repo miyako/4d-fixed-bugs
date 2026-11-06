@@ -2,22 +2,13 @@
 #
 # 4D Bugs Crawler - Phase 1: HTML discovery + fetch
 #
-# Fetches https://bugs.4d.com/fixedbugslist?version=<VERSION> for every
+# Fetches https://developer.4d.com/FixedBugsList/versions/<VERSION>/ for every
 # candidate version string in the known 4D version-numbering scheme, and
 # saves each response HTML to disk (exists/ if the version is valid,
-# notfound/ if bugs.4d.com returns its "no such version" error page).
+# notfound/ if the site returns HTTP 404 or its legacy error page).
 #
-# KEY DISCOVERY: bugs.4d.com does NOT rate-limit requests. The 403/blocked
-# responses seen in early attempts were caused entirely by curl/wget's
-# default User-Agent being rejected -- NOT by request frequency. Adding a
-# normal browser User-Agent header resolves this completely; 775 rapid
-# sequential requests all returned HTTP 200 with no throttling or backoff
-# needed. Do NOT add artificial sleep/delay -- it is unnecessary.
-#
-# Invalid versions do not 404; they return HTTP 200 with a page containing
-# `<div class="standard_error">`. That marker is what distinguishes a real
-# "not found" from a valid version page (which contains `<table class="list">`
-# rows of bugs, or is a valid version with zero bugs).
+# This is the original release-only crawler. For incremental updates and
+# nightly builds, use scripts/update.sh instead.
 #
 # Version scheme (see README/session notes for full explanation):
 #   - Major only:            18, 19, 20, 21, 22 ...
@@ -48,7 +39,7 @@ LOG_FILE="$BASE_DIR/crawl_log.tsv"
 mkdir -p "$EXISTS_DIR" "$NOTFOUND_DIR"
 
 UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-BASE_URL="https://bugs.4d.com/fixedbugslist?version="
+BASE_URL="https://developer.4d.com/FixedBugsList/versions/"
 
 # Initialize log with header if it doesn't already exist
 if [ ! -f "$LOG_FILE" ]; then
@@ -92,24 +83,41 @@ already_done() {
 
 fetch_one() {
     local version="$1"
-    local url="${BASE_URL}${version}"
+    local canonical_version
+    canonical_version="$(printf '%s' "$version" | tr '[:lower:]' '[:upper:]')"
+    local url="${BASE_URL}${canonical_version}/"
     local tmp_file
     tmp_file="$(mktemp)"
 
     local http_code
-    http_code=$(curl -s -o "$tmp_file" -w "%{http_code}" \
+    if ! http_code=$(curl -sS -L -o "$tmp_file" -w "%{http_code}" \
         -H "User-Agent: $UA" \
         --max-time 30 \
-        "$url")
+        "$url"); then
+        rm -f "$tmp_file"
+        echo "Failed to fetch $url" >&2
+        return 1
+    fi
 
     local bytes
     bytes=$(wc -c < "$tmp_file" | tr -d ' ')
 
-    if grep -q 'class="standard_error"' "$tmp_file"; then
+    if [ "$http_code" != "200" ] && [ "$http_code" != "404" ]; then
+        rm -f "$tmp_file"
+        echo "Unexpected HTTP $http_code for $url" >&2
+        return 1
+    fi
+
+    if [ "$http_code" = "404" ] || grep -q 'class="standard_error"' "$tmp_file"; then
         mv "$tmp_file" "$NOTFOUND_DIR/${version}.html"
         printf "%s\tnotfound\t%s\t%s\t0\n" "$version" "$http_code" "$bytes" >> "$LOG_FILE"
         echo "[notfound] $version"
     else
+        if ! grep -q '<h1>All Products ' "$tmp_file"; then
+            rm -f "$tmp_file"
+            echo "Unrecognized listing HTML for $url" >&2
+            return 1
+        fi
         local bug_count
         bug_count=$(grep -o 'class="title 4D"' "$tmp_file" | wc -l | tr -d ' ')
         mv "$tmp_file" "$EXISTS_DIR/${version}.html"
@@ -127,7 +135,7 @@ main() {
         if already_done "$version"; then
             continue
         fi
-        fetch_one "$version"
+        fetch_one "$version" || return 1
     done
 
     echo "Done. See $LOG_FILE for the full crawl summary."

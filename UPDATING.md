@@ -54,28 +54,46 @@ The repository must allow *GitHub Actions to create and approve pull requests*
 
 `html/` and `vendor/` are gitignored — both are large and fully reproducible.
 
-## The two bugs.4d.com listings
+## The two fixed-bugs listings
 
-bugs.4d.com serves two different lists with two different HTML layouts, and
-the crawler probes both:
+The crawler probes both listings under `https://developer.4d.com/FixedBugsList/`:
 
-- `?version=<v>` — released products (`All Products 21.2`). Rows are
-  `<th class="title 4D">`. A version that does not exist returns HTTP 200 with
-  `<div class="standard_error">`.
-- `?branch=<v>` — beta / nightly builds (`Beta 4D 21 R4`). Rows are
-  `<td class="title">` with build number and build date columns. A branch that
-  does not exist returns an essentially empty document.
+- `versions/<VERSION>/` — releases and hotfixes, for example
+  [21.2](https://developer.4d.com/FixedBugsList/versions/21.2/) and
+  [21.1_HF2](https://developer.4d.com/FixedBugsList/versions/21.1_HF2/).
+  Rows are `<th class="title 4D">`.
+- `nightly/<BRANCH>/` — nightly builds, for example
+  [21](https://developer.4d.com/FixedBugsList/nightly/21/) and
+  [21_R4](https://developer.4d.com/FixedBugsList/nightly/21_R4/).
+  Rows are `<td class="title">` with build number and build date columns.
 
-A version in beta has **no** released listing: `?version=21_r4` returns the
-error page while `?branch=21_r4` has its bugs. Those versions are recorded as
+URL tokens use uppercase `R` and `HF` and a trailing slash. Dataset versions,
+cache filenames and the internal source keys (`version` and `branch`) remain
+unchanged. Missing listings return HTTP 404; other HTTP errors and unexpected
+HTML stop the crawl rather than recording a valid or missing page.
+
+Versions with a nightly listing but **no** released listing are recorded as
 `beta_only_versions` in `data/update_state.json` and baked into
-`docs/src/beta-versions.js` so the client links them to `?branch=` instead.
+`docs/src/beta-versions.js` so the client uses `nightly/` for those links.
+Versions with both listings continue to link to their released list.
 
-bugs.4d.com does not rate-limit. The 403-looking responses seen historically
-came from curl's default User-Agent, not request frequency — a normal browser
-User-Agent fixes it, and no sleeps or backoff are needed. The crawler uses the
-system `curl` rather than Python's urllib because some Python installs have no
-usable CA trust store.
+The legacy `bugs.4d.com` site is temporary and is no longer requested. Parsing
+still accepts its "fixed also with" links in cached HTML, as well as the new
+relative and absolute path links. The first crawl after migration probes every
+candidate, even in `--fast` mode, to refresh old negative results; subsequent
+runs use the usual frontier. `listing_base_url` in the update state records
+that migration.
+
+Some historical listings, including `versions/18/`, `versions/18.6/` and
+`versions/18_R4/`, currently return HTTP 404 on the new host. A dataset refresh
+reports these as disappeared and removes their cached HTML, as with any other
+removed source page. Review the crawl's disappeared-page report before
+publishing a refreshed dataset; this URL migration does not itself rebuild or
+remove any committed bug records.
+
+The crawler uses system `curl` with a browser User-Agent and redirect following
+rather than Python's urllib because some Python installs have no usable CA
+trust store.
 
 ## How the delta is tracked
 
@@ -84,6 +102,8 @@ usable CA trust store.
 - `pages` — per crawled page: status, bug count, and a SHA-256 of the HTML.
   Used to report which pages are new/changed/gone, and to drive the frontier
   logic in `--fast` crawls.
+- `listing_base_url` — the listing endpoint last successfully crawled; a
+  changed or missing value forces full discovery once.
 - `enrichment_fingerprints` — per bug: a SHA-256 over the inputs that affect
   its English prose, namely `raw_summary` plus its Japanese notes. Deliberately
   **not** `versions`: a bug appearing in one more hotfix changes the version

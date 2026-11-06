@@ -335,7 +335,7 @@ function buildSystemMessage(retrieval) {
   return {
     role: "system",
     content:
-      "You help people find and understand fixed 4D software bugs (bugs.4d.com). " +
+      "You help people find and understand fixed 4D software bugs (developer.4d.com/FixedBugsList). " +
       "Always assume every user message is about the 4D fixed-bugs database, even if it's " +
       "phrased casually or doesn't mention 4D explicitly — this chat only ever discusses " +
       "that topic.\n\n" +
@@ -405,7 +405,7 @@ function buildDeterministicReply(retrieval) {
 }
 
 /** Deterministically render a table of the top retrieved bugs (reference,
- * versions as links to bugs.4d.com, and the summary with its commands as
+ * versions as links to developer.4d.com/FixedBugsList, and the summary with its commands as
  * links to developer.4d.com) — built directly from the retrieval data
  * rather than reproduced by the model, since a small local model can't be
  * relied on to faithfully echo every result, reference, and link. */

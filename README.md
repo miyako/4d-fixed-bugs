@@ -1,10 +1,15 @@
 # 4d-fixed-bugs
 
 A dataset of 2,467 fixed 4D software bugs crawled from
-[bugs.4d.com](https://bugs.4d.com), each with an ACI reference ID, an
+[developer.4d.com](https://developer.4d.com/), each with an ACI reference ID, an
 English summary (with markdown links to the relevant
 [developer.4d.com](https://developer.4d.com) command docs), the 4D
 commands involved, and the versions the fix shipped in.
+
+Source lists now use `https://developer.4d.com/FixedBugsList/versions/VERSION/`
+for releases/hotfixes and `https://developer.4d.com/FixedBugsList/nightly/BRANCH/`
+for nightly builds (uppercase `R`/`HF`, trailing slash). The crawler and app
+links use these endpoints rather than the temporary legacy site.
 
 On top of that dataset, this repo also builds a fully static,
 client-side semantic search chat app — no backend, nothing leaves your

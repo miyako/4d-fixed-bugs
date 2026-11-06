@@ -3,7 +3,7 @@
 Shared paths, constants and state handling for the incremental update pipeline.
 
 The pipeline is built around one idea: *crawling is cheap and idempotent,
-everything downstream is not*. So every run re-probes bugs.4d.com in full and
+everything downstream is not*. So every run re-probes the fixed-bugs listings and
 records a content hash per page in `data/update_state.json`; the expensive
 steps (LLM enrichment, embedding) then run only for bug references that are
 actually new or whose source text changed.
@@ -15,6 +15,7 @@ import json
 import os
 import re
 from datetime import datetime, timezone
+from urllib.parse import quote
 
 BASE = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
@@ -43,14 +44,19 @@ USER_AGENT = (
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 )
-BASE_URL = "https://bugs.4d.com/fixedbugslist"
+BASE_URL = "https://developer.4d.com/FixedBugsList"
 
-# bugs.4d.com exposes two different listings with two different HTML layouts:
-#   ?version=<v>  released products ("All Products 21.2")  -> <th class="title 4D">
-#   ?branch=<v>   beta / nightly builds ("Beta 4D 21 R4")   -> <td class="title">
+# Keep the source keys stable for existing state, logs and cached HTML.
 SOURCE_VERSION = "version"
 SOURCE_BRANCH = "branch"
 SOURCES = (SOURCE_VERSION, SOURCE_BRANCH)
+
+# Accept both migrated links and legacy links in cached HTML.
+VERSION_HREF_RE = re.compile(
+    r'href="(?:/fixes\?version=|'
+    r'(?:https://developer\.4d\.com)?(?:/FixedBugsList/|\.\./\.\./)'
+    r'(?:versions|nightly)/)([^"/?#]+)(?:/)?"'
+)
 
 REF_RE = re.compile(r"^ACI\d{7}$")
 
@@ -71,6 +77,11 @@ def page_key(source: str, version: str) -> str:
 
 def normalize_version(v: str) -> str:
     return v.strip().lower().replace(" ", "_")
+
+
+def listing_url(source: str, version: str) -> str:
+    directory = {SOURCE_VERSION: "versions", SOURCE_BRANCH: "nightly"}[source]
+    return f"{BASE_URL}/{directory}/{quote(normalize_version(version).upper(), safe='')}/"
 
 
 def version_sort_key(v: str):

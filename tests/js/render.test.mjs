@@ -1,6 +1,33 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { renderSummary } from "../../docs/src/render.js";
+import { renderSummary, renderVersions } from "../../docs/src/render.js";
+import { BETA_ONLY_VERSIONS } from "../../docs/src/beta-versions.js";
+
+test("release and hotfix links use canonical case and trailing slashes", () => {
+  const html = renderVersions(["21.2", "21.1_hf2", "20_r10_hf1"]);
+  for (const version of ["21.2", "21.1_HF2", "20_R10_HF1"]) {
+    assert.ok(html.includes(`href="https://developer.4d.com/FixedBugsList/versions/${version}/"`));
+  }
+  assert.ok(html.includes(">21.1_hf2</a>"));
+  assert.ok(!html.includes("bugs.4d.com"));
+});
+
+test("nightly-only versions use the nightly path", () => {
+  const version = "99_r4";
+  BETA_ONLY_VERSIONS.add(version);
+  try {
+    assert.match(renderVersions([version]), /href="https:\/\/developer\.4d\.com\/FixedBugsList\/nightly\/99_R4\/"/);
+  } finally {
+    BETA_ONLY_VERSIONS.delete(version);
+  }
+});
+
+test("version links preserve escaping and empty-list behavior", () => {
+  assert.equal(renderVersions([]), "—");
+  assert.equal(renderVersions(null), "—");
+  assert.ok(renderVersions(['21/<"']).includes("21%2F%3C%22/"));
+  assert.ok(renderVersions(['21/<"']).includes(">21/&lt;&quot;</a>"));
+});
 
 test("Japanese summaries keep /docs/ja/ links", () => {
   const html = renderSummary(

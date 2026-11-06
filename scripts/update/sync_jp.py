@@ -3,7 +3,7 @@
 Step 3 — sync the Japanese cross-reference notes.
 
 Two 4D-JP repositories carry per-bug Japanese descriptions that are far richer
-than the terse English text on bugs.4d.com, and are used as extra context when
+than the terse English fixed-bugs listings, and are used as extra context when
 writing each bug's English summary:
 
   4D-JP/4D-jp.github.io   _posts/*.md with `layout: fix` front matter

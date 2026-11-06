@@ -2,7 +2,7 @@ name: Update dataset
 
 # Manually triggered refresh of the bug dataset (see UPDATING.md).
 #
-# - mode "update": crawl bugs.4d.com + sync the 4D-JP notes, rebuild the
+# - mode "update": crawl developer.4d.com/FixedBugsList + sync the 4D-JP notes, rebuild the
 #   context, and open a PR. If bugs need English summaries the pipeline stops
 #   at the enrichment gate and the PR lists them; write the prose on that
 #   branch (merge_enrichment.py), then re-run this workflow on that branch
@@ -150,7 +150,7 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           branch: dataset-update/${{ github.run_id }}
-          commit-message: Update dataset from bugs.4d.com and 4D-JP notes
+          commit-message: Update dataset from developer.4d.com/FixedBugsList and 4D-JP notes
           title: >-
             Update dataset${{ steps.run.outputs.pending != '0' && format(' ({0} bugs pending enrichment)', steps.run.outputs.pending) || ((steps.run.outputs.pending_ja != '0' || steps.run.outputs.pending_fr != '0') && format(' (JA: {0}, FR: {1} pending translation)', steps.run.outputs.pending_ja, steps.run.outputs.pending_fr)) || '' }}
           body-path: ${{ runner.temp }}/pr_body.md

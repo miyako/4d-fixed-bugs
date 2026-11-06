@@ -13,6 +13,7 @@ import re
 import json
 import html
 import sys
+from update.common import VERSION_HREF_RE
 
 BASE = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 EXISTS_DIR = os.path.join(BASE, "exists")
@@ -27,7 +28,7 @@ ROW_RE = re.compile(
     r'<td class="version">(?P<versions_html>.*?)</td>',
     re.DOTALL
 )
-HREF_RE = re.compile(r'href="/fixes\?version=([^"]+)"')
+HREF_RE = VERSION_HREF_RE
 TAG_RE = re.compile(r'<[^>]+>')
 
 def clean_text(raw):
