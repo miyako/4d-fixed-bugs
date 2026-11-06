@@ -7,7 +7,7 @@
 #   ./scripts/update.sh --build-only skip crawling, rebuild from current data/
 #
 # Stages:
-#   1. crawl       bugs.4d.com released (?version=) + beta (?branch=) listings
+#   1. crawl       developer.4d.com/FixedBugsList releases + nightly listings
 #   2. parse       HTML -> data/bugs_raw.json
 #   3. sync-jp     4D-JP repos -> data/jp_notes.json
 #   4. context     -> data/all_bugs_context.json + data/pending_enrichment.json
@@ -49,7 +49,7 @@ done
 step() { printf '\n\033[1m== %s\033[0m\n' "$1"; }
 
 if [ "$BUILD_ONLY" -eq 0 ]; then
-    step "1/11 Crawling bugs.4d.com"
+    step "1/11 Crawling developer.4d.com/FixedBugsList"
     python3 scripts/update/crawl.py "${CRAWL_ARGS[@]}"
 
     step "2/11 Parsing HTML"

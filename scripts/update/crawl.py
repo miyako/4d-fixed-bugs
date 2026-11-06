@@ -1,20 +1,15 @@
 #!/usr/bin/env python3
 """
-Step 1 — crawl bugs.4d.com.
+Step 1 — crawl developer.4d.com/FixedBugsList.
 
 Probes every candidate version string in the 4D version-numbering scheme
 against both listings:
 
-  ?version=<v>   released products      e.g. https://bugs.4d.com/fixedbugslist?version=21.2
-  ?branch=<v>    beta / nightly builds  e.g. https://bugs.4d.com/fixedbugslist?branch=21_r4
+  versions/<VERSION>/   releases / hotfixes   e.g. versions/21.1_HF2/
+  nightly/<BRANCH>/     nightly builds       e.g. nightly/21_R4/
 
-bugs.4d.com does not rate-limit; the 403-looking responses seen historically
-were caused by curl's default User-Agent, not by request frequency. A normal
-browser User-Agent fixes it, so no sleeps/backoff are needed.
-
-"Not found" is never signalled by the HTTP status code (always 200):
-  - a released page that does not exist contains `<div class="standard_error">`
-  - a branch page that does not exist comes back essentially empty (no <h1>)
+Missing pages return HTTP 404. Legacy cached pages may instead contain
+`<div class="standard_error">` or an empty branch document.
 
 Output:
   html/exists/<source>/<version>.html      raw HTML of valid pages
@@ -50,6 +45,7 @@ from common import (  # noqa: E402
     USER_AGENT,
     build_candidates,
     load_state,
+    listing_url,
     now_iso,
     page_key,
     save_state,
@@ -86,31 +82,38 @@ def parent_of(version: str):
     return m.group(1) if m else None
 
 
-def classify(source: str, body: str) -> tuple[bool, int]:
+def classify(source: str, body: str, http_code: int = 200) -> tuple[bool, int]:
     """(page_exists, bug_count) for a fetched page."""
+    if http_code == 404:
+        return False, 0
+    if http_code != 200:
+        raise RuntimeError(f"unexpected HTTP {http_code} for {source} listing")
+    heading = H1_RE.search(body)
     if source == SOURCE_VERSION:
         if 'class="standard_error"' in body:
             return False, 0
-        return True, len(ROW_MARKER_RELEASED.findall(body))
-    # Branch pages: a non-existent branch returns an essentially empty document.
-    if not H1_RE.search(body):
+        if heading and heading.group(1).startswith("All Products "):
+            return True, len(ROW_MARKER_RELEASED.findall(body))
+    elif heading and heading.group(1).startswith(("Nightly builds 4D ", "Beta 4D ")):
+        return True, len(ROW_MARKER_BETA.findall(body))
+    elif not heading and not body.strip():
         return False, 0
-    return True, len(ROW_MARKER_BETA.findall(body))
+    raise RuntimeError(f"unrecognized HTML for {source} listing")
 
 
 def fetch(source: str, version: str, attempts: int = 3) -> tuple[int, str]:
     """Fetch one listing page.
 
     Uses the system `curl` rather than urllib: the bundled Python on some
-    machines has no usable CA trust store (CERTIFICATE_VERIFY_FAILED against
-    bugs.4d.com), and curl is what the original crawler used.
+    machines has no usable CA trust store, and curl is what the original
+    crawler used.
     """
-    url = f"{BASE_URL}?{source}={version}"
+    url = listing_url(source, version)
     last_err = ""
     for attempt in range(attempts):
         proc = subprocess.run(
             [
-                "curl", "-s", "--max-time", "30",
+                "curl", "-sS", "-L", "--max-time", "30",
                 "-H", f"User-Agent: {USER_AGENT}",
                 "-w", "\n%{http_code}",
                 url,
@@ -133,7 +136,7 @@ def fetch(source: str, version: str, attempts: int = 3) -> tuple[int, str]:
 
 def select_candidates(state: dict, full: bool) -> list[tuple[str, str]]:
     candidates = build_candidates(state.get("majors", [18, 19, 20, 21, 22]))
-    if full:
+    if full or state.get("listing_base_url") != BASE_URL:
         return candidates
 
     pages = state.get("pages", {})
@@ -184,7 +187,7 @@ def crawl(full: bool, workers: int) -> dict:
     def one(candidate):
         source, version = candidate
         http_code, body = fetch(source, version)
-        exists, bug_count = classify(source, body)
+        exists, bug_count = classify(source, body, http_code)
         target_dir = EXISTS_DIR if exists else NOTFOUND_DIR
         path = os.path.join(target_dir, source, f"{version}.html")
         with open(path, "w", encoding="utf-8") as f:
@@ -232,6 +235,7 @@ def crawl(full: bool, workers: int) -> dict:
         }
 
     state["last_run"] = now_iso()
+    state["listing_base_url"] = BASE_URL
     state["counts"]["pages_found"] = sum(
         1 for p in pages.values() if p.get("status") == "found"
     )
