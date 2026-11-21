@@ -27,6 +27,7 @@ Output: data/bugs_raw.json
 from __future__ import annotations
 
 import html
+import json
 import os
 import re
 import sys
@@ -104,6 +105,54 @@ def parse_file(source: str, version: str, content: str):
     return rows, malformed
 
 
+def load_previous(path: str = BUGS_RAW_PATH) -> list[dict]:
+    """The bug records from the last run, or [] when there are none."""
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, ValueError):
+        return []
+    return data if isinstance(data, list) else []
+
+
+def merge_previous(records: dict[str, dict], previous: list[dict]) -> tuple[int, int]:
+    """Fold the previous dataset into the freshly parsed `records`.
+
+    developer.4d.com no longer publishes the older fixed-bugs lists, and the
+    crawled `html/` cache is not committed, so a fresh crawl only sees what the
+    site still serves. Dropping everything else would delete history, so:
+
+      * a bug missing from the crawl is carried over unchanged;
+      * a bug seen in the crawl keeps its freshly crawled text (the site is
+        authoritative for wording) but gains every version it was previously
+        known to be fixed in.
+
+    Returns (carried_bugs, bugs_with_retained_versions).
+    """
+    carried = extended = 0
+    for old in previous:
+        ref = old.get("reference", "")
+        if not REF_RE.match(ref):
+            continue
+        versions = {
+            normalize_version(v)
+            for v in old.get("versions", [])
+            if VALID_VERSION_RE.match(normalize_version(v))
+        }
+        rec = records.get(ref)
+        if rec is None:
+            variants = old.get("raw_summary_variants") or [old.get("raw_summary", "")]
+            records[ref] = {
+                "versions": versions,
+                "summaries": {t for t in variants if t},
+            }
+            carried += 1
+        elif not versions <= rec["versions"]:
+            rec["versions"] |= versions
+            extended += 1
+    return carried, extended
+
+
 def main() -> int:
     records: dict[str, dict] = {}
     malformed_all = []
@@ -141,6 +190,11 @@ def main() -> int:
     if not records:
         print("ERROR: no records parsed — refusing to overwrite data/bugs_raw.json")
         return 1
+
+    previous = load_previous()
+    carried, extended = merge_previous(records, previous)
+    print(f"Kept from previous run: {carried} bugs no longer on the site, "
+          f"{extended} bugs with older versions retained")
 
     output = []
     for ref, rec in records.items():
