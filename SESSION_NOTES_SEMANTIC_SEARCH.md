@@ -168,7 +168,7 @@ guessing.
   results and claim "I don't have information" even when relevant bugs
   had been found. Rather than relying purely on prompt engineering to
   fix that, `app.js` now always renders an HTML table of the top 8
-  retrieved bugs (ACI reference, versions as `bugs.4d.com` links, and
+  retrieved bugs (ACI reference, versions as `developer.4d.com/FixedBugsList` links, and
   summaries with their command links to `developer.4d.com`) underneath
   every assistant reply, built directly from the retrieval data. The
   model's prose is just a short complementary summary — the actual
@@ -188,7 +188,7 @@ guessing.
    cards (rendered summary, version list, linked commands) + a separate
    opt-in "Enable local AI answers" panel below the results.
 2. **v2 (UI polish):** version codes became links to
-   `https://bugs.4d.com/fixedbugslist?version=<version>`; similarity
+   `https://bugs.4d.com/fixedbugslist?version=<version>` (since replaced by `https://developer.4d.com/FixedBugsList/versions/<VERSION>/`); similarity
    score rendered as a horizontal bar graph; results moved into a
    scrollable panel; added selecting a subset of results (or resetting
    to all); local AI became a persistent chatbot (speech bubbles) whose
