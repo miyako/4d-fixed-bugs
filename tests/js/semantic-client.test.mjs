@@ -15,6 +15,9 @@ const validManifest = {
 };
 
 async function fixture({ gpu = true, manifest = validManifest, corrupt = false } = {}, fn) {
+  // Node < 21 has no global `navigator`; provide one for the test and remove it afterwards.
+  const hadNavigator = typeof globalThis.navigator !== "undefined";
+  if (!hadNavigator) Object.defineProperty(globalThis, "navigator", { configurable: true, writable: true, value: {} });
   const descriptor = Object.getOwnPropertyDescriptor(navigator, "gpu");
   const originalFetch = globalThis.fetch;
   const originalWorker = globalThis.Worker;
@@ -47,6 +50,7 @@ async function fixture({ gpu = true, manifest = validManifest, corrupt = false }
     else globalThis.Worker = originalWorker;
     if (descriptor) Object.defineProperty(navigator, "gpu", descriptor);
     else delete navigator.gpu;
+    if (!hadNavigator) delete globalThis.navigator;
   }
 }
 
