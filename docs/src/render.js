@@ -60,7 +60,7 @@ export function renderSummary(text) {
   );
 }
 
-import { BETA_ONLY_VERSIONS } from "./beta-versions.js";
+import { BETA_ONLY_VERSIONS, UNLISTED_VERSIONS } from "./beta-versions.js";
 
 const BUGS_LIST_URL = "https://developer.4d.com/FixedBugsList/versions/";
 const BUGS_BRANCH_URL = "https://developer.4d.com/FixedBugsList/nightly/";
@@ -71,12 +71,16 @@ const BUGS_BRANCH_URL = "https://developer.4d.com/FixedBugsList/nightly/";
  * Most versions live under `versions/<VERSION>/`, but a version still in beta
  * has no released listing and uses `nightly/<BRANCH>/` instead.
  * `BETA_ONLY_VERSIONS` is generated at build time
- * from the crawl, so those links point somewhere real. */
+ * from the crawl, so those links point somewhere real.
+ *
+ * Versions in `UNLISTED_VERSIONS` have no listing page on the site any more
+ * (older lists were removed), so they are shown as plain text, not dead links. */
 export function renderVersions(versions) {
   if (!versions || versions.length === 0) return "—";
   return versions
     .map((v) => {
       const safe = escapeHtml(v);
+      if (UNLISTED_VERSIONS.has(v)) return `<span class="version-unlisted">${safe}</span>`;
       const base = BETA_ONLY_VERSIONS.has(v) ? BUGS_BRANCH_URL : BUGS_LIST_URL;
       const href = base + encodeURIComponent(v.toUpperCase()) + "/";
       return `<a href="${href}" target="_blank" rel="noopener noreferrer">${safe}</a>`;

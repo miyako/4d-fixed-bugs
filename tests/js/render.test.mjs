@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { renderSummary, renderVersions } from "../../docs/src/render.js";
-import { BETA_ONLY_VERSIONS } from "../../docs/src/beta-versions.js";
+import { BETA_ONLY_VERSIONS, UNLISTED_VERSIONS } from "../../docs/src/beta-versions.js";
 
 test("release and hotfix links use canonical case and trailing slashes", () => {
   const html = renderVersions(["21.2", "21.1_hf2", "20_r10_hf1"]);
@@ -18,6 +18,28 @@ test("nightly-only versions use the nightly path", () => {
   try {
     assert.match(renderVersions([version]), /href="https:\/\/developer\.4d\.com\/FixedBugsList\/nightly\/99_R4\/"/);
   } finally {
+    BETA_ONLY_VERSIONS.delete(version);
+  }
+});
+
+test("versions with no listing page are plain text, not dead links", () => {
+  const html = renderVersions(["18_r5", "21.2"]);
+  assert.ok(UNLISTED_VERSIONS.has("18_r5"));
+  assert.ok(html.includes('<span class="version-unlisted">18_r5</span>'));
+  assert.ok(!html.includes("versions/18_R5/"));
+  assert.ok(html.includes('href="https://developer.4d.com/FixedBugsList/versions/21.2/"'));
+});
+
+test("unlisted wins over nightly-only, and text is escaped", () => {
+  const version = "98<x";
+  UNLISTED_VERSIONS.add(version);
+  BETA_ONLY_VERSIONS.add(version);
+  try {
+    const html = renderVersions([version]);
+    assert.ok(html.includes('<span class="version-unlisted">98&lt;x</span>'));
+    assert.ok(!html.includes("<a "));
+  } finally {
+    UNLISTED_VERSIONS.delete(version);
     BETA_ONLY_VERSIONS.delete(version);
   }
 });
