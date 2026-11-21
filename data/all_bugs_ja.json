@@ -246,8 +246,8 @@
   },
   {
     "reference": "ACI0099336",
-    "summary": "クライアント/サーバー版でのみ、[SET AUTOMATIC RELATIONS](https://developer.4d.com/docs/ja/commands/set-automatic-relations)および[SET FIELD RELATION](https://developer.4d.com/docs/ja/commands/set-field-relation)で設定したリレーションモードが[RELATE ONE SELECTION](https://developer.4d.com/docs/ja/commands/relate-one-selection)で無視され、何も設定されていないかのようにリレーションが解決されていました。ORDA のリレーション属性は正しく動作しており、影響を受けませんでした。",
-    "source_fingerprint": "93ecfc4b0d6b88b83db899cf6b06225c2509f29350a2c4c32cf080ed2c3f3688"
+    "summary": "クライアント/サーバー版でのみ、[RELATE ONE SELECTION](https://developer.4d.com/docs/ja/commands/relate-one-selection)で、[SET AUTOMATIC RELATIONS](https://developer.4d.com/docs/ja/commands/set-automatic-relations)および[SET FIELD RELATION](https://developer.4d.com/docs/ja/commands/set-field-relation)で設定したリレーションモードが無視され、そのような設定が行われていないかのようにリレーションが解決されていました。ORDA のリレーション属性は正しく動作しており、影響を受けませんでした。",
+    "source_fingerprint": "3e21c697995c128e55fec7895c82f62794f45e5ba547ad2ad8196a9ceb0f81c7"
   },
   {
     "reference": "ACI0099378",
@@ -3991,8 +3991,8 @@
   },
   {
     "reference": "ACI0101950",
-    "summary": "プロジェクトモードでのみ、バイナリデータベースから変換したプロジェクトをホストするサーバーにクライアントが接続した場合、フォルダーの同期が完了した後も、アプリケーションが実際に起動するまで長時間待たされることがありました。同等のバイナリデータベースと比べて、接続が著しく遅くなっていました。",
-    "source_fingerprint": "9d48224024091e9ab98b7640ee8e5c4420fda79fa668aa46506ecd26ce774302"
+    "summary": "プロジェクトモードでのみ、クライアントがサーバーに接続した際、フォルダーの同期が完了した後もアプリケーションの始動に長い時間がかかることがありました。この遅延は、バイナリデータベースをプロジェクトに変換した後に目立っていました。",
+    "source_fingerprint": "ad3cd4e6fd8bafbc51e4c1163b050bafeed19e507473f149da3b353153ddd075"
   },
   {
     "reference": "ACI0101952",
@@ -4136,8 +4136,8 @@
   },
   {
     "reference": "ACI0102024",
-    "summary": "データファイルの暗号化を有効にした後、Maintenance and Security Center（MSC）で、レコードがまったく登録されていないテーブルに、問題がないにもかかわらず警告マーク（三角形）が表示されていました。",
-    "source_fingerprint": "7a1684b8f564d92efd545e61cdae53b2f5070a76563c263f9e7887bcd0610552"
+    "summary": "データファイルの暗号化を有効にした後、MSC（Maintenance and Security Center）で、レコードが登録されていないテーブルに、問題がないにもかかわらず警告マーク（三角形）が表示されていました。",
+    "source_fingerprint": "3b861b08eadc7f190cf0fb90e4e480d90076c47fa5cd7030e68236638bff0069"
   },
   {
     "reference": "ACI0102026",
@@ -4161,8 +4161,8 @@
   },
   {
     "reference": "ACI0102035",
-    "summary": "プロジェクトモードでのみ、v18 のプロジェクトを v19 で開くたびに *catalog.4DCatalog* ファイルが書き換えられ、すべての`<tip>`要素（フィールドやテーブルのヘルプ Tips に使用）の終了タグの直前に改行コードが挿入されていました。この変更は v18.4 HF3 までは発生していませんでした。動作に影響はありませんでしたが、バージョン管理で大量の不要な差分が発生していました。",
-    "source_fingerprint": "83343dffc4c0d514f1aa57830a88defbcadd85b0225bd7f1afaf4f5566b176aa"
+    "summary": "プロジェクトモードでのみ、プロジェクトを開くたびに *catalog.4DCatalog* ファイルが書き換えられ、各`<tip>`要素（フィールドなどのヘルプ Tips）の終了タグの直前に改行コードが挿入されていました。v18.4 HF3 までは問題ありませんでした。動作に影響はありませんでしたが、バージョン管理で大量の不要な差分が発生していました。",
+    "source_fingerprint": "fc807b1e379e4183010fec46488ce93d09c4ff8eb47c5a234d797cdcdd31635d"
   },
   {
     "reference": "ACI0102040",
@@ -4201,8 +4201,8 @@
   },
   {
     "reference": "ACI0102087",
-    "summary": "表の中のマージフィールドにフォーマットスイッチ（例：`MERGEFIELD pt_FC \\# $,#.00`）が設定されている`.docx`ドキュメントを 4D Write Pro にインポートした場合、フィールド名`«pt_FC»`は正しく取り出されるものの、[WP Get text](https://developer.4d.com/docs/ja/WritePro/commands/wp-get-text)から返されるテキストに不要な改行コードが追加されていました（`«pt_FC»\\r\\r`）。",
-    "source_fingerprint": "fe7dd4d9e30897b6b480aa756945fe84a97413024a3b2821936dc40ca399e2e2"
+    "summary": "表の中のマージフィールドにフォーマットスイッチ（例：`MERGEFIELD pt_FC \\# $,#.00`）が設定されている`.docx`ドキュメントを 4D Write Pro にインポートした場合、フィールド名`«pt_FC»`は正しく取り出されるものの、[WP Get text](https://developer.4d.com/docs/ja/WritePro/commands/wp-get-text)から返されるテキストに余分な改行コードが追加されていました（`«pt_FC»\\r\\r`）。",
+    "source_fingerprint": "5975cdcc6ed3fb8fb17d74c571aaef16b36574bbed6f0e5cddbe5874be0e8844"
   },
   {
     "reference": "ACI0102093",
@@ -4216,8 +4216,8 @@
   },
   {
     "reference": "ACI0102098",
-    "summary": "クライアント/サーバーでのみ、同じトランザクション内でクライアントからリレーション先のエンティティを2回目に保存しようとした場合、エンティティのスタンプが変更されたことを示すエラーで拒否されていました。1回目の保存で、リレーション属性に保持されているスタンプがすでにインクリメントされていたためです。",
-    "source_fingerprint": "afd3359604d1a51a6642703717bb1641ac141ac0f712886e765fe2db360e0517"
+    "summary": "クライアント/サーバー版でのみ、同じトランザクション内でクライアントからリレーション先のエンティティを2回目に保存しようとすると、エンティティのスタンプが変更されているためエラーが返され、保存できませんでした。1回目の保存で、リレーション属性に保持されているスタンプがすでにインクリメントされていたためです。",
+    "source_fingerprint": "7a1f123c6282e8909e51552b920642ccdda9e50428646749344f8295fabc294c"
   },
   {
     "reference": "ACI0102101",
@@ -4291,8 +4291,8 @@
   },
   {
     "reference": "ACI0102145",
-    "summary": "バイナリデータベースをプロジェクトモードに変換した場合、リストボックスのヘッダーや列のフォントカラーや整列が変わってしまうことがありました。「自動」に設定されていたプロパティが変換時に省略されたため、ヘッダーや列が独自の値を保持せず、リストボックス全体に定義された値を継承していました。",
-    "source_fingerprint": "be13b032b87c7ef20affdef883c33c13d5dd67f34d655cfbf6621107bf62ff03"
+    "summary": "バイナリモードでのみ、データベースをプロジェクトモードに変換すると、リストボックスのヘッダーや列のフォントカラーや整列が変わってしまうことがありました。「自動」に設定されていたプロパティが変換時に省略されたため、ヘッダーや列が独自の値を保持せず、リストボックス全体に定義された値を継承していました。",
+    "source_fingerprint": "241fe11148127fe5d85c555a92ca03ab18c1ddb16d785a8479cc31d61d6ce972"
   },
   {
     "reference": "ACI0102147",
@@ -4331,13 +4331,13 @@
   },
   {
     "reference": "ACI0102170",
-    "summary": "クライアント/サーバーで、[`On Startup` database method](https://developer.4d.com/docs/ja/commands/on-startup-database-method)にコードが記述されている場合、テーブル間にリレーションが定義されたデータベースに対して 4D Remote を起動すると、クライアント側でリレーションのパスに関する予期しない実行エラーが発生していました。",
-    "source_fingerprint": "60d73853a42b1926e8364a94c660b48c2bbff42b8f05cdf107b9b1ce89d230a9"
+    "summary": "クライアント/サーバー版で、`On Startup`データベースメソッドにコードが記述されている場合、テーブル間にリレーションが定義されたデータベースに対して 4D Remote を起動すると、クライアント側でリレーションのパスに関する予期しない実行エラーが発生していました。",
+    "source_fingerprint": "10a8addccb83511837c6e9bd4e444e175cda0b0accb42f22cbcc433ada360e39"
   },
   {
     "reference": "ACI0102171",
-    "summary": "クライアント/サーバーで、ローカルクライアントからフォームエディターを使用した場合、エンティティセレクション型リストボックスを作成する際に、データクラスがデータソースの候補として表示されなくなっていました。",
-    "source_fingerprint": "9efa34689504c884900b6559b47850331fbb9157c8ee2614608cac224f546689"
+    "summary": "クライアント/サーバー版で、ローカルクライアントからフォームエディターを使用した場合、エンティティセレクション型リストボックスを作成する際に、データクラスがデータソースの候補として表示されませんでした。",
+    "source_fingerprint": "6349dae65187269a93ad4f3611c8fe58dd302dfd8b278b2ebd6eefe3df73a5fa"
   },
   {
     "reference": "ACI0102174",
@@ -4381,8 +4381,8 @@
   },
   {
     "reference": "ACI0102189",
-    "summary": "Windows 版で、SVG ピクチャを含む 4D Write Pro ドキュメントを PDF にエクスポートした場合、実際のテキストカラーが無視され、`textArea`要素のテキストがすべてブラックで描画されていました。プリンタードライバーを使用して PDF に印刷した場合は問題ありませんでした。",
-    "source_fingerprint": "f75132a4022cf103ade5376cbb680d57865f6cd3646db4519ca53114086a95de"
+    "summary": "Windows 版でのみ、SVG ピクチャを含む Write Pro ドキュメントを PDF にエクスポートすると、`textArea`要素のテキストが実際のフォントカラーを無視してすべてブラックで描画されていました。プリンタードライバーを使用して PDF に出力した場合は問題ありませんでした。",
+    "source_fingerprint": "62281d8b04b4128d621290cb9751bd94ae321eb48fd2ac5d20fa1734f1059018"
   },
   {
     "reference": "ACI0102193",
@@ -4406,8 +4406,8 @@
   },
   {
     "reference": "ACI0102201",
-    "summary": "macOS で、特定の IP アドレスにバインドした場合、Web サーバーを80番ポートで開始することができず、ヘルパーツールのインストール画面も表示されませんでした。すべてのアドレス（`0.0.0.0`、`::`、つまり`ANY_ADDR`）で待ち受ける場合は正常に動作していました。Mojave 以降、1024未満のポートでサーバーを公開するのにヘルパーツールが不要になったため、4D ではヘルパーツールの使用を中止していましたが、特定のアドレスにリスナーをバインドするには引き続きヘルパーツールが必要です。修正により、「すべて」以外のアドレスが指定された場合は、再びヘルパーツールが使用されるようになりました。",
-    "source_fingerprint": "f71917b1f07c37a7f2950487ebec5bf9cf5dd7a280e6b396ccc5c8697fdfbb5e"
+    "summary": "macOS 版でのみ、特定の IP アドレスにバインドした場合、Web サーバーを80番ポートで開始することができず、ヘルパーツールのインストール画面も表示されませんでした。すべてのアドレス（`0.0.0.0`または`::`、つまり`ANY_ADDR`）で待ち受ける場合は問題ありませんでした。Mojave 以降、1024未満のポートでサーバーを公開するのにヘルパーツールが不要になったため、4D ではヘルパーツールの使用を中止していましたが、特定のアドレスにリスナーをバインドするには引き続きヘルパーツールが必要です。修正により、「すべて」以外のアドレスが指定された場合は、再びヘルパーツールが使用されるようになりました。",
+    "source_fingerprint": "16c7d658f04caf66971fe095b234a17a660aea003991df6770b4e5b4da8ef0d8"
   },
   {
     "reference": "ACI0102203",
@@ -4501,8 +4501,8 @@
   },
   {
     "reference": "ACI0102252",
-    "summary": "macOS 版でのみ、日本語入力（IME）を使用してメソッドエディターに入力中の文字列を`return`キーで確定した場合、変換の確定に加えて、余計な改行が挿入されていました。",
-    "source_fingerprint": "0be32333b5200d46896daef9a59ec9b273de15df3e9df92a51d1fda2a276fa0f"
+    "summary": "macOS 版でのみ、日本語入力（IME）を使用してメソッドエディターに入力中の文字列を`return`キーで確定すると、変換の確定に加えて、余計な改行が挿入されていました。",
+    "source_fingerprint": "e2e8ac231f068a55beb8e7fb675fbbc50d7984c3ac46467b7c90f849320fd43d"
   },
   {
     "reference": "ACI0102255",
@@ -4566,8 +4566,8 @@
   },
   {
     "reference": "ACI0102286",
-    "summary": "Windows 版でのみ、要素数ゼロの配列にバインドされたコンボボックスの下矢印ボタンをクリックすると、アプリケーションがキー入力をまったく受け付けなくなっていました。この状態になると、`enter`や`escape`を押してもフォームを閉じることができませんでした。",
-    "source_fingerprint": "7fb90bba37ed38a4cf3ed1b2cabf264dee32117b6fdd0145b78a1b99caa06fa7"
+    "summary": "Windows 版でのみ、要素数ゼロの配列にバインドされたコンボボックスの下矢印ボタンをクリックすると、アプリケーションがキー入力を受け付けなくなっていました。`enter`や`escape`を押してもフォームを閉じることができませんでした。",
+    "source_fingerprint": "3a77124705992a0f7986402782d5b2ce337c12fd99302e3910d944c26edf52a6"
   },
   {
     "reference": "ACI0102290",
@@ -4866,8 +4866,8 @@
   },
   {
     "reference": "ACI0102454",
-    "summary": "プリエンプティブプロセス内で SQL コードを実行した場合、ステートメントが SQL 関数の`FN`句を通じてプロジェクトメソッドを呼び出すと、すぐに 4D Server がクラッシュしていました。",
-    "source_fingerprint": "c46b1a80d054d65f243fbd2fd7df2ba8dfaf2f488fd2fca7998e5dc872c42fc3"
+    "summary": "プリエンプティブプロセスで SQL コードを実行した場合、ステートメントが`FN`句を通じてメソッドを呼び出すと、4D Server がクラッシュしていました。",
+    "source_fingerprint": "5c8ca3c668cdc01ff6387aa6461b05b3dc9146a6c87e091e1604b52a1fe0cb60"
   },
   {
     "reference": "ACI0102457",
@@ -4926,8 +4926,8 @@
   },
   {
     "reference": "ACI0102479",
-    "summary": "数値の桁区切り記号が Narrow No-Break Space 文字の場合、4桁以上の数値が正しくフォーマットされず、誤って表示されていました。",
-    "source_fingerprint": "3a742bbc462ec1ca24f4cc01b47809ca55faf2e3feca66d29314e54408fc7422"
+    "summary": "数値の桁区切り記号に Narrow No-Break Space 文字が使用されている場合、4桁以上の数値が正しくフォーマットされず、誤って表示されていました。",
+    "source_fingerprint": "fa4a4379ddbd371f94d4e1007aa531d03edb0ce87ac844d50b8199607337cec6"
   },
   {
     "reference": "ACI0102481",
@@ -5677,7 +5677,7 @@
   {
     "reference": "ACI0102861",
     "summary": "データファイルとインデックスファイルを圧縮した後、インデックス付きフィールドを含むテーブルに新規レコードを保存すると、アプリケーションがクラッシュすることがありました。このクラッシュは、Web プロセスなどのプリエンプティブスレッドから、コンパイルモードでスレッドアンセーフなメソッド（インタープロセス変数にアクセスするメソッドなど）を呼び出すことに関連していました。",
-    "source_fingerprint": "5bba2e5954c197f5a3abfbc67a2120ea760e7f8ce3743ab522bcd396b64a3a82"
+    "source_fingerprint": "2d979806d7d850805a2ebf9b0ef443249921e8ebba66b2765c1693b86404b49f"
   },
   {
     "reference": "ACI0102864",
@@ -5802,7 +5802,7 @@
   {
     "reference": "ACI0102940",
     "summary": "[MAIL New attachment](https://developer.4d.com/docs/ja/commands/mail-new-attachment)で作成してメールオブジェクトに格納した添付ファイルを、パラメーターとして別のプロセスに渡すことができず、メールオブジェクトをプロセス間で受け渡すことができませんでした。",
-    "source_fingerprint": "d5341ba117b552a8f6c3ba3fb2bbab2c4114ef0067a5b3f6457919b3bf63262d"
+    "source_fingerprint": "ebf26712f7b685cf6c2fdba6bd74fa687c345e30da55f1b73707c9071e26ab5e"
   },
   {
     "reference": "ACI0102943",
@@ -6291,8 +6291,8 @@
   },
   {
     "reference": "ACI0103244",
-    "summary": "文字列フィールドの最大長がサロゲートペアの途中にかかった場合、文字の片側だけ（例：`Char(55356)`）がレコードに保存されていました。そのため、[LOG FILE TO JSON](https://developer.4d.com/docs/ja/commands/log-file-to-json)などのコマンドでそのフィールドをダンプすると、孤立したサロゲートの片側が後続の二重引用符を制御文字として取り込んでしまい、解析できない JSON が出力されていました。修正により、不完全なサロゲート文字は保存されずに切り捨てられるようになりました。",
-    "source_fingerprint": "3641019c279c02afba008c9e9cecd53d1b68ce71aad30e44164fb88df65a3101"
+    "summary": "文字列フィールドの最大文字数がサロゲートペアの途中にかかった場合、文字の片側だけ（例：`Char(55356)`）がレコードに保存されていました。そのため、[LOG FILE TO JSON](https://developer.4d.com/docs/ja/commands/log-file-to-json)のようなコマンドでそのフィールドをダンプすると、孤立した片側が終わりの二重引用符を制御文字として飲み込んでしまい、解析できない JSON が出力されていました。修正により、不完全なサロゲート文字は切り捨てられるようになりました。",
+    "source_fingerprint": "0d7d603d932a15fac224bd41a1a06bcbf08ec9ab14616121bd398470f316500c"
   },
   {
     "reference": "ACI0103245",
@@ -6516,8 +6516,8 @@
   },
   {
     "reference": "ACI0103462",
-    "summary": "macOS 版で、カスタムの日付フォーマットや地域固有の日付フォーマットが正しく解決されないことがありました。システムの地域を英国、言語をオランダ語に設定した場合、*Internal date short* フォーマットで日付が期待される`DD-MM-YYYY`ではなく`DD/MM/YYYY`形式で表示されていました。",
-    "source_fingerprint": "828ea92a5d98471dd72090be57035505024c545f5206791efda436e266beff4b"
+    "summary": "macOS 版でのみ、地域固有の日付フォーマットが正しくないことがありました。システムの地域を英国、言語をオランダ語に設定した場合、*Internal date short* フォーマットで、日付が期待される`DD-MM-YYYY`ではなく`DD/MM/YYYY`形式で表示されていました。",
+    "source_fingerprint": "3b80e2f9f4134885041bc0c4e44a25359776d86b5cced5c1f58c3aa6ddd2aa9c"
   },
   {
     "reference": "ACI0103463",
@@ -6576,8 +6576,8 @@
   },
   {
     "reference": "ACI0103499",
-    "summary": "コンパイルパスをすべての変数を型指定するよう設定した場合、パラメーターの間接指定（`${2}`）のシンボルが、実際に宣言した型ではなく`C_VARIANT`としてシンボルファイルに出力されていました。影響があったのはシンボルファイルのみで、生成されるコード自体は正しいものでした。",
-    "source_fingerprint": "fc4e7deeca1ecdb5954c9b795a3a82adc21025c6d1e9f669c877bf7052f0c8f7"
+    "summary": "コンパイルパスを「すべて定義する」に設定した場合、パラメーターの間接指定（`${2}`）のシンボルが、宣言した型ではなく`C_VARIANT`としてシンボルファイルに出力されていました。影響があったのはシンボルファイルのみで、生成されるコード自体は正しいものでした。",
+    "source_fingerprint": "b38e0ad3fd2f71c2176e1c1abdb0e4f0749b8eb6756460f8614689e100558753"
   },
   {
     "reference": "ACI0103501",
@@ -6666,8 +6666,8 @@
   },
   {
     "reference": "ACI0103541",
-    "summary": "フォームに埋め込まれたクイックレポートエディターで、カラムを別のカラムの位置にドラッグした場合、コンテキストメニューが正しく更新されず、その結果、ブレークとその小計が誤ったフィールドに適用されていました。",
-    "source_fingerprint": "1090119e0c74871f571d9241296e88646c821d87197cf98307c26b7f79f170b3"
+    "summary": "フォームに埋め込まれたクイックレポートエディターで、カラムを別のカラムの位置にドラッグすると、右クリックメニューが正しく更新されず、その結果、ブレークとその小計が誤ったフィールドに適用されていました。",
+    "source_fingerprint": "6b025ace41abc5d669c3c45e4882e236f147695e058fd628ff2a6dd9132d2d9d"
   },
   {
     "reference": "ACI0103542",
@@ -6846,8 +6846,8 @@
   },
   {
     "reference": "ACI0103642",
-    "summary": "keep-alive モードを指定せずに[HTTP Request](https://developer.4d.com/docs/ja/commands/http-request)を呼び出した場合、ステータスコード`503`と空のレスポンスが返されることがあり、期待される XML 本文が受信されませんでした。",
-    "source_fingerprint": "75c33f29cc2b5aacee385a6dae417160a4d5bec79dd39e465850de5665f3dc27"
+    "summary": "*keep-alive* モードを指定せずに[HTTP Request](https://developer.4d.com/docs/ja/commands/http-request)を呼び出した場合、サーバーがステータスコード`503`と空のレスポンスを返すことがあり、期待される XML のレスポンスが受信されませんでした。",
+    "source_fingerprint": "b42d52a4377e159a56e7d34379258db4b2ffa31e0a73dcfe444e26e93e756cbf"
   },
   {
     "reference": "ACI0103643",
@@ -6931,8 +6931,8 @@
   },
   {
     "reference": "ACI0103679",
-    "summary": "エンティティセレクションにバインドされたリストボックスで、[LISTBOX SELECT ROWS](https://developer.4d.com/docs/ja/commands/listbox-select-rows)で行を選択した後に上下矢印キーを押すと、コマンドで選択した行ではなく、その前にクリックで選択された行を基準にハイライトが移動していました。",
-    "source_fingerprint": "b7cd4481971669ab9eeff9010b07e7c372955e1544ed732287819d1cc077d855"
+    "summary": "エンティティセレクション型のリストボックスで、[LISTBOX SELECT ROWS](https://developer.4d.com/docs/ja/commands/listbox-select-rows)で選択した行がキーボード操作の起点として使用されていませんでした。上下矢印キーを押すと、コマンドで選択した行ではなく、その前にクリックで選択された行を基準にハイライトが移動していました。",
+    "source_fingerprint": "1767afdd7433c0e5f70ce8c45eac3bfd3925dc631d3c209274fefa20d344325d"
   },
   {
     "reference": "ACI0103681",
@@ -7061,8 +7061,8 @@
   },
   {
     "reference": "ACI0103734",
-    "summary": "`IMAPTransporter`オブジェクトに対して`.selectBox()`を呼び出すと、メールボックスを正常に選択できる場合でも、エラー`11`（「IMAP SELECT command failed」）が返されていました。",
-    "source_fingerprint": "d6d8783bd865c5f178f59e0aa9b3f1cb10583a0af9592dba0d790a2f06fdc7b8"
+    "summary": "`IMAPTransporter.selectBox()` を実行すると、エラー`11`（IMAP SELECT command failed）が返されて失敗していました。このリグレッションにより、IMAP サーバー上のメールボックスを選択できなくなっていました。",
+    "source_fingerprint": "52f0f06e23751ff4cd82de6415d43373cbd5b53171454df31358f9ebf3bac940"
   },
   {
     "reference": "ACI0103737",
@@ -7121,8 +7121,8 @@
   },
   {
     "reference": "ACI0103756",
-    "summary": "Windows 版で、表示の拡大率が高い（100%を超える）場合、フォントピッカーでスタイル付きテキストのフォントサイズを変更すると、選択したサイズそのものではなく、拡大率を掛けたサイズが適用されていました。逆に、フォントピッカーを開いた状態でスタイル付きテキストを選択すると、サイズを拡大率で割った値が表示されていました。いずれの場合も、フォントサイズがユーザーの選択や表示と一致していませんでした。",
-    "source_fingerprint": "5064e16525a1f3939b93bb5982c853748739a7c9280500d6fccd271f9dda5a5f"
+    "summary": "Windows 版で高解像度ディスプレイ（拡大率が`100%`を超える設定）を使用している場合、フォントピッカーでスタイル付きテキストのフォントサイズを変更すると、選択したサイズに拡大率を掛けたサイズが適用されていました。また、フォントピッカーを表示している間にスタイル付きテキストを選択すると、サイズを拡大率で割ったフォントサイズが表示されていたため、数値が実際に見えているサイズと一致していませんでした。",
+    "source_fingerprint": "5f0e38084681f60cb5217e43918579c7688d2f504c1752b09aa4ed6ecd668010"
   },
   {
     "reference": "ACI0103757",
@@ -10480,6 +10480,11 @@
     "source_fingerprint": "53c5187e0e662e55ec8bbdfd0f2674ef985bf196743df4f6e1c23dc99a41717d"
   },
   {
+    "reference": "ACI0105454",
+    "summary": "`WebSocketConnection.send()` で日付型のプロパティを送信すると、データベースパラメーターの`Dates inside objects`が日付型に設定されていても、日付がタイムゾーン付きの ISO-8601 形式の文字列にシリアライズされていました。そのため、受信側には日付のみの値ではなく、完全なタイムスタンプが渡されていました。",
+    "source_fingerprint": "286abe0f9f08f92865240c0db975ca27fe2d30ee3271c74a0cdb9cab2974fe48"
+  },
+  {
     "reference": "ACI0105455",
     "summary": "オブジェクトのプロパティに対して文字列のインデックス演算子（`[[]]`）を使用すると、「ポインターの参照先が文字式であると仮定して処理します」（533.1）という予期しないコンパイラー警告が表示されていました。この警告メッセージの文言も見直され、誤解を招く「ポインター」への言及が削除されました。",
     "source_fingerprint": "0f4fb94abe613f25782cba253ae6f9127bd3df01e5ffc77338474d3e90efaa62"
@@ -11275,6 +11280,11 @@
     "source_fingerprint": "67c6908c6a39fa00461a743a17bf178c180c58c0b7c5cc7df9d5852448ff438b"
   },
   {
+    "reference": "ACI0105945",
+    "summary": "内部（システム）Web エリアでは`On Begin URL Loading`フォームイベントが正しく動作していなかったため、このイベントを使ってページ読み込みの開始を検知するコードは期待どおりに動作しませんでした。",
+    "source_fingerprint": "2abff0a1ddf289fef8aeed55dca694848f14c4e9769fc7f694db468e6cbfb20f"
+  },
+  {
     "reference": "ACI0105952",
     "summary": "オブジェクトライブラリのダイアログで、オブジェクトのカテゴリーで絞り込みを行い「進捗インジケーター」カテゴリーを選択すると、該当するオブジェクトが存在するにもかかわらず、何も表示されませんでした。",
     "source_fingerprint": "635672396eff1686010a4393b1582fbbdc20ec98f5b457afac79ec7819377c47"
@@ -11525,6 +11535,11 @@
     "source_fingerprint": "7aadc162e001c98c2ef8b022edb6c1dd77ba2ea95fae756db6ce657fe1759c01"
   },
   {
+    "reference": "ACI0106102",
+    "summary": "メソッドエディターで、括弧を含むリテラル文字列が式に含まれている場合、ブロック選択のキーボードショートカット（`Cmd`+`B`）でブロックを選択できないか、誤った範囲が選択されていました。",
+    "source_fingerprint": "ea331c21aee506549a31d237f0a34c6ed2be935e98a0a78ca8e9b248f650bdfc"
+  },
+  {
     "reference": "ACI0106104",
     "summary": "ウィジェット内のピクチャオブジェクトの On Clicked イベントで、[CALL SUBFORM CONTAINER](https://developer.4d.com/docs/ja/commands/call-subform-container)を経由して[Dynamic pop up menu](https://developer.4d.com/docs/ja/commands/dynamic-pop-up-menu)でポップアップメニューを表示した場合、クリックしてメニューを閉じた直後にメニューが再表示されていました。ピクチャオブジェクトは（ボタンとは異なり）、[Is waiting mouse up](https://developer.4d.com/docs/ja/commands/is-waiting-mouse-up)でマウスの状態を追跡できるように、On Clicked の後もウィンドウが非アクティブになるまでフォーカスを保持するため、ウィジェット外のクリックイベントがウィジェット内のオブジェクトに送られることがあったためです。ボタンオブジェクトを使用するか、ホストフォームのコンテキスト外でメニューを表示するか、On Clicked ではなく On Mouse Up でメニューを表示すれば、問題を回避することができました。",
     "source_fingerprint": "71a021faf79a31ffd67b8dff012d91bf5edcf6233fbb27bbed30a0c0052a681f"
@@ -11755,6 +11770,11 @@
     "source_fingerprint": "f051253ce12d35428e1f6fd9d12e7530e4e528d2e596c768e48fe1dc1e32655e"
   },
   {
+    "reference": "ACI0106216",
+    "summary": "エクスプローラーのホームタブで項目を選択した状態で別のアプリケーションに切り替えて戻ると、項目の選択が失われていました。デザインモードではアプリケーションが最前面に移動するたびにプロジェクトがリロードされますが、ホームタブだけは選択を復元する仕組みが実装されていませんでした。",
+    "source_fingerprint": "9d7e247e3237d5628b30469e805e97811e0c1d56036f20eabee4aaccdc6ee062"
+  },
+  {
     "reference": "ACI0106220",
     "summary": "管理者ではないユーザーでツールボックスの「ユーザー＆グループ」エディターを表示した場合、一部のアイコン画像が表示されず、メッセージの位置もずれるなど、レイアウトが崩れていました。",
     "source_fingerprint": "952a083636e142540ee64a2d828f6fd14df4ad7d8f3c7d23faeea2d106ed01fe"
@@ -11886,8 +11906,8 @@
   },
   {
     "reference": "ACI0106300",
-    "summary": "クライアントが予期せず切断された後、4D Server がクラッシュすることがありました。",
-    "source_fingerprint": "4fcaba93a26393fe8b710c0ba0b214b9f920aae186862c279224ac11bbe2644e"
+    "summary": "クライアント/サーバー版でのみ、クライアントが WebSocket メッセージを送信している最中に TCP 接続に障害が発生すると、4D Server がクラッシュしていました。",
+    "source_fingerprint": "894bd463a1889b5930103ec529d64357360a66f49c1a65fd914dcd703c24d668"
   },
   {
     "reference": "ACI0106301",
@@ -11966,8 +11986,8 @@
   },
   {
     "reference": "ACI0106341",
-    "summary": "ツールボックスで、ユーザー名をすでに使用されている名前に変更しようとすると、期待どおり「ユーザーがすでに存在する」というエラーが表示されましたが、エラーにもかかわらず変更は確定されていました。",
-    "source_fingerprint": "87699b6e14c7c5a79a44d0ed37de92f40bb4e90ba6cfbb240d024c014d159353"
+    "summary": "ツールボックスでユーザー名を編集し、すでに存在するユーザーと同じ名前に変更しようとすると、同じ名前のユーザーが存在するというエラーが正しく表示されましたが、入力はそのまま確定されていたため、表示される名前が重複しているように見えていました。",
+    "source_fingerprint": "99b2e3fa7b0f1c2285ec3efcf7bdabf3da3d240b7076ece867604d2f500828f9"
   },
   {
     "reference": "ACI0106343",
@@ -12016,8 +12036,8 @@
   },
   {
     "reference": "ACI0106359",
-    "summary": "データベース設定ダイアログで、AI プロバイダー用に入力した API キーが入力エリアに読み取れる平文で表示されていました。キーが画面上に露出しないよう、パスワードフィールドのように隠して表示されるべきでした。",
-    "source_fingerprint": "c1d82ebcca307e2eeed4095f0204b421b62172066ead20288b2463f7827b7d09"
+    "summary": "設定画面の AI プロバイダーの API キーが、通常のテキストとして読み取れる状態で表示されていました。画面上から読み取られないよう、パスワードのように隠蔽表示されるべきでした。",
+    "source_fingerprint": "79e0358684ba07e51efabbe6c907b524caa8e7a692d4786c015e41e7ba8880b6"
   },
   {
     "reference": "ACI0106361",
@@ -12051,8 +12071,13 @@
   },
   {
     "reference": "ACI0106376",
-    "summary": "build4D コンポーネントでアプリケーションをビルドする際に、ヘッドレスモードの tool4D から[Create deployment license](https://developer.4d.com/docs/ja/commands/create-deployment-license)を実行すると、ライセンス処理の中核ルーチン内でクラッシュが発生していました。",
-    "source_fingerprint": "d20390382f84a4c1e285a87f15b4ad3150fbfd6d303072d92c0d3587bee1167b"
+    "summary": "ヘッドレスモードの *tool4D* から[Create deployment license](https://developer.4d.com/docs/ja/commands/create-deployment-license)を実行すると、アプリケーションがクラッシュしていました。たとえば、build4D コンポーネントでアプリケーションをビルドする際に発生していました。",
+    "source_fingerprint": "c1214803bafca7d5cbe3bafcb9e483e92e7b7842d62fc033b9562e2568bad956"
+  },
+  {
+    "reference": "ACI0106377",
+    "summary": "macOS 版でのみ、コンポーネントのクラスをメソッドエディターで開くと、エディターが再びフォーカスを得たときにアプリケーションがクラッシュすることがありました。",
+    "source_fingerprint": "e544f8106f3c40d435e7382cb4ed2a87fbf5d670688b40944668cae8f86f19a2"
   },
   {
     "reference": "ACI0106379",
@@ -12073,6 +12098,11 @@
     "reference": "ACI0106385",
     "summary": "キーボードショートカットでウィンドウのフォーカスを巡回させてエクスプローラーウィンドウに移した場合、矢印キーで項目を移動することはできましたが、Enter キーを押しても選択した項目のエディターが開かなくなっていました。ウィンドウが最前面にあるかどうかだけでなく、マウスポインターの位置も Enter キーが認識されるかどうかに影響していたことが判明しました。",
     "source_fingerprint": "555b18c53e41d66d10f72641a6aa131ca9ebaf7604e0006c7abbb6efbc0a4096"
+  },
+  {
+    "reference": "ACI0106387",
+    "summary": "コンパイルモードで REST API を使ってエンティティを更新した場合、スレッドアンセーフなトリガーは最初の`100`回までしか実行されていませんでした。それ以降はエラーが返されることもなく、トリガーが実行されなくなっていました。これは REST プロセス数の上限である 100 と一致していました。",
+    "source_fingerprint": "2e79c58bf86669ca38b0b40b39da20b8113c1c29f27c1a67d0dcce72e8dbd2b1"
   },
   {
     "reference": "ACI0106389",
@@ -12098,6 +12128,11 @@
     "reference": "ACI0106395",
     "summary": "バックアップの主要処理時間が加算されていなかったため、`backupHistory.json`ファイルに記録される`endingDate`と`scheduledDate`の値が正しくありませんでした。バックアップジャーナル自体は影響を受けませんでした。",
     "source_fingerprint": "05679fc905b11aec7cd48967150be67073b1a1b2d91dce8da0b61627cd8ab7f7"
+  },
+  {
+    "reference": "ACI0106399",
+    "summary": "プロセスの CPU 時間に関するテレメトリの値に矛盾がありました。リモート管理ウィンドウに表示される値がサーバーの稼働時間を超えることがあり、サーバーが報告するプロセスアクティビティのメトリクスでも同じ誤った合計値が示されていました。",
+    "source_fingerprint": "d44a2d877f3f0a7ada6a0dafa8cd67be28b41c9acb308ea3779c94f1d11cc243"
   },
   {
     "reference": "ACI0106403",
@@ -12141,13 +12176,23 @@
   },
   {
     "reference": "ACI0106421",
-    "summary": "Windows 版のクライアント/サーバーで、クライアント/サーバー間の暗号化通信とシングルサインオン（SSO）の両方を同時に有効にした場合、クライアントが ServerNet 経由でサーバーに接続できませんでした。どちらか一方を無効にするか、QUIC ネットワークレイヤー（常に暗号化）を使用すれば、この問題は回避できました。ACI0106296 の修正による副作用のようでした。",
-    "source_fingerprint": "c4630472e3ba69d45954ea983d38ba0423a22252ac94aedaa0d5c7268cd58d06"
+    "summary": "Windows 版のクライアント/サーバーで、クライアント暗号化通信とシングルサインオン（SSO）の両方を有効にしていると、クライアントが ServerNet でサーバーに接続できませんでした。どちらか一方を無効にするか、QUIC ネットワークレイヤー（常に暗号化通信）を使用すれば、この問題は発生しませんでした。以前のネットワーク関連の修正による副作用のようでした。",
+    "source_fingerprint": "b623a95cf0b53cdd016afe3b5c27e835e00b2c52f371d62ddddf62345414df05"
   },
   {
     "reference": "ACI0106424",
     "summary": "メール添付ファイル名が長い場合、そのファイル名の MIME エンコードが不正になっていました。`Content-Disposition`ヘッダーの`attachment`キーワードとそれに続くセミコロンの間に余計な改行が挿入されていたため、ファイアウォールやウイルス対策ソフトウェアによってメッセージが拒否されることがありました。",
     "source_fingerprint": "0fd795d49501790fb2b19cdceb0beb64ef976ae28a5e1f2c76fafcd61d6b59f9"
+  },
+  {
+    "reference": "ACI0106425",
+    "summary": "macOS 版でのみ、システム Web エリアが配置されたフォームで[Is window maximized](https://developer.4d.com/docs/ja/commands/is-window-maximized)または[MAXIMIZE WINDOW](https://developer.4d.com/docs/ja/commands/maximize-window)を実行すると、アプリケーションがクラッシュしていました。このクラッシュは macOS 27 (Golden Gate) に特有のものでした。",
+    "source_fingerprint": "0218d4024c1ca3348b022e86f7266eecf5e135cacd729fc7e1827515f1471ee1"
+  },
+  {
+    "reference": "ACI0106427",
+    "summary": "カレントプロセスのデバッグログにコンポーネントメソッドの呼び出しが記録されていなかったため、コンポーネント内の動作がトレースから欠落していました。なお、コンポーネントメソッドから呼び出されるサブルーチンが記録されないのは仕様です。",
+    "source_fingerprint": "2a793377c6c419a268b211bc367e79dc5180944a15964b0ad170e5c14248dbf9"
   },
   {
     "reference": "ACI0106430",
@@ -12165,14 +12210,19 @@
     "source_fingerprint": "3349d4dcc43837e2dd911301c184e1d750a6ec57c1c3adc47d2144f6b589c369"
   },
   {
+    "reference": "ACI0106443",
+    "summary": "QUIC ネットワークレイヤーを使用している場合、多数のクライアントが同時に接続すると、ネットワークマネージャープロセスが CPU を占有し、4D Server が無反応になることがありました。",
+    "source_fingerprint": "e9d01c0d913b40ae2cd838b0b3ecca2a3d205d21983eb7c22cc34f395cd97d4a"
+  },
+  {
     "reference": "ACI0106447",
     "summary": "ツールボックスで既存の列挙リストに新しい項目を追加すると、期待される位置ではなくリストの先頭に挿入されていました。ACI0106197 の修正による副作用のようでした。",
     "source_fingerprint": "9cd7622f7ea0784ed1ccccce39a4829ae791ff9e4e652ee7aa675a914529743c"
   },
   {
     "reference": "ACI0106448",
-    "summary": "ツールボックスで新しいリスト項目を作成した場合、「変更可能項目」チェックボックスがデフォルトで選択されておらず、チェックされていない状態になっていました。",
-    "source_fingerprint": "81b1184a2e21605f0d418b6a11ada3faebdbf8d34f255871754be9b992a10ae9"
+    "summary": "ツールボックスで新規リスト項目を追加した場合、「変更可能項目」のチェックボックスが本来あるべきデフォルトの選択状態になっていませんでした。",
+    "source_fingerprint": "5f53b46dfa62126efa463229cec557ae3fdf065abe6c4ff6908d6b8d3935b425"
   },
   {
     "reference": "ACI0106450",
@@ -12188,6 +12238,11 @@
     "reference": "ACI0106453",
     "summary": "Windows 版で、プラグイン SDK の関数`PA_CreateNativePictureForPrinting`が、誤って拡大されクリッピングされたピクチャを返していました。関連する`PA_CreateNativePictureForScreen`は影響を受けませんでした。",
     "source_fingerprint": "7517460fb7c27b28c76f98ce7d4133b47e5e83233bb562adfccc8c7006be2ceb"
+  },
+  {
+    "reference": "ACI0106454",
+    "summary": "スケーラブルセッション管理を有効にしている場合、[WEB Get current session ID](https://developer.4d.com/docs/ja/commands/web-get-current-session-id)がカレントのセッション識別子ではなく、ひとつ前のセッション識別子を返していたため、`Session.id`の値と一致していませんでした。",
+    "source_fingerprint": "8ccccc4958ce38fb57d0510ec4e6b66f6684c17852764c2be35a2210142d8067"
   },
   {
     "reference": "ACI0106458",
@@ -12261,8 +12316,18 @@
   },
   {
     "reference": "ACI0106504",
-    "summary": "HTTP リクエストが送信されていない場合でも、管理画面の HTTP サーバータブにある「HTTP ヒット総数」が増加していました。クライアントからツールボックスを開いたり、クライアント上に表示したサーバー管理画面でタブを切り替えたりするだけで増加していました。HTTP ログには対応する記録がなく、このカウントが誤りであることが確認できました。",
-    "source_fingerprint": "e6ca23171f6792317ed8ce220873c23f31473263632582dae4fc40cc12b98f1c"
+    "summary": "管理ウィンドウの HTTP サーバーページにある「HTTP ヒット総数」のカウンターが、HTTP リクエストが発生していないにもかかわらず増加していました。クライアント側でツールボックスを開いたり、クライアント側で表示したサーバー管理ウィンドウのタブを切り替えたりするだけで増加し、HTTP ログには何も記録されていませんでした。",
+    "source_fingerprint": "bcd89ad0eaa75d40bdddc6cd735e988bf5c7bf7b80e75b74f663c0bcb091ffe1"
+  },
+  {
+    "reference": "ACI0106505",
+    "summary": "別のクラッシュレポートに関連するシナリオで、アプリケーションがクラッシュする代わりにハングし、クラッシュが発生しないまま 4D が無反応になっていました。",
+    "source_fingerprint": "67e2abf6abb930d0d39094eacacf5433e40a5cfb6a21e98de21abe7c3f709e7e"
+  },
+  {
+    "reference": "ACI0106506",
+    "summary": "Windows 版でのみ、マルチディスプレイの配置を変更した後に、プロパティリストウィンドウがスクリーンの表示領域外にとどまり、操作できなくなることがありました。",
+    "source_fingerprint": "6425c35991e37e664d2602f57f03dccaadc0a0e8d84e693d1ea188abd48a2f8a"
   },
   {
     "reference": "ACI0106507",
@@ -12271,13 +12336,13 @@
   },
   {
     "reference": "ACI0106510",
-    "summary": "フォームエディターで、カラムに自動列幅を使用しているリストボックスをリサイズすると、リサイズ中およびリサイズ後にカラムの幅が不規則になり、カラムのレイアウトが目に見えて崩れていました。ACI0106338 の修正によって発生したリグレッションのようでした。",
-    "source_fingerprint": "38cd9d76f8b7cd465041d875cd5cbaaf9cd3061c377f83e75f648583653d374e"
+    "summary": "フォームエディターで、自動列幅が有効なリストボックスをリサイズすると、列幅が不規則になり、表示が崩れていました。これは ACI0106338 が修正されたことによる副作用でした。",
+    "source_fingerprint": "ec18a7af2aff8051c9cc593da435ed64698463735daf496edad464788873a5d0"
   },
   {
     "reference": "ACI0106511",
-    "summary": "クイックレポートでカレント日付を挿入するために`#D`プレースホルダーを使用すると、マシン自身のタイムゾーンではなく UTC で計算された日付が出力されていたため、深夜前後にはレポートに間違った日付が表示されることがありました。",
-    "source_fingerprint": "23499eb0f3c0b4861055c36459b524fd41ee60dc17b90c052162349261d999ba"
+    "summary": "クイックレポートで `#D` プレースホルダーを使用してカレント日付を差し込んだ場合、ローカルの日付ではなく UTC 時間帯の日付が出力されていたため、時間帯によっては間違った日付が表示されることがありました。",
+    "source_fingerprint": "e2da551236acf85cf6a8237f387fff6ca9b89afbfa41477c4088bc74c80bd18a"
   },
   {
     "reference": "ACI0106512",
@@ -12285,14 +12350,39 @@
     "source_fingerprint": "fb06c2b171c9c5d6f19fc9d230804a85e7f76becbed8ebf744b6e01eb15e5007"
   },
   {
+    "reference": "ACI0106514",
+    "summary": "インタープリターモードでのみ、`For each` ループ条件を `While (True) & (False)` または `Until (True) & (False)` と記述した場合に、外側の式がループ条件とは別の式として扱われ、正しく評価されていませんでした。現在は、インタープリターモードでもコンパイルモードでも、ブール式全体がループ条件として評価されます。",
+    "source_fingerprint": "b96e33fa293714cb187394583fd99880f7e2f4216c58e9766b9be3a65e971206"
+  },
+  {
     "reference": "ACI0106517",
     "summary": "Windows 版でのみ、印刷中に発生したエラーが汎用的な「エラー 1」／未知のエラーとしてしか報告されず、実際の原因の手がかりが得られませんでした。修正により、より具体的なエラー情報が返されるようになりました。メッセージに加えて、根本的な印刷の不具合（特定の状況で印刷 API がメインスレッドから呼び出されていなかったこと）も修正されました。",
     "source_fingerprint": "3b22ed2028d4feaa9e597cc29560455f5e01efcaff766c1b593fb1fcb79f00ee"
   },
   {
+    "reference": "ACI0106518",
+    "summary": "データベースメソッド、トリガー、フォームメソッド、オブジェクトメソッドを作成しても `on_create` マクロイベントが実行されなかったため、これらのメソッドタイプではそのイベントに依存するマクロが一切実行されませんでした。",
+    "source_fingerprint": "337614cf7b06307b70ab07be59d16cac695eb15c7f8d12787a408402234909c6"
+  },
+  {
+    "reference": "ACI0106519",
+    "summary": "階層リストの項目を編集中に `delete` キーまたは `backspace` キーを入力しても `On After Edit` イベントが発生しなかったため、編集に反応するコードがそれらのキー入力を検知できませんでした。",
+    "source_fingerprint": "b9d4e0459cf1c316482351befc0deabdf301e9181fa8fecb796eee4a55c8638a"
+  },
+  {
+    "reference": "ACI0106521",
+    "summary": "`var` 宣言の後にインラインコメントを記述することができず、メソッドエディターで入力しても受け付けられず、編集の妨げになっていました。",
+    "source_fingerprint": "bb0dca903db55ddb1d4fa5dea427195de67cdb240a62c102bad4c392e457e7b8"
+  },
+  {
+    "reference": "ACI0106523",
+    "summary": "QUIC ネットワークレイヤーを使用している場合に限り、終了時に 4D クライアントアプリケーションがクラッシュすることがありました（エンティティモデルカタログの破棄中にセグメンテーションフォルトが発生していました）。このクラッシュはデータベースストラクチャーに依存していました。",
+    "source_fingerprint": "045110fd8bcef6a053dd5cfaa46fb0d2295514f51b23e18a9229e3bb545c2750"
+  },
+  {
     "reference": "ACI0106526",
-    "summary": "特定のバイナリストラクチャーファイルに対して、MSC の検査または修復、コンパイラーのシンタックスチェック、またはバイナリからプロジェクトへの変換を実行すると、毎回 4D がクラッシュしていました。原因はストラクチャー内の無効な表示フォーマットで、これによりスタックオーバーフローが発生していました。",
-    "source_fingerprint": "e0a4d7be591f77505299140280f33cd062f2269bee056de71a139ad7b0b45463"
+    "summary": "特定のバイナリストラクチャーファイルに対して、MSC の検査または修復、コンパイラーのシンタックスチェック、またはプロジェクト変換を実行すると、アプリケーションがクラッシュしていました。原因はストラクチャー内の無効な表示フォーマットで、これによりスタックオーバーフローが発生していました。",
+    "source_fingerprint": "f7919d7a454bec1f66078f2bed438b950e92d7a46be617684e985a805e11fd47"
   },
   {
     "reference": "ACI0106528",
@@ -12305,14 +12395,24 @@
     "source_fingerprint": "38d587555e9af9dba374cb86feb9cff0ab49b0ef903a8f14bc4b28e7bbbed97d"
   },
   {
+    "reference": "ACI0106532",
+    "summary": "`IncomingMessage.urlQuery` で、パラメーター値の中にエンコードされた `&` が含まれている場合に、実際のパラメーター区切りと区別されていなかったため、異なる2つのリクエストから同一のクエリオブジェクトが生成され、見分けることができないことがありました。",
+    "source_fingerprint": "1038c3fd76ae1d0e2a3db41d6f1060de7fce2c7e6edf15775e17dad60e2042a8"
+  },
+  {
     "reference": "ACI0106539",
     "summary": "macOS でのみ、最近のシステムアップデート（macOS 15.8、26.7、27）により、4D が公開ポートを常に使用中と判断するようになったため、ポートが空いているにもかかわらず Web サーバーが起動できませんでした。",
     "source_fingerprint": "4bb40383b8ca2d7e75faff72df7561ef7dbcc19cf6647342950bcb7f8d357f43"
   },
   {
     "reference": "ACI0106542",
-    "summary": "新しいリリースをプロジェクトを開かずに起動し、ライセンスマネージャーを直接開いた場合、以前のリリースのライセンスが自動的に更新されず、代わりにライセンス番号の再入力を求められていました。",
-    "source_fingerprint": "11417fa7ee821d2191575b2f59fb4687c775912a0bff8ffa0a9a4a7d61af4b1c"
+    "summary": "プロジェクトを指定せずにアプリケーションを起動し、ライセンスマネージャーを直接開いた場合、以前のリリースのライセンスが自動的にアップデートされず、代わりにライセンス番号の再入力を求められていました。",
+    "source_fingerprint": "5c348c652ffe15840a9330a029c0d8335e90bf41b7e44653daafde1d88c35139"
+  },
+  {
+    "reference": "ACI0106543",
+    "summary": "ホストプロジェクトと同じ名称のコンポーネントをインストールした場合、エクスプローラーのタブを切り替えるたびに画面がちらつき、メモリーリークが発生していました。現在は、ホストと同じ名称のコンポーネントや依存関係はロードされず、代わりにエラーが返されます。",
+    "source_fingerprint": "54f347d187377d69851e4c787fd34fdd3c8a8e9b7a0a07a75cdda0a615e615ad"
   },
   {
     "reference": "ACI0106545",
@@ -12321,17 +12421,177 @@
   },
   {
     "reference": "ACI0106546",
-    "summary": "`PackProject`キーを`False`に設定してビルドしたアプリケーションで、初回起動時に依存関係マネージャーのダイアログが表示され、以前は 4D に同梱されていた 4D コンポーネントのインストールを求められていました。",
-    "source_fingerprint": "b4665e320c22f024455da28ae53810d423f548a443dd22f54196f726ebb733af"
+    "summary": "`PackProject` キーを `False` に設定してビルドしたアプリケーションで、初回起動時に依存関係マネージャーのダイアログが表示され、以前は 4D に同梱されていた純正コンポーネントのインストールを求められていました。",
+    "source_fingerprint": "6638ac3403e3d60562f0a56358eb43287b2fab37f0fbb19ba56a02e5ac9e1566"
+  },
+  {
+    "reference": "ACI0106554",
+    "summary": "QUIC ネットワークレイヤーを使用している場合に限り、4D Server を長時間運用すると、ネットワークマネージャーの有効期限タイマー処理でアサーションエラーが発生し、アプリケーションがアボート（SIGABRT）することがありました。",
+    "source_fingerprint": "02f6b37939ca839a6b2bc6bb22e4035f80682099790ad172d421bbab61b254d5"
   },
   {
     "reference": "ACI0106558",
-    "summary": "macOS でのみ、[EXECUTE ON CLIENT](https://developer.4d.com/docs/ja/commands/execute-on-client)を繰り返し呼び出すと古いパラメーターが渡され、3回目以降の呼び出しでは、メソッドが2回目の呼び出しと同じパラメーターを受け取っていました。このリグレッションは、旧式ネットワークレイヤーの廃止に起因するものでした。",
-    "source_fingerprint": "c596db53833ec30e5c6999f97b544c013d69227982823626aa88ec092810bf09"
+    "summary": "macOS 版でのみ、[EXECUTE ON CLIENT](https://developer.4d.com/docs/ja/commands/execute-on-client) を続けて呼び出すと古いパラメーターが渡され、3回目以降の呼び出しでは、クライアントメソッドが2回目と同じパラメーターを受け取っていました。このリグレッションは、旧式ネットワークレイヤーの廃止に伴うものでした。",
+    "source_fingerprint": "42c2be8282a1f9d43a1b655a23d4e25815ce7d3c939b4828ef5defdf78267248"
   },
   {
     "reference": "ACI0106566",
-    "summary": "HTTP レスポンスに`Location`ヘッダーが含まれている場合、Web サーバーがステータスコードを強制的に`302`に設定していたため、RFC 9110 でそのステータスに対して`Location`が定義されているにもかかわらず、`201 Created`レスポンスを返すことができませんでした。この問題は、HTTP リクエストハンドラーの`4D.OutgoingMessage`と[WEB SET HTTP HEADER](https://developer.4d.com/docs/ja/commands/web-set-http-header)の両方に影響していました。",
-    "source_fingerprint": "789713f85e0fc4eeaede8546414af033c0cd6278c3368a0f0dd87ec13aa1653b"
+    "summary": "HTTP レスポンスに `Location` ヘッダーが含まれる場合、Web サーバーがステータスコードを強制的に `302` に設定していたため、RFC 9110 では `201` に対して `Location` が定義されているにもかかわらず、`201 Created` レスポンスを返すことができませんでした。この問題は、HTTP リクエストハンドラーの `4D.OutgoingMessage` と [WEB SET HTTP HEADER](https://developer.4d.com/docs/ja/commands/web-set-http-header) の両方で発生していました。",
+    "source_fingerprint": "b2af42e222ecdf98a75c28d04fdd43c225c5c97edf76292d0dbd062fdb0dafa2"
+  },
+  {
+    "reference": "ACI0106567",
+    "summary": "リストフォームの `On Display Detail` イベントで [OBJECT SET RGB COLORS](https://developer.4d.com/docs/ja/commands/object-set-rgb-colors) を呼び出しても行ごとの色にならず、最終行に設定した色がすべての行に適用されていました。また、Windows 版で FluentUI を有効にしている場合は、ヘッダーやフッターのエリアにまたがるオブジェクトは仕様として全体の背景としてレンダリングされるため、オブジェクトを詳細エリアの内部に完全に収める必要があります。",
+    "source_fingerprint": "104d2ef57a88bc7815d49cef3d24767fc29658eba1647f6f8fd92e31b183da25"
+  },
+  {
+    "reference": "ACI0106573",
+    "summary": "メモリーリークがあり、`Storage` に追加された共有オブジェクトを参照するオブジェクトの循環参照が解放されず、それらが使用していたメモリーがプロセスの終了まで保持されていました。",
+    "source_fingerprint": "af69f1e18c7013c096c5d37b5f40e0ac2e0b8c24f6d37d5b4f66e08d10e2b89f"
+  },
+  {
+    "reference": "ACI0106576",
+    "summary": "フォーミュラを含む旧式の 4D Write ドキュメント（`.4W7`）を [WP New](https://developer.4d.com/docs/ja/WritePro/commands/wp-new) で 4D Write Pro に変換すると、変換のたびにメモリーリークが発生していました。",
+    "source_fingerprint": "a0c7a243443ab1887cc792d089ff82753f8245f2852b083b9b68d96bee1c9267"
+  },
+  {
+    "reference": "ACI0106581",
+    "summary": "ホストの Web サーバーでセッションの権限を設定した後、コンポーネントの Web サーバーで REST リクエストを処理すると、その権限がリセットされ、セッションがアクセス権を失っていました。",
+    "source_fingerprint": "516c5f33459544f4b6ad850f3cfd9a02bd7cebce1b5396b69a2919e767fc25a8"
+  },
+  {
+    "reference": "ACI0106590",
+    "summary": "日付型のオブジェクトプロパティを、カレント日付から減算するなどの日付式の中で直接使用すると、シンタックスエラーが返されていました。プロパティを [Date](https://developer.4d.com/docs/ja/commands/date) 関数で明示的にキャストすれば、この問題を回避できました。",
+    "source_fingerprint": "cdc308b36c888fc4bc7400a487957b2fa7382aedbdd0a6fda94c8099fcd477c9"
+  },
+  {
+    "reference": "ACI0106596",
+    "summary": "エクスプローラーでテーブルにドキュメンテーションを追加しようとすると（たとえばドキュメンテーションエリアのコンテキストメニューから）、アプリケーションがクラッシュしていました。",
+    "source_fingerprint": "d63ccf1e9d12bfa1d5f80d9e2118e1dceb8a464ae0cb06ef2bc48b0600f89586"
+  },
+  {
+    "reference": "ACI0106604",
+    "summary": "コードエディターで、ブロックコメントの終わり（`*/`）がありません、という誤った警告が表示されることがあり、編集や保存の後も画面に残っていました。この警告は、メソッドエディターを閉じるか、シンタックスチェックを再実行するまで消えませんでした。",
+    "source_fingerprint": "6385c4073bcada5700c17a2c1ff60bb7a2f457d7b8e623a4270530a6cadd1944"
+  },
+  {
+    "reference": "ACI0106605",
+    "summary": "ラベルエディターで、フィールドリストの検索エリアがダークモードに対応しておらず、ライトのままで入力したテキストを読み取ることができませんでした。",
+    "source_fingerprint": "1a589318f589fd0e7b4539104409f92bb7088e20dd636396a1834437aa7332d5"
+  },
+  {
+    "reference": "ACI0106606",
+    "summary": "4D Write Pro ドキュメントで、表の直後にカラムブレークまたはページブレークを挿入した場合、[WP Get breaks](https://developer.4d.com/docs/ja/WritePro/commands/wp-get-breaks) が表の外にあるブレークではなく、表の中にある文字のレンジ（[WP Table range](https://developer.4d.com/docs/ja/WritePro/commands/wp-table-range) で取得されるもの）を返していました。現在は、表の後に配置されたブレークも [WP Insert break](https://developer.4d.com/docs/ja/WritePro/commands/wp-insert-break) と `wk replace` で除去できます。ただし、表の末尾に空の段落としてブレークを追加することはできません。",
+    "source_fingerprint": "3fe0bdd37221709b70ed0a5194788a002252f6611ebff62f15b97328b96e1787"
+  },
+  {
+    "reference": "ACI0106610",
+    "summary": "4D Write Pro のレンジのイタリックフォント属性を参照すると、1回の参照につき約260バイトのわずかなメモリーリークが発生していました。これはオブジェクト記法（`$range[wk font italic]`）で参照した場合も、[WP Get attributes](https://developer.4d.com/docs/ja/WritePro/commands/wp-get-attributes) を使用した場合も同様でした。",
+    "source_fingerprint": "87431c96b8e1ee706e5ec555675b3172529bff70fcd0df5a8fffb96a463387d0"
+  },
+  {
+    "reference": "ACI0106612",
+    "summary": "コンパイルモードでのみ、テーブルを [Table](https://developer.4d.com/docs/ja/commands/table) コマンドの逆参照（`Table(n)->`）で渡した場合に、[FORM GET NAMES](https://developer.4d.com/docs/ja/commands/form-get-names) が空の配列を返していました。間にローカル変数を介してポインターを格納すれば、この問題は発生しませんでした。",
+    "source_fingerprint": "004375987663a89f4ad3e62629b6062fc5d35c478adbdb948eb58523db6a7474"
+  },
+  {
+    "reference": "ACI0106613",
+    "summary": "コンパイルモードで、`defer` ステートメントが登録されたメソッドを終了する際にエラーが発生すると、そのエラーが握りつぶされていました。呼び出し側の `Try...Catch` にはエラーが渡されませんでしたが、同じコードをインタープリターモードで実行した場合は正しく動作していました。",
+    "source_fingerprint": "c14c86cafdaf2f4e38d65b0e2e3ba99665de0e3c330fbac87627c881b4d15b95"
+  },
+  {
+    "reference": "ACI0106616",
+    "summary": "Mac 版でのみ、4D Write Pro インターフェースのルーラーにタブストップ、ページマーカー、インデントマーカーが表示されませんでした。リソース画像がアプリケーションパッケージに含まれていないようで、これは 20.8 HF3 と 20.9 のビルドで発生したリグレッションでした。",
+    "source_fingerprint": "c4de8d6be405d982c06b0e665608c63c5cddf9b33ac5223fdc861751dc0078e6"
+  },
+  {
+    "reference": "ACI0106620",
+    "summary": "メンテナンス＆セキュリティセンター（MSC）で、パスフレーズを使用してデータファイルを暗号化することができず、メンテナンス処理が完了しませんでした。代わりに `.4DKeyChain` ファイルを使用した場合は正しく動作していました。",
+    "source_fingerprint": "9f07d426d7c3a693bfaad53cc42622a9bfe7f02ebed52fd8cedd5a799751d2f2"
+  },
+  {
+    "reference": "ACI0106628",
+    "summary": "`SVG_Define_solidColor` で透明度を指定しても、第4パラメーターで指定した場合も `blue:50` 形式のシンタックスで指定した場合も無視され、ソリッドカラーは常に完全な不透明で描画されていました。これは以前の修正による副作用で、透明度の値が内部的に整数として宣言されていたことが原因でした。",
+    "source_fingerprint": "d6f75ea2b38a58423107e3ea7f33b7468a4f52e8920ceb3ecb51ee71cfc3f86e"
+  },
+  {
+    "reference": "ACI0106632",
+    "summary": "サーバー管理画面に、接続されているIPアドレスの位置情報が表示されませんでした。",
+    "source_fingerprint": "e22b92a26d313a1b889055cf64e3a584a55d7cb3b9f07f122361430f1348c75a"
+  },
+  {
+    "reference": "ACI0106636",
+    "summary": "背景色が透明に設定された Write Pro ドキュメントの表のセルを垂直に結合すると、セルの透明設定が失われ、不透明な背景色になっていました。",
+    "source_fingerprint": "a1f7908c95e59439192240c49ebe5961cfefa914d7092055201718d9dc9db607"
+  },
+  {
+    "reference": "ACI0106639",
+    "summary": "Mac 版でのみ、モーダルダイアログを表示してから閉じると、以後 Web エリアがマウスイベントやキーボードイベントを受け付けなくなっていました。これは 21 R4 で発生したリグレッションでした。",
+    "source_fingerprint": "9d9d530a74d3e2ce843be008a9ce517a5b09eaeee5645488de7ccedd0c44e378"
+  },
+  {
+    "reference": "ACI0106646",
+    "summary": "フランス語版の 4D View Pro で、検索＆置換ダイアログにローカライズされていない箇所がありました。",
+    "source_fingerprint": "bcd0090cadf6889c54963b15c1ab6aeda2c5958f11bc44a3ce0d3118b7c8a4e6"
+  },
+  {
+    "reference": "ACI0106651",
+    "summary": "コンポーネントクラスのインスタンスを ORDA クラスの `server` メンバー関数に渡すと、標準オブジェクトに変換され、クラスのアイデンティティが失われていました。`local` メンバー関数であればクラスはそのまま保持されていました。これは 21 R4 で発生したリグレッションでした。",
+    "source_fingerprint": "e4f9a38599a711c84a7bcee4e9dd76e81567ddabe2dab6bd1dcdd89287db9ae5"
+  },
+  {
+    "reference": "ACI0106653",
+    "summary": "HTTPリクエストに `API-TOKEN` ヘッダーを含めると、Webサーバーによって HTTP ステータスコード403（Forbidden）で拒否されていました。このようなリクエストでは、`On Web Authentication` も `On Web Connection` も呼び出されませんでした。",
+    "source_fingerprint": "8a9787f013e21116b2d561a753423dd01a9202303ee5babe55e12eabbad39b6f"
+  },
+  {
+    "reference": "ACI0106654",
+    "summary": "`ck shared` オプションを指定して [OB Copy](https://developer.4d.com/docs/ja/commands/ob-copy) を実行した場合、入れ子にされたオブジェクトに格納された `4D.CryptoKey` のインスタンスが保持されず、共有コピーではそれらのプロパティが失われていました。",
+    "source_fingerprint": "56027d20ffebcc5de491872f650bd83d8f486602db60c908fe53f079081d2ada"
+  },
+  {
+    "reference": "ACI0106657",
+    "summary": "Mac 版でのみ、CEF 版 Web エリアが埋め込まれたフォームのウィンドウをリサイズすると、他のフォームオブジェクトがちらついていました。",
+    "source_fingerprint": "e76556d903bf197620da7701fb45fec386618421ed16d5d1f40d8f42d8312948"
+  },
+  {
+    "reference": "ACI0106659",
+    "summary": "スケーラブルセッションが有効な場合、チェーンされたプロキシの背後で発生するように、`X-Forwarded-For` または `Forwarded` ヘッダーに複数のIPアドレスが含まれていると、Webサーバーが HTTP 500「Invalid parameter」エラーを返していました。",
+    "source_fingerprint": "d1d3c31db1bd70c3e89da3b320a5b15c777da514025140c2a97b7b62206f77f5"
+  },
+  {
+    "reference": "ACI0106662",
+    "summary": "Web管理インターフェースのヘルプボタンをクリックしても、ドキュメンテーションが表示されず「ページが見つかりません」という結果が開いていました。これは、`/en/` を含む旧URLが設定されたままになっていたためです。",
+    "source_fingerprint": "e2e71d74bcf80cddd1737b343fa4a1b5949bc7c1b73a2becedfb202c802407c2"
+  },
+  {
+    "reference": "ACI0106664",
+    "summary": "Mac 版でのみ、サイズの大きなクラスを含むプロジェクトの初回のコンパイルが失敗することがあり、2回目のコンパイルは成功していました。この現象はクラスファイルのサイズに依存していました。",
+    "source_fingerprint": "9e5ea2913b924ed082d6d0173344b65d932d6dc73ae8919b00e611d185f5b021"
+  },
+  {
+    "reference": "ACI0106670",
+    "summary": "21 R5 でのパフォーマンスのリグレッションにより、[ARRAY TO SELECTION](https://developer.4d.com/docs/ja/commands/array-to-selection) の実行速度が以前の約40倍遅くなり、設定するフィールドが増えるほど時間が長くなっていました。バージョン 21.2 は影響を受けませんでした。",
+    "source_fingerprint": "9be69726b375b449191b3248f3c370e755ebfecffcc45fff65f81fa91da93003"
+  },
+  {
+    "reference": "ACI0106678",
+    "summary": "ストラクチャー定義のHTMLエクスポートで、フィールドIDが表示されなくなっていました。",
+    "source_fingerprint": "2efe690b7c2eed850b8c6fb811a61bf787b311858814463ea0033d24fca7766d"
+  },
+  {
+    "reference": "ACI0106681",
+    "summary": "負の時間の値が正しく表示されず、値の入力に使用した入力フォーマットによって結果が異なっていました。",
+    "source_fingerprint": "fc6dbf334f909a06ed5276ec78d11bc4eb342bedd43ae5d1d6f21bb0161ce876"
+  },
+  {
+    "reference": "ACI0106688",
+    "summary": "Mac 版で Liquid Glass テーマが有効にされている場合、リストフォームに配置した四角オブジェクトが、出力の各行に表示されませんでした。",
+    "source_fingerprint": "dffc6a29763a363b6cf7c17d2e39573931bc0b033eb911454a411e46371ba4f8"
+  },
+  {
+    "reference": "ACI0106689",
+    "summary": "フォームオブジェクトのタイトルに、ローカライズ文字列の参照（例：`22010,62`）と末尾の改行コードが併用されている場合、その参照がローカライズされたテキストに置換されず、そのまま表示されていました。これは 21 R4 で発生したリグレッションでした。",
+    "source_fingerprint": "c4c5f7f98ac1999f0eb733f1d4d5c911e30b4b18c5c103d4edbd9e86445a5103"
   }
 ]
