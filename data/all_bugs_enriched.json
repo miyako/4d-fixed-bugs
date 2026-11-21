@@ -285,11 +285,11 @@
   },
   {
     "reference": "ACI0099336",
-    "summary": "In client/server only, the relation mode configured with [SET AUTOMATIC RELATIONS](https://developer.4d.com/docs/commands/set-automatic-relations) and [SET FIELD RELATION](https://developer.4d.com/docs/commands/set-field-relation) was ignored by [RELATE ONE SELECTION](https://developer.4d.com/docs/commands/relate-one-selection), which resolved the relation as if no such setting had been made. ORDA relation attributes behaved correctly and were not affected.",
+    "summary": "In client/server only, [RELATE ONE SELECTION](https://developer.4d.com/docs/commands/relate-one-selection) ignored the relation mode configured with [SET AUTOMATIC RELATIONS](https://developer.4d.com/docs/commands/set-automatic-relations) and [SET FIELD RELATION](https://developer.4d.com/docs/commands/set-field-relation), and resolved the relation as if no such setting had been made. ORDA relation attributes behaved correctly and were not affected.",
     "commands": [
+      "RELATE ONE SELECTION",
       "SET AUTOMATIC RELATIONS",
-      "SET FIELD RELATION",
-      "RELATE ONE SELECTION"
+      "SET FIELD RELATION"
     ]
   },
   {
@@ -4585,7 +4585,7 @@
   },
   {
     "reference": "ACI0101950",
-    "summary": "In Project mode only, a client connecting to a server hosting a project converted from a binary database could hang for a long time before the application actually started, even once folder synchronization had completed — connection was markedly slower than with the equivalent binary database.",
+    "summary": "In Project mode only, a client connecting to a server could take a long time to start the application, even after folder synchronization had finished. The slowdown was noticeable after a binary database had been converted to a project.",
     "commands": []
   },
   {
@@ -4756,7 +4756,7 @@
   },
   {
     "reference": "ACI0102024",
-    "summary": "Once encryption was enabled on the data file, the Maintenance and Security Center flagged tables that contained no records at all with a warning triangle, although there was nothing wrong with them.",
+    "summary": "Once encryption was enabled on the data file, the Maintenance and Security Center flagged tables that contained no records with a warning triangle, although there was nothing wrong with them.",
     "commands": []
   },
   {
@@ -4787,7 +4787,7 @@
   },
   {
     "reference": "ACI0102035",
-    "summary": "In Project mode only, opening a v18 project with v19 rewrote the *catalog.4DCatalog* file every time, inserting a line break just before the closing tag of every `<tip>` element (used for field/table help tips) — a change not present up through v18.4 HF3. This had no functional effect but generated large numbers of spurious diffs under version control.",
+    "summary": "In Project mode only, opening a project rewrote the *catalog.4DCatalog* file every time, inserting a line break before the closing tag of each `<tip>` element (the help tips of fields and similar items). This had been fine up to v18.4 HF3 and had no functional effect, but it produced large numbers of spurious diffs under version control.",
     "commands": []
   },
   {
@@ -4832,7 +4832,7 @@
   },
   {
     "reference": "ACI0102087",
-    "summary": "Importing a `.docx` document into 4D Write Pro in which a merge field inside a table carried a formatting switch (for example `MERGEFIELD pt_FC \\# $,#.00`) extracted the field name `«pt_FC»` correctly, but [WP Get text](https://developer.4d.com/docs/WritePro/commands/wp-get-text) then returned it with spurious carriage returns appended (`«pt_FC»\\r\\r`).",
+    "summary": "Importing a `.docx` document into 4D Write Pro in which a merge field inside a table carried a formatting switch (for example `MERGEFIELD pt_FC \\# $,#.00`) extracted the field name `«pt_FC»` correctly, but [WP Get text](https://developer.4d.com/docs/WritePro/commands/wp-get-text) then returned it with extra carriage returns appended (`«pt_FC»\\r\\r`).",
     "commands": [
       "WP Get text"
     ]
@@ -4853,7 +4853,7 @@
   },
   {
     "reference": "ACI0102098",
-    "summary": "In client/server only, saving a related entity a second time from the client within the same transaction was rejected with an error reporting that the entity stamp had changed, because the first save had already incremented the stamp held for the relation attribute.",
+    "summary": "In client/server only, saving a related entity a second time from the client within the same transaction failed with an error because the entity stamp had changed. The first save had already incremented the stamp held for the relation attribute.",
     "commands": []
   },
   {
@@ -4937,7 +4937,7 @@
   },
   {
     "reference": "ACI0102145",
-    "summary": "Converting a binary database to Project mode could change the font color and alignment of list box headers and columns. Properties left on the \"automatic\" setting were omitted during the conversion, so the header or column inherited the values defined for the list box as a whole instead of keeping its own.",
+    "summary": "In binary mode only, converting a database to Project mode could change the font color and alignment of list box headers and columns. Properties left on the \"automatic\" setting were omitted during conversion, so the header or column inherited the values defined for the whole list box instead of keeping its own.",
     "commands": []
   },
   {
@@ -4979,14 +4979,12 @@
   },
   {
     "reference": "ACI0102170",
-    "summary": "In Client/Server, if the [`On Startup` database method](https://developer.4d.com/docs/commands/on-startup-database-method) contained code, launching 4D Remote against a database with relations defined between tables produced an unexpected client-side execution error about the relation path.",
-    "commands": [
-      "On Startup database method"
-    ]
+    "summary": "In client/server, if the `On Startup` database method contained code, launching 4D Remote against a database with relations defined between tables produced an unexpected client-side execution error about the relation path.",
+    "commands": []
   },
   {
     "reference": "ACI0102171",
-    "summary": "In Client/Server, when using the Form Editor from a local client, dataclasses no longer appeared as data-source candidates when building an entity-selection list box.",
+    "summary": "In client/server, using the Form Editor from a local client, dataclasses did not appear as data source candidates when building an entity-selection list box.",
     "commands": []
   },
   {
@@ -5034,7 +5032,7 @@
   },
   {
     "reference": "ACI0102189",
-    "summary": "On Windows, exporting a Write Pro document containing SVG pictures to PDF rendered all `textArea` element text in black, ignoring the actual text color; printing to PDF via a printer driver was unaffected.",
+    "summary": "On Windows only, exporting a Write Pro document containing SVG pictures to PDF rendered the text of `textArea` elements in black, ignoring the actual font color. Printing to PDF through a printer driver was unaffected.",
     "commands": []
   },
   {
@@ -5064,7 +5062,7 @@
   },
   {
     "reference": "ACI0102201",
-    "summary": "On macOS, the web server could not be started on port 80 when it was bound to a specific IP address, and no helper-tool installation dialog appeared either; listening on all addresses (`0.0.0.0`, `::`, that is `ANY_ADDR`) worked normally. Since Mojave, publishing a server on a port below 1024 no longer requires the helper tool, so 4D had stopped using it — but binding the listener to one particular address still does. The helper tool is again used whenever an address other than \"all\" is requested.",
+    "summary": "On macOS only, the web server could not be started on port 80 when bound to a specific IP address, and no helper-tool installation dialog appeared either. Listening on all addresses (`0.0.0.0` or `::`, that is `ANY_ADDR`) worked. Since Mojave, serving a port below 1024 no longer needs the helper tool, so 4D had stopped using it, but binding the listener to a particular address still requires it; the helper tool is again used whenever an address other than \"all\" is requested.",
     "commands": []
   },
   {
@@ -5168,7 +5166,7 @@
   },
   {
     "reference": "ACI0102252",
-    "summary": "On macOS only, validating a string being typed into the Method Editor through the Japanese input method with the `return` key inserted an unwanted extra line break in addition to confirming the conversion.",
+    "summary": "On macOS only, confirming a string being typed in the Method Editor through the Japanese input method with the `return` key inserted an unwanted extra line break in addition to validating the conversion.",
     "commands": []
   },
   {
@@ -5242,7 +5240,7 @@
   },
   {
     "reference": "ACI0102286",
-    "summary": "On Windows only, clicking the down-arrow button of a combo box bound to a zero-element array left the application unable to accept any keyboard input at all. Once in that state, even pressing `enter` or `escape` no longer closed the form.",
+    "summary": "On Windows only, clicking the down-arrow button of a combo box bound to a zero-element array left the application unable to accept any keyboard input. Even `enter` and `escape` no longer closed the form.",
     "commands": []
   },
   {
@@ -5599,7 +5597,7 @@
   },
   {
     "reference": "ACI0102454",
-    "summary": "Executing SQL code inside a preemptive process crashed 4D Server as soon as the statement called a project method through an `FN` SQL function clause.",
+    "summary": "Executing SQL code in a preemptive process crashed 4D Server when the statement called a method through the `FN` clause.",
     "commands": []
   },
   {
@@ -5668,7 +5666,7 @@
   },
   {
     "reference": "ACI0102479",
-    "summary": "When the digit-grouping separator was a Narrow No-Break Space character, numbers longer than three digits were not formatted properly and displayed incorrectly.",
+    "summary": "When a Narrow No-Break Space character was used as the digit-grouping separator, numbers longer than three digits were not formatted properly and displayed incorrectly.",
     "commands": []
   },
   {
@@ -6544,7 +6542,7 @@
   },
   {
     "reference": "ACI0102861",
-    "summary": "After the data and index files had been compacted, saving a new record could crash the application when the table contained an indexed field. The crash was linked to calling a thread-unsafe method in compiled mode — one accessing interprocess variables, for example — from a preemptive thread such as a Web process.",
+    "summary": "After the data and index files had been compacted, saving a new record could crash the application when the table had an indexed field. The crash was linked to calling a thread-unsafe method in compiled mode (for example one accessing interprocess variables) from a preemptive thread such as a Web process.",
     "commands": []
   },
   {
@@ -6685,7 +6683,7 @@
   },
   {
     "reference": "ACI0102940",
-    "summary": "An attachment built with [MAIL New attachment](https://developer.4d.com/docs/commands/mail-new-attachment) and stored in a mail object could not be passed as a parameter to another process, which prevented the email object from being handed off between processes.",
+    "summary": "An attachment created with [MAIL New attachment](https://developer.4d.com/docs/commands/mail-new-attachment) and stored in an email object could not be passed as a parameter to another process, which prevented handing the email object off between processes.",
     "commands": [
       "MAIL New attachment"
     ]
@@ -7229,7 +7227,7 @@
   },
   {
     "reference": "ACI0103244",
-    "summary": "If the maximum length of an alpha field fell in the middle of a surrogate pair, only one half of the character (for example `Char(55356)`) was stored in the record. Dumping such a field with a command like [LOG FILE TO JSON](https://developer.4d.com/docs/commands/log-file-to-json) then produced unparsable JSON, because the orphaned surrogate half absorbed the following double quote as a control character. Incomplete surrogate characters are now truncated instead of being saved.",
+    "summary": "If the maximum length of an alpha field fell in the middle of a surrogate pair, only one half of the character (for example `Char(55356)`) was saved in the record. Dumping such a field with a command like [LOG FILE TO JSON](https://developer.4d.com/docs/commands/log-file-to-json) then produced unparsable JSON, because the orphaned half swallowed the closing double quote as a control character. Incomplete surrogate characters are now truncated instead.",
     "commands": [
       "LOG FILE TO JSON"
     ]
@@ -7486,7 +7484,7 @@
   },
   {
     "reference": "ACI0103462",
-    "summary": "On macOS, custom and region-specific date formats could be resolved incorrectly. With the system region set to United Kingdom and the language set to Dutch, the *Internal date short* format displayed dates as `DD/MM/YYYY` rather than the expected `DD-MM-YYYY`.",
+    "summary": "On macOS only, region-specific date formats could be wrong. With the system region set to United Kingdom and the language set to Dutch, the *Internal date short* format displayed dates as `DD/MM/YYYY` instead of the expected `DD-MM-YYYY`.",
     "commands": []
   },
   {
@@ -7548,7 +7546,7 @@
   },
   {
     "reference": "ACI0103499",
-    "summary": "With the compilation path set to type all variables, symbols for parameter indirection (`${2}`) were written to the symbols file as `C_VARIANT` instead of the type that had actually been declared. Only the symbols file was affected; the generated code itself was correct.",
+    "summary": "With the compilation path set to type all variables, symbols for parameter indirection (`${2}`) were written to the symbols file as `C_VARIANT` instead of the declared type. Only the symbols file was affected; the generated code was correct.",
     "commands": []
   },
   {
@@ -7652,7 +7650,7 @@
   },
   {
     "reference": "ACI0103541",
-    "summary": "In a Quick Report editor embedded in a form, dragging a column onto the position of another one left the contextual menu out of date, with the result that the break and its subtotal ended up applied to the wrong field.",
+    "summary": "In a Quick Report editor embedded in a form, dragging a column onto the position of another left the right-click menu out of date, so the break and its subtotal ended up applied to the wrong field.",
     "commands": []
   },
   {
@@ -7857,7 +7855,7 @@
   },
   {
     "reference": "ACI0103642",
-    "summary": "Calling [HTTP Request](https://developer.4d.com/docs/commands/http-request) without specifying keep-alive mode could return status code `503` together with an empty response, so the expected XML body never arrived.",
+    "summary": "When [HTTP Request](https://developer.4d.com/docs/commands/http-request) was called without specifying keep-alive mode, the server could occasionally answer with status code `503` and an empty body, so the expected XML response never arrived.",
     "commands": [
       "HTTP Request"
     ]
@@ -7963,7 +7961,7 @@
   },
   {
     "reference": "ACI0103679",
-    "summary": "In a list box bound to an entity selection, selecting a row with [LISTBOX SELECT ROWS](https://developer.4d.com/docs/commands/listbox-select-rows) and then pressing the up or down arrow key moved the highlight relative to the row that had previously been clicked, not relative to the row the command had just selected.",
+    "summary": "In a list box based on an entity selection, rows selected with [LISTBOX SELECT ROWS](https://developer.4d.com/docs/commands/listbox-select-rows) were not used as the starting point for keyboard navigation. Pressing the up or down arrow moved the highlight from the row that had earlier been selected by a mouse click instead of from the row the command selected.",
     "commands": [
       "LISTBOX SELECT ROWS"
     ]
@@ -8113,7 +8111,7 @@
   },
   {
     "reference": "ACI0103734",
-    "summary": "Calling `.selectBox()` on an `IMAPTransporter` object returned error `11` (\"IMAP SELECT command failed\") even when the mailbox could be selected normally.",
+    "summary": "Calling `IMAPTransporter.selectBox()` failed and returned error `11` (IMAP SELECT command failed), a regression that broke selecting a mailbox on an IMAP server.",
     "commands": []
   },
   {
@@ -8179,7 +8177,7 @@
   },
   {
     "reference": "ACI0103756",
-    "summary": "On Windows, at high display scaling (above 100%), changing the font size of styled text via the font picker applied the chosen size multiplied by the scale factor instead of the size itself; conversely, selecting styled text while the font picker was open displayed its size divided by the scale factor. Both cases produced font sizes that didn't match what the user selected or saw.",
+    "summary": "On Windows with a high-DPI display (scaling above `100%`), changing the size of styled text in the font picker applied the chosen size multiplied by the scale factor. Likewise, selecting styled text while the picker was open showed the size divided by the scale factor, so the numbers never matched what the user saw.",
     "commands": []
   },
   {
@@ -11998,6 +11996,11 @@
     "commands": []
   },
   {
+    "reference": "ACI0105454",
+    "summary": "`WebSocketConnection.send()` serialized date properties as ISO-8601 strings including a time zone, even when the `Dates inside objects` database parameter was set to the date type. Receivers therefore got a full timestamp instead of a date-only value.",
+    "commands": []
+  },
+  {
     "reference": "ACI0105455",
     "summary": "Using the string index operator (`[[]]`) on an object property triggered an unexpected compiler warning, \"Assumes that the pointer points to an alphanumeric expression\" (533.1); the wording of this warning message was also revised to remove the misleading \"pointer\" reference.",
     "commands": []
@@ -12890,6 +12893,11 @@
     "commands": []
   },
   {
+    "reference": "ACI0105945",
+    "summary": "The `On Begin URL Loading` form event did not behave correctly in the internal (system) web area, so code relying on it to detect the start of a page load could not work as expected.",
+    "commands": []
+  },
+  {
     "reference": "ACI0105952",
     "summary": "In the Object Library dialog, filtering by object category and selecting the Progress Indicator category showed no objects at all, even though matching objects exist.",
     "commands": []
@@ -13165,6 +13173,11 @@
     "commands": []
   },
   {
+    "reference": "ACI0106102",
+    "summary": "The Select Block keyboard shortcut (`Cmd`+`B`) in the method editor failed to select the block, or produced a wrong selection, when the expression contained a string literal with parentheses inside it.",
+    "commands": []
+  },
+  {
     "reference": "ACI0106104",
     "summary": "Displaying a dynamic pop-up menu (via [Dynamic pop up menu](https://developer.4d.com/docs/commands/dynamic-pop-up-menu)) from the On Clicked event of a picture object inside a widget, invoked through [CALL SUBFORM CONTAINER](https://developer.4d.com/docs/commands/call-subform-container), caused the menu to reappear immediately after being dismissed by a click. This happened because picture objects (unlike buttons) keep focus after On Clicked until the window is deactivated — needed to track mouse state via [Is waiting mouse up](https://developer.4d.com/docs/commands/is-waiting-mouse-up) — so a click event outside the widget could still be delivered to an object inside it. Using a button object, triggering the menu outside the host form's context, or showing it on On Mouse Up instead of On Clicked avoided the issue.",
     "commands": [
@@ -13423,6 +13436,11 @@
     "commands": []
   },
   {
+    "reference": "ACI0106216",
+    "summary": "A selection made on the Home tab of the Explorer was lost when the user switched to another application and came back. In Design mode the project reloads each time the application returns to the foreground, and only the Home tab had no mechanism to restore its selection.",
+    "commands": []
+  },
+  {
     "reference": "ACI0106220",
     "summary": "Displaying the Toolbox's \"Users & Groups\" editor as a non-administrator user resulted in a visually broken layout, with some icon images missing and message text misplaced.",
     "commands": []
@@ -13568,7 +13586,7 @@
   },
   {
     "reference": "ACI0106300",
-    "summary": "4D Server could crash following an unexpected client disconnection.",
+    "summary": "On client/server setups only, 4D Server crashed if the TCP connection failed while a client was in the middle of sending a WebSocket message.",
     "commands": []
   },
   {
@@ -13652,7 +13670,7 @@
   },
   {
     "reference": "ACI0106341",
-    "summary": "In the Toolbox, editing a user name to match one already in use displayed the expected \"user already exists\" error, but the edit was still committed despite the error.",
+    "summary": "In the Toolbox, renaming a user to a name already taken correctly raised an error saying the user exists, but the edit was nevertheless committed, leaving the displayed name looking duplicated.",
     "commands": []
   },
   {
@@ -13708,7 +13726,7 @@
   },
   {
     "reference": "ACI0106359",
-    "summary": "In the database Settings dialog, the API key entered for an AI provider was shown as plain, readable text in its entry area. It should have been masked like a password field so the key is not exposed on screen.",
+    "summary": "The AI provider API key in the Settings dialog was shown as ordinary readable text. It should have been masked like a password so it could not be read off the screen.",
     "commands": []
   },
   {
@@ -13745,10 +13763,15 @@
   },
   {
     "reference": "ACI0106376",
-    "summary": "Running [Create deployment license](https://developer.4d.com/docs/commands/create-deployment-license) from tool4D in headless mode while building an application with the build4D component caused a crash inside the core licensing routine.",
+    "summary": "Running [Create deployment license](https://developer.4d.com/docs/commands/create-deployment-license) from *tool4D* in headless mode crashed the application. This happened, for instance, when building an application with the build4D component.",
     "commands": [
       "Create deployment license"
     ]
+  },
+  {
+    "reference": "ACI0106377",
+    "summary": "On macOS only, opening a component's class in the method editor could crash the application as the editor regained focus.",
+    "commands": []
   },
   {
     "reference": "ACI0106379",
@@ -13768,6 +13791,11 @@
   {
     "reference": "ACI0106385",
     "summary": "Cycling window focus to the Explorer window with a keyboard shortcut let users navigate items with the arrow keys, but pressing Enter no longer opened the editor for the selected item; the mouse pointer's position, not just the window's foreground state, turned out to affect whether Enter was recognized.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106387",
+    "summary": "In compiled mode, updating entities through the REST API ran a non-thread-safe trigger only for the first `100` calls. After that the trigger silently stopped executing, with no error returned, which matched the limit of 100 REST processes.",
     "commands": []
   },
   {
@@ -13795,6 +13823,11 @@
   {
     "reference": "ACI0106395",
     "summary": "The `endingDate` and `scheduledDate` values recorded in the `backupHistory.json` file were incorrect because the backup's main duration was not being added in; the backup journal itself was unaffected.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106399",
+    "summary": "The telemetry figures for process CPU time were inconsistent: the value shown in the Remote Administration window could exceed the server's uptime, and the process activity metrics reported by the server showed the same wrong totals.",
     "commands": []
   },
   {
@@ -13845,12 +13878,25 @@
   },
   {
     "reference": "ACI0106421",
-    "summary": "On Windows client/server, a client could not connect to the server over ServerNet when both client-server encryption and single sign-on (SSO) were enabled simultaneously; disabling either one, or using the QUIC network layer (which is always encrypted), avoided the problem. This appears to be a side effect of the fix for ACI0106296.",
+    "summary": "On Windows client/server, a client could not connect over ServerNet when both client-server encryption and single sign-on (SSO) were enabled. Turning off either option, or using the QUIC network layer (always encrypted), avoided the problem, which appeared to be a side effect of an earlier networking fix.",
     "commands": []
   },
   {
     "reference": "ACI0106424",
     "summary": "MIME encoding of mail attachment file names was malformed when the name was long: a spurious line break was inserted between the `attachment` keyword and the following semicolon in the `Content-Disposition` header. Firewalls and antivirus software could reject such messages.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106425",
+    "summary": "On macOS only, calling [Is window maximized](https://developer.4d.com/docs/commands/is-window-maximized) or [MAXIMIZE WINDOW](https://developer.4d.com/docs/commands/maximize-window) crashed the application when the form contained a system web area. The crash was specific to macOS 27 (Golden Gate).",
+    "commands": [
+      "Is window maximized",
+      "MAXIMIZE WINDOW"
+    ]
+  },
+  {
+    "reference": "ACI0106427",
+    "summary": "The debug log recorded for the current process omitted calls to component methods, so activity inside components was missing from the trace. Subroutines called by a component method are intentionally not logged.",
     "commands": []
   },
   {
@@ -13869,13 +13915,18 @@
     "commands": []
   },
   {
+    "reference": "ACI0106443",
+    "summary": "With the QUIC network layer, many clients connecting at the same moment could make the Network Manager process monopolize the CPU, leaving 4D Server unresponsive.",
+    "commands": []
+  },
+  {
     "reference": "ACI0106447",
     "summary": "Adding a new item to an existing enumeration list in the toolbox inserted it at the top of the list instead of at the expected position, an apparent side effect of the fix for ACI0106197.",
     "commands": []
   },
   {
     "reference": "ACI0106448",
-    "summary": "When creating a new list item in the toolbox, the \"Modifiable Element\" checkbox was left unchecked by default instead of being selected.",
+    "summary": "When a new list item was added in the Toolbox, the Modifiable Element checkbox was not checked by default as it should have been.",
     "commands": []
   },
   {
@@ -13897,6 +13948,13 @@
     "reference": "ACI0106453",
     "summary": "On Windows, the plugin SDK function `PA_CreateNativePictureForPrinting` returned pictures that were incorrectly enlarged and clipped; the related `PA_CreateNativePictureForScreen` was unaffected.",
     "commands": []
+  },
+  {
+    "reference": "ACI0106454",
+    "summary": "With scalable session management enabled, [WEB Get current session ID](https://developer.4d.com/docs/commands/web-get-current-session-id) returned the previous session's identifier instead of the current one, so it disagreed with the value from `Session.id`.",
+    "commands": [
+      "WEB Get current session ID"
+    ]
   },
   {
     "reference": "ACI0106458",
@@ -13979,7 +14037,17 @@
   },
   {
     "reference": "ACI0106504",
-    "summary": "The \"Total HTTP hits\" figure on the HTTP Server tab of the administration window grew even when no HTTP request had been made — opening the Toolbox from a client, or switching tabs in the server administration window displayed on a client, was enough to increment it. Nothing corresponding appeared in the HTTP log, confirming the count was spurious.",
+    "summary": "The Total HTTP hits counter on the HTTP Server tab of the Administration window rose even though no HTTP request had occurred. Opening the Toolbox on a client, or switching tabs in the server administration window shown on a client, was enough to bump it, while the HTTP log stayed empty.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106505",
+    "summary": "In a scenario related to another crash report, the application hung instead of crashing, leaving 4D unresponsive with no crash being triggered.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106506",
+    "summary": "On Windows only, after the multi-monitor arrangement was changed, the Property List window could stay positioned outside the visible screen area and become unreachable.",
     "commands": []
   },
   {
@@ -13989,12 +14057,12 @@
   },
   {
     "reference": "ACI0106510",
-    "summary": "Resizing a list box whose columns use automatic column width in the Form Editor left the column layout visibly broken, with erratic widths during and after the resize. The regression appears to have been introduced by the fix for ACI0106338.",
+    "summary": "Resizing a list box with automatic column width enabled in the Form Editor left the display visibly broken, with erratic column widths. This was a side effect of the fix for ACI0106338.",
     "commands": []
   },
   {
     "reference": "ACI0106511",
-    "summary": "Using the `#D` placeholder in a quick report to insert the current date printed the date computed in UTC rather than in the machine's own time zone, so the report could show the wrong day near midnight.",
+    "summary": "When a quick report used the `#D` placeholder to insert the current date, it printed the date in the UTC time zone instead of the local one, which could show the wrong day depending on the time of day.",
     "commands": []
   },
   {
@@ -14003,13 +14071,38 @@
     "commands": []
   },
   {
+    "reference": "ACI0106514",
+    "summary": "In interpreted mode only, a `For each` loop condition written as `While (True) & (False)` or `Until (True) & (False)` was mis-evaluated: the outer part of the expression was treated as separate from the loop condition. The whole boolean expression is now evaluated as the condition in both interpreted and compiled modes.",
+    "commands": []
+  },
+  {
     "reference": "ACI0106517",
     "summary": "On Windows only, a failure during printing was reported only as a generic \"Error 1\" / unknown error, giving no clue as to the real cause; more specific error information is now returned. Beyond the message, the underlying printing defect was also corrected — in certain situations the printing API was not being called from the main thread.",
     "commands": []
   },
   {
+    "reference": "ACI0106518",
+    "summary": "Creating a database method, trigger, form method or object method did not fire the `on_create` macro event, so macros relying on it never ran for those method types.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106519",
+    "summary": "While editing an item in a hierarchical list, pressing `delete` or `backspace` did not generate an `On After Edit` event, so code reacting to edits missed those keystrokes.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106521",
+    "summary": "A `var` declaration could not be followed by an inline comment; typing one in the method editor was rejected and disrupted editing.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106523",
+    "summary": "With the QUIC network layer, a 4D client application could crash on quit (a segmentation fault while the entity model catalog was being destroyed). The crash depended on the structure of the database.",
+    "commands": []
+  },
+  {
     "reference": "ACI0106526",
-    "summary": "Running MSC Verify or Repair, the compiler's syntax check, or a binary-to-project conversion on certain binary structure files crashed 4D every time. The cause was an invalid display format in the structure, which triggered a stack overflow.",
+    "summary": "Running an MSC verification or repair, the compiler's syntax check, or a project conversion on certain binary structure files crashed the application. An invalid display format in the structure caused a stack overflow.",
     "commands": []
   },
   {
@@ -14023,13 +14116,23 @@
     "commands": []
   },
   {
+    "reference": "ACI0106532",
+    "summary": "In `IncomingMessage.urlQuery`, an encoded `&` inside a parameter value was not kept distinct from a real parameter separator, so two different requests could produce identical query objects and could not be told apart.",
+    "commands": []
+  },
+  {
     "reference": "ACI0106539",
     "summary": "On macOS only, recent system updates (macOS 15.8, 26.7 and 27) made 4D consider the publication port to be permanently in use, so the web server refused to start even though the port was free.",
     "commands": []
   },
   {
     "reference": "ACI0106542",
-    "summary": "When a new release was launched without opening a project and the license manager was opened directly, licenses from the previous release were not updated automatically; instead, the user was asked to enter license numbers again.",
+    "summary": "When the application was launched without specifying a project and the license manager was opened directly, licenses from the previous release were not updated automatically. Instead, the user was asked to enter license numbers again.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106543",
+    "summary": "Installing a component with the same name as the host project made the Explorer flicker and leak memory each time the user switched tabs. Components or dependencies named like the host are now not loaded and an error is returned instead.",
     "commands": []
   },
   {
@@ -14039,21 +14142,200 @@
   },
   {
     "reference": "ACI0106546",
-    "summary": "An application built with the `PackProject` key set to `False` showed the Dependency Manager dialog on its first launch, prompting the user to install the 4D components that used to be bundled with 4D.",
+    "summary": "An application built with the `PackProject` key set to `False` displayed the Dependency Manager dialog on first launch, asking the user to install the standard components that used to be bundled with 4D.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106554",
+    "summary": "With the QUIC network layer only, a 4D Server running for a long time could abort because of an assertion failure in the network manager's expiry timer handling (SIGABRT).",
     "commands": []
   },
   {
     "reference": "ACI0106558",
-    "summary": "On macOS only, calling [EXECUTE ON CLIENT](https://developer.4d.com/docs/commands/execute-on-client) repeatedly passed stale parameters: from the third call onward, the method received the same parameters as the second call. This regression came from the retirement of the legacy network layer.",
+    "summary": "On macOS only, calling [EXECUTE ON CLIENT](https://developer.4d.com/docs/commands/execute-on-client) repeatedly passed stale parameters: from the third call onward, the client method received the same parameters as the second call. This regression came from the retirement of the legacy network layer.",
     "commands": [
       "EXECUTE ON CLIENT"
     ]
   },
   {
     "reference": "ACI0106566",
-    "summary": "Whenever an HTTP response contained a `Location` header, the web server forced its status code to `302`, so it was impossible to return a `201 Created` response even though RFC 9110 defines `Location` for that status. The problem affected both `4D.OutgoingMessage` in HTTP request handlers and [WEB SET HTTP HEADER](https://developer.4d.com/docs/commands/web-set-http-header).",
+    "summary": "Whenever an HTTP response contained a `Location` header, the web server forced the status code to `302`, so a `201 Created` response could not be returned even though RFC 9110 defines `Location` for that status. The problem occurred with both `4D.OutgoingMessage` in HTTP request handlers and [WEB SET HTTP HEADER](https://developer.4d.com/docs/commands/web-set-http-header).",
     "commands": [
       "WEB SET HTTP HEADER"
     ]
+  },
+  {
+    "reference": "ACI0106567",
+    "summary": "Calling [OBJECT SET RGB COLORS](https://developer.4d.com/docs/commands/object-set-rgb-colors) in the `On Display Detail` event of a list form did not give per-row colors: the color set for the last row was applied to every row. On Windows with FluentUI enabled, objects must also sit entirely inside the detail area, since objects spanning the header or footer areas are rendered as a global background by design.",
+    "commands": [
+      "OBJECT SET RGB COLORS"
+    ]
+  },
+  {
+    "reference": "ACI0106573",
+    "summary": "Memory leak: object cycles that referenced a shared object attached to `Storage` were never freed, so the memory they used was retained for the lifetime of the process.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106576",
+    "summary": "Converting a legacy 4D Write document (`.4W7`) containing formulas to 4D Write Pro with [WP New](https://developer.4d.com/docs/WritePro/commands/wp-new) leaked memory on each conversion.",
+    "commands": [
+      "WP New"
+    ]
+  },
+  {
+    "reference": "ACI0106581",
+    "summary": "After session privileges were set through the host's web server, handling a REST request on a component's web server reset those privileges, so the session lost its access rights.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106590",
+    "summary": "Using a date-typed object property directly in a date expression, such as subtracting it from the current date, returned a syntax error. Explicitly casting the property with the [Date](https://developer.4d.com/docs/commands/date) function avoided the problem.",
+    "commands": [
+      "Date"
+    ]
+  },
+  {
+    "reference": "ACI0106596",
+    "summary": "In the Explorer, trying to add documentation to a table (for example from the context menu of the Documentation area) crashed the application.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106604",
+    "summary": "The code editor could show a false \"Missing end of block comment (`*/`)\" warning that stayed on screen after editing or saving. It only went away once the method editor was closed or the syntax check was run again.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106605",
+    "summary": "In the label editor, the search area of the field list did not support Dark mode: it stayed light and the typed text could not be read.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106606",
+    "summary": "In a 4D Write Pro document, when a column or page break was inserted right after a table, [WP Get breaks](https://developer.4d.com/docs/WritePro/commands/wp-get-breaks) returned a range of characters inside the table (as given by [WP Table range](https://developer.4d.com/docs/WritePro/commands/wp-table-range)) instead of the break outside it. Breaks placed after a table can now also be removed with [WP Insert break](https://developer.4d.com/docs/WritePro/commands/wp-insert-break) and `wk replace`, although a break cannot be added as an empty paragraph at the very end of a table.",
+    "commands": [
+      "WP Get breaks",
+      "WP Table range",
+      "WP Insert break"
+    ]
+  },
+  {
+    "reference": "ACI0106610",
+    "summary": "Reading the italic font attribute of a 4D Write Pro range leaked a small amount of memory (roughly 260 bytes per read). This happened both with object notation (`$range[wk font italic]`) and with [WP Get attributes](https://developer.4d.com/docs/WritePro/commands/wp-get-attributes).",
+    "commands": [
+      "WP Get attributes"
+    ]
+  },
+  {
+    "reference": "ACI0106612",
+    "summary": "In compiled mode only, [FORM GET NAMES](https://developer.4d.com/docs/commands/form-get-names) returned an empty array when the table was passed as a pointer dereferenced from the [Table](https://developer.4d.com/docs/commands/table) command, as in `Table(n)->`. Storing the pointer in an intermediate local variable first avoided the problem.",
+    "commands": [
+      "FORM GET NAMES",
+      "Table"
+    ]
+  },
+  {
+    "reference": "ACI0106613",
+    "summary": "In compiled mode, an error raised while leaving a method that had a registered `defer` statement was swallowed. The caller's `Try...Catch` never saw it, whereas the same code behaved correctly when interpreted.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106616",
+    "summary": "On macOS only, the 4D Write Pro interface ruler showed no tab stops, page markers or indent markers. The resource images appeared to be missing from the application package, which was a regression in the 20.8 HF3 and 20.9 builds.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106620",
+    "summary": "In the Maintenance and Security Center, encrypting a data file with a passphrase failed, so the maintenance operation could not complete. Using a `.4DKeyChain` file instead worked correctly.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106628",
+    "summary": "`SVG_Define_solidColor` ignored the requested opacity, whether given as the fourth parameter or in the `blue:50` style syntax, so the solid color was always drawn fully opaque. The opacity value had been declared internally as an integer, a side effect of an earlier fix.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106632",
+    "summary": "The server administration window did not show IP geolocation information for connected addresses.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106636",
+    "summary": "In a Write Pro document, table cells whose background was set to transparent lost that transparency when they were merged vertically, and ended up with an opaque background color.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106639",
+    "summary": "On macOS only, a web area stopped responding to mouse and keyboard events once a modal dialog had been displayed and then closed. This was a regression introduced in 21 R4.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106646",
+    "summary": "In the French version of 4D View Pro, parts of the Find and Replace dialog were left untranslated.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106651",
+    "summary": "Passing an instance of a component class to a `server` member function of an ORDA class converted it into a plain object, so it lost its class identity. A `local` member function kept the class intact. This was a regression in 21 R4.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106653",
+    "summary": "Any HTTP request that carried an `API-TOKEN` header was rejected by the web server with a 403 Forbidden status. Neither `On Web Authentication` nor `On Web Connection` was called for such requests.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106654",
+    "summary": "Calling [OB Copy](https://developer.4d.com/docs/commands/ob-copy) with the `ck shared` option did not preserve `4D.CryptoKey` instances stored in nested objects, so those properties were lost in the shared copy.",
+    "commands": [
+      "OB Copy"
+    ]
+  },
+  {
+    "reference": "ACI0106657",
+    "summary": "On macOS only, resizing a window whose form contained an embedded CEF web area made the other form objects flicker.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106659",
+    "summary": "With scalable sessions enabled, the web server answered with an HTTP 500 \"Invalid parameter\" error whenever the `X-Forwarded-For` or `Forwarded` header listed more than one IP address, as happens behind chained proxies.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106662",
+    "summary": "The help button in the web administration interface opened a \"page not found\" result instead of the documentation, because it was still configured with an old URL containing `/en/`.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106664",
+    "summary": "On macOS only, the first compilation of a project containing a large class could fail, while a second compilation succeeded. The failure depended on the size of the class file.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106670",
+    "summary": "A performance regression in 21 R5 made [ARRAY TO SELECTION](https://developer.4d.com/docs/commands/array-to-selection) about 40 times slower than before, with the time growing as more fields were filled. Version 21.2 was not affected.",
+    "commands": [
+      "ARRAY TO SELECTION"
+    ]
+  },
+  {
+    "reference": "ACI0106678",
+    "summary": "The HTML export of the structure definition no longer displayed field IDs.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106681",
+    "summary": "Negative time durations were displayed incorrectly, with the result depending on which input format was used to enter the value.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106688",
+    "summary": "On macOS with the Liquid Glass theme enabled, a rectangle object placed in a list form was not drawn in each row of the output.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106689",
+    "summary": "When a form object's title combined a localization string reference (such as `22010,62`) with a trailing carriage return, the reference was not replaced by the localized text and was displayed literally. This was a regression introduced in 21 R4.",
+    "commands": []
   }
 ]

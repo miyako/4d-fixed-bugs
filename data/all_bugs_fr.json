@@ -246,8 +246,8 @@
   },
   {
     "reference": "ACI0099336",
-    "summary": "En client-serveur uniquement, le mode de lien configuré avec [SET AUTOMATIC RELATIONS](https://developer.4d.com/docs/commands/set-automatic-relations) et [SET FIELD RELATION](https://developer.4d.com/docs/commands/set-field-relation) était ignoré par [RELATE ONE SELECTION](https://developer.4d.com/docs/commands/relate-one-selection), qui résolvait le lien comme si aucun réglage n'avait été effectué. Les attributs de lien ORDA fonctionnaient correctement et n'étaient pas affectés.",
-    "source_fingerprint": "a47e014d5cc8553c07b284ed7b28fd76c08d9cc085a3046083c1e685c693cff8"
+    "summary": "En client/serveur uniquement, [RELATE ONE SELECTION](https://developer.4d.com/docs/commands/relate-one-selection) ignorait le mode de relation configuré avec [SET AUTOMATIC RELATIONS](https://developer.4d.com/docs/commands/set-automatic-relations) et [SET FIELD RELATION](https://developer.4d.com/docs/commands/set-field-relation), et résolvait la relation comme si aucun réglage de ce type n'avait été effectué. Les attributs de relation ORDA se comportaient correctement et n'étaient pas affectés.",
+    "source_fingerprint": "d7821b7a532bb0ca0313260f112d33a0be322d1f5eb40b7f56668e23e5e8c337"
   },
   {
     "reference": "ACI0099378",
@@ -3991,8 +3991,8 @@
   },
   {
     "reference": "ACI0101950",
-    "summary": "En mode projet uniquement, un client se connectant à un serveur hébergeant un projet converti depuis une base binaire pouvait rester bloqué longtemps avant le démarrage effectif de l’application, même après la fin de la synchronisation des dossiers ; la connexion était nettement plus lente qu’avec la base binaire équivalente.",
-    "source_fingerprint": "2beb2b85f1ae88dd93db93d94c5ad468bf984d00b42b6263b0058f40ad96b3c5"
+    "summary": "En mode projet uniquement, un client se connectant à un serveur pouvait mettre beaucoup de temps à démarrer l'application, même une fois la synchronisation des dossiers terminée. Le ralentissement était notable après la conversion d'une base binaire en projet.",
+    "source_fingerprint": "08d07565c290770c771a4febf8d5828fce6417d695614fbdfb541dfac90a402a"
   },
   {
     "reference": "ACI0101952",
@@ -4136,8 +4136,8 @@
   },
   {
     "reference": "ACI0102024",
-    "summary": "Une fois le chiffrement activé sur le fichier de données, le Centre de sécurité et de maintenance signalait par un triangle d’avertissement les tables ne contenant aucun enregistrement, alors qu’elles ne présentaient aucun problème.",
-    "source_fingerprint": "47c3956eb56b9e0b2bbf7a856530eee5d5e4981faaeb03433cc10498fa63575a"
+    "summary": "Une fois le chiffrement activé sur le fichier de données, le Centre de sécurité et de maintenance signalait par un triangle d'avertissement les tables ne contenant aucun enregistrement, alors qu'elles ne présentaient aucun problème.",
+    "source_fingerprint": "646ad51264204cefc464b1c656f7425eedda437040f176558e112accfc2e23aa"
   },
   {
     "reference": "ACI0102026",
@@ -4161,8 +4161,8 @@
   },
   {
     "reference": "ACI0102035",
-    "summary": "En mode projet uniquement, ouvrir un projet v18 avec la v19 réécrivait systématiquement le fichier *catalog.4DCatalog*, en insérant un saut de ligne juste avant la balise de fermeture de chaque élément `<tip>` utilisé pour les infobulles de champs et de tables ; ce changement n’existait pas jusqu’à la v18.4 HF3 incluse. Il n’avait aucun effet fonctionnel, mais générait de nombreuses différences parasites dans le contrôle de version.",
-    "source_fingerprint": "871b4f781f2114ded83f7d02316aeca8237149c65eed8f396cc04541e1fd6365"
+    "summary": "En mode projet uniquement, l'ouverture d'un projet réécrivait à chaque fois le fichier *catalog.4DCatalog*, en insérant un saut de ligne avant la balise de fermeture de chaque élément `<tip>` (les info-bulles d'aide des champs et éléments similaires). Cela ne posait pas de problème jusqu'à la v18.4 HF3 et n'avait aucun effet fonctionnel, mais produisait un grand nombre de différences superflues sous gestion de versions.",
+    "source_fingerprint": "c4e61ecd571efa810836ae4d45b225b43d999b1508f19e8862a75b96ecd18060"
   },
   {
     "reference": "ACI0102040",
@@ -4201,8 +4201,8 @@
   },
   {
     "reference": "ACI0102087",
-    "summary": "L’importation dans 4D Write Pro d’un document `.docx` où un champ de fusion situé dans un tableau comportait un commutateur de format (par exemple `MERGEFIELD pt_FC \\# $,#.00`) extrayait correctement le nom de champ `«pt_FC»`, mais [WP Get text](https://developer.4d.com/docs/WritePro/commands/wp-get-text) le renvoyait ensuite avec des retours chariot parasites ajoutés (`«pt_FC»\\r\\r`).",
-    "source_fingerprint": "243c23e5e7166cf1132a778e0379439e8c4656303b384c7675d0794a4dcd1080"
+    "summary": "Lors de l'import dans 4D Write Pro d'un document `.docx` dans lequel un champ de fusion situé dans un tableau comportait un commutateur de format (par exemple `MERGEFIELD pt_FC \\# $,#.00`), le nom de champ `«pt_FC»` était extrait correctement, mais [WP Get text](https://developer.4d.com/docs/WritePro/commands/wp-get-text) le renvoyait ensuite avec des retours chariot supplémentaires ajoutés (`«pt_FC»\\r\\r`).",
+    "source_fingerprint": "3185370c54f301a5e95a34d409f8066558b0575428ebe1ef88d1c2b7d1cc7205"
   },
   {
     "reference": "ACI0102093",
@@ -4216,8 +4216,8 @@
   },
   {
     "reference": "ACI0102098",
-    "summary": "En mode client/serveur uniquement, l’enregistrement d’une entité liée une seconde fois depuis le client dans la même transaction était rejeté avec une erreur indiquant que le marqueur de l’entité avait changé, car le premier enregistrement avait déjà incrémenté le marqueur conservé pour l’attribut de relation.",
-    "source_fingerprint": "d230559ab90ca2ccbf621c72f32dd4306f0c33df04432fdc238ff12d3c297820"
+    "summary": "En client/serveur uniquement, l'enregistrement une seconde fois d'une entité liée depuis le client, au sein de la même transaction, échouait avec une erreur car le stamp de l'entité avait changé. Le premier enregistrement avait déjà incrémenté le stamp conservé pour l'attribut de relation.",
+    "source_fingerprint": "b6f843ab0a27705078d3755de297fbe21000cad0e470e51ad0bd8fe8b8a97d09"
   },
   {
     "reference": "ACI0102101",
@@ -4291,8 +4291,8 @@
   },
   {
     "reference": "ACI0102145",
-    "summary": "La conversion d’une base binaire en mode projet pouvait modifier la couleur de police et l’alignement des en-têtes et colonnes de listbox. Les propriétés laissées sur le réglage « automatique » étaient omises pendant la conversion ; l’en-tête ou la colonne héritait donc des valeurs définies pour la listbox entière au lieu de conserver les siennes.",
-    "source_fingerprint": "bf6d23f7fdbca84c8c57692b7b1ce13d8a2d4b915fe6c2773cb850b74a4ed055"
+    "summary": "En mode binaire uniquement, la conversion d'une base en mode projet pouvait modifier la couleur de police et l'alignement des en-têtes et des colonnes de list box. Les propriétés laissées sur le réglage « automatique » étaient omises lors de la conversion, si bien que l'en-tête ou la colonne héritait des valeurs définies pour l'ensemble de la list box au lieu de conserver les siennes.",
+    "source_fingerprint": "3a4a4451c73d37ead217688e98a80e8360436a0f0cc823acda15c68a355b1a70"
   },
   {
     "reference": "ACI0102147",
@@ -4331,13 +4331,13 @@
   },
   {
     "reference": "ACI0102170",
-    "summary": "En mode client/serveur, si la méthode [`On Startup` database method](https://developer.4d.com/docs/commands/on-startup-database-method) contenait du code, lancer 4D Remote sur une base comportant des relations définies entre les tables produisait une erreur d’exécution inattendue côté client concernant le chemin de relation.",
-    "source_fingerprint": "244fe60d68f54cee7b8b00e39f7bca26059e77e34dc5d45bac9b20cc77118ca6"
+    "summary": "En client/serveur, si la méthode base `On Startup` contenait du code, le lancement de 4D Remote sur une base dont des relations étaient définies entre les tables provoquait une erreur d'exécution inattendue côté client, concernant le chemin de la relation.",
+    "source_fingerprint": "f4a8218429b3bdba468722fd92f196b761ce411aef34bc33cfd1666420e259c5"
   },
   {
     "reference": "ACI0102171",
-    "summary": "En mode client/serveur, lors de l’utilisation de l’éditeur de formulaires depuis un client local, les classes de données n’apparaissaient plus parmi les sources de données proposées pour la création d’une listbox de sélection d’entités.",
-    "source_fingerprint": "5bbd668123e32a503aebf8316334f1878028c048dd16f265952f3b32c0fa97c0"
+    "summary": "En client/serveur, lors de l'utilisation de l'éditeur de formulaires depuis un client local, les dataclasses n'apparaissaient pas parmi les sources de données possibles lors de la création d'une list box basée sur une entity selection.",
+    "source_fingerprint": "23d93e8a2eb065fafb7721650cd438d952b0bfedce47ee29558887f5f663e705"
   },
   {
     "reference": "ACI0102174",
@@ -4381,8 +4381,8 @@
   },
   {
     "reference": "ACI0102189",
-    "summary": "Sous Windows, l’exportation en PDF d’un document Write Pro contenant des images SVG affichait en noir tout le texte des éléments `textArea`, en ignorant la couleur réelle du texte ; l’impression en PDF via un pilote d’imprimante n’était pas affectée.",
-    "source_fingerprint": "6de062456e9ba7c1a4c83594eff1dbcb93470b64b10baa23382d5267e48c45e5"
+    "summary": "Sous Windows uniquement, l'export au format PDF d'un document Write Pro contenant des images SVG affichait en noir le texte des éléments `textArea`, sans tenir compte de la couleur de police réelle. L'impression en PDF via un pilote d'imprimante n'était pas affectée.",
+    "source_fingerprint": "8efa70cf2eda440a87d73f68c3da3f8b6f56e84526c1fb92409b7009c8057bb2"
   },
   {
     "reference": "ACI0102193",
@@ -4406,8 +4406,8 @@
   },
   {
     "reference": "ACI0102201",
-    "summary": "Sous macOS, le serveur web ne pouvait pas démarrer sur le port 80 lorsqu’il était lié à une adresse IP précise, et aucune boîte de dialogue d’installation de l’outil auxiliaire n’apparaissait ; l’écoute sur toutes les adresses (`0.0.0.0`, `::`, soit `ANY_ADDR`) fonctionnait normalement. Depuis Mojave, publier un serveur sur un port inférieur à 1024 ne nécessite plus l’outil auxiliaire, et 4D avait donc cessé de l’utiliser, mais lier l’écoute à une adresse particulière le nécessite toujours. L’outil auxiliaire est à nouveau utilisé dès qu’une adresse autre que « toutes » est demandée.",
-    "source_fingerprint": "eee69251f47f10c42debe8b33c10970dd08bda4cd37d75cfb73d962a73abe3ac"
+    "summary": "Sous macOS uniquement, le serveur web ne pouvait pas être démarré sur le port 80 lorsqu'il était lié à une adresse IP précise, et aucune boîte de dialogue d'installation de l'outil auxiliaire n'apparaissait non plus. L'écoute sur toutes les adresses (`0.0.0.0` ou `::`, c'est-à-dire `ANY_ADDR`) fonctionnait. Depuis Mojave, la publication d'un port inférieur à 1024 ne nécessite plus l'outil auxiliaire, et 4D avait donc cessé de l'utiliser, mais lier l'écouteur à une adresse particulière l'exige toujours ; l'outil auxiliaire est de nouveau utilisé dès qu'une adresse autre que « toutes » est demandée.",
+    "source_fingerprint": "ab44b187fe738738ea39518bda617e36804614235ee0e0778c3582ab77baee70"
   },
   {
     "reference": "ACI0102203",
@@ -4501,8 +4501,8 @@
   },
   {
     "reference": "ACI0102252",
-    "summary": "Sous macOS uniquement, valider avec la touche `return` une chaîne en cours de saisie dans l’éditeur de méthodes via la méthode de saisie japonaise insérait un saut de ligne supplémentaire indésirable en plus de confirmer la conversion.",
-    "source_fingerprint": "13e8ca41b129db0c3888b2f74763c46bd7addbdb45f46660551066e7569f606c"
+    "summary": "Sous macOS uniquement, la validation avec la touche `return` d'une chaîne en cours de saisie dans l'éditeur de méthodes via la méthode de saisie japonaise insérait un saut de ligne superflu en plus de valider la conversion.",
+    "source_fingerprint": "ce67620caf7eddd44adfcd98be23b980fdb9e6bca3e14007ea74488d929d0de6"
   },
   {
     "reference": "ACI0102255",
@@ -4566,8 +4566,8 @@
   },
   {
     "reference": "ACI0102286",
-    "summary": "Sous Windows uniquement, cliquer sur le bouton de flèche vers le bas d’une combo box liée à un tableau sans éléments empêchait ensuite l’application d’accepter toute saisie au clavier. Dans cet état, même appuyer sur `enter` ou `escape` ne fermait plus le formulaire.",
-    "source_fingerprint": "f1ce93b863e8524741355986789fb774981427351405fdcc3db4d7e3d03dc977"
+    "summary": "Sous Windows uniquement, un clic sur le bouton flèche vers le bas d'une combo box liée à un tableau de zéro élément rendait l'application incapable d'accepter la moindre saisie au clavier. Même `enter` et `escape` ne fermaient plus le formulaire.",
+    "source_fingerprint": "66ac62d142dcc70c81b29863730ce202be1ac6d97042f5511d66a0af01713d4e"
   },
   {
     "reference": "ACI0102290",
@@ -4866,8 +4866,8 @@
   },
   {
     "reference": "ACI0102454",
-    "summary": "L'exécution de code SQL dans un process préemptif faisait planter 4D Server dès que l'instruction appelait une méthode projet via une clause de fonction SQL `FN`.",
-    "source_fingerprint": "63c3c2f649f26b807e95a002b9be49773bdabd9f018b93e4c7d55beba2391db8"
+    "summary": "L'exécution de code SQL dans un process préemptif faisait planter 4D Server lorsque l'instruction appelait une méthode via la clause `FN`.",
+    "source_fingerprint": "b987ce29d6d737574b55698b111001a0f799a564b8094e1674ebf42980406d36"
   },
   {
     "reference": "ACI0102457",
@@ -4926,8 +4926,8 @@
   },
   {
     "reference": "ACI0102479",
-    "summary": "Lorsque le séparateur de groupes de chiffres était un caractère espace fine insécable, les nombres de plus de trois chiffres étaient mal formatés et s'affichaient incorrectement.",
-    "source_fingerprint": "f0a4fda57605604e3f2444becf82fd28a32c01616cb229b06a162dcb8cf3dc47"
+    "summary": "Lorsqu'un caractère espace insécable étroit (Narrow No-Break Space) était utilisé comme séparateur de milliers, les nombres de plus de trois chiffres n'étaient pas formatés correctement et s'affichaient de manière incorrecte.",
+    "source_fingerprint": "9e71a286423a6d2415ecc38fcc934532ab89a9c83e6d01b21173219093af9b0a"
   },
   {
     "reference": "ACI0102481",
@@ -5676,8 +5676,8 @@
   },
   {
     "reference": "ACI0102861",
-    "summary": "Après le compactage des fichiers de données et d'index, l'enregistrement d'un nouvel enregistrement pouvait faire planter l'application si la table contenait un champ indexé. Le plantage était lié à l'appel, en mode compilé, d'une méthode non thread-safe — accédant par exemple à des variables interprocess — depuis un thread préemptif tel qu'un process web.",
-    "source_fingerprint": "e0e8e867eb55805c8cca0b18bdc2a0a7bdeb110263a120b8c4e76251bc118a84"
+    "summary": "Après le compactage des fichiers de données et d'index, l'enregistrement d'un nouvel enregistrement pouvait faire planter l'application lorsque la table comportait un champ indexé. Le plantage était lié à l'appel, depuis un thread préemptif tel qu'un process Web, d'une méthode non thread-safe en mode compilé (par exemple une méthode accédant à des variables interprocess).",
+    "source_fingerprint": "a1f8a5112f3dc18c4658f521767712303156054efb1590f586af48a8b6b882d5"
   },
   {
     "reference": "ACI0102864",
@@ -5801,8 +5801,8 @@
   },
   {
     "reference": "ACI0102940",
-    "summary": "Une pièce jointe construite avec [MAIL New attachment](https://developer.4d.com/docs/commands/mail-new-attachment) et stockée dans un objet courrier ne pouvait pas être passée comme paramètre à un autre process, empêchant le transfert de l'objet courrier entre process.",
-    "source_fingerprint": "accd8db66d1f96781be8d32130c28f03fef24913b58ab521670b0750d791c9e4"
+    "summary": "Une pièce jointe créée avec [MAIL New attachment](https://developer.4d.com/docs/commands/mail-new-attachment) et stockée dans un objet email ne pouvait pas être passée en paramètre à un autre process, ce qui empêchait de transmettre l'objet email d'un process à l'autre.",
+    "source_fingerprint": "74e4da08efab637cd31d86f14dfd782f03e6722e51277974598fc7c289a095d0"
   },
   {
     "reference": "ACI0102943",
@@ -6291,8 +6291,8 @@
   },
   {
     "reference": "ACI0103244",
-    "summary": "Si la longueur maximale d’un champ alpha tombait au milieu d’une paire de substitution, seule une moitié du caractère (par exemple `Char(55356)`) était stockée dans l’enregistrement. L’exportation d’un tel champ avec une commande comme [LOG FILE TO JSON](https://developer.4d.com/docs/commands/log-file-to-json) produisait alors un JSON impossible à analyser, car la moitié de substitution isolée absorbait le guillemet double suivant comme caractère de contrôle. Les caractères de substitution incomplets sont désormais tronqués au lieu d’être enregistrés.",
-    "source_fingerprint": "e68a4e12323eca5c187c334883d8cb3696d1da64c92f44af2c24244ac50619de"
+    "summary": "Si la longueur maximale d'un champ alpha tombait au milieu d'une paire de substitution (surrogate pair), seule une moitié du caractère (par exemple `Char(55356)`) était enregistrée dans l'enregistrement. L'export d'un tel champ avec une commande comme [LOG FILE TO JSON](https://developer.4d.com/docs/commands/log-file-to-json) produisait alors un JSON impossible à analyser, car la moitié orpheline absorbait le guillemet fermant en le traitant comme un caractère de contrôle. Les caractères de substitution incomplets sont désormais tronqués.",
+    "source_fingerprint": "c02b0311287689713140b756ae63ac02deabd229da97a0d41cbdf3dda5beb858"
   },
   {
     "reference": "ACI0103245",
@@ -6516,8 +6516,8 @@
   },
   {
     "reference": "ACI0103462",
-    "summary": "Sous macOS, les formats de date personnalisés et propres à une région pouvaient être résolus incorrectement. Avec la région du système réglée sur Royaume-Uni et la langue sur néerlandais, le format *Internal date short* affichait les dates sous la forme `DD/MM/YYYY` au lieu du format attendu `DD-MM-YYYY`.",
-    "source_fingerprint": "382d05bc01947f68357e34a1638b03322d110c96fbb933876eb39d85b4d43a83"
+    "summary": "Sous macOS uniquement, les formats de date propres à une région pouvaient être incorrects. Avec la région du système réglée sur Royaume-Uni et la langue sur néerlandais, le format *Internal date short* affichait les dates sous la forme `DD/MM/YYYY` au lieu du `DD-MM-YYYY` attendu.",
+    "source_fingerprint": "da1d7e550a09fb37ee355899163e24f762a8a8d6b6a66d42fc65c5c2a5ec7792"
   },
   {
     "reference": "ACI0103463",
@@ -6576,8 +6576,8 @@
   },
   {
     "reference": "ACI0103499",
-    "summary": "Lorsque le parcours de compilation était réglé pour typer toutes les variables, les symboles d’indirection des paramètres (`${2}`) étaient écrits dans le fichier des symboles comme `C_VARIANT` au lieu du type réellement déclaré. Seul le fichier des symboles était affecté ; le code généré lui-même était correct.",
-    "source_fingerprint": "04af90e9ec64f2cc45d6b1e6fdf0b2343531b5ef6ed1c622d55b5d545a57edd3"
+    "summary": "Lorsque le chemin de compilation était réglé pour typer toutes les variables, les symboles de l'indirection de paramètres (`${2}`) étaient écrits dans le fichier de symboles en tant que `C_VARIANT` au lieu du type déclaré. Seul le fichier de symboles était affecté ; le code généré était correct.",
+    "source_fingerprint": "f052a21c6fad7ba799de36b1d22ff604e8808b1ce60e661f1139cc4b38f8f44a"
   },
   {
     "reference": "ACI0103501",
@@ -6666,8 +6666,8 @@
   },
   {
     "reference": "ACI0103541",
-    "summary": "Dans un éditeur d’états rapides intégré à un formulaire, faire glisser une colonne à la position d’une autre ne mettait pas à jour le menu contextuel, si bien que la rupture et son sous-total finissaient par s’appliquer au mauvais champ.",
-    "source_fingerprint": "30cf3c13f766473665821f9e6a5b8e288dedc8b42e270f6bfc2dfedfd6a0b5a9"
+    "summary": "Dans un éditeur d'états rapides intégré à un formulaire, le glisser-déposer d'une colonne à la position d'une autre laissait le menu contextuel (clic droit) obsolète, de sorte que la rupture et son sous-total se retrouvaient appliqués au mauvais champ.",
+    "source_fingerprint": "5525a67b5e2bc388ea9f2f6a94895c12a53a43a89bb4e4b4a12fdcdd99d470a9"
   },
   {
     "reference": "ACI0103542",
@@ -6846,8 +6846,8 @@
   },
   {
     "reference": "ACI0103642",
-    "summary": "L’appel de [HTTP Request](https://developer.4d.com/docs/commands/http-request) sans préciser le mode keep-alive pouvait renvoyer le code d’état `503` avec une réponse vide, si bien que le corps XML attendu n’arrivait jamais.",
-    "source_fingerprint": "37b33957a92f39e0b56a99b9bf14a5cca52d10c37d98fe6985f59dc01d009215"
+    "summary": "Lorsque [HTTP Request](https://developer.4d.com/docs/commands/http-request) était appelée sans préciser le mode keep-alive, le serveur pouvait parfois répondre avec le code de statut `503` et un corps vide, si bien que la réponse XML attendue n'arrivait jamais.",
+    "source_fingerprint": "187b48ce141586b73205ff111ccb724bb7c7f3598105f5ce655b9d381284b925"
   },
   {
     "reference": "ACI0103643",
@@ -6931,8 +6931,8 @@
   },
   {
     "reference": "ACI0103679",
-    "summary": "Dans une list box liée à une sélection d’entités, sélectionner une ligne avec [LISTBOX SELECT ROWS](https://developer.4d.com/docs/commands/listbox-select-rows), puis appuyer sur la flèche haut ou bas déplaçait la surbrillance par rapport à la ligne précédemment cliquée et non par rapport à celle que la commande venait de sélectionner.",
-    "source_fingerprint": "3df6f0799a44265e9deeff75ec2325f0bcb83d42d4a01f1e3c4924867356e993"
+    "summary": "Dans une list box basée sur une entity selection, les lignes sélectionnées avec [LISTBOX SELECT ROWS](https://developer.4d.com/docs/commands/listbox-select-rows) n'étaient pas utilisées comme point de départ de la navigation au clavier. Appuyer sur la flèche haut ou bas déplaçait la surbrillance à partir de la ligne précédemment sélectionnée par un clic de souris, et non à partir de la ligne sélectionnée par la commande.",
+    "source_fingerprint": "5351ce4b09411a6b57c030a57921c51e040cada3e09df117a381bf11748eac9b"
   },
   {
     "reference": "ACI0103681",
@@ -7061,8 +7061,8 @@
   },
   {
     "reference": "ACI0103734",
-    "summary": "L’appel de `.selectBox()` sur un objet `IMAPTransporter` renvoyait l’erreur `11` (« Échec de la commande IMAP SELECT »), même lorsque la boîte aux lettres pouvait être sélectionnée normalement.",
-    "source_fingerprint": "00ead06ab53b4a05bee76638f773d7c46fc8d3c12e1b772898eac252ceebca89"
+    "summary": "L’appel de `IMAPTransporter.selectBox()` échouait et renvoyait l’erreur `11` (échec de la commande IMAP SELECT) ; cette régression empêchait de sélectionner une boîte aux lettres sur un serveur IMAP.",
+    "source_fingerprint": "acddd7f2e76733ee83b2137330c13af037497d5db7998ef0e4aac0138ea0c131"
   },
   {
     "reference": "ACI0103737",
@@ -7121,8 +7121,8 @@
   },
   {
     "reference": "ACI0103756",
-    "summary": "Sous Windows, avec une mise à l’échelle élevée de l’affichage (supérieure à 100%), modifier la taille de police d’un texte enrichi via le sélecteur de police appliquait la taille choisie multipliée par le facteur d’échelle au lieu de la taille elle-même ; inversement, sélectionner du texte enrichi alors que le sélecteur de police était ouvert affichait sa taille divisée par le facteur d’échelle. Dans les deux cas, les tailles de police ne correspondaient pas à ce que l’utilisateur choisissait ou voyait.",
-    "source_fingerprint": "e9f472c5fd6cb0ef2abda6fdcce90c9c65fe4895b38703ad8f99d3271352fbe8"
+    "summary": "Sous Windows, avec un écran haute résolution (mise à l’échelle supérieure à `100%`), la modification de la taille d’un texte stylé dans le sélecteur de police appliquait la taille choisie multipliée par le facteur d’échelle. De même, la sélection d’un texte stylé alors que le sélecteur était ouvert affichait la taille divisée par le facteur d’échelle, si bien que les valeurs ne correspondaient jamais à ce que l’utilisateur voyait.",
+    "source_fingerprint": "2f6a311f9e432965f75a57ec3154054a14cbd59a1cde7579835795ea38cf6a78"
   },
   {
     "reference": "ACI0103757",
@@ -10480,6 +10480,11 @@
     "source_fingerprint": "6ca802d4d0f120a534524554403992c989762e21fc175e2a3daeb28a5fee155c"
   },
   {
+    "reference": "ACI0105454",
+    "summary": "`WebSocketConnection.send()` sérialisait les propriétés de type date sous forme de chaînes ISO-8601 incluant un fuseau horaire, même lorsque le paramètre de base de données `Dates inside objects` était défini sur le type date. Les destinataires recevaient donc un horodatage complet au lieu d’une valeur contenant uniquement la date.",
+    "source_fingerprint": "2c0f32d8d2613e7a0ce50920e15c21fc122d67110b67d1ab0db23abd4e900d2c"
+  },
+  {
     "reference": "ACI0105455",
     "summary": "Utiliser l’opérateur d’index de chaîne (`[[]]`) sur une propriété d’objet déclenchait un avertissement inattendu du compilateur, \"Suppose que le pointeur pointe vers une expression alphanumérique\" (533.1) ; le libellé de cet avertissement a également été revu pour supprimer la référence trompeuse à un \"pointeur\".",
     "source_fingerprint": "bdd0ea8a43367c32fe31043fb78c29b9cf9451b0ec4fa26b83343132db7dd0b5"
@@ -11275,6 +11280,11 @@
     "source_fingerprint": "65ad9755cea12ec4347631e2de6411cc2f62c93dc69fa33b3553b1e2ae142286"
   },
   {
+    "reference": "ACI0105945",
+    "summary": "L’événement formulaire `On Begin URL Loading` ne se comportait pas correctement dans la zone web interne (système) ; le code qui s’appuyait sur cet événement pour détecter le début du chargement d’une page ne pouvait donc pas fonctionner comme prévu.",
+    "source_fingerprint": "19ac6064c3729f7a5607f5324f7a7a87737d2c6b946c3e7c145c4bb1e2c40d91"
+  },
+  {
     "reference": "ACI0105952",
     "summary": "Dans la boîte de dialogue de la bibliothèque d’objets, le filtrage par catégorie d’objets et la sélection de la catégorie Indicateur de progression n’affichaient aucun objet, alors que des objets correspondants existaient.",
     "source_fingerprint": "576d35edc576092560dfd68913de63ca808d2c6729e15b33ee9f4c0e6783648f"
@@ -11525,6 +11535,11 @@
     "source_fingerprint": "6327717cb32fdd3dda597f293da4018b45f966018eac0a2cef40c47e3fa93651"
   },
   {
+    "reference": "ACI0106102",
+    "summary": "Le raccourci clavier Sélectionner le bloc (`Cmd`+`B`) dans l’éditeur de méthodes ne parvenait pas à sélectionner le bloc, ou produisait une sélection erronée, lorsque l’expression contenait un littéral chaîne comportant des parenthèses.",
+    "source_fingerprint": "ac885a3a220ae5ce6271539858b3d7ca237d5931e784526af5acc6cc34dde4b7"
+  },
+  {
     "reference": "ACI0106104",
     "summary": "L’affichage d’un menu pop-up dynamique (via [Dynamic pop up menu](https://developer.4d.com/docs/commands/dynamic-pop-up-menu)) depuis l’événement On Clicked d’un objet image dans un widget, appelé via [CALL SUBFORM CONTAINER](https://developer.4d.com/docs/commands/call-subform-container), faisait réapparaître le menu immédiatement après sa fermeture par un clic. Cela se produisait parce que les objets image (contrairement aux boutons) conservent le focus après On Clicked jusqu’à la désactivation de la fenêtre — ce qui est nécessaire pour suivre l’état de la souris via [Is waiting mouse up](https://developer.4d.com/docs/commands/is-waiting-mouse-up) — et qu’un événement de clic en dehors du widget pouvait donc encore être transmis à un objet à l’intérieur. L’utilisation d’un objet bouton, le déclenchement du menu hors du contexte du formulaire hôte ou son affichage sur On Mouse Up plutôt que sur On Clicked évitaient le problème.",
     "source_fingerprint": "5735892a4a9578be5e820413839ae463bc308d444ee8715a14c6c8691084f366"
@@ -11755,6 +11770,11 @@
     "source_fingerprint": "7a87040b23b06f3eebc3155f58148cabc2ab5a158937f169a14694fbcdafc5f6"
   },
   {
+    "reference": "ACI0106216",
+    "summary": "Une sélection effectuée dans l’onglet Accueil de l’Explorateur était perdue lorsque l’utilisateur passait à une autre application puis revenait. En mode Développement, le projet est rechargé à chaque retour de l’application au premier plan, et seul l’onglet Accueil ne disposait d’aucun mécanisme pour restaurer sa sélection.",
+    "source_fingerprint": "1425d7c82a96fb31b606bf631fd3ab8bfb4715bd6b075e81cdf769ee618d24c1"
+  },
+  {
     "reference": "ACI0106220",
     "summary": "L’affichage de l’éditeur « Utilisateurs et groupes » de la boîte à outils en tant qu’utilisateur non administrateur produisait une mise en page visuellement défectueuse, avec certaines icônes manquantes et des messages mal positionnés.",
     "source_fingerprint": "40904e24f90a59966ade158f5636a01f13605b8e05633d9b6bd2f43931f728fa"
@@ -11886,8 +11906,8 @@
   },
   {
     "reference": "ACI0106300",
-    "summary": "4D Server pouvait planter après une déconnexion inattendue d’un client.",
-    "source_fingerprint": "4e480ae1113aa653c23adb5f51bfb8c3f4bb45d385bea04ee8b21386f5e61260"
+    "summary": "Uniquement en mode client/serveur, 4D Server plantait si la connexion TCP échouait alors qu’un client était en train d’envoyer un message WebSocket.",
+    "source_fingerprint": "d0d909b3fbadcb433c37778d4c1d8e4a50ac92f2c41b16b2520fadb86a47951f"
   },
   {
     "reference": "ACI0106301",
@@ -11966,8 +11986,8 @@
   },
   {
     "reference": "ACI0106341",
-    "summary": "Dans la boîte à outils, la modification d’un nom d’utilisateur pour lui attribuer un nom déjà utilisé affichait l’erreur attendue « l’utilisateur existe déjà », mais la modification était tout de même validée malgré l’erreur.",
-    "source_fingerprint": "3089fffe1506e5af11dae2bb8666d0270729115d901e071d22b68f74609d3ac6"
+    "summary": "Dans la boîte à outils, le renommage d’un utilisateur avec un nom déjà pris déclenchait correctement une erreur indiquant que l’utilisateur existe, mais la modification était tout de même validée, ce qui donnait l’impression que le nom affiché était dupliqué.",
+    "source_fingerprint": "8643dc1fac711fd140f4b3eed4b98d37ec5c798f4f4f28aa310d60243f4625c0"
   },
   {
     "reference": "ACI0106343",
@@ -12016,8 +12036,8 @@
   },
   {
     "reference": "ACI0106359",
-    "summary": "Dans la boîte de dialogue des paramètres de la base de données, la clé API saisie pour un fournisseur d’IA était affichée en texte clair et lisible dans sa zone de saisie. Elle aurait dû être masquée comme dans un champ de mot de passe afin de ne pas être exposée à l’écran.",
-    "source_fingerprint": "8304fe729c4401ad626301a203eca8c052d7eb43802da4d2258207023a55615f"
+    "summary": "La clé d’API du fournisseur d’IA dans la boîte de dialogue des paramètres s’affichait comme un texte ordinaire et lisible. Elle aurait dû être masquée comme un mot de passe afin de ne pas pouvoir être lue à l’écran.",
+    "source_fingerprint": "0efedcf479c93f8447c5b4ded891ce220784ae210df7b022ed8d34deac5cf4ea"
   },
   {
     "reference": "ACI0106361",
@@ -12051,8 +12071,13 @@
   },
   {
     "reference": "ACI0106376",
-    "summary": "L’exécution de [Create deployment license](https://developer.4d.com/docs/commands/create-deployment-license) depuis tool4D en mode sans interface pendant la génération d’une application avec le composant build4D provoquait un plantage dans la routine centrale de gestion des licences.",
-    "source_fingerprint": "218d555ef51bd0830e306432e02d8cfdb5e800d8c40fe6b388255818f8aadf3e"
+    "summary": "L’exécution de [Create deployment license](https://developer.4d.com/docs/commands/create-deployment-license) depuis *tool4D* en mode headless provoquait un plantage de l’application. Cela se produisait par exemple lors de la génération d’une application avec le composant build4D.",
+    "source_fingerprint": "f8fc663a32ef9927911f37dd690f52b8ae009bfd0b193160e98478457976e906"
+  },
+  {
+    "reference": "ACI0106377",
+    "summary": "Uniquement sous macOS, l’ouverture de la classe d’un composant dans l’éditeur de méthodes pouvait faire planter l’application lorsque l’éditeur reprenait le focus.",
+    "source_fingerprint": "9ccc3879581b7505b41687d739c7b566778be5ced9da9da874c1dc2f49b565a3"
   },
   {
     "reference": "ACI0106379",
@@ -12073,6 +12098,11 @@
     "reference": "ACI0106385",
     "summary": "Le passage du focus à la fenêtre de l’Explorateur avec un raccourci clavier permettait de parcourir les éléments avec les touches fléchées, mais l’appui sur Entrée n’ouvrait plus l’éditeur de l’élément sélectionné ; il s’est avéré que la position du pointeur de la souris, et pas seulement le fait que la fenêtre soit au premier plan, influait sur la reconnaissance de la touche Entrée.",
     "source_fingerprint": "aeec98d5130cb38fc089166b38f61822ac0adc4fd085b601823aba4d6dd4a635"
+  },
+  {
+    "reference": "ACI0106387",
+    "summary": "En mode compilé, la mise à jour d’entités via l’API REST n’exécutait un trigger non thread-safe que pour les `100` premiers appels. Ensuite, le trigger cessait silencieusement de s’exécuter, sans qu’aucune erreur ne soit renvoyée, ce qui correspondait à la limite de 100 process REST.",
+    "source_fingerprint": "731f1227ebb278cde94782763e8eced1134d74175d8f7074845a9132be9c128c"
   },
   {
     "reference": "ACI0106389",
@@ -12098,6 +12128,11 @@
     "reference": "ACI0106395",
     "summary": "Les valeurs `endingDate` et `scheduledDate` enregistrées dans le fichier `backupHistory.json` étaient incorrectes car la durée principale de la sauvegarde n’était pas ajoutée ; le journal de sauvegarde lui-même n’était pas affecté.",
     "source_fingerprint": "f116dcd19dae29b914cf6595d18949e1c6ee7ada5a46fb4239a97a7454e25ab8"
+  },
+  {
+    "reference": "ACI0106399",
+    "summary": "Les chiffres de télémétrie du temps CPU des process étaient incohérents : la valeur affichée dans la fenêtre d’administration à distance pouvait dépasser la durée de fonctionnement du serveur, et les métriques d’activité des process rapportées par le serveur affichaient les mêmes totaux erronés.",
+    "source_fingerprint": "a743d7a95b0de9a511a6c3a7659b03d0435b5646214c1d9129dcbee1b8a415a4"
   },
   {
     "reference": "ACI0106403",
@@ -12141,13 +12176,23 @@
   },
   {
     "reference": "ACI0106421",
-    "summary": "En client/serveur sous Windows, un client ne pouvait pas se connecter au serveur via ServerNet lorsque le chiffrement client-serveur et l’authentification unique (SSO) étaient activés simultanément ; la désactivation de l’un des deux, ou l’utilisation de la couche réseau QUIC (qui est toujours chiffrée), évitait le problème. Cela semble être un effet secondaire du correctif de ACI0106296.",
-    "source_fingerprint": "26c92373bdfc709c6743dd349f99c4aa3614c3853a6e3f75d057865bbc4d6dd3"
+    "summary": "Sous Windows en client/serveur, un client ne pouvait pas se connecter via ServerNet lorsque le chiffrement client-serveur et l’authentification unique (SSO) étaient tous deux activés. Désactiver l’une ou l’autre option, ou utiliser la couche réseau QUIC (toujours chiffrée), évitait le problème, qui semblait être un effet secondaire d’un correctif réseau antérieur.",
+    "source_fingerprint": "0cef17ff9934c4b3840abcce5f8a56450ce447f5b89c479cbe434c4c585cd3e9"
   },
   {
     "reference": "ACI0106424",
     "summary": "L’encodage MIME des noms de fichiers des pièces jointes était mal formé lorsque le nom était long : un saut de ligne intempestif était inséré entre le mot-clé `attachment` et le point-virgule suivant dans l’en-tête `Content-Disposition`. Les pare-feu et les antivirus pouvaient rejeter ces messages.",
     "source_fingerprint": "8ac67f02e5b3929655d4efbb92f39aa8ca1a192f9b1b26ee2a8ab60023984e1e"
+  },
+  {
+    "reference": "ACI0106425",
+    "summary": "Uniquement sous macOS, l’appel de [Is window maximized](https://developer.4d.com/docs/commands/is-window-maximized) ou de [MAXIMIZE WINDOW](https://developer.4d.com/docs/commands/maximize-window) faisait planter l’application lorsque le formulaire contenait une zone web système. Le plantage était spécifique à macOS 27 (Golden Gate).",
+    "source_fingerprint": "72e74820747bf70d90dc6e69d6b147de3ebf9ce04e291667b1a037b2194e39c1"
+  },
+  {
+    "reference": "ACI0106427",
+    "summary": "Le journal de débogage enregistré pour le process courant omettait les appels aux méthodes de composants, de sorte que l’activité à l’intérieur des composants était absente de la trace. Les sous-routines appelées par une méthode de composant ne sont volontairement pas journalisées.",
+    "source_fingerprint": "28a983dbed6c50f938d9c84dd9e8fff72bbdf3918e1c065db3b8a4ea1b39cc9e"
   },
   {
     "reference": "ACI0106430",
@@ -12165,14 +12210,19 @@
     "source_fingerprint": "4c5cdcaaaee87570b6e20ffff6972417a0007802d6440ae3b67bf378dcc24192"
   },
   {
+    "reference": "ACI0106443",
+    "summary": "Avec la couche réseau QUIC, de nombreux clients se connectant au même moment pouvaient amener le process Network Manager à monopoliser le CPU, rendant 4D Server inactif et sans réponse.",
+    "source_fingerprint": "dd735f93dbe993a14d46dd539c27c6b30af472ed6491c6500dc1b4ff82c0e12b"
+  },
+  {
     "reference": "ACI0106447",
     "summary": "L’ajout d’un élément à une énumération existante dans la boîte à outils l’insérait en tête de liste plutôt qu’à la position attendue, un effet secondaire apparent du correctif de ACI0106197.",
     "source_fingerprint": "1a46feba0105542988c2e423a70fb9984b132250a994de5f7c899b10e3b3555e"
   },
   {
     "reference": "ACI0106448",
-    "summary": "Lors de la création d’un élément de liste dans la boîte à outils, la case « Élément modifiable » restait décochée par défaut au lieu d’être cochée.",
-    "source_fingerprint": "d76be822eb4aa40a415fe4fcb49c3fb56b0cadfd977b5f749fa96b5b43b83486"
+    "summary": "Lorsqu’un nouvel élément de liste était ajouté dans la boîte à outils, la case à cocher Élément modifiable n’était pas cochée par défaut, alors qu’elle aurait dû l’être.",
+    "source_fingerprint": "7e75a11ba5eecfbbbaa4fe5f958aa797985539e1c727c2bfa945e684802a7bbb"
   },
   {
     "reference": "ACI0106450",
@@ -12188,6 +12238,11 @@
     "reference": "ACI0106453",
     "summary": "Sous Windows, la fonction du SDK de plug-in `PA_CreateNativePictureForPrinting` renvoyait des images agrandies et tronquées de manière incorrecte ; la fonction liée `PA_CreateNativePictureForScreen` n’était pas affectée.",
     "source_fingerprint": "105fe5a7a2801855a21e1eea47c0946fc3f5594b32d19e80ae114d9f609fc6bc"
+  },
+  {
+    "reference": "ACI0106454",
+    "summary": "Lorsque la gestion évolutive des sessions était activée, [WEB Get current session ID](https://developer.4d.com/docs/commands/web-get-current-session-id) renvoyait l’identifiant de la session précédente au lieu de celui de la session courante, et ne correspondait donc pas à la valeur de `Session.id`.",
+    "source_fingerprint": "1719d03c573da00981b31366859c22c7d9259d7b0c5280cbe6a5b914bcd73fc3"
   },
   {
     "reference": "ACI0106458",
@@ -12261,8 +12316,18 @@
   },
   {
     "reference": "ACI0106504",
-    "summary": "Le nombre « Total des accès HTTP » dans l’onglet Serveur HTTP de la fenêtre d’administration augmentait même lorsqu’aucune requête HTTP n’avait été effectuée — l’ouverture de la boîte à outils depuis un client ou le changement d’onglet dans la fenêtre d’administration du serveur affichée sur un client suffisaient à l’incrémenter. Rien de correspondant n’apparaissait dans le journal HTTP, confirmant que ce décompte était erroné.",
-    "source_fingerprint": "5d857cdcf43c7738099cf7735a7ef3ba7abbce244c8841ef50f4a5293b12d02e"
+    "summary": "Le compteur Total des hits HTTP de l’onglet Serveur HTTP de la fenêtre d’administration augmentait alors qu’aucune requête HTTP n’avait eu lieu. Ouvrir la boîte à outils sur un client, ou changer d’onglet dans la fenêtre d’administration du serveur affichée sur un client, suffisait à l’incrémenter, alors que le journal HTTP restait vide.",
+    "source_fingerprint": "9479000e8083e41916e673094f776509643c76adc0e94decbe1d301e1af1d652"
+  },
+  {
+    "reference": "ACI0106505",
+    "summary": "Dans un scénario lié à un autre rapport de plantage, l’application se bloquait au lieu de planter, laissant 4D sans réponse sans qu’aucun plantage ne soit déclenché.",
+    "source_fingerprint": "a19822be17ecd4a9d02f0fd30a57abba22cdda655e2247d2809c0e71c59bab2a"
+  },
+  {
+    "reference": "ACI0106506",
+    "summary": "Uniquement sous Windows, après la modification de la disposition multi-écrans, la fenêtre de la liste des propriétés pouvait rester positionnée en dehors de la zone visible de l’écran et devenir inaccessible.",
+    "source_fingerprint": "664ede028c0ee0378969e6a1a3c3c77b22250cfab2e2fbf20eba1e4b5b30d3c2"
   },
   {
     "reference": "ACI0106507",
@@ -12271,13 +12336,13 @@
   },
   {
     "reference": "ACI0106510",
-    "summary": "Le redimensionnement dans l’éditeur de formulaires d’une list box dont les colonnes utilisent une largeur automatique laissait une disposition des colonnes visiblement défectueuse, avec des largeurs erratiques pendant et après le redimensionnement. La régression semble avoir été introduite par le correctif de ACI0106338.",
-    "source_fingerprint": "20a7aafa08ca61f6d5a336e63abcbe3ea89f7f3a6c63c8168bc5f1c2273ffe83"
+    "summary": "Le redimensionnement, dans l’éditeur de formulaires, d’une list box dont la largeur de colonne automatique était activée laissait un affichage visiblement cassé, avec des largeurs de colonnes erratiques. C’était un effet secondaire du correctif de ACI0106338.",
+    "source_fingerprint": "9a5c4c85469da4351771d574468a4e1f97c039f5e5a7742ee7fffc6877e0cb43"
   },
   {
     "reference": "ACI0106511",
-    "summary": "L’utilisation du marqueur `#D` dans un état rapide pour insérer la date courante imprimait la date calculée en UTC plutôt que dans le fuseau horaire propre à la machine, de sorte que l’état pouvait afficher le mauvais jour autour de minuit.",
-    "source_fingerprint": "ff2a025285420cff4aaa738beaca98d53cc040ee047f948151e318eb3909f84b"
+    "summary": "Lorsqu'un état rapide utilisait le placeholder `#D` pour insérer la date courante, il imprimait la date du fuseau horaire UTC au lieu de celle du fuseau local, ce qui pouvait afficher un jour incorrect selon l'heure de la journée.",
+    "source_fingerprint": "22374ff49adc1b9d4d6a758bcbadae1a4fcfdc6924e18e0e7b1cdb5c36e54746"
   },
   {
     "reference": "ACI0106512",
@@ -12285,14 +12350,39 @@
     "source_fingerprint": "f4d85e124e92468d4addf55a74ded2af903c21bd62910c1bad103f551931b7ca"
   },
   {
+    "reference": "ACI0106514",
+    "summary": "En mode interprété uniquement, une condition de boucle `For each` écrite sous la forme `While (True) & (False)` ou `Until (True) & (False)` était mal évaluée : la partie externe de l'expression était traitée comme distincte de la condition de la boucle. L'expression booléenne entière est désormais évaluée comme condition, aussi bien en mode interprété qu'en mode compilé.",
+    "source_fingerprint": "c022dfabd791ce2e4898fc2df16b3a1cb260fe20efd4b910be16dbc6257ec22a"
+  },
+  {
     "reference": "ACI0106517",
     "summary": "Sous Windows uniquement, un échec lors de l’impression n’était signalé que par une « Erreur 1 » générique ou une erreur inconnue, sans indication de la cause réelle ; des informations d’erreur plus précises sont désormais renvoyées. Au-delà du message, le défaut d’impression sous-jacent a également été corrigé — dans certaines situations, l’API d’impression n’était pas appelée depuis le thread principal.",
     "source_fingerprint": "b56f8df0052c2007389bca6109fd29b9cec8ff15059efb14913b766b52e81ece"
   },
   {
+    "reference": "ACI0106518",
+    "summary": "La création d'une méthode base, d'un trigger, d'une méthode formulaire ou d'une méthode objet ne déclenchait pas l'événement de macro `on_create`, de sorte que les macros qui en dépendaient ne s'exécutaient jamais pour ces types de méthodes.",
+    "source_fingerprint": "d363cf12b0c8f9fac3d5674a4b9473d5cf1a971bc1754191cef2e7029dc5a28f"
+  },
+  {
+    "reference": "ACI0106519",
+    "summary": "Pendant la modification d'un élément dans une liste hiérarchique, appuyer sur `delete` ou `backspace` ne générait pas d'événement `On After Edit`, si bien que le code réagissant aux modifications manquait ces frappes.",
+    "source_fingerprint": "e51dcb8939964dc4b688128eaa58aa69b4ffb1f4fb47f22c29aeb09f9517e539"
+  },
+  {
+    "reference": "ACI0106521",
+    "summary": "Une déclaration `var` ne pouvait pas être suivie d'un commentaire en ligne : en saisir un dans l'éditeur de méthodes était refusé et perturbait la saisie.",
+    "source_fingerprint": "9e826e18ef8834340ff8a6a2546a326d2391ef174247a10ea95dfa45618c695f"
+  },
+  {
+    "reference": "ACI0106523",
+    "summary": "Avec la couche réseau QUIC, une application cliente 4D pouvait planter à la fermeture (une erreur de segmentation survenait pendant la destruction du catalogue du modèle d'entités). Le plantage dépendait de la structure de la base de données.",
+    "source_fingerprint": "df1d152754deefadeb08937f8684e9b200f50135605cc0458355ca57df8762ed"
+  },
+  {
     "reference": "ACI0106526",
-    "summary": "L’exécution d’une vérification ou d’une réparation dans le CSM, du contrôle de syntaxe du compilateur ou d’une conversion binaire vers projet sur certains fichiers de structure binaire faisait systématiquement planter 4D. La cause était un format d’affichage invalide dans la structure, qui déclenchait un débordement de pile.",
-    "source_fingerprint": "d8376a31b6e18606dc4be96586b247c4a985cfba9907435730ebdacb24dea302"
+    "summary": "Lancer une vérification ou une réparation dans le CSM, la vérification de syntaxe du compilateur ou une conversion de projet sur certains fichiers de structure binaires faisait planter l'application. Un format d'affichage invalide dans la structure provoquait un dépassement de pile.",
+    "source_fingerprint": "bab494b55f5b0332585c01474eeffe66bac0594354614100e2de1b17d5aec6a0"
   },
   {
     "reference": "ACI0106528",
@@ -12305,14 +12395,24 @@
     "source_fingerprint": "b95f90596cf320eb63ec9d09b0cad18fbd7748e02288da8b111028fc86a05a82"
   },
   {
+    "reference": "ACI0106532",
+    "summary": "Dans `IncomingMessage.urlQuery`, un `&` encodé à l'intérieur de la valeur d'un paramètre n'était pas distingué d'un véritable séparateur de paramètres, de sorte que deux requêtes différentes pouvaient produire des objets de requête identiques et ne pouvaient pas être différenciées.",
+    "source_fingerprint": "098afd8a5fd64ebbbda8fcaf4b2400550f14e46ecc806a1a1b4735e9e3e900d0"
+  },
+  {
     "reference": "ACI0106539",
     "summary": "Sous macOS uniquement, des mises à jour récentes du système (macOS 15.8, 26.7 et 27) amenaient 4D à considérer le port de publication comme étant en permanence utilisé, de sorte que le serveur Web refusait de démarrer alors que le port était libre.",
     "source_fingerprint": "a1b9c98f1720e573a3215898d17ae98554d578fbd0d88f74c2f8148410e95132"
   },
   {
     "reference": "ACI0106542",
-    "summary": "Lorsqu’une nouvelle version était lancée sans ouvrir de projet et que le gestionnaire de licences était ouvert directement, les licences de la version précédente n’étaient pas mises à jour automatiquement ; l’utilisateur était au contraire invité à saisir de nouveau les numéros de licence.",
-    "source_fingerprint": "470ee65f263ec244ff42b68dc57683f9928cfa1c6f6a3385c333f5db355c6439"
+    "summary": "Lorsque l'application était lancée sans spécifier de projet et que le gestionnaire de licences était ouvert directement, les licences de la version précédente n'étaient pas mises à jour automatiquement. L'utilisateur devait au contraire saisir à nouveau les numéros de licence.",
+    "source_fingerprint": "9ae255a28a2dfb35024cb9ddbb3f278a3a7a49cbed076bf5c3e55edc227f209e"
+  },
+  {
+    "reference": "ACI0106543",
+    "summary": "L'installation d'un composant portant le même nom que le projet hôte faisait scintiller l'Explorateur et provoquait une fuite de mémoire à chaque changement d'onglet. Les composants ou dépendances portant le même nom que l'hôte ne sont désormais plus chargés et une erreur est renvoyée à la place.",
+    "source_fingerprint": "ae703a9f7f79430197d23351abdf9f159e924d0b0f9733ae21a8b1004fd25c4c"
   },
   {
     "reference": "ACI0106545",
@@ -12321,17 +12421,177 @@
   },
   {
     "reference": "ACI0106546",
-    "summary": "Une application générée avec la clé `PackProject` définie à `False` affichait la boîte de dialogue du gestionnaire de dépendances à son premier lancement, invitant l’utilisateur à installer les composants 4D auparavant fournis avec 4D.",
-    "source_fingerprint": "122180e63f260b4a612a2c84280deb23b68adf24ad01e8b20c2ee6d49a0bda04"
+    "summary": "Une application générée avec la clé `PackProject` définie sur `False` affichait la boîte de dialogue du Gestionnaire de dépendances au premier lancement, demandant à l'utilisateur d'installer les composants standard qui étaient auparavant fournis avec 4D.",
+    "source_fingerprint": "3b405d4800ab21a9c5723763ad73381ad588401a69bff83e23161e0b53ec6242"
+  },
+  {
+    "reference": "ACI0106554",
+    "summary": "Avec la couche réseau QUIC uniquement, un 4D Server fonctionnant pendant une longue période pouvait s'interrompre à cause d'un échec d'assertion dans la gestion du minuteur d'expiration du gestionnaire réseau (SIGABRT).",
+    "source_fingerprint": "bf1da3b2944cb355d29239a133676f4c74830dc68bd8d4412eecefe3124d8106"
   },
   {
     "reference": "ACI0106558",
-    "summary": "Sous macOS uniquement, l’appel répété de [EXECUTE ON CLIENT](https://developer.4d.com/docs/commands/execute-on-client) transmettait des paramètres périmés : à partir du troisième appel, la méthode recevait les mêmes paramètres qu’au deuxième appel. Cette régression provenait de l’abandon de l’ancienne couche réseau.",
-    "source_fingerprint": "7f214b36e8d7d1b2564843344254241d7db813cb788837b5ca36e709910f4d3b"
+    "summary": "Sous macOS uniquement, appeler [EXECUTE ON CLIENT](https://developer.4d.com/docs/commands/execute-on-client) à plusieurs reprises transmettait des paramètres périmés : à partir du troisième appel, la méthode cliente recevait les mêmes paramètres que lors du deuxième appel. Cette régression provenait de la suppression de l'ancienne couche réseau.",
+    "source_fingerprint": "a830fd8b7bc9161593d5b574fec4f8c21aff63ae82926d8f54a2d946cba02f5d"
   },
   {
     "reference": "ACI0106566",
-    "summary": "Lorsqu’une réponse HTTP contenait un en-tête `Location`, le serveur Web forçait son code d’état à `302`, rendant impossible le renvoi d’une réponse `201 Created` alors que la RFC 9110 définit `Location` pour cet état. Le problème affectait à la fois `4D.OutgoingMessage` dans les gestionnaires de requêtes HTTP et [WEB SET HTTP HEADER](https://developer.4d.com/docs/commands/web-set-http-header).",
-    "source_fingerprint": "cceef2046396286db5940aa9c6f4d35382e991695cac4536d6cacc53861bde2e"
+    "summary": "Chaque fois qu'une réponse HTTP contenait un en-tête `Location`, le serveur web forçait le code de statut à `302`, si bien qu'une réponse `201 Created` ne pouvait pas être renvoyée, alors que la RFC 9110 définit `Location` pour ce statut. Le problème se produisait aussi bien avec `4D.OutgoingMessage` dans les gestionnaires de requêtes HTTP qu'avec [WEB SET HTTP HEADER](https://developer.4d.com/docs/commands/web-set-http-header).",
+    "source_fingerprint": "096a49a8c926e5445998596a2eeda3339b39295e5f01b74ca49d0fd6ad704e0e"
+  },
+  {
+    "reference": "ACI0106567",
+    "summary": "Appeler [OBJECT SET RGB COLORS](https://developer.4d.com/docs/commands/object-set-rgb-colors) dans l'événement `On Display Detail` d'un formulaire liste ne donnait pas de couleurs par ligne : la couleur définie pour la dernière ligne était appliquée à toutes les lignes. Sous Windows avec FluentUI activé, les objets doivent en outre se trouver entièrement dans la zone de détail, car les objets à cheval sur les zones d'en-tête ou de pied de page sont affichés comme un arrière-plan global, par conception.",
+    "source_fingerprint": "ca3863b7848800d17afdeb0b67e8f130e1477a15e998f28f129e27d337ef15ad"
+  },
+  {
+    "reference": "ACI0106573",
+    "summary": "Fuite de mémoire : les cycles d'objets qui référençaient un objet partagé attaché à `Storage` n'étaient jamais libérés, de sorte que la mémoire qu'ils utilisaient était conservée pendant toute la durée de vie du processus.",
+    "source_fingerprint": "213e76e9cb42577af89e8103b232a9af783b13143d645783f8e772307807df63"
+  },
+  {
+    "reference": "ACI0106576",
+    "summary": "La conversion d'un ancien document 4D Write (`.4W7`) contenant des formules vers 4D Write Pro avec [WP New](https://developer.4d.com/docs/WritePro/commands/wp-new) provoquait une fuite de mémoire à chaque conversion.",
+    "source_fingerprint": "eb7f1ae144697a3d5731dcc9b9fd830370ed7f403d7578ae43bb56cf46103728"
+  },
+  {
+    "reference": "ACI0106581",
+    "summary": "Après la définition des privilèges de session via le serveur web de l'hôte, le traitement d'une requête REST sur le serveur web d'un composant réinitialisait ces privilèges, de sorte que la session perdait ses droits d'accès.",
+    "source_fingerprint": "b886104b91564c147edeca005c70e8bd3fb37a395582ece508c8f7a70da4ee91"
+  },
+  {
+    "reference": "ACI0106590",
+    "summary": "Utiliser directement une propriété d'objet de type date dans une expression de date, par exemple en la soustrayant de la date courante, renvoyait une erreur de syntaxe. Convertir explicitement la propriété avec la fonction [Date](https://developer.4d.com/docs/commands/date) permettait d'éviter le problème.",
+    "source_fingerprint": "fd7a9136146a24d36986961bc8d6a273c0a410f817fb3e1062be0a6858ed821e"
+  },
+  {
+    "reference": "ACI0106596",
+    "summary": "Dans l'Explorateur, tenter d'ajouter de la documentation à une table (par exemple depuis le menu contextuel de la zone Documentation) faisait planter l'application.",
+    "source_fingerprint": "33f8a4caeecac9d1e29bec55c0ee0ad034afe6ddf0c087a3a7b1b46f7779e3bd"
+  },
+  {
+    "reference": "ACI0106604",
+    "summary": "L'éditeur de code pouvait afficher un faux avertissement « Missing end of block comment (`*/`) » qui restait à l'écran après une modification ou un enregistrement. Il ne disparaissait qu'une fois l'éditeur de méthodes fermé ou la vérification de syntaxe relancée.",
+    "source_fingerprint": "1429854f71f1d807994dc823946dabcaeba3c2256547ce6b19d66e1853850264"
+  },
+  {
+    "reference": "ACI0106605",
+    "summary": "Dans l'éditeur d'étiquettes, la zone de recherche de la liste des champs ne prenait pas en charge le mode sombre : elle restait claire et le texte saisi était illisible.",
+    "source_fingerprint": "4689e6064397834a1a3f0ede287331ac202eec60cb558f67a488e772c0d13c39"
+  },
+  {
+    "reference": "ACI0106606",
+    "summary": "Dans un document 4D Write Pro, lorsqu'un saut de colonne ou de page était inséré juste après un tableau, [WP Get breaks](https://developer.4d.com/docs/WritePro/commands/wp-get-breaks) renvoyait une plage de caractères située à l'intérieur du tableau (telle que fournie par [WP Table range](https://developer.4d.com/docs/WritePro/commands/wp-table-range)) au lieu du saut situé à l'extérieur. Les sauts placés après un tableau peuvent désormais aussi être supprimés avec [WP Insert break](https://developer.4d.com/docs/WritePro/commands/wp-insert-break) et `wk replace`, bien qu'un saut ne puisse pas être ajouté sous forme de paragraphe vide à la toute fin d'un tableau.",
+    "source_fingerprint": "2a0fbed7487ad598430375ddb7bbb36989e37ccd1ab25d9023f28f164d81f6ea"
+  },
+  {
+    "reference": "ACI0106610",
+    "summary": "La lecture de l'attribut de police italique d'une plage 4D Write Pro provoquait une petite fuite de mémoire (environ 260 octets par lecture). Cela se produisait aussi bien avec la notation objet (`$range[wk font italic]`) qu'avec [WP Get attributes](https://developer.4d.com/docs/WritePro/commands/wp-get-attributes).",
+    "source_fingerprint": "2dd8fb2dc6375e0cc413b4731256641eb817dd3f14f9dd1a817fe952e710c89d"
+  },
+  {
+    "reference": "ACI0106612",
+    "summary": "En mode compilé uniquement, [FORM GET NAMES](https://developer.4d.com/docs/commands/form-get-names) renvoyait un tableau vide lorsque la table était passée sous forme de pointeur déréférencé issu de la commande [Table](https://developer.4d.com/docs/commands/table), comme dans `Table(n)->`. Stocker d'abord le pointeur dans une variable locale intermédiaire permettait d'éviter le problème.",
+    "source_fingerprint": "a06cd216bf9b8ad5a91c7c449e127dcd2328fcf6c16ae6a190fed2399f77e502"
+  },
+  {
+    "reference": "ACI0106613",
+    "summary": "En mode compilé, une erreur survenant à la sortie d'une méthode dotée d'une instruction `defer` enregistrée était avalée. Le `Try...Catch` de l'appelant ne la voyait jamais, alors que le même code se comportait correctement en mode interprété.",
+    "source_fingerprint": "d326d6584f0c94096826f09cb09b72ddd786323bd4ff2be195f5a313b0dcd99e"
+  },
+  {
+    "reference": "ACI0106616",
+    "summary": "Sous macOS uniquement, la règle de l'interface 4D Write Pro n'affichait ni taquets de tabulation, ni repères de page, ni repères de retrait. Les images de ressources semblaient absentes du package de l'application, ce qui constituait une régression dans les versions 20.8 HF3 et 20.9.",
+    "source_fingerprint": "e80654511ab4f1cb81745dab3724fe6dead0c8dd59ff0b9f05ed71a234e6cf79"
+  },
+  {
+    "reference": "ACI0106620",
+    "summary": "Dans le Centre de sécurité et de maintenance, le chiffrement d'un fichier de données avec une phrase secrète échouait, de sorte que l'opération de maintenance ne pouvait pas se terminer. L'utilisation d'un fichier `.4DKeyChain` à la place fonctionnait correctement.",
+    "source_fingerprint": "a1daa1690f7eda13eb7ffc563370b42f3507336bdfa0cc8e124dd20d5df50ad9"
+  },
+  {
+    "reference": "ACI0106628",
+    "summary": "`SVG_Define_solidColor` ignorait l'opacité demandée, qu'elle soit fournie en quatrième paramètre ou avec la syntaxe de type `blue:50`, si bien que la couleur unie était toujours dessinée de façon totalement opaque. La valeur d'opacité avait été déclarée en interne comme un entier, un effet secondaire d'une correction précédente.",
+    "source_fingerprint": "5acad4ff1f9c764e749b71d097f960d472bc595103e23150a8c0ceb373108cc0"
+  },
+  {
+    "reference": "ACI0106632",
+    "summary": "La fenêtre d'administration du serveur n'affichait pas les informations de géolocalisation IP des adresses connectées.",
+    "source_fingerprint": "2be1c055e13fe665e22ea151ec1c094b302bd890d2be4b933de55ab2098efc76"
+  },
+  {
+    "reference": "ACI0106636",
+    "summary": "Dans un document Write Pro, les cellules de tableau dont l'arrière-plan était défini comme transparent perdaient cette transparence lorsqu'elles étaient fusionnées verticalement, et se retrouvaient avec une couleur d'arrière-plan opaque.",
+    "source_fingerprint": "d4e20980947069894db56b7092df90c38a1e27af40474dd27e32d1e05b0bbc8b"
+  },
+  {
+    "reference": "ACI0106639",
+    "summary": "Sous macOS uniquement, une zone web cessait de répondre aux événements de la souris et du clavier une fois qu'une boîte de dialogue modale avait été affichée puis fermée. Il s'agissait d'une régression introduite dans 21 R4.",
+    "source_fingerprint": "22f11a4eb6f381fdf993ce1b25d8e63235f94619dd24baa2d2e96292da02c74d"
+  },
+  {
+    "reference": "ACI0106646",
+    "summary": "Dans la version française de 4D View Pro, certaines parties de la boîte de dialogue Rechercher et remplacer n'étaient pas traduites.",
+    "source_fingerprint": "bec1909472b9d251217e21b8b8728434618f20637d0ba635e482cc7860359dd2"
+  },
+  {
+    "reference": "ACI0106651",
+    "summary": "Passer une instance d'une classe de composant à une fonction membre `server` d'une classe ORDA la convertissait en objet simple, de sorte qu'elle perdait son identité de classe. Une fonction membre `local` conservait la classe intacte. Il s'agissait d'une régression dans 21 R4.",
+    "source_fingerprint": "761dc82be3f3a31d647af4ecb8854ae97f9ac059d3328ba4294750565db29aab"
+  },
+  {
+    "reference": "ACI0106653",
+    "summary": "Toute requête HTTP contenant un en-tête `API-TOKEN` était rejetée par le serveur web avec un statut 403 Forbidden. Ni `On Web Authentication` ni `On Web Connection` n'étaient appelés pour ces requêtes.",
+    "source_fingerprint": "33189d2080d79205af3befe1f9330399275725bbc183b8dbc652e0887dfd9348"
+  },
+  {
+    "reference": "ACI0106654",
+    "summary": "L'appel de [OB Copy](https://developer.4d.com/docs/commands/ob-copy) avec l'option `ck shared` ne préservait pas les instances de `4D.CryptoKey` stockées dans des objets imbriqués, si bien que ces propriétés étaient perdues dans la copie partagée.",
+    "source_fingerprint": "1c76f74027c271d0668c81d18a9c6b2cff7cf76ddc9c2761c8ad127e973add9f"
+  },
+  {
+    "reference": "ACI0106657",
+    "summary": "Sous macOS uniquement, le redimensionnement d'une fenêtre dont le formulaire contenait une zone web CEF intégrée faisait scintiller les autres objets du formulaire.",
+    "source_fingerprint": "9ae0b712a1df860e471ef5706fb3492ba3240b87b4f7fabd3d9c1ba2a94e717c"
+  },
+  {
+    "reference": "ACI0106659",
+    "summary": "Lorsque les sessions scalables étaient activées, le serveur web répondait par une erreur HTTP 500 « Invalid parameter » chaque fois que l'en-tête `X-Forwarded-For` ou `Forwarded` listait plus d'une adresse IP, comme cela se produit derrière des proxys chaînés.",
+    "source_fingerprint": "1cd48ea614761df54da14827692aa556076bb224887a14435790d1bbc6832714"
+  },
+  {
+    "reference": "ACI0106662",
+    "summary": "Le bouton d'aide de l'interface d'administration web ouvrait un résultat « page introuvable » au lieu de la documentation, car il était encore configuré avec une ancienne URL contenant `/en/`.",
+    "source_fingerprint": "d151790288a8ab4ce7d52e883ebe660c8fc6f93a6bf1ccfdb3dbad741ad28acd"
+  },
+  {
+    "reference": "ACI0106664",
+    "summary": "Sous macOS uniquement, la première compilation d'un projet contenant une classe volumineuse pouvait échouer, alors qu'une seconde compilation réussissait. L'échec dépendait de la taille du fichier de la classe.",
+    "source_fingerprint": "2ed002f027b4f92bf8927b54f490b2bec24f2bd77cc3d66dd8ed0f3526f7f5ea"
+  },
+  {
+    "reference": "ACI0106670",
+    "summary": "Une régression de performance dans 21 R5 rendait [ARRAY TO SELECTION](https://developer.4d.com/docs/commands/array-to-selection) environ 40 fois plus lente qu'auparavant, le temps augmentant avec le nombre de champs renseignés. La version 21.2 n'était pas concernée.",
+    "source_fingerprint": "7bb9208325f8ee8df6815319a992091c444fb6ed34452d4368e655c21d95c4fb"
+  },
+  {
+    "reference": "ACI0106678",
+    "summary": "L'export HTML de la définition de la structure n'affichait plus les identifiants des champs.",
+    "source_fingerprint": "7d1e1022b92631427b99c1d78c86512bbc1d98a7d66188b71a48c8639d6483b1"
+  },
+  {
+    "reference": "ACI0106681",
+    "summary": "Les durées négatives s'affichaient de manière incorrecte, le résultat dépendant du format de saisie utilisé pour entrer la valeur.",
+    "source_fingerprint": "bb2107e47b833b0c49b33674768c4b658a8662c6de53023fd09c5c2116b47cb5"
+  },
+  {
+    "reference": "ACI0106688",
+    "summary": "Sous macOS avec le thème Liquid Glass activé, un objet rectangle placé dans un formulaire liste n'était pas dessiné dans chaque ligne de la sortie.",
+    "source_fingerprint": "22684d3fbcd512857dcc93803bca0ae14fe3d48950c0ae5f821f56f47ac456d7"
+  },
+  {
+    "reference": "ACI0106689",
+    "summary": "Lorsque le titre d'un objet de formulaire combinait une référence de chaîne de localisation (comme `22010,62`) avec un retour chariot final, la référence n'était pas remplacée par le texte localisé et s'affichait telle quelle. Il s'agissait d'une régression introduite dans 21 R4.",
+    "source_fingerprint": "0ee9c8f87b8af0457444e84c9c5cf7be1762ed36a2f4fe5089034f45c55f4084"
   }
 ]
