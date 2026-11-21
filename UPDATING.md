@@ -41,6 +41,17 @@ Scheduled runs differ from manual ones in two ways:
   (`crawl_log.tsv`, `data/update_state.json`) changed, so a week with no new
   fixes opens nothing.
 
+Every scheduled run also files a **status issue** that `@mentions` the
+repository owner (so it arrives as a normal GitHub notification and email).
+It reports the outcome — PR opened, nothing new, skipped because a PR is still
+open, or failed with a link to the logs — and, whenever work is due, a reminder
+checklist: enrich the English summaries, complete the Japanese and French
+translations, run `build-only`, merge. Quiet and skipped weeks are filed and
+closed immediately, so they notify without leaving open items. The job needs
+*Issues* enabled on the repository. To be notified somewhere other than GitHub
+(Slack, email), add a step to the `notify` job that posts to a webhook stored as
+a repository secret.
+
 When a scheduled run does open a PR, continue as above: write the enrichment
 and translations on its branch, then run the workflow on that branch with mode
 `build-only`. Note that GitHub disables scheduled workflows after 60 days

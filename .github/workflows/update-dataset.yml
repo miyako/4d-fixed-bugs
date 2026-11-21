@@ -6,6 +6,8 @@ name: Update dataset
 # Scheduled runs only open a pull request when something other than crawl
 # timestamps changed, and are skipped while an earlier dataset-update/* pull
 # request is still open (it may be waiting for enrichment or translation).
+# Every scheduled run ends by filing a status issue that @mentions the
+# repository owner (the "notify" job), with a to-do reminder when work is due.
 #
 # - mode "update": crawl developer.4d.com/FixedBugsList + sync the 4D-JP notes, rebuild the
 #   context, and open a PR. If bugs need English summaries the pipeline stops
@@ -68,6 +70,12 @@ jobs:
     if: needs.guard.outputs.skip != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    outputs:
+      changed: ${{ steps.run.outputs.changed }}
+      pending: ${{ steps.run.outputs.pending }}
+      pending_ja: ${{ steps.run.outputs.pending_ja }}
+      pending_fr: ${{ steps.run.outputs.pending_fr }}
+      pr_url: ${{ steps.cpr.outputs.pull-request-url }}
     env:
       # Scheduled runs have no inputs: default to a normal incremental update.
       MODE: ${{ inputs.mode || 'update' }}
@@ -187,6 +195,7 @@ jobs:
           git push
 
       - name: Open pull request (update)
+        id: cpr
         if: steps.run.outputs.changed == 'true' && env.MODE == 'update'
         uses: peter-evans/create-pull-request@v7
         with:
@@ -196,3 +205,104 @@ jobs:
             Update dataset${{ steps.run.outputs.pending != '0' && format(' ({0} bugs pending enrichment)', steps.run.outputs.pending) || ((steps.run.outputs.pending_ja != '0' || steps.run.outputs.pending_fr != '0') && format(' (JA: {0}, FR: {1} pending translation)', steps.run.outputs.pending_ja, steps.run.outputs.pending_fr)) || '' }}
           body-path: ${{ runner.temp }}/pr_body.md
           delete-branch: true
+
+  # After every scheduled run, tell the repository owner what happened: an issue
+  # that @mentions them triggers their normal GitHub notification (and email).
+  # It carries a status report and, when a PR was opened or is still open, a
+  # reminder of the manual steps. Quiet weeks and skipped runs are filed and
+  # closed straight away so they notify without leaving open items behind.
+  notify:
+    needs: [guard, update]
+    if: always() && github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+      pull-requests: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      OWNER: ${{ github.repository_owner }}
+      SKIPPED: ${{ needs.guard.outputs.skip }}
+      RESULT: ${{ needs.update.result }}
+      CHANGED: ${{ needs.update.outputs.changed }}
+      PENDING: ${{ needs.update.outputs.pending }}
+      PENDING_JA: ${{ needs.update.outputs.pending_ja }}
+      PENDING_FR: ${{ needs.update.outputs.pending_fr }}
+      PR_URL: ${{ needs.update.outputs.pr_url }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - name: Report status
+        run: |
+          set -euo pipefail
+          today=$(date -u +%Y-%m-%d)
+          close_after=false
+          body="$RUNNER_TEMP/body.md"
+          open_prs=$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --json number,url,headRefName \
+                     --jq '[.[] | select(.headRefName | startswith("dataset-update/"))] | map("- " + .url) | join("\n")')
+
+          if [ "$SKIPPED" = "true" ]; then
+            status="skipped, an earlier update PR is still open"
+            close_after=true
+            {
+              echo "@$OWNER The weekly dataset update was **skipped** because an earlier update pull request is still open:"
+              echo
+              echo "$open_prs"
+              echo
+              echo "Reminder: finish that PR first (see the checklist below), then merge it. The next scheduled run will pick up from there."
+            } > "$body"
+            remind=true
+          elif [ "$RESULT" != "success" ]; then
+            status="FAILED"
+            {
+              echo "@$OWNER The weekly dataset update **failed** (job result: \`$RESULT\`)."
+              echo
+              echo "Logs: $RUN_URL"
+            } > "$body"
+            remind=false
+          elif [ "$CHANGED" != "true" ]; then
+            status="no new fixes"
+            close_after=true
+            {
+              echo "@$OWNER The weekly dataset update ran and found **nothing new** on developer.4d.com, so no pull request was opened."
+              echo
+              echo "Run: $RUN_URL"
+            } > "$body"
+            remind=false
+          else
+            status="update PR opened"
+            {
+              echo "@$OWNER The weekly dataset update found changes and opened a pull request: ${PR_URL:-see the run}"
+              echo
+              echo "- English summaries pending: **${PENDING:-0}**"
+              if [ "${PENDING:-0}" != "0" ]; then
+                echo "- Japanese and French: queued once the English summaries are merged"
+              else
+                echo "- Japanese summaries pending: **${PENDING_JA:-0}**"
+                echo "- French summaries pending: **${PENDING_FR:-0}**"
+              fi
+              echo
+              echo "Run: $RUN_URL"
+            } > "$body"
+            remind=true
+          fi
+
+          if [ "$remind" = "true" ]; then
+            {
+              echo
+              echo "### To do before the site is published"
+              echo "1. **Enrich the English summaries** listed in the PR (\`scripts/update/ENRICHMENT_PROMPT.md\`), then merge them with \`merge_enrichment.py\`."
+              echo "2. **Complete the Japanese and French translations** (\`TRANSLATION_PROMPT.md\` / \`TRANSLATION_PROMPT_FR.md\`), then merge them with \`merge_translation.py\`."
+              echo "3. Push to the PR branch and run the *Update dataset* workflow on it with mode \`build-only\`."
+              echo "4. Review and merge the PR."
+              echo
+              echo "Details: UPDATING.md in the repository."
+            } >> "$body"
+          fi
+
+          url=$(gh issue create --repo "$GITHUB_REPOSITORY" \
+                  --title "Weekly dataset update $today: $status" \
+                  --body-file "$body")
+          echo "$url"
+          if [ "$close_after" = "true" ]; then
+            gh issue close "$url" --repo "$GITHUB_REPOSITORY" --reason completed
+          fi
