@@ -86,6 +86,11 @@ class CrawlDiscovery(unittest.TestCase):
 
     def test_legacy_missing_page(self):
         self.assertEqual(crawl.classify("version", '<div class="standard_error">Missing</div>'), (False, 0))
+        beta = ("<h1>Information</h1><p>The v21 R5 version is still in Beta. "
+                "A bug list will be available when this version will be released.</p>")
+        self.assertEqual(crawl.classify("version", beta), (False, 0))
+        with self.assertRaises(RuntimeError):
+            crawl.classify("version", "<h1>Information</h1><p>Something else.</p>")
         self.assertEqual(crawl.classify("branch", ""), (False, 0))
 
     def test_http_and_unexpected_html_errors_are_explicit(self):

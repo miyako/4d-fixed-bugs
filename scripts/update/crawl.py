@@ -96,6 +96,14 @@ def classify(source: str, body: str, http_code: int = 200, url: str = "") -> tup
             return False, 0
         if heading and heading.group(1).startswith("All Products "):
             return True, len(ROW_MARKER_RELEASED.findall(body))
+        # A version still in beta answers 200 with an "Information" notice
+        # ("... is still in Beta. A bug list will be available when this
+        # version will be released.") instead of a 404. It has no released
+        # listing yet; the nightly listing covers it.
+        if (heading and heading.group(1).strip() == "Information"
+                and "still in Beta" in body
+                and not ROW_MARKER_RELEASED.search(body)):
+            return False, 0
     elif heading and heading.group(1).startswith(("Nightly builds 4D ", "Beta 4D ")):
         return True, len(ROW_MARKER_BETA.findall(body))
     elif not heading and not body.strip():
