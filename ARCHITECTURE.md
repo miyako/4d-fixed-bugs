@@ -1,7 +1,7 @@
 # 4D Fixed Bugs — Semantic Search Chat
 
 A fully static, client-side web app that lets a user ask natural-language
-questions about a dataset of 2,467 fixed 4D software bugs and get back
+questions about a dataset of fixed 4D software bugs and get back
 relevant bug reports, ranked by semantic similarity, with an optional
 local-LLM conversational layer on top. There is no backend and no server
 of any kind at request time: everything (dataset, embeddings, embedding
@@ -152,11 +152,12 @@ has this shape:
   (`"19.5_hf1"`), and R-release (`"19_r7"`, optionally with its own
   hotfix suffix like `"20_r10_hf2"`).
 
-Dataset size: 2,467 bugs per language. Embedding: 768-dimensional text-only
-EmbeddingGemma 2, Float32, L2-normalized. Each `embeddings.bin` is therefore
-`2467 * 768 * 4` bytes = 7,578,624 bytes, row `i` (0-indexed) being the
-embedding for `meta.json[i]`. (The dataset grows as 4D ships fixes — see
-`UPDATING.md`; the invariant is `byteLength === meta.length * 768 * 4`.)
+Every language has the same bugs, one record per bug. Embedding:
+768-dimensional text-only EmbeddingGemma 2, Float32, L2-normalized. Each
+`embeddings.bin` is therefore `N * 768 * 4` bytes for N bugs, row `i`
+(0-indexed) being the embedding for `meta.json[i]`. The dataset grows as 4D
+ships fixes (see `UPDATING.md`), so the invariant to rely on is
+`byteLength === meta.length * 768 * 4`, not a fixed size.
 Each corpus also carries `search-index.json`: `contract`, `count`, `bytes`,
 `metadata_sha256` and `vectors_sha256`. Shape alone never establishes that an
 index belongs to the current model or text format.
@@ -466,7 +467,7 @@ delegated to an LLM "tool call". Order of precedence:
    matching and version filtering remain available. The UI labels this mode
    and uses lexical badges, not misleading semantic percentages.
 
-This is brute-force (linear scan over ≤2,467 768-dimensional vectors per query)
+This is brute-force (linear scan over a few thousand 768-dimensional vectors per query)
 — no vector index/ANN library, deliberately, since the corpus is small
 enough that this runs in a few milliseconds.
 
@@ -802,9 +803,11 @@ and no evaluated off-topic query may pass the score floor.
 
 ## 13. Retrieval calibration and historical baselines
 
-All three 2,467-record indexes have been built and verified; their metadata
-remains byte-identical to commit `3544f94`. The three aligned evaluation sets
-contain 43 queries each. Actual semantic-ranking results are:
+When these evaluations were run (commit `3544f94`), all three indexes held
+2,467 records each and had been built and verified; the dataset has grown
+since, so the figures below are a historical baseline rather than a statement
+about the current corpus. The three aligned evaluation sets contain 43 queries
+each. Actual semantic-ranking results are:
 
 | Language | Historical model | Old R@1 / R@8 / MRR | EmbeddingGemma 2 R@1 / R@8 / MRR |
 |---|---|---|---|
