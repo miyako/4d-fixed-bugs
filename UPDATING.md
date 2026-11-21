@@ -52,6 +52,43 @@ closed immediately, so they notify without leaving open items. The job needs
 (Slack, email), add a step to the `notify` job that posts to a webhook stored as
 a repository secret.
 
+### Automatic writing (optional)
+
+With an OpenAI key configured, update runs write the English summaries and the
+Japanese and French translations themselves and finish the build in the same
+run, so a scheduled run ends with a finished PR for you to skim and merge.
+
+Setup (Settings → Secrets and variables → Actions):
+
+- secret `OPENAI_API_KEY` — your API key;
+- variable `OPENAI_MODEL` — the model ID to use. There is deliberately no
+  default, so a model is never chosen for you; without it the workflow behaves
+  as described above (PR plus reminder).
+
+How it works (`scripts/update/automate.py`): each pending record goes to the
+model together with the same prompt file a person would use
+(`ENRICHMENT_PROMPT.md`, `TRANSLATION_PROMPT.md`, `TRANSLATION_PROMPT_FR.md`).
+The answer is checked per record by the validators the merge scripts use. A
+record that fails is sent back with the exact problems, up to three attempts;
+if it still fails it simply stays pending. Only validated records are merged,
+so pending work only ever shrinks. The PR says the text was written by a model,
+and a run that could not finish says what is left. The notification issue
+follows suit.
+
+Things to know:
+
+- The model sees only public text: the fixed-bug summaries from
+  developer.4d.com and the public 4D-JP release notes.
+- Validation checks structure (links, commands, numbers, polite form, one
+  paragraph…), not whether the wording is good. The PR is never merged for you.
+- Cost guards: `AUTOMATE_CHUNK_SIZE` (default 10 records per request),
+  `AUTOMATE_MAX_RECORDS` (default 400 per stage per run; the rest stays pending
+  for the next run) and `AUTOMATE_WORKERS` (default 4). Set them as environment
+  variables on the workflow step if you want other values.
+- To run it locally: `OPENAI_API_KEY=… OPENAI_MODEL=… python3 scripts/update/automate.py`
+  after `./scripts/update.sh`, then `./scripts/update.sh --build-only`.
+  Exit codes: 0 all written, 3 not configured, 4 partial, 5 nothing pending.
+
 When a scheduled run does open a PR, continue as above: write the enrichment
 and translations on its branch, then run the workflow on that branch with mode
 `build-only`. Note that GitHub disables scheduled workflows after 60 days

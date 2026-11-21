@@ -6,6 +6,8 @@ name: Update dataset
 # Scheduled runs only open a pull request when something other than crawl
 # timestamps changed, and are skipped while an earlier dataset-update/* pull
 # request is still open (it may be waiting for enrichment or translation).
+# With OPENAI_API_KEY (secret) and OPENAI_MODEL (variable) set, update runs also
+# write the pending summaries with the model and finish the build themselves.
 # Every scheduled run ends by filing a status issue that @mentions the
 # repository owner (the "notify" job), with a to-do reminder when work is due.
 #
@@ -69,8 +71,9 @@ jobs:
     needs: guard
     if: needs.guard.outputs.skip != 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     outputs:
+      automated: ${{ steps.run.outputs.automated }}
       changed: ${{ steps.run.outputs.changed }}
       pending: ${{ steps.run.outputs.pending }}
       pending_ja: ${{ steps.run.outputs.pending_ja }}
@@ -107,6 +110,11 @@ jobs:
 
       - name: Run pipeline
         id: run
+        env:
+          # Optional: with both set, the writing gates are done by the model
+          # (scripts/update/automate.py). Without them a person does them.
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
         run: |
           set -euo pipefail
           args=()
@@ -116,6 +124,22 @@ jobs:
             args+=(--full-crawl)
           fi
           ./scripts/update.sh ${args[@]+"${args[@]}"}
+
+          # Write the pending English / Japanese / French summaries with the
+          # model, then finish the build in the same run. Exit codes of
+          # automate.py: 0 all written, 3 not configured, 4 partial, 5 nothing pending.
+          automated=false
+          if [ "$MODE" = "update" ]; then
+            rc=0
+            python3 scripts/update/automate.py || rc=$?
+            case "$rc" in
+              0) ./scripts/update.sh --build-only; automated=true ;;
+              4) automated=partial ;;
+              3|5) ;;
+              *) echo "automate.py failed unexpectedly (exit $rc)"; exit "$rc" ;;
+            esac
+          fi
+          echo "automated=$automated" >> "$GITHUB_OUTPUT"
 
           pending=$(python3 -c "import json;print(len(json.load(open('data/pending_enrichment.json'))))")
           echo "pending=$pending" >> "$GITHUB_OUTPUT"
@@ -144,6 +168,9 @@ jobs:
           fi
 
       - name: Summarize
+        env:
+          AUTOMATED: ${{ steps.run.outputs.automated }}
+          OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
         run: |
           python3 - > "$RUNNER_TEMP/pr_body.md" <<'EOF'
           import json, os
@@ -151,6 +178,14 @@ jobs:
           run_url = (f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}"
                      f"/actions/runs/{os.environ['GITHUB_RUN_ID']}")
           print(f"Automated dataset refresh (`{os.environ['MODE']}` mode, [run]({run_url})).\n")
+          model = os.environ.get("OPENAI_MODEL", "")
+          if os.environ.get("AUTOMATED") == "true":
+              print(f"The new summaries in this PR were **written automatically** by an OpenAI model (`{model}`) "
+                    "and passed the same validators as hand-written ones. Please skim them before merging: "
+                    "nobody proofreads the wording, especially the Japanese and French.\n")
+          elif os.environ.get("AUTOMATED") == "partial":
+              print(f"An OpenAI model (`{model}`) wrote part of the summaries. What it could not write validly "
+                    "is still pending and listed below; the run log has the reasons.\n")
           if pending:
               print(f"**{len(pending)} bug(s) need an English summary before the site can be rebuilt.**\n")
               print("Write them per `scripts/update/ENRICHMENT_PROMPT.md`, merge with "
@@ -229,6 +264,7 @@ jobs:
       PENDING_JA: ${{ needs.update.outputs.pending_ja }}
       PENDING_FR: ${{ needs.update.outputs.pending_fr }}
       PR_URL: ${{ needs.update.outputs.pr_url }}
+      AUTOMATED: ${{ needs.update.outputs.automated }}
       RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
     steps:
       - name: Report status
@@ -268,11 +304,27 @@ jobs:
               echo "Run: $RUN_URL"
             } > "$body"
             remind=false
+          elif [ "${AUTOMATED:-false}" = "true" ]; then
+            status="update PR ready for review"
+            {
+              echo "@$OWNER The weekly dataset update found changes, **wrote the English, Japanese and French summaries automatically**, rebuilt the site data and opened a pull request: ${PR_URL:-see the run}"
+              echo
+              echo "Run: $RUN_URL"
+              echo
+              echo "### To do"
+              echo "1. Skim the new summaries in the PR. They passed the validators, but nobody proofreads the wording, especially the Japanese and French."
+              echo "2. Merge the PR to publish."
+            } > "$body"
+            remind=false
           else
             status="update PR opened"
             {
               echo "@$OWNER The weekly dataset update found changes and opened a pull request: ${PR_URL:-see the run}"
               echo
+              if [ "${AUTOMATED:-false}" = "partial" ]; then
+                echo "The automatic writing could not finish everything; what is left is listed in the PR."
+                echo
+              fi
               echo "- English summaries pending: **${PENDING:-0}**"
               if [ "${PENDING:-0}" != "0" ]; then
                 echo "- Japanese and French: queued once the English summaries are merged"
