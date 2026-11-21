@@ -29,6 +29,24 @@ same pipeline on demand (Actions → Update dataset → Run workflow):
   translation gate instead (see [The Japanese site](#the-japanese-site) and
   [The French site](#the-french-site)). PR messaging lists both queues.
 
+### Weekly schedule
+
+The workflow also runs by itself every Monday at 04:17 UTC in `update` mode.
+Scheduled runs differ from manual ones in two ways:
+
+- They are **skipped** while a `dataset-update/*` pull request is still open,
+  since that PR is usually waiting for enrichment or translation and a second
+  one would only conflict with it.
+- They open a PR only if something **other than the crawl timestamps**
+  (`crawl_log.tsv`, `data/update_state.json`) changed, so a week with no new
+  fixes opens nothing.
+
+When a scheduled run does open a PR, continue as above: write the enrichment
+and translations on its branch, then run the workflow on that branch with mode
+`build-only`. Note that GitHub disables scheduled workflows after 60 days
+without repository activity; re-enable it from the Actions tab if that happens.
+Use *Run workflow* any time to refresh on demand.
+
 The repository must allow *GitHub Actions to create and approve pull requests*
 (Settings → Actions → General → Workflow permissions).
 

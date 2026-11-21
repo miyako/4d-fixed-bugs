@@ -1,6 +1,11 @@
 name: Update dataset
 
-# Manually triggered refresh of the bug dataset (see UPDATING.md).
+# Refresh of the bug dataset (see UPDATING.md). Runs weekly in "update" mode
+# and can also be triggered manually.
+#
+# Scheduled runs only open a pull request when something other than crawl
+# timestamps changed, and are skipped while an earlier dataset-update/* pull
+# request is still open (it may be waiting for enrichment or translation).
 #
 # - mode "update": crawl developer.4d.com/FixedBugsList + sync the 4D-JP notes, rebuild the
 #   context, and open a PR. If bugs need English summaries the pipeline stops
@@ -12,6 +17,9 @@ name: Update dataset
 #   embeddings, cache-bust) on the selected branch, committing the result.
 
 on:
+  schedule:
+    # Mondays 04:17 UTC (off the hour on purpose: scheduled jobs on :00 are delayed).
+    - cron: "17 4 * * 1"
   workflow_dispatch:
     inputs:
       mode:
@@ -33,12 +41,37 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      skip: ${{ steps.check.outputs.skip }}
+    steps:
+      - name: Skip scheduled runs while an update PR is open
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          skip=false
+          if [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
+            open=$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --json headRefName \
+                   --jq '[.[] | select(.headRefName | startswith("dataset-update/"))] | length')
+            if [ "$open" != "0" ]; then
+              echo "An earlier dataset-update PR is still open; skipping this scheduled run."
+              skip=true
+            fi
+          fi
+          echo "skip=$skip" >> "$GITHUB_OUTPUT"
+
   update:
+    needs: guard
+    if: needs.guard.outputs.skip != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 60
     env:
-      MODE: ${{ inputs.mode }}
-      FULL_CRAWL: ${{ inputs.full_crawl }}
+      # Scheduled runs have no inputs: default to a normal incremental update.
+      MODE: ${{ inputs.mode || 'update' }}
+      FULL_CRAWL: ${{ inputs.full_crawl || 'false' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -88,7 +121,15 @@ jobs:
             pending_fr=$(python3 -c "import json;print(len(json.load(open('data/pending_translation_fr.json'))))")
           fi
           echo "pending_fr=$pending_fr" >> "$GITHUB_OUTPUT"
-          if [ -n "$(git status --porcelain)" ]; then
+          # crawl_log.tsv and update_state.json carry timestamps that change on
+          # every crawl. A scheduled run only counts as changed when something
+          # else did, so quiet weeks open no pull request.
+          if [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
+            real=$(git status --porcelain | awk '{print $2}' | grep -vE '^(crawl_log\.tsv|data/update_state\.json)$' || true)
+          else
+            real=$(git status --porcelain)
+          fi
+          if [ -n "$real" ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -137,7 +178,7 @@ jobs:
           cat "$RUNNER_TEMP/pr_body.md" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Commit to current branch (build-only)
-        if: steps.run.outputs.changed == 'true' && inputs.mode == 'build-only'
+        if: steps.run.outputs.changed == 'true' && env.MODE == 'build-only'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
@@ -146,7 +187,7 @@ jobs:
           git push
 
       - name: Open pull request (update)
-        if: steps.run.outputs.changed == 'true' && inputs.mode == 'update'
+        if: steps.run.outputs.changed == 'true' && env.MODE == 'update'
         uses: peter-evans/create-pull-request@v7
         with:
           branch: dataset-update/${{ github.run_id }}
