@@ -2,3 +2,6 @@
 // Versions only published under FixedBugsList/nightly/<BRANCH>/,
 // with no corresponding FixedBugsList/versions/<VERSION>/ listing.
 export const BETA_ONLY_VERSIONS = new Set(["21_r5"]);
+// Versions with no listing page at all on developer.4d.com (the site dropped
+// its older lists). They are shown as plain text rather than as dead links.
+export const UNLISTED_VERSIONS = new Set(["15","15.3","16.6","17_r5","17_r6","17.2_hf1","17.3","17.3_hf1","17.3_hf2","17.3_hf3","17.4","17.4_hf1","17.4_hf2","17.5","18","18.0_hf1","18_r2","18_r3","18_r4","18_r5","18_r6","18.1","18.1_hf1","18.2","18.2_hf1","18.2_hf2","18.3","18.3_hf1","18.3_hf2","18.3_hf3","18.4","18.4_hf1","18.4_hf2","18.4_hf3","18.5","18.5_hf1","18.5_hf2","18.5_hf3","18.5_hf4","18.5_hf5","18.6","19.0_hf1","19.0_hf2","19_r2","19_r3","19_r4","19_r4_hf1","19_r4_hf2","19_r5","19_r5_hf1","19_r5_hf2","19_r6","19_r6_hf1","19_r6_hf2","19_r7","19_r7_hf1","19_r7_hf2","21.0_hf1","21.0_hf2"]);

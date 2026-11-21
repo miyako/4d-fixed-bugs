@@ -75,6 +75,13 @@ HTML stop the crawl rather than recording a valid or missing page.
 Versions with a nightly listing but **no** released listing are recorded as
 `beta_only_versions` in `data/update_state.json` and baked into
 `docs/src/beta-versions.js` so the client uses `nightly/` for those links.
+
+Versions whose listing has been removed from the site entirely (every entry in
+`data/version_sources.json` with no source, e.g. most of 17.x and 18.x) are
+written to `UNLISTED_VERSIONS` in the same generated file. The client shows
+those as plain text instead of links, so no badge points at a page that no
+longer exists. The list is rebuilt from `version_sources.json` on every build,
+so a version that reappears on the site is linked again automatically.
 Versions with both listings continue to link to their released list.
 
 The legacy `bugs.4d.com` site is temporary and is no longer requested. Parsing
