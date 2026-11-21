@@ -82,8 +82,10 @@ def parent_of(version: str):
     return m.group(1) if m else None
 
 
-def classify(source: str, body: str, http_code: int = 200) -> tuple[bool, int]:
-    """(page_exists, bug_count) for a fetched page."""
+def classify(source: str, body: str, http_code: int = 200, url: str = "") -> tuple[bool, int]:
+    """(page_exists, bug_count) for a fetched page.
+
+    `url` is only used to make errors name the offending page."""
     if http_code == 404:
         return False, 0
     if http_code != 200:
@@ -98,7 +100,13 @@ def classify(source: str, body: str, http_code: int = 200) -> tuple[bool, int]:
         return True, len(ROW_MARKER_BETA.findall(body))
     elif not heading and not body.strip():
         return False, 0
-    raise RuntimeError(f"unrecognized HTML for {source} listing")
+    title = re.search(r"<title>(.*?)</title>", body, re.DOTALL)
+    raise RuntimeError(
+        f"unrecognized HTML for {source} listing {url} "
+        f"(h1={heading.group(1).strip()[:80] if heading else None!r}, "
+        f"title={title.group(1).strip()[:80] if title else None!r}, "
+        f"{len(body)} bytes)"
+    )
 
 
 def fetch(source: str, version: str, attempts: int = 3) -> tuple[int, str]:
@@ -187,7 +195,7 @@ def crawl(full: bool, workers: int) -> dict:
     def one(candidate):
         source, version = candidate
         http_code, body = fetch(source, version)
-        exists, bug_count = classify(source, body, http_code)
+        exists, bug_count = classify(source, body, http_code, listing_url(source, version))
         target_dir = EXISTS_DIR if exists else NOTFOUND_DIR
         path = os.path.join(target_dir, source, f"{version}.html")
         with open(path, "w", encoding="utf-8") as f:
