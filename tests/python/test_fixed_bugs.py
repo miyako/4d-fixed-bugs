@@ -136,3 +136,40 @@ class CrawlDiscovery(unittest.TestCase):
             self.assertTrue(os.path.exists(os.path.join(missing, "version", "21.2.html")))
             self.assertEqual(state["pages"]["version:21.2"]["status"], "not_found")
             self.assertEqual(save.call_args.args[0]["listing_base_url"], BASE_URL)
+
+
+class KeepPreviousData(unittest.TestCase):
+    def old(self, ref, versions, variants=("old text",)):
+        return {"reference": ref, "raw_summary": variants[0],
+                "raw_summary_variants": list(variants), "versions": versions}
+
+    def test_bug_missing_from_crawl_is_carried_over(self):
+        records = {}
+        carried, extended = parse.merge_previous(records, [self.old("ACI0000001", ["18_r5", "18.3"])])
+        self.assertEqual((carried, extended), (1, 0))
+        self.assertEqual(records["ACI0000001"]["versions"], {"18_r5", "18.3"})
+        self.assertEqual(records["ACI0000001"]["summaries"], {"old text"})
+
+    def test_crawled_bug_keeps_new_text_and_gains_old_versions(self):
+        records = {"ACI0000002": {"versions": {"21.2"}, "summaries": {"new text"}}}
+        carried, extended = parse.merge_previous(
+            records, [self.old("ACI0000002", ["18.2", "21.2"], ("old text",))])
+        self.assertEqual((carried, extended), (0, 1))
+        self.assertEqual(records["ACI0000002"]["versions"], {"18.2", "21.2"})
+        self.assertEqual(records["ACI0000002"]["summaries"], {"new text"})
+
+    def test_invalid_references_and_versions_are_dropped(self):
+        records = {}
+        parse.merge_previous(records, [
+            self.old("NOT-AN-ACI", ["18"]),
+            self.old("ACI0000003", ["18", "18.3_nb_257605"]),
+        ])
+        self.assertEqual(list(records), ["ACI0000003"])
+        self.assertEqual(records["ACI0000003"]["versions"], {"18"})
+
+    def test_missing_or_corrupt_previous_file_is_empty(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.assertEqual(parse.load_previous(os.path.join(d, "none.json")), [])
+            bad = os.path.join(d, "bad.json")
+            open(bad, "w").write("{not json")
+            self.assertEqual(parse.load_previous(bad), [])
