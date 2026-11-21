@@ -33,6 +33,7 @@ const EN = {
     loadingChat: "Downloading local AI model… this can take a while the first time.",
     loadingChatShort: "Loading local AI model…",
     ready: (n, min, max) => `Ready. ${n} fixed 4D bugs loaded (versions ${min}-${max}). Describe a bug to search.`,
+    lastUpdated: (date) => `Data last updated: ${date}`,
     failed: (msg) => `Failed to start: ${msg}`,
     searching: "Searching the bug database…",
     thinking: "Thinking…",
@@ -77,6 +78,7 @@ const JA = {
     filterMatch: "条件一致",
     loadingChat: "ローカル AI モデルをダウンロードしています… 初回は時間がかかります。",
     loadingChatShort: "ローカル AI モデルを読み込んでいます…",
+    lastUpdated: (date) => `データ最終更新: ${date}`,
     ready: (n, min, max) =>
       `準備ができました。修正済みの 4D バグ ${n} 件（v${min}〜v${max}）を読み込みました。調べたいバグの内容を入力してください。`,
     failed: (msg) => `起動に失敗しました: ${msg}`,
@@ -123,6 +125,7 @@ const FR = {
     filterMatch: "Filtre",
     loadingChat: "Téléchargement du modèle d’IA local… cela peut prendre du temps la première fois.",
     loadingChatShort: "Chargement du modèle d’IA local…",
+    lastUpdated: (date) => `Données mises à jour le : ${date}`,
     ready: (n, min, max) => `Prêt. ${n} bugs 4D corrigés chargés (versions ${min}-${max}). Décrivez un bug pour lancer la recherche.`,
     failed: (msg) => `Échec du démarrage : ${msg}`,
     searching: "Recherche dans la base de bugs…",
