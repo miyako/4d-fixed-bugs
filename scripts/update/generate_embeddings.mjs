@@ -70,6 +70,7 @@ const OUT_DIR = CONFIG.outDir;
 const OUT_BIN = path.join(OUT_DIR, "embeddings.bin");
 const OUT_META = path.join(OUT_DIR, "meta.json");
 const OUT_MANIFEST = path.join(OUT_DIR, "search-index.json");
+const OUT_UPDATED = path.join(REPO_ROOT, "docs", "data", "last-updated.json");
 const OUT_BETA = path.join(REPO_ROOT, "docs", "src", "beta-versions.js");
 const VERSION_SOURCES_PATH = path.join(REPO_ROOT, "data", "version_sources.json");
 
@@ -223,6 +224,17 @@ async function main() {
   console.log(`Wrote ${OUT_META} (${records.length} records)`);
 
   if (LANG === "en") {
+    // When the data was last crawled from developer.4d.com: the newest page
+    // `last_seen` in the update state (stable across rebuilds of the same crawl).
+    const seen = Object.values(state.pages ?? {})
+      .map((p) => Date.parse(p.last_seen))
+      .filter(Number.isFinite);
+    if (seen.length) {
+      const crawledAt = new Date(Math.max(...seen)).toISOString();
+      await writeFile(OUT_UPDATED, JSON.stringify({ crawled_at: crawledAt }, null, 2) + "\n");
+      console.log(`Wrote ${OUT_UPDATED} (crawled_at ${crawledAt})`);
+    }
+
     const sources = await readJson(VERSION_SOURCES_PATH, {});
     const unlisted = Object.keys(sources).filter((v) => !sources[v]?.length);
     const beta = await writeBetaVersions(state.beta_only_versions ?? [], unlisted);

@@ -1,4 +1,5 @@
 import { renderSummary, renderVersions } from "./render.js";
+import { showLastUpdated } from "./last-updated.js";
 import { parseVersionIntent, bugMatchesIntent, describeIntent } from "./version.js";
 import { buildCommandIndex, extractCommandMentions } from "./commands.js";
 import * as webllmEngine from "./engines/webllm-engine.js";
@@ -646,6 +647,12 @@ async function boot() {
       await loadChatEngine();
     }
     setBootStatus(T.ready(meta.length, minMajor, maxMajor));
+    showLastUpdated(
+      document.getElementById("last-updated"),
+      new URL("../data/last-updated.json", import.meta.url),
+      LOCALE.lang,
+      T.lastUpdated,
+    );
     setReady(true);
     void semantic.start();
   } catch (err) {
