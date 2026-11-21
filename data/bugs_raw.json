@@ -554,9 +554,8 @@
   },
   {
     "reference": "ACI0099336",
-    "raw_summary": "'RELATE ONE SELECTION' do not use correctly the parameter passed to 'SET FIELD RELATION'.",
+    "raw_summary": "'RELATE ONE SELECTION' don't use correctly the parameter passed to 'SET FIELD RELATION'.",
     "raw_summary_variants": [
-      "'RELATE ONE SELECTION' do not use correctly the parameter passed to 'SET FIELD RELATION'.",
       "'RELATE ONE SELECTION' don't use correctly the parameter passed to 'SET FIELD RELATION'."
     ],
     "versions": [
@@ -3558,8 +3557,7 @@
     "reference": "ACI0100583",
     "raw_summary": "Same Certificates are repeated in the openSSL certificate chain, when you stop and then, start the web server.",
     "raw_summary_variants": [
-      "Same Certificates are repeated in the openSSL certificate chain, when you stop and then, start the web server.",
-      "Same Certificates are repeated in the openSSL certificate chain, when you stop then start the web server."
+      "Same Certificates are repeated in the openSSL certificate chain, when you stop and then, start the web server."
     ],
     "versions": [
       "19_r5",
@@ -5601,8 +5599,7 @@
     "reference": "ACI0101060",
     "raw_summary": "In the 'Export data' dialog box, when you apply a numeric format to a real table field, in the preview area the data appears with double decimal points.",
     "raw_summary_variants": [
-      "In the 'Export data' dialog box, when you apply a numeric format to a real table field, in the preview area the data appears with double decimal points.",
-      "In the export data dialog box, when you apply a numeric format to a real table field, in the preview area, the data appear with double decimal points."
+      "In the 'Export data' dialog box, when you apply a numeric format to a real table field, in the preview area the data appears with double decimal points."
     ],
     "versions": [
       "18.5_hf3",
@@ -5668,9 +5665,8 @@
   },
   {
     "reference": "ACI0101068",
-    "raw_summary": "Deleting the content of a cell with the keyboard is not detected as a modification of a 4D View Pro document",
+    "raw_summary": "4D View Pro: Deleting the content of a cell with the keyboard is not detected as a modification",
     "raw_summary_variants": [
-      "Deleting the content of a cell with the keyboard is not detected as a modification of a 4D View Pro document",
       "4D View Pro: Deleting the content of a cell with the keyboard is not detected as a modification"
     ],
     "versions": [
@@ -6179,8 +6175,7 @@
     "reference": "ACI0101233",
     "raw_summary": "4D View Pro: While loading, when you resize a form window just before the 4D View Pro is displayed, 4D may freeze.",
     "raw_summary_variants": [
-      "4D View Pro: While loading, when you resize a form window just before the 4D View Pro is displayed, 4D may freeze.",
-      "4D View Pro: When you resize a form window, just before the 4D View Pro is ready, 4D freezes."
+      "4D View Pro: While loading, when you resize a form window just before the 4D View Pro is displayed, 4D may freeze."
     ],
     "versions": [
       "18.5_hf3",
@@ -6686,8 +6681,7 @@
     "reference": "ACI0101326",
     "raw_summary": "4D may crash when null is passed as a parameter to a method in compiled mode .",
     "raw_summary_variants": [
-      "4D may crash when null is passed as a parameter to a method in compiled mode .",
-      "4D crashes when null is passed as a parameter to a method in compiled mode"
+      "4D may crash when null is passed as a parameter to a method in compiled mode ."
     ],
     "versions": [
       "18.5_hf3",
@@ -8322,8 +8316,7 @@
     "reference": "ACI0101759",
     "raw_summary": "Label editor: Applying a format thanks to the command 'String' doesn't work.",
     "raw_summary_variants": [
-      "Label editor: Applying a format thanks to the command 'String' doesn't work.",
-      "Cannot Format Fields in Label Editor"
+      "Label editor: Applying a format thanks to the command 'String' doesn't work."
     ],
     "versions": [
       "18.5_hf3",
@@ -8416,8 +8409,7 @@
     "reference": "ACI0101791",
     "raw_summary": "The 4D command 'BUILD APPLICATION' launched in the 'On startup' method, doesn't generate the error file.",
     "raw_summary_variants": [
-      "The 4D command 'BUILD APPLICATION' launched in the 'On startup' method, doesn't generate the error file.",
-      "The BUILD APPLICATION command launched in the on startup method, doesn't generate the error file"
+      "The 4D command 'BUILD APPLICATION' launched in the 'On startup' method, doesn't generate the error file."
     ],
     "versions": [
       "18.5_hf5",
@@ -8589,8 +8581,7 @@
     "reference": "ACI0101834",
     "raw_summary": "In Client-Server mode, locking twice a same entity keeps the record locked, despite the entity is cleared with Null value once.",
     "raw_summary_variants": [
-      "In Client-Server mode, locking twice a same entity keeps the record locked, despite the entity is cleared with Null value once.",
-      "In C/S, locking twice a same entity keeps the record locked despite the entity is cleared after with Null value once."
+      "In Client-Server mode, locking twice a same entity keeps the record locked, despite the entity is cleared with Null value once."
     ],
     "versions": [
       "18.5_hf3",
@@ -8775,8 +8766,7 @@
     "reference": "ACI0101878",
     "raw_summary": "Despite the fields index is set to b-tree, loading a newer data file may set the index to “automatic”.",
     "raw_summary_variants": [
-      "Despite the fields index is set to b-tree, loading a newer data file may set the index to “automatic”.",
-      "4D_INDEX_PROBLEM (Cluster B-tree) is not always set correctly or wrong index displayed"
+      "Despite the fields index is set to b-tree, loading a newer data file may set the index to “automatic”."
     ],
     "versions": [
       "18.5_hf1",
@@ -8899,8 +8889,7 @@
     "reference": "ACI0101912",
     "raw_summary": "Label editor: impossible to save modification on edited concatenated fields.",
     "raw_summary_variants": [
-      "Label editor: impossible to save modification on edited concatenated fields.",
-      "Label editor does not save edits to fields"
+      "Label editor: impossible to save modification on edited concatenated fields."
     ],
     "versions": [
       "18.5_hf3",
@@ -8968,8 +8957,7 @@
     "reference": "ACI0101933",
     "raw_summary": "4D View Pro: the command 'VP Convert to picture' using floating picture throws an error on Mac Silicon.",
     "raw_summary_variants": [
-      "4D View Pro: the command 'VP Convert to picture' using floating picture throws an error on Mac Silicon.",
-      "The command VP convert to picture with floating picture throw an error on Mac Silicon"
+      "4D View Pro: the command 'VP Convert to picture' using floating picture throws an error on Mac Silicon."
     ],
     "versions": [
       "19",
@@ -9024,9 +9012,8 @@
   },
   {
     "reference": "ACI0101950",
-    "raw_summary": "After binary database is converted to project database, connecting client to server takes much more time with the project database than the binary database.",
+    "raw_summary": "After binary database is converted to project database, connecting client to server takes much more time.",
     "raw_summary_variants": [
-      "After binary database is converted to project database, connecting client to server takes much more time with the project database than the binary database.",
       "After binary database is converted to project database, connecting client to server takes much more time."
     ],
     "versions": [
@@ -9137,8 +9124,7 @@
     "reference": "ACI0101978",
     "raw_summary": "LDAP Object GUID returned from 'LDAP Search' is a wrong text.",
     "raw_summary_variants": [
-      "LDAP Object GUID returned from 'LDAP Search' is a wrong text.",
-      "LDAP Object GUID returns Text instead of binary"
+      "LDAP Object GUID returned from 'LDAP Search' is a wrong text."
     ],
     "versions": [
       "18.5_hf3",
@@ -9268,9 +9254,8 @@
   },
   {
     "reference": "ACI0102010",
-    "raw_summary": "In Listboxes with entity selection, current item and current index change when clicking an unselectable row (via meta.unselectable)",
+    "raw_summary": "In a listbox with entity selection, current item and current index change when clicking an unselectable row (via meta.unselectable)",
     "raw_summary_variants": [
-      "In Listboxes with entity selection, current item and current index change when clicking an unselectable row (via meta.unselectable)",
       "In a listbox with entity selection, current item and current index change when clicking an unselectable row (via meta.unselectable)"
     ],
     "versions": [
@@ -9347,9 +9332,8 @@
   },
   {
     "reference": "ACI0102024",
-    "raw_summary": "Encrypting when no records on a table leads to make appear unexpectedly a yellow triangle.",
+    "raw_summary": "Encrypting when no record on a table leads to make appear unexpectedly a yellow triangle.",
     "raw_summary_variants": [
-      "Encrypting when no records on a table leads to make appear unexpectedly a yellow triangle.",
       "Encrypting when no record on a table leads to make appear unexpectedly a yellow triangle."
     ],
     "versions": [
@@ -9410,9 +9394,8 @@
   },
   {
     "reference": "ACI0102035",
-    "raw_summary": "When a 4D v18 catalog is opened with 4D v19 every, <tip> tag is modified to add a return before the closing tag. This makes proper version control impossible when working with multiple versions because it creates thousands of changes in the catalog file.",
+    "raw_summary": "When a 4D v18 catalog is opened with 4D v19, every <tip> tag is modified to add a return before the closing tag. This makes proper version control impossible when working with multiple versions because it creates thousands of changes in the catalog file.",
     "raw_summary_variants": [
-      "When a 4D v18 catalog is opened with 4D v19 every, <tip> tag is modified to add a return before the closing tag. This makes proper version control impossible when working with multiple versions because it creates thousands of changes in the catalog file.",
       "When a 4D v18 catalog is opened with 4D v19, every <tip> tag is modified to add a return before the closing tag. This makes proper version control impossible when working with multiple versions because it creates thousands of changes in the catalog file."
     ],
     "versions": [
@@ -9490,8 +9473,7 @@
     "reference": "ACI0102083",
     "raw_summary": "'ON EVENT CALL' returns incorrect keycodes when used with modifier: when capturing keycodes during 'ON EVENT CALL', the returned keycodes do not match the expected character codes.",
     "raw_summary_variants": [
-      "'ON EVENT CALL' returns incorrect keycodes when used with modifier: when capturing keycodes during 'ON EVENT CALL', the returned keycodes do not match the expected character codes.",
-      "ON EVENT CALL returns incorrect keycodes when used with modifier : when capturing keycodes during ON EVENT CALL, the returned keycodes do not match the expected character codes."
+      "'ON EVENT CALL' returns incorrect keycodes when used with modifier: when capturing keycodes during 'ON EVENT CALL', the returned keycodes do not match the expected character codes."
     ],
     "versions": [
       "18.5_hf1",
@@ -9503,9 +9485,8 @@
   },
   {
     "reference": "ACI0102087",
-    "raw_summary": "4D Write Pro: Importing '.docx' with mergefields and formatting code, can generate ghost characters in range text",
+    "raw_summary": "4D Write Pro: Importing '.docx' with mergefields and formatting code can generate ghost characters in range text",
     "raw_summary_variants": [
-      "4D Write Pro: Importing '.docx' with mergefields and formatting code, can generate ghost characters in range text",
       "4D Write Pro: Importing '.docx' with mergefields and formatting code can generate ghost characters in range text"
     ],
     "versions": [
@@ -9538,9 +9519,8 @@
   },
   {
     "reference": "ACI0102098",
-    "raw_summary": "Stamp has unexpectedly changed when saving a related entity twice within a transaction.",
+    "raw_summary": "Stamp changes unexpectedly when saving a related entity twice within a transaction.",
     "raw_summary_variants": [
-      "Stamp has unexpectedly changed when saving a related entity twice within a transaction.",
       "Stamp changes unexpectedly when saving a related entity twice within a transaction."
     ],
     "versions": [
@@ -9556,8 +9536,7 @@
     "reference": "ACI0102101",
     "raw_summary": "Since v19, \"tinyMCE\" spell checking doesn't work anymore in a web area. Windows system only.",
     "raw_summary_variants": [
-      "Since v19, \"tinyMCE\" spell checking doesn't work anymore in a web area. Windows system only.",
-      "Since v19 tinyMSE spell checking in a web area stops working under Windows"
+      "Since v19, \"tinyMCE\" spell checking doesn't work anymore in a web area. Windows system only."
     ],
     "versions": [
       "19.0_hf2",
@@ -9582,8 +9561,7 @@
     "reference": "ACI0102107",
     "raw_summary": "In Explorer window, information list of fields does not populate when going through the 'Home' tab.",
     "raw_summary_variants": [
-      "In Explorer window, information list of fields does not populate when going through the 'Home' tab.",
-      "Detail list of fields in a table does not populate on 4D Explorer/Home tab"
+      "In Explorer window, information list of fields does not populate when going through the 'Home' tab."
     ],
     "versions": [
       "19",
@@ -9630,8 +9608,7 @@
     "reference": "ACI0102113",
     "raw_summary": "When using Compare strings command, comparing ゆーざー and ユーザー with sk width insensitive will give you 0 (same value), whereas they aren't the same.",
     "raw_summary_variants": [
-      "When using Compare strings command, comparing ゆーざー and ユーザー with sk width insensitive will give you 0 (same value), whereas they aren't the same.",
-      "When using Compare strings command, comparing ゆーざー and ユーザー with sk width insensitive will give you 0 (same) but they aren't the same."
+      "When using Compare strings command, comparing ゆーざー and ユーザー with sk width insensitive will give you 0 (same value), whereas they aren't the same."
     ],
     "versions": [
       "19.0_hf1",
@@ -9643,8 +9620,7 @@
     "reference": "ACI0102118",
     "raw_summary": "There is a ghost blue line when clicking on a dropdown list.",
     "raw_summary_variants": [
-      "There is a ghost blue line when clicking on a dropdown list.",
-      "Dropdown list: ghost blue line when clicking"
+      "There is a ghost blue line when clicking on a dropdown list."
     ],
     "versions": [
       "19.0_hf1",
@@ -9681,8 +9657,7 @@
     "reference": "ACI0102125",
     "raw_summary": "In Project mode only, 'REJECT' command is not working when applied on a field",
     "raw_summary_variants": [
-      "In Project mode only, 'REJECT' command is not working when applied on a field",
-      "In Project mode only, 'REJECT' command is not working when applied to a field"
+      "In Project mode only, 'REJECT' command is not working when applied on a field"
     ],
     "versions": [
       "18.5_hf2",
@@ -9697,8 +9672,7 @@
     "reference": "ACI0102141",
     "raw_summary": "Calling \".fromCollection()\" from Client/Remote side saves dates in objects as ISO strings instead of dates.",
     "raw_summary_variants": [
-      "Calling \".fromCollection()\" from Client/Remote side saves dates in objects as ISO strings instead of dates.",
-      "Calling \".fromCollection()\" from Client/Remote side save dates in objects as ISO strings instead of dates."
+      "Calling \".fromCollection()\" from Client/Remote side saves dates in objects as ISO strings instead of dates."
     ],
     "versions": [
       "18.5_hf3",
@@ -9738,9 +9712,8 @@
   },
   {
     "reference": "ACI0102145",
-    "raw_summary": "When converting a database to Project mode, in List box, some Font Colors and alignment properties revert to default settings",
+    "raw_summary": "After converting a database to project mode, in a listbox font colors and alignment properties revert to default settings.",
     "raw_summary_variants": [
-      "When converting a database to Project mode, in List box, some Font Colors and alignment properties revert to default settings",
       "After converting a database to project mode, in a listbox font colors and alignment properties revert to default settings."
     ],
     "versions": [
@@ -9780,8 +9753,7 @@
     "reference": "ACI0102159",
     "raw_summary": "'METHOD GET PATHS' 4D command used from a compiled component doesn’t see the host shared methods when the host is in '.4DZ' format",
     "raw_summary_variants": [
-      "'METHOD GET PATHS' 4D command used from a compiled component doesn’t see the host shared methods when the host is in '.4DZ' format",
-      "'METHOD GET PATHS' 4D command, from a compiled component, doesn’t see the host shared methods when the host is in '.4DZ' format"
+      "'METHOD GET PATHS' 4D command used from a compiled component doesn’t see the host shared methods when the host is in '.4DZ' format"
     ],
     "versions": [
       "18.5_hf2",
@@ -9823,8 +9795,7 @@
     "reference": "ACI0102166",
     "raw_summary": "Updates in the folder 'Ressources' of a component are not transfered to client anymore.",
     "raw_summary_variants": [
-      "Updates in the folder 'Ressources' of a component are not transfered to client anymore.",
-      "Updates in a folder 'Ressources' of a component are not transfered to client anymore."
+      "Updates in the folder 'Ressources' of a component are not transfered to client anymore."
     ],
     "versions": [
       "19.0_hf2",
@@ -9849,9 +9820,8 @@
   },
   {
     "reference": "ACI0102170",
-    "raw_summary": "Unexpected execution error about Relation path (link between 2 tables) at database launch with 4D Remote if 'On startup' database method is not empty.",
+    "raw_summary": "Unexpected execution error about relation path (link between 2 tables) at database launch with 4D Remote if 'On startup' database method is not empty.",
     "raw_summary_variants": [
-      "Unexpected execution error about Relation path (link between 2 tables) at database launch with 4D Remote if 'On startup' database method is not empty.",
       "Unexpected execution error about relation path (link between 2 tables) at database launch with 4D Remote if 'On startup' database method is not empty."
     ],
     "versions": [
@@ -9863,9 +9833,8 @@
   },
   {
     "reference": "ACI0102171",
-    "raw_summary": "4D Entity selection Listbox builder doesn't display the entities in Client/Server mode",
+    "raw_summary": "4D Entity selection listbox builder doesn't display the entities in Client/Server mode",
     "raw_summary_variants": [
-      "4D Entity selection Listbox builder doesn't display the entities in Client/Server mode",
       "4D Entity selection listbox builder doesn't display the entities in Client/Server mode"
     ],
     "versions": [
@@ -9879,8 +9848,7 @@
     "reference": "ACI0102174",
     "raw_summary": "An expected error with 'WEB SERVICE CALL' may freeze the 4D application",
     "raw_summary_variants": [
-      "An expected error with 'WEB SERVICE CALL' may freeze the 4D application",
-      "'WEB SERVICE CALL' with error freeze the 4D application"
+      "An expected error with 'WEB SERVICE CALL' may freeze the 4D application"
     ],
     "versions": [
       "18.5_hf3",
@@ -9960,8 +9928,7 @@
     "reference": "ACI0102186",
     "raw_summary": "If the encoding attribute is missing from the loaded XML, it is set as an empty string (encoding=\"\") while exporting SVG; the command \"SVG_Export_to_XML\" creates invalid xml).",
     "raw_summary_variants": [
-      "If the encoding attribute is missing from the loaded XML, it is set as an empty string (encoding=\"\") while exporting SVG; the command \"SVG_Export_to_XML\" creates invalid xml).",
-      "If the encoding attribute is missing from the loaded XML, it is set as an empty string during export"
+      "If the encoding attribute is missing from the loaded XML, it is set as an empty string (encoding=\"\") while exporting SVG; the command \"SVG_Export_to_XML\" creates invalid xml)."
     ],
     "versions": [
       "18.5_hf4",
@@ -9974,8 +9941,7 @@
     "reference": "ACI0102188",
     "raw_summary": "Loading an object has 2-50 times higher 'exec_duration' (see request log) compared to blob ; in Client/Server mode only.",
     "raw_summary_variants": [
-      "Loading an object has 2-50 times higher 'exec_duration' (see request log) compared to blob ; in Client/Server mode only.",
-      "Client/Server: loading object has 2-50 times higher exec_duration compared to blob"
+      "Loading an object has 2-50 times higher 'exec_duration' (see request log) compared to blob ; in Client/Server mode only."
     ],
     "versions": [
       "19.0_hf2",
@@ -9985,9 +9951,8 @@
   },
   {
     "reference": "ACI0102189",
-    "raw_summary": "4D Write Pro PDF export does not take into account text color of text SVGs",
+    "raw_summary": "4D Write Pro: PDF export doesn't take into account text color of text SVGs",
     "raw_summary_variants": [
-      "4D Write Pro PDF export does not take into account text color of text SVGs",
       "4D Write Pro: PDF export doesn't take into account text color of text SVGs"
     ],
     "versions": [
@@ -10001,9 +9966,7 @@
     "reference": "ACI0102193",
     "raw_summary": "4D View Pro: 'paperSize' attribute in upper case (A4) is not supported by the command 'VP set print info'.",
     "raw_summary_variants": [
-      "4D View Pro: 'paperSize' attribute in upper case (A4) is not supported by the command 'VP set print info'.",
-      "'paperSize' attribute in upper case (A4) is not supported by the command 'VP set print info'.",
-      "paperSize attribute in upper case (A4) is not supported by the command 'VP set print info'."
+      "4D View Pro: 'paperSize' attribute in upper case (A4) is not supported by the command 'VP set print info'."
     ],
     "versions": [
       "19_r4",
@@ -10014,9 +9977,8 @@
   },
   {
     "reference": "ACI0102194",
-    "raw_summary": "In 4D View Pro, the paperSize.kind attribute returned by the command 'VP Get print info' is wrong.",
+    "raw_summary": "4D View Pro: the paperSize.kind attribute returned by the command 'VP Get print info' is wrong.",
     "raw_summary_variants": [
-      "In 4D View Pro, the paperSize.kind attribute returned by the command 'VP Get print info' is wrong.",
       "4D View Pro: the paperSize.kind attribute returned by the command 'VP Get print info' is wrong."
     ],
     "versions": [
@@ -10054,9 +10016,8 @@
   },
   {
     "reference": "ACI0102201",
-    "raw_summary": "On Mac OS, unable to start Web server on port 80 on specific IP-address",
+    "raw_summary": "On macOS, unable to start Web server on port 80 on specific IP-address",
     "raw_summary_variants": [
-      "On Mac OS, unable to start Web server on port 80 on specific IP-address",
       "On macOS, unable to start Web server on port 80 on specific IP-address"
     ],
     "versions": [
@@ -10084,8 +10045,7 @@
     "reference": "ACI0102206",
     "raw_summary": "In method editor, autocomplete doesn't show up the list of suggestions for objects.",
     "raw_summary_variants": [
-      "In method editor, autocomplete doesn't show up the list of suggestions for objects.",
-      "Object Autocomplete doesn't show up the list of suggestions"
+      "In method editor, autocomplete doesn't show up the list of suggestions for objects."
     ],
     "versions": [
       "19.0_hf2",
@@ -10173,8 +10133,7 @@
     "reference": "ACI0102227",
     "raw_summary": "Check boxes created with very old 4D versions are unexpectedly converted as none-enterable check boxes",
     "raw_summary_variants": [
-      "Check boxes created with very old 4D versions are unexpectedly converted as none-enterable check boxes",
-      "Check boxes created with very old 4D versions are converted with v19 as none enterable check boxes"
+      "Check boxes created with very old 4D versions are unexpectedly converted as none-enterable check boxes"
     ],
     "versions": [
       "19",
@@ -10188,8 +10147,7 @@
     "reference": "ACI0102228",
     "raw_summary": "4D Write Pro: after a conversion from 4D Write to 4D Write pro, some unexpected extra tabs appear in the text.",
     "raw_summary_variants": [
-      "4D Write Pro: after a conversion from 4D Write to 4D Write pro, some unexpected extra tabs appear in the text.",
-      "4D Write Pro: Conversion from 4D Write to 4D Write pro has extra tabs in the text."
+      "4D Write Pro: after a conversion from 4D Write to 4D Write pro, some unexpected extra tabs appear in the text."
     ],
     "versions": [
       "19.0_hf1",
@@ -10217,8 +10175,7 @@
     "reference": "ACI0102232",
     "raw_summary": "4D Write Pro: The full path for an image is set in \"alternate text\" attribute, whereas it should be only the name.",
     "raw_summary_variants": [
-      "4D Write Pro: The full path for an image is set in \"alternate text\" attribute, whereas it should be only the name.",
-      "4D Write Pro: The full path for an image is set in \"alternate text\" attribute"
+      "4D Write Pro: The full path for an image is set in \"alternate text\" attribute, whereas it should be only the name."
     ],
     "versions": [
       "19.0_hf1",
@@ -10230,8 +10187,7 @@
     "reference": "ACI0102233",
     "raw_summary": "Label editor: since v18.2, expressions and formatting are not displayed anymore; and the printing is wrong.",
     "raw_summary_variants": [
-      "Label editor: since v18.2, expressions and formatting are not displayed anymore; and the printing is wrong.",
-      "Since v18.2, expressions and formatting are not displayed anymore"
+      "Label editor: since v18.2, expressions and formatting are not displayed anymore; and the printing is wrong."
     ],
     "versions": [
       "18.5_hf3",
@@ -10296,8 +10252,7 @@
     "reference": "ACI0102249",
     "raw_summary": "Pressing arrow down key after a dialog window with an enterable listbox in it is moved back to front may lead to a crash.",
     "raw_summary_variants": [
-      "Pressing arrow down key after a dialog window with an enterable listbox in it is moved back to front may lead to a crash.",
-      "Crash when pressing arrow down after in a list box after dialog was brought to back and to front again"
+      "Pressing arrow down key after a dialog window with an enterable listbox in it is moved back to front may lead to a crash."
     ],
     "versions": [
       "19.0_hf2",
@@ -10307,9 +10262,8 @@
   },
   {
     "reference": "ACI0102252",
-    "raw_summary": "In 4D v19, validating Japanese text in method editor will cause unnecessary line break to happen",
+    "raw_summary": "Since v19, validating Japanese text in method editor causes unnecessary line break to happen.",
     "raw_summary_variants": [
-      "In 4D v19, validating Japanese text in method editor will cause unnecessary line break to happen",
       "Since v19, validating Japanese text in method editor causes unnecessary line break to happen."
     ],
     "versions": [
@@ -10344,8 +10298,7 @@
     "reference": "ACI0102258",
     "raw_summary": "'ELF' format web logs (need to select in Settings) are not well formatted: unexpected uppercase text, and problem of alignment.",
     "raw_summary_variants": [
-      "'ELF' format web logs (need to select in Settings) are not well formatted: unexpected uppercase text, and problem of alignment.",
-      "The ELF web logs are not well formatted"
+      "'ELF' format web logs (need to select in Settings) are not well formatted: unexpected uppercase text, and problem of alignment."
     ],
     "versions": [
       "18.5_hf3",
@@ -10359,8 +10312,7 @@
     "reference": "ACI0102260",
     "raw_summary": "The collection.remove ( index {; howMany} ) method removes the last howMany elements of the collection when howMany is bigger than collection length.",
     "raw_summary_variants": [
-      "The collection.remove ( index {; howMany} ) method removes the last howMany elements of the collection when howMany is bigger than collection length.",
-      "The collection.remove ( index {; howMany} ) method removes the last howMany elements of the collection even if howMany > (collection.length - index)"
+      "The collection.remove ( index {; howMany} ) method removes the last howMany elements of the collection when howMany is bigger than collection length."
     ],
     "versions": [
       "19.0_hf2",
@@ -10385,8 +10337,7 @@
     "reference": "ACI0102262",
     "raw_summary": "When converting to project mode, a highlight button (converted to invisible button) may contain an additional and unexpected object event checked: \"On Mouse Move\" event.",
     "raw_summary_variants": [
-      "When converting to project mode, a highlight button (converted to invisible button) may contain an additional and unexpected object event checked: \"On Mouse Move\" event.",
-      "Highlight buttons converted to invisible buttons in project mode automatically checks \"On Mouse Move\" event"
+      "When converting to project mode, a highlight button (converted to invisible button) may contain an additional and unexpected object event checked: \"On Mouse Move\" event."
     ],
     "versions": [
       "18.5_hf3",
@@ -10475,9 +10426,8 @@
   },
   {
     "reference": "ACI0102286",
-    "raw_summary": "When a Combo box has an array with no elements, clicking on the down arrow button will disable any Key input afterwards. Windows system only.",
+    "raw_summary": "When a Combo box has an array with no element, clicking on the down arrow button will disable any Key input afterwards. Windows system only.",
     "raw_summary_variants": [
-      "When a Combo box has an array with no elements, clicking on the down arrow button will disable any Key input afterwards. Windows system only.",
       "When a Combo box has an array with no element, clicking on the down arrow button will disable any Key input afterwards. Windows system only."
     ],
     "versions": [
@@ -10607,8 +10557,7 @@
     "reference": "ACI0102322",
     "raw_summary": "When using Japanese text in ListBox on macOS, 'Tab' key will not select through candidate list (in IME) but will validate Japanese text and move to next cell.",
     "raw_summary_variants": [
-      "When using Japanese text in ListBox on macOS, 'Tab' key will not select through candidate list (in IME) but will validate Japanese text and move to next cell.",
-      "When using JA text in LB in macOS, Tab key will not select through candidate list but will validate JA text and move to next cell."
+      "When using Japanese text in ListBox on macOS, 'Tab' key will not select through candidate list (in IME) but will validate Japanese text and move to next cell."
     ],
     "versions": [
       "18.5_hf4",
@@ -10716,8 +10665,7 @@
     "reference": "ACI0102345",
     "raw_summary": "Unexpected compilation error on macOS when changing xcode version: \"-1 error PCH file uses an older PCH format that is no longer supported\".",
     "raw_summary_variants": [
-      "Unexpected compilation error on macOS when changing xcode version: \"-1 error PCH file uses an older PCH format that is no longer supported\".",
-      "compilation error on mac when changing xcode : -1 error PCH file uses an older PCH format that is no longer supported"
+      "Unexpected compilation error on macOS when changing xcode version: \"-1 error PCH file uses an older PCH format that is no longer supported\"."
     ],
     "versions": [
       "19.0_hf2",
@@ -10813,8 +10761,7 @@
     "reference": "ACI0102362",
     "raw_summary": "Missing tooltip description for the command 'OPEN RUNTIME EXPLORER'.",
     "raw_summary_variants": [
-      "Missing tooltip description for the command 'OPEN RUNTIME EXPLORER'.",
-      "Missing tooltip description of the command 'OPEN RUNTIME EXPLORER\""
+      "Missing tooltip description for the command 'OPEN RUNTIME EXPLORER'."
     ],
     "versions": [
       "19_r3",
@@ -10836,8 +10783,7 @@
     "reference": "ACI0102368",
     "raw_summary": "First page quickly shown despite 'GOTO PAGE' to another page is executed in 'On load form' event.",
     "raw_summary_variants": [
-      "First page quickly shown despite 'GOTO PAGE' to another page is executed in 'On load form' event.",
-      "First page shortly shown with GOTO PAGE >1 in On Load form event"
+      "First page quickly shown despite 'GOTO PAGE' to another page is executed in 'On load form' event."
     ],
     "versions": [
       "19_r3",
@@ -10903,8 +10849,7 @@
     "reference": "ACI0102381",
     "raw_summary": "Print Form does not support \"calibri bold italic\" when it’s set with the command 'OBJECT SET FONT'.",
     "raw_summary_variants": [
-      "Print Form does not support \"calibri bold italic\" when it’s set with the command 'OBJECT SET FONT'.",
-      "Print Form does not support calibri bold italic when it’s set with the command Object set Font."
+      "Print Form does not support \"calibri bold italic\" when it’s set with the command 'OBJECT SET FONT'."
     ],
     "versions": [
       "19_r3",
@@ -10915,8 +10860,7 @@
     "reference": "ACI0102382",
     "raw_summary": "Quick Report: the formula header doesn't show as C1, but the formula name instead.",
     "raw_summary_variants": [
-      "Quick Report: the formula header doesn't show as C1, but the formula name instead.",
-      "QuickReport, the formula header doesn't show as C1 but the formula name instead."
+      "Quick Report: the formula header doesn't show as C1, but the formula name instead."
     ],
     "versions": [
       "19_r3",
@@ -10939,8 +10883,7 @@
     "reference": "ACI0102391",
     "raw_summary": "Processes get stuck with IMAP after using 'getMIMEAsBlob'; example: $vx_blob:=$transporter.getMIMEAsBlob($i)",
     "raw_summary_variants": [
-      "Processes get stuck with IMAP after using 'getMIMEAsBlob'; example: $vx_blob:=$transporter.getMIMEAsBlob($i)",
-      "Processes stuck with IMAP and getMIMEAsBlob"
+      "Processes get stuck with IMAP after using 'getMIMEAsBlob'; example: $vx_blob:=$transporter.getMIMEAsBlob($i)"
     ],
     "versions": [
       "19_r3",
@@ -11073,8 +11016,7 @@
     "reference": "ACI0102428",
     "raw_summary": "Let a table with the option 'Encrytpable'. An unexpected error arises while compacting with option 'force updating the record' because 4D always consider the data encrypted (Confusion between 'encrypted' and 'encrytpable').",
     "raw_summary_variants": [
-      "Let a table with the option 'Encrytpable'. An unexpected error arises while compacting with option 'force updating the record' because 4D always consider the data encrypted (Confusion between 'encrypted' and 'encrytpable').",
-      "Let a table with the option 'Encrytpable'. An unexpected error arises while compacting with option 'force updating the record because 4D always consider the data encrypted"
+      "Let a table with the option 'Encrytpable'. An unexpected error arises while compacting with option 'force updating the record' because 4D always consider the data encrypted (Confusion between 'encrypted' and 'encrytpable')."
     ],
     "versions": [
       "18.5_hf4",
@@ -11145,8 +11087,7 @@
     "reference": "ACI0102446",
     "raw_summary": "Compilation of code fails if there is a syntax like \"a[[b.c]]\" ; example with these 3 lines of code : \"var $a : Text\", \"var $b : Object\", \"$a:=$a[[$b.c]\".",
     "raw_summary_variants": [
-      "Compilation of code fails if there is a syntax like \"a[[b.c]]\" ; example with these 3 lines of code : \"var $a : Text\", \"var $b : Object\", \"$a:=$a[[$b.c]\".",
-      "compilation fails with code a[[b.c]]"
+      "Compilation of code fails if there is a syntax like \"a[[b.c]]\" ; example with these 3 lines of code : \"var $a : Text\", \"var $b : Object\", \"$a:=$a[[$b.c]\"."
     ],
     "versions": [
       "19_r3",
@@ -11204,9 +11145,8 @@
   },
   {
     "reference": "ACI0102454",
-    "raw_summary": "4D Server may quit unexpectedly when running a preemptive method that executes an SQL statement which calls on a function.",
+    "raw_summary": "4D Server may quit unexpectedly when running a preemptive method that executes a SQL statement which calls on a function.",
     "raw_summary_variants": [
-      "4D Server may quit unexpectedly when running a preemptive method that executes an SQL statement which calls on a function.",
       "4D Server may quit unexpectedly when running a preemptive method that executes a SQL statement which calls on a function."
     ],
     "versions": [
@@ -11222,8 +11162,7 @@
     "reference": "ACI0102457",
     "raw_summary": "'MAIL Convert from MIME' crashes when parsing certain eml files.",
     "raw_summary_variants": [
-      "'MAIL Convert from MIME' crashes when parsing certain eml files.",
-      "MAIL Convert from MIME crashes when parsing certain eml file"
+      "'MAIL Convert from MIME' crashes when parsing certain eml files."
     ],
     "versions": [
       "18.5_hf4",
@@ -11275,8 +11214,7 @@
     "reference": "ACI0102467",
     "raw_summary": "Pointer as parameter to a method, and get it in $1 as C_VARIANT crashes engined application (mono and client)",
     "raw_summary_variants": [
-      "Pointer as parameter to a method, and get it in $1 as C_VARIANT crashes engined application (mono and client)",
-      "Pointer as parameter to a method and get it in $1 as C_VARIANT crashes engined application (mono and client)"
+      "Pointer as parameter to a method, and get it in $1 as C_VARIANT crashes engined application (mono and client)"
     ],
     "versions": [
       "19_r3",
@@ -11358,9 +11296,8 @@
   },
   {
     "reference": "ACI0102479",
-    "raw_summary": "If there is \"Narrow No-Break Space\" character as a separator to group the digits, it makes a wrong display for a number which contains more than 3 digits",
+    "raw_summary": "If a \"Narrow No-Break Space\" character is set as a separator (to group the digits), the display for a number which contains more than 3 digits is wrong.",
     "raw_summary_variants": [
-      "If there is \"Narrow No-Break Space\" character as a separator to group the digits, it makes a wrong display for a number which contains more than 3 digits",
       "If a \"Narrow No-Break Space\" character is set as a separator (to group the digits), the display for a number which contains more than 3 digits is wrong."
     ],
     "versions": [
@@ -11409,8 +11346,7 @@
     "reference": "ACI0102489",
     "raw_summary": "Icons in Tab Control object form are badly aligned. Mac only.",
     "raw_summary_variants": [
-      "Icons in Tab Control object form are badly aligned. Mac only.",
-      "Icons in Tab Control badly aligned"
+      "Icons in Tab Control object form are badly aligned. Mac only."
     ],
     "versions": [
       "19_r5",
@@ -11619,8 +11555,7 @@
     "reference": "ACI0102536",
     "raw_summary": "When deleting unvalidated Japanese text (in IME), deleting last unvalidated character will also delete adjacent validated character.",
     "raw_summary_variants": [
-      "When deleting unvalidated Japanese text (in IME), deleting last unvalidated character will also delete adjacent validated character.",
-      "When deleting unvalidated JA text, deleting last unvalidated character will also delete adjacent validated character"
+      "When deleting unvalidated Japanese text (in IME), deleting last unvalidated character will also delete adjacent validated character."
     ],
     "versions": [
       "19_r3",
@@ -11900,8 +11835,7 @@
     "reference": "ACI0102578",
     "raw_summary": "'WP Get position' returns wrong left bound.",
     "raw_summary_variants": [
-      "'WP Get position' returns wrong left bound.",
-      "WP Get position returns wrong left bound"
+      "'WP Get position' returns wrong left bound."
     ],
     "versions": [
       "19_r4",
@@ -12208,8 +12142,7 @@
     "reference": "ACI0102653",
     "raw_summary": "4D Write Pro contextual menu displays unexpectedly mixed localized items after using the 4D command 'SET DATABASE LOCALIZATION'.",
     "raw_summary_variants": [
-      "4D Write Pro contextual menu displays unexpectedly mixed localized items after using the 4D command 'SET DATABASE LOCALIZATION'.",
-      "4DWP contextual menu displays mixed localization"
+      "4D Write Pro contextual menu displays unexpectedly mixed localized items after using the 4D command 'SET DATABASE LOCALIZATION'."
     ],
     "versions": [
       "19_r5",
@@ -12499,8 +12432,7 @@
     "reference": "ACI0102710",
     "raw_summary": "4D View Pro: 'VP SET CELL STYLE' with NULL does not remove all backgrounds",
     "raw_summary_variants": [
-      "4D View Pro: 'VP SET CELL STYLE' with NULL does not remove all backgrounds",
-      "VP SET CELL STYLE with NULL does not remove all backgrounds"
+      "4D View Pro: 'VP SET CELL STYLE' with NULL does not remove all backgrounds"
     ],
     "versions": [
       "19_r4",
@@ -13136,8 +13068,7 @@
     "reference": "ACI0102842",
     "raw_summary": "4D View Pro: the command 'VP set cell style' using backColor doesn't work properly",
     "raw_summary_variants": [
-      "4D View Pro: the command 'VP set cell style' using backColor doesn't work properly",
-      "The command 'VP set cell style' using backColor doesn't work properly"
+      "4D View Pro: the command 'VP set cell style' using backColor doesn't work properly"
     ],
     "versions": [
       "19_r4",
@@ -13182,9 +13113,8 @@
   },
   {
     "reference": "ACI0102861",
-    "raw_summary": "After compact records and indexes when trying, creating a record may lead to a crash. Only with indexed field.",
+    "raw_summary": "After compact records and indexes, trying to create a record may lead to a crash. Only with indexed field.",
     "raw_summary_variants": [
-      "After compact records and indexes when trying, creating a record may lead to a crash. Only with indexed field.",
       "After compact records and indexes, trying to create a record may lead to a crash. Only with indexed field."
     ],
     "versions": [
@@ -13470,9 +13400,8 @@
   },
   {
     "reference": "ACI0102940",
-    "raw_summary": "[147503] Regression: Email object attachments cannot be passed as a parameter to another process",
+    "raw_summary": "Email object attachments cannot be passed as a parameter to another process",
     "raw_summary_variants": [
-      "[147503] Regression: Email object attachments cannot be passed as a parameter to another process",
       "Email object attachments cannot be passed as a parameter to another process"
     ],
     "versions": [
@@ -13485,8 +13414,7 @@
     "reference": "ACI0102943",
     "raw_summary": "4D Write Pro: Deleting last table row also deletes section break behind the last row.",
     "raw_summary_variants": [
-      "4D Write Pro: Deleting last table row also deletes section break behind the last row.",
-      "[147472] Deleting last table row also deletes section break behind the last row"
+      "4D Write Pro: Deleting last table row also deletes section break behind the last row."
     ],
     "versions": [
       "19_r5",
@@ -13577,8 +13505,7 @@
     "reference": "ACI0102968",
     "raw_summary": "Plugin SDK: the entry-point 'EX_GET_FIELD' fails with blob fields.",
     "raw_summary_variants": [
-      "Plugin SDK: the entry-point 'EX_GET_FIELD' fails with blob fields.",
-      "EX_GET_FIELD fails with blob fields"
+      "Plugin SDK: the entry-point 'EX_GET_FIELD' fails with blob fields."
     ],
     "versions": [
       "19_r5",
@@ -13602,8 +13529,7 @@
     "reference": "ACI0102972",
     "raw_summary": "Going to Project mode, users may be removed from their groups.",
     "raw_summary_variants": [
-      "Going to Project mode, users may be removed from their groups.",
-      "In 4D project mode only, users are removed from their groups"
+      "Going to Project mode, users may be removed from their groups."
     ],
     "versions": [
       "19_r4",
@@ -13681,8 +13607,7 @@
     "reference": "ACI0102988",
     "raw_summary": "Depending of the text size, the text scroll position can be wrong.",
     "raw_summary_variants": [
-      "Depending of the text size, the text scroll position can be wrong.",
-      "Text scroll position depending on text size"
+      "Depending of the text size, the text scroll position can be wrong."
     ],
     "versions": [
       "19_r5",
@@ -13706,8 +13631,7 @@
     "reference": "ACI0102996",
     "raw_summary": "Mail only gets send half with 'SMTP New Transporter'",
     "raw_summary_variants": [
-      "Mail only gets send half with 'SMTP New Transporter'",
-      "Mail only gets send half with SMTP New Transporter"
+      "Mail only gets send half with 'SMTP New Transporter'"
     ],
     "versions": [
       "19_r5",
@@ -13719,8 +13643,7 @@
     "reference": "ACI0103003",
     "raw_summary": "Compile project() returns wrong variable type values for Text, Pointer, and Picture.",
     "raw_summary_variants": [
-      "Compile project() returns wrong variable type values for Text, Pointer, and Picture.",
-      "Compile project() returns wrong variable type values"
+      "Compile project() returns wrong variable type values for Text, Pointer, and Picture."
     ],
     "versions": [
       "19_r5",
@@ -13733,8 +13656,7 @@
     "reference": "ACI0103004",
     "raw_summary": "'FORM SET INPUT' does not change table input form",
     "raw_summary_variants": [
-      "'FORM SET INPUT' does not change table input form",
-      "FORM SET INPUT does not change table input form"
+      "'FORM SET INPUT' does not change table input form"
     ],
     "versions": [
       "19_r5",
@@ -13811,8 +13733,7 @@
     "reference": "ACI0103016",
     "raw_summary": "Problem with dropdown box Arrow vertical display position (on Windows Server 2012 R2)",
     "raw_summary_variants": [
-      "Problem with dropdown box Arrow vertical display position (on Windows Server 2012 R2)",
-      "Problem with dropdown box Arrow vertical display position (Windows Server 2012 R2)"
+      "Problem with dropdown box Arrow vertical display position (on Windows Server 2012 R2)"
     ],
     "versions": [
       "19_r5",
@@ -14531,8 +14452,7 @@
     "reference": "ACI0103226",
     "raw_summary": "4D Write Pro: Printing via 4D Write Pro doesn't display the name of the document on the printer queue",
     "raw_summary_variants": [
-      "4D Write Pro: Printing via 4D Write Pro doesn't display the name of the document on the printer queue",
-      "Printing via 4D Write Pro doesn't display the name of the document on the printer queue"
+      "4D Write Pro: Printing via 4D Write Pro doesn't display the name of the document on the printer queue"
     ],
     "versions": [
       "19_r6",
@@ -14601,9 +14521,8 @@
   },
   {
     "reference": "ACI0103244",
-    "raw_summary": "'Surrogate' character at the end of an alpha field, can caused invalid character because not truncated correctly",
+    "raw_summary": "'Surrogate' character at the end of an alpha field can caused invalid character because not truncated correctly",
     "raw_summary_variants": [
-      "'Surrogate' character at the end of an alpha field, can caused invalid character because not truncated correctly",
       "'Surrogate' character at the end of an alpha field can caused invalid character because not truncated correctly"
     ],
     "versions": [
@@ -14894,8 +14813,7 @@
     "reference": "ACI0103417",
     "raw_summary": "The IMAP Transporter.'checkconnection' method returns a bad result on an open connexion when the email is updated (delete or receive mails)",
     "raw_summary_variants": [
-      "The IMAP Transporter.'checkconnection' method returns a bad result on an open connexion when the email is updated (delete or receive mails)",
-      "The IMAPTransporter.'checkconnection' method returns a bad result on an open connexion when the email is updated (delete or receive mails)"
+      "The IMAP Transporter.'checkconnection' method returns a bad result on an open connexion when the email is updated (delete or receive mails)"
     ],
     "versions": [
       "19_r6",
@@ -14933,8 +14851,7 @@
     "reference": "ACI0103423",
     "raw_summary": "4D commands manipulating 'Sets' slow down when loading records from another client.",
     "raw_summary_variants": [
-      "4D commands manipulating 'Sets' slow down when loading records from another client.",
-      "Set commands slow down when loading records from another client"
+      "4D commands manipulating 'Sets' slow down when loading records from another client."
     ],
     "versions": [
       "19_r6",
@@ -15114,11 +15031,9 @@
   },
   {
     "reference": "ACI0103462",
-    "raw_summary": "Customized date formats (or official for some regional settings, like Netherlands) may not be correct in 4D ; macOS 13.x only (Ventura).",
+    "raw_summary": "Customized date formats (or official for some regional settings, like Netherlands) may not be correct in 4D; macOS 13.x only (Ventura).",
     "raw_summary_variants": [
-      "Customized date formats (or official for some regional settings, like Netherlands) may not be correct in 4D ; macOS 13.x only (Ventura).",
-      "Customized date formats (or official for some regional settings, like Netherlands) may not be correct in 4D; macOS 13.x only (Ventura).",
-      "Netherlands Date format: DD/MM/YYYY instead of DD-MM-YYYY (Internal date short)"
+      "Customized date formats (or official for some regional settings, like Netherlands) may not be correct in 4D; macOS 13.x only (Ventura)."
     ],
     "versions": [
       "19_r7",
@@ -15254,9 +15169,8 @@
   },
   {
     "reference": "ACI0103499",
-    "raw_summary": "Compiler option \"Type the variables\" incorrectly typing parameter indirection in the symbols file",
+    "raw_summary": "Compiler option \"Type the variables\" incorrectly types parameter indirection in the symbols file",
     "raw_summary_variants": [
-      "Compiler option \"Type the variables\" incorrectly typing parameter indirection in the symbols file",
       "Compiler option \"Type the variables\" incorrectly types parameter indirection in the symbols file"
     ],
     "versions": [
@@ -15290,8 +15204,7 @@
     "reference": "ACI0103503",
     "raw_summary": "4D Write Pro: Picture exported to PDF with 4D Write Pro results in poor quality",
     "raw_summary_variants": [
-      "4D Write Pro: Picture exported to PDF with 4D Write Pro results in poor quality",
-      "Picture exported to PDF with 4DWP results in poor quality"
+      "4D Write Pro: Picture exported to PDF with 4D Write Pro results in poor quality"
     ],
     "versions": [
       "19_r7",
@@ -15441,8 +15354,7 @@
     "reference": "ACI0103537",
     "raw_summary": "4D Write Pro: Japane fonts, used with the widget '4D Write Pro Area + Toolbar' from the obecj library, are not beautiful.",
     "raw_summary_variants": [
-      "4D Write Pro: Japane fonts, used with the widget '4D Write Pro Area + Toolbar' from the obecj library, are not beautiful.",
-      "JA Font of Write Pro Tab is not beautiful"
+      "4D Write Pro: Japane fonts, used with the widget '4D Write Pro Area + Toolbar' from the obecj library, are not beautiful."
     ],
     "versions": [
       "19_r7",
@@ -15465,9 +15377,8 @@
   },
   {
     "reference": "ACI0103541",
-    "raw_summary": "Quick Report: Wrong break after dragging a column in place of another ; the subtotal is on the other field.",
+    "raw_summary": "Quick Report: Wrong break after dragging a column in place of another; the subtotal is on the other field.",
     "raw_summary_variants": [
-      "Quick Report: Wrong break after dragging a column in place of another ; the subtotal is on the other field.",
       "Quick Report: Wrong break after dragging a column in place of another; the subtotal is on the other field."
     ],
     "versions": [
@@ -15681,8 +15592,7 @@
     "reference": "ACI0103587",
     "raw_summary": "Alt double clicking method in quotes will not open method. Windows only",
     "raw_summary_variants": [
-      "Alt double clicking method in quotes will not open method. Windows only",
-      "[148343] Alt double clicking method in quotes will not open method"
+      "Alt double clicking method in quotes will not open method. Windows only"
     ],
     "versions": [
       "19_r8",
@@ -15886,9 +15796,8 @@
   },
   {
     "reference": "ACI0103642",
-    "raw_summary": "'HTTP Request' command behavior between 19Rx and 19.x : no XML response with v19 Rx sometimes",
+    "raw_summary": "'HTTP Request' command behaviour between v19R and v19: no XML response with v19R sometimes",
     "raw_summary_variants": [
-      "'HTTP Request' command behavior between 19Rx and 19.x : no XML response with v19 Rx sometimes",
       "'HTTP Request' command behaviour between v19R and v19: no XML response with v19R sometimes"
     ],
     "versions": [
@@ -16049,8 +15958,7 @@
     "reference": "ACI0103672",
     "raw_summary": "No error returned when a component method, set to execute in a non-preemptive mode, is called in a class function in compiled mode; client/server only.",
     "raw_summary_variants": [
-      "No error returned when a component method, set to execute in a non-preemptive mode, is called in a class function in compiled mode; client/server only.",
-      "No error returned when a component method, set to execute in a non-preemtive mode, is called in a class function in compiled mode ; client/server only."
+      "No error returned when a component method, set to execute in a non-preemptive mode, is called in a class function in compiled mode; client/server only."
     ],
     "versions": [
       "19_r7_hf1",
@@ -16061,8 +15969,7 @@
     "reference": "ACI0103673",
     "raw_summary": "When you quit an autoexecutable application, the application crashes just after the sponsored dialog get closed.",
     "raw_summary_variants": [
-      "When you quit an autoexecutable application, the application crashes just after the sponsored dialog get closed.",
-      "When you quit engined autoexecutable application, the app will crash after quit the sponsored dialog."
+      "When you quit an autoexecutable application, the application crashes just after the sponsored dialog get closed."
     ],
     "versions": [
       "19_r8",
@@ -16084,9 +15991,8 @@
   },
   {
     "reference": "ACI0103679",
-    "raw_summary": "In entity selection LISTBOX ,after selected Row with command LISTBOX SELECT ROWS, arrow keys does not select the right rows, instead of selecting the next one after the the row selected initially",
+    "raw_summary": "In entity selection LISTBOX ,after selected Row with command LISTBOX SELECT ROWS, arrow keys does not select the right rows, instead of selecting the next one after the row selected initially",
     "raw_summary_variants": [
-      "In entity selection LISTBOX ,after selected Row with command LISTBOX SELECT ROWS, arrow keys does not select the right rows, instead of selecting the next one after the the row selected initially",
       "In entity selection LISTBOX ,after selected Row with command LISTBOX SELECT ROWS, arrow keys does not select the right rows, instead of selecting the next one after the row selected initially"
     ],
     "versions": [
@@ -16187,8 +16093,7 @@
     "reference": "ACI0103708",
     "raw_summary": "Bad display of special characters, e.g.: accented characters (\"é\"), using the imap getBoxList() command",
     "raw_summary_variants": [
-      "Bad display of special characters, e.g.: accented characters (\"é\"), using the imap getBoxList() command",
-      "Bad display of special characters, e.g: accented characters (\"é\"), using the imap getBoxList() command"
+      "Bad display of special characters, e.g.: accented characters (\"é\"), using the imap getBoxList() command"
     ],
     "versions": [
       "19_r8",
@@ -16283,8 +16188,7 @@
     "reference": "ACI0103717",
     "raw_summary": "In an array based listbox with automatic row height, after changing then content of a cell, the listbox isn't correctly redrawn",
     "raw_summary_variants": [
-      "In an array based listbox with automatic row height, after changing then content of a cell, the listbox isn't correctly redrawn",
-      "In an array based listbox with automatic row height, after changing then content of a cell,the listbox isn't correctly redrawn"
+      "In an array based listbox with automatic row height, after changing then content of a cell, the listbox isn't correctly redrawn"
     ],
     "versions": [
       "19_r8"
@@ -16305,8 +16209,7 @@
     "reference": "ACI0103723",
     "raw_summary": "4D View Pro: memory problem when using the commands 'VP MOVE CELLS', 'VP Copy to object' and 'VP PASTE FROM OBJECT'.",
     "raw_summary_variants": [
-      "4D View Pro: memory problem when using the commands 'VP MOVE CELLS', 'VP Copy to object' and 'VP PASTE FROM OBJECT'.",
-      "4D ViewPro memory problem when using the commands VP move cells, VP copy to object and VP paste from object"
+      "4D View Pro: memory problem when using the commands 'VP MOVE CELLS', 'VP Copy to object' and 'VP PASTE FROM OBJECT'."
     ],
     "versions": [
       "19_r8"
@@ -16316,8 +16219,7 @@
     "reference": "ACI0103725",
     "raw_summary": "A listbox is not redrawn when window is resized",
     "raw_summary_variants": [
-      "A listbox is not redrawn when window is resized",
-      "Listbox is not redrawn when window resized"
+      "A listbox is not redrawn when window is resized"
     ],
     "versions": [
       "19_r8",
@@ -16340,8 +16242,7 @@
     "reference": "ACI0103727",
     "raw_summary": "When opening a locked method, already opened by another client, you don't get any warning except the displayed lock icon",
     "raw_summary_variants": [
-      "When opening a locked method, already opened by another client, you don't get any warning except the displayed lock icon",
-      "When opening a locked method, opened by another client, you don't get any warning except the displayed lock icon"
+      "When opening a locked method, already opened by another client, you don't get any warning except the displayed lock icon"
     ],
     "versions": [
       "19_r8"
@@ -16372,9 +16273,8 @@
   },
   {
     "reference": "ACI0103734",
-    "raw_summary": "REGRESSION: The \".selectBox()\" command generates an error 11 (IMAP SELECT commmand failed)",
+    "raw_summary": "REGRESSION: The \".selectBox()\" command generates an error 11 (IMAP SELECT command failed)",
     "raw_summary_variants": [
-      "REGRESSION: The \".selectBox()\" command generates an error 11 (IMAP SELECT commmand failed)",
       "REGRESSION: The \".selectBox()\" command generates an error 11 (IMAP SELECT command failed)"
     ],
     "versions": [
@@ -16461,8 +16361,7 @@
     "reference": "ACI0103751",
     "raw_summary": "Font 'Conduit ITC Pro Medium' has a different name on macOS and Windows",
     "raw_summary_variants": [
-      "Font 'Conduit ITC Pro Medium' has a different name on macOS and Windows",
-      "Font Conduit ITC Pro Medium has a different name on MacOS and Windows"
+      "Font 'Conduit ITC Pro Medium' has a different name on macOS and Windows"
     ],
     "versions": [
       "19_r8"
@@ -16504,9 +16403,8 @@
   },
   {
     "reference": "ACI0103756",
-    "raw_summary": "Wrong font size applied on an imput text after modifying it in the font dialog when using 4K resolution screen",
+    "raw_summary": "Wrong font size applied on an input text after modifying it in the font dialog when using 4K resolution screen",
     "raw_summary_variants": [
-      "Wrong font size applied on an imput text after modifying it in the font dialog when using 4K resolution screen",
       "Wrong font size applied on an input text after modifying it in the font dialog when using 4K resolution screen"
     ],
     "versions": [
@@ -16661,8 +16559,7 @@
     "reference": "ACI0103785",
     "raw_summary": "If blobs have size greater than 0 and smaller than 100 bytes, there size is “undefined” when using entities ; Client/server mode only.",
     "raw_summary_variants": [
-      "If blobs have size greater than 0 and smaller than 100 bytes, there size is “undefined” when using entities ; Client/server mode only.",
-      "Cannot save blobs with size greather then 0 but smaller than 100 bytes (Client/server only)"
+      "If blobs have size greater than 0 and smaller than 100 bytes, there size is “undefined” when using entities ; Client/server mode only."
     ],
     "versions": [
       "19_r8"
@@ -16827,8 +16724,7 @@
     "reference": "ACI0103827",
     "raw_summary": "Connected Clients gets Disconnected after Rejecting New Connections on 4D Server. New Network Layer only (ServerNet)",
     "raw_summary_variants": [
-      "Connected Clients gets Disconnected after Rejecting New Connections on 4D Server. New Network Layer only (ServerNet)",
-      "New Network Layer: Connected Clients gets Disconnected after Rejecting New Connections on 4D Server"
+      "Connected Clients gets Disconnected after Rejecting New Connections on 4D Server. New Network Layer only (ServerNet)"
     ],
     "versions": [
       "19_r8",
@@ -16852,8 +16748,7 @@
     "reference": "ACI0103831",
     "raw_summary": "Since v19 R8, the type-ahead for variables does not work anymore",
     "raw_summary_variants": [
-      "Since v19 R8, the type-ahead for variables does not work anymore",
-      "Type-ahead for variables does not work anymore"
+      "Since v19 R8, the type-ahead for variables does not work anymore"
     ],
     "versions": [
       "19_r8",
@@ -24278,6 +24173,17 @@
     ]
   },
   {
+    "reference": "ACI0105454",
+    "raw_summary": "WebSocketConnection.send() incorrectly serializes date properties as ISO-8601 with time zone instead of Date-only format",
+    "raw_summary_variants": [
+      "WebSocketConnection.send() incorrectly serializes date properties as ISO-8601 with time zone instead of Date-only format"
+    ],
+    "versions": [
+      "21_r4_hf1",
+      "21.2_hf2"
+    ]
+  },
+  {
     "reference": "ACI0105455",
     "raw_summary": "Unexpected compiler warning may happen: \"Assumes that the pointer points to an alphanumeric expression. (533.1)\"",
     "raw_summary_variants": [
@@ -26055,6 +25961,17 @@
     ]
   },
   {
+    "reference": "ACI0105945",
+    "raw_summary": "The event \"On Begin URL Loading\" does not work properly in the internal web area",
+    "raw_summary_variants": [
+      "The event \"On Begin URL Loading\" does not work properly in the internal web area"
+    ],
+    "versions": [
+      "21",
+      "21_r4"
+    ]
+  },
+  {
     "reference": "ACI0105952",
     "raw_summary": "Filter by object category in 'Object library' dialog doesn't display the objects in the Progress Indicator category",
     "raw_summary_variants": [
@@ -26625,6 +26542,16 @@
     ]
   },
   {
+    "reference": "ACI0106102",
+    "raw_summary": "Select Block shortcut (Cmd-B) may produce incorrect selection when expression contains string with parenthesis.",
+    "raw_summary_variants": [
+      "Select Block shortcut (Cmd-B) may produce incorrect selection when expression contains string with parenthesis."
+    ],
+    "versions": [
+      "21.2_hf2"
+    ]
+  },
+  {
     "reference": "ACI0106104",
     "raw_summary": "Bug with Dynamic menu called from the host instance event of a widget",
     "raw_summary_variants": [
@@ -27178,6 +27105,17 @@
     ]
   },
   {
+    "reference": "ACI0106216",
+    "raw_summary": "Explorer selection is lost when switching applications",
+    "raw_summary_variants": [
+      "Explorer selection is lost when switching applications"
+    ],
+    "versions": [
+      "21_r5",
+      "21.2_hf2"
+    ]
+  },
+  {
     "reference": "ACI0106220",
     "raw_summary": "Bad display of 'user and groups' editor when not an administrator.",
     "raw_summary_variants": [
@@ -27531,8 +27469,7 @@
     "reference": "ACI0106308",
     "raw_summary": "4D Viewx Pro: Executing the keyboard shortcut Ctrl+Shift+\"W\" in a 4D View Pro area causes a black screen and forces 4D to quit.",
     "raw_summary_variants": [
-      "4D Viewx Pro: Executing the keyboard shortcut Ctrl+Shift+\"W\" in a 4D View Pro area causes a black screen and forces 4D to quit.",
-      "Executing the keyboard shortcut Ctrl+Shift+\"W\" in a 4D View Pro area causes a black screen and forces 4D to quit."
+      "4D Viewx Pro: Executing the keyboard shortcut Ctrl+Shift+\"W\" in a 4D View Pro area causes a black screen and forces 4D to quit."
     ],
     "versions": [
       "21_r4",
@@ -27686,9 +27623,8 @@
   },
   {
     "reference": "ACI0106341",
-    "raw_summary": "Issue in user name display in the 4D toolbox : user name seems to be duplicated (whereas it is not).",
+    "raw_summary": "Issue in username display in the 4D toolbox: username seems to be duplicated (whereas it is not).",
     "raw_summary_variants": [
-      "Issue in user name display in the 4D toolbox : user name seems to be duplicated (whereas it is not).",
       "Issue in username display in the 4D toolbox: username seems to be duplicated (whereas it is not)."
     ],
     "versions": [
@@ -27806,9 +27742,8 @@
   },
   {
     "reference": "ACI0106359",
-    "raw_summary": "In database settings, the â€œAPI KEYâ€ area appears unexpectedly in plain text.",
+    "raw_summary": "In database settings, the “API KEY” area appears unexpectedly in plain text.",
     "raw_summary_variants": [
-      "In database settings, the â€œAPI KEYâ€ area appears unexpectedly in plain text.",
       "In database settings, the “API KEY” area appears unexpectedly in plain text."
     ],
     "versions": [
@@ -27888,14 +27823,23 @@
   },
   {
     "reference": "ACI0106376",
-    "raw_summary": "Building an applaication with 'tool4D' and the component 'build4D' crashes in _core \"Create deployment license\" when starting it in headless mode.",
+    "raw_summary": "Building an application with 'tool4D' and the component 'build4D' crashes in _core \"Create deployment license\" when starting it in headless mode.",
     "raw_summary_variants": [
-      "Building an applaication with 'tool4D' and the component 'build4D' crashes in _core \"Create deployment license\" when starting it in headless mode.",
       "Building an application with 'tool4D' and the component 'build4D' crashes in _core \"Create deployment license\" when starting it in headless mode."
     ],
     "versions": [
       "21_r3_hf1",
       "21_r4"
+    ]
+  },
+  {
+    "reference": "ACI0106377",
+    "raw_summary": "4D may crash while regaining focus in the method editor when editing a component's class.",
+    "raw_summary_variants": [
+      "4D may crash while regaining focus in the method editor when editing a component's class."
+    ],
+    "versions": [
+      "21.2_hf2"
     ]
   },
   {
@@ -27942,6 +27886,16 @@
     "versions": [
       "21.1_hf2",
       "21.2"
+    ]
+  },
+  {
+    "reference": "ACI0106387",
+    "raw_summary": "Non-thread-safe trigger silently stops running on REST inserts/updates in compiled mode (100 \"REST\" processes limit)",
+    "raw_summary_variants": [
+      "Non-thread-safe trigger silently stops running on REST inserts/updates in compiled mode (100 \"REST\" processes limit)"
+    ],
+    "versions": [
+      "21_r5"
     ]
   },
   {
@@ -28001,6 +27955,16 @@
     ]
   },
   {
+    "reference": "ACI0106399",
+    "raw_summary": "Telemetry Bug: Process CPU time in Remote Admin window exceeds server uptime and Get process activity metrics",
+    "raw_summary_variants": [
+      "Telemetry Bug: Process CPU time in Remote Admin window exceeds server uptime and Get process activity metrics"
+    ],
+    "versions": [
+      "21"
+    ]
+  },
+  {
     "reference": "ACI0106403",
     "raw_summary": "4D server function of shared singleton does not work if defined in a component",
     "raw_summary_variants": [
@@ -28014,8 +27978,7 @@
     "reference": "ACI0106405",
     "raw_summary": "4D Write Pro: the numbering of multi-level lists was sometimes incorrect after importing a .docx document, and no longer matched the original Word document.",
     "raw_summary_variants": [
-      "4D Write Pro: the numbering of multi-level lists was sometimes incorrect after importing a .docx document, and no longer matched the original Word document.",
-      "4D Write Pro Import of Multi-Level Lists in 4D"
+      "4D Write Pro: the numbering of multi-level lists was sometimes incorrect after importing a .docx document, and no longer matched the original Word document."
     ],
     "versions": [
       "21_r4"
@@ -28089,14 +28052,15 @@
   },
   {
     "reference": "ACI0106421",
-    "raw_summary": "On Windows, it is not possible to establish a client connection with SSO and client-server encryption enabled.",
+    "raw_summary": "On Windows, it is not possible to establish a client connection, with SSO and client-server encryption enabled.",
     "raw_summary_variants": [
-      "On Windows, it is not possible to establish a client connection with SSO and client-server encryption enabled."
+      "On Windows, it is not possible to establish a client connection, with SSO and client-server encryption enabled."
     ],
     "versions": [
       "20",
       "21",
-      "21_r4"
+      "21_r4",
+      "21.2_hf1"
     ]
   },
   {
@@ -28108,6 +28072,27 @@
     "versions": [
       "21_r4",
       "21.2"
+    ]
+  },
+  {
+    "reference": "ACI0106425",
+    "raw_summary": "Crash if calling \"Is window maximized\" on macOS Golden Gate (macOS 27) and if web area is in the form",
+    "raw_summary_variants": [
+      "Crash if calling \"Is window maximized\" on macOS Golden Gate (macOS 27) and if web area is in the form"
+    ],
+    "versions": [
+      "21.2_hf1"
+    ]
+  },
+  {
+    "reference": "ACI0106427",
+    "raw_summary": "Current process debug log recording doesn't contain components logs",
+    "raw_summary_variants": [
+      "Current process debug log recording doesn't contain components logs"
+    ],
+    "versions": [
+      "21_r4_hf1",
+      "21.2_hf2"
     ]
   },
   {
@@ -28147,6 +28132,17 @@
     ]
   },
   {
+    "reference": "ACI0106443",
+    "raw_summary": "4D Server may be unresponsive due to the CPU load in the Network Manager process.",
+    "raw_summary_variants": [
+      "4D Server may be unresponsive due to the CPU load in the Network Manager process."
+    ],
+    "versions": [
+      "21_r5",
+      "21.2_hf2"
+    ]
+  },
+  {
     "reference": "ACI0106447",
     "raw_summary": "When a new list is added to an existing enumeration, it is automatically inserted at the top of the list.",
     "raw_summary_variants": [
@@ -28160,9 +28156,8 @@
   },
   {
     "reference": "ACI0106448",
-    "raw_summary": "\"Modifiable Element\" checkbox is not Checked by default when creating a new list element",
+    "raw_summary": "\"Modifiable Element\" checkbox is not checked by default when creating a new list element",
     "raw_summary_variants": [
-      "\"Modifiable Element\" checkbox is not Checked by default when creating a new list element",
       "\"Modifiable Element\" checkbox is not checked by default when creating a new list element"
     ],
     "versions": [
@@ -28175,8 +28170,7 @@
     "reference": "ACI0106450",
     "raw_summary": "4D Write Pro: Font changes when applying Bold/Italic via \"Invoke Action\" and \"WP SET ATTRIBUTES\".",
     "raw_summary_variants": [
-      "4D Write Pro: Font changes when applying Bold/Italic via \"Invoke Action\" and \"WP SET ATTRIBUTES\".",
-      "Font Changes When Applying Bold/Italic via \"Invoke Action\" and \"WP SET ATTRIBUTES\" in Write Pro"
+      "4D Write Pro: Font changes when applying Bold/Italic via \"Invoke Action\" and \"WP SET ATTRIBUTES\"."
     ],
     "versions": [
       "21_r4",
@@ -28209,11 +28203,21 @@
     ]
   },
   {
+    "reference": "ACI0106454",
+    "raw_summary": "WEB Get current session ID doesn't match Session.id",
+    "raw_summary_variants": [
+      "WEB Get current session ID doesn't match Session.id"
+    ],
+    "versions": [
+      "21",
+      "21_r5"
+    ]
+  },
+  {
     "reference": "ACI0106458",
     "raw_summary": "Impossible to use 'This' inside a deferred formula.",
     "raw_summary_variants": [
-      "Impossible to use 'This' inside a deferred formula.",
-      "can't use This inside a deferred formula"
+      "Impossible to use 'This' inside a deferred formula."
     ],
     "versions": [
       "21_r4"
@@ -28372,9 +28376,8 @@
   },
   {
     "reference": "ACI0106504",
-    "raw_summary": "The 'Total HTTP hits' number may increase unexpectedly on Administration window (see 'HTTP Server' tab) with some non-http actions; yet, nothing is reported in the http log.",
+    "raw_summary": "The 'Total HTTP hits' number may increase unexpectedly on Administration window (see 'HTTP Server' tab) with some non-http actions; yet nothing is reported in the http log.",
     "raw_summary_variants": [
-      "The 'Total HTTP hits' number may increase unexpectedly on Administration window (see 'HTTP Server' tab) with some non-http actions; yet, nothing is reported in the http log.",
       "The 'Total HTTP hits' number may increase unexpectedly on Administration window (see 'HTTP Server' tab) with some non-http actions; yet nothing is reported in the http log."
     ],
     "versions": [
@@ -28384,22 +28387,42 @@
     ]
   },
   {
+    "reference": "ACI0106505",
+    "raw_summary": "[DUMP] Hang observed instead of crash – Related to ACI0106457",
+    "raw_summary_variants": [
+      "[DUMP] Hang observed instead of crash – Related to ACI0106457"
+    ],
+    "versions": [
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106506",
+    "raw_summary": "Property List remains inaccessible off-screen after a display configuration change",
+    "raw_summary_variants": [
+      "Property List remains inaccessible off-screen after a display configuration change"
+    ],
+    "versions": [
+      "21_r4_hf1",
+      "21_r5"
+    ]
+  },
+  {
     "reference": "ACI0106507",
     "raw_summary": "EntitySelection.drop() takes ~500ms on an empty selection when \"Include in Log File\" is deactivated and the table has no Delete Trigger set.",
     "raw_summary_variants": [
-      "EntitySelection.drop() takes ~500ms on an empty selection when \"Include in Log File\" is deactivated and the table has no Delete Trigger set.",
-      "EntitySelection.drop() takes ~500ms on an empty selection when Include in Log File is deactivated and no delete trigger exists"
+      "EntitySelection.drop() takes ~500ms on an empty selection when \"Include in Log File\" is deactivated and the table has no Delete Trigger set."
     ],
     "versions": [
       "21",
-      "21_r4"
+      "21_r4",
+      "21.2_hf1"
     ]
   },
   {
     "reference": "ACI0106510",
-    "raw_summary": "Erratic behaviour regarding the width of list box columns in development mode when â€˜Automatic Column Widthâ€™ is selected",
+    "raw_summary": "Erratic behaviour regarding the width of list box columns in development mode when ‘Automatic Column Width’ is selected",
     "raw_summary_variants": [
-      "Erratic behaviour regarding the width of list box columns in development mode when â€˜Automatic Column Widthâ€™ is selected",
       "Erratic behaviour regarding the width of list box columns in development mode when ‘Automatic Column Width’ is selected"
     ],
     "versions": [
@@ -28410,12 +28433,13 @@
   },
   {
     "reference": "ACI0106511",
-    "raw_summary": "#D syntax in QR editor does not print correct date when time is not suitable",
+    "raw_summary": "#D syntax in QR editor doesn't print the correct date when time is not suitable",
     "raw_summary_variants": [
-      "#D syntax in QR editor does not print correct date when time is not suitable"
+      "#D syntax in QR editor doesn't print the correct date when time is not suitable"
     ],
     "versions": [
-      "21"
+      "21",
+      "21.2_hf1"
     ]
   },
   {
@@ -28429,25 +28453,78 @@
     ]
   },
   {
-    "reference": "ACI0106517",
-    "raw_summary": "When a printing error occurs, 4D should return a more specific error message rather than the generic \"Error 1\"",
+    "reference": "ACI0106514",
+    "raw_summary": "Wrong 'While' and 'Until' statement evaluation in 'For each' loops (interpreted only)",
     "raw_summary_variants": [
-      "When a printing error occurs, 4D should return a more specific error message rather than the generic \"Error 1\"",
-      "When a printing error occurs, 4D should return a more specific error message rather than the generic \"Error 1"
+      "Wrong 'While' and 'Until' statement evaluation in 'For each' loops (interpreted only)"
     ],
     "versions": [
       "21",
-      "21_r4"
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106517",
+    "raw_summary": "When a printing error occurs, 4D should return a more specific error message rather than the generic \"Error 1\"",
+    "raw_summary_variants": [
+      "When a printing error occurs, 4D should return a more specific error message rather than the generic \"Error 1\""
+    ],
+    "versions": [
+      "21",
+      "21_r4",
+      "21.2_hf1"
+    ]
+  },
+  {
+    "reference": "ACI0106518",
+    "raw_summary": "V2 on_create Macro Event Not Triggered for Some Method Types",
+    "raw_summary_variants": [
+      "V2 on_create Macro Event Not Triggered for Some Method Types"
+    ],
+    "versions": [
+      "21"
+    ]
+  },
+  {
+    "reference": "ACI0106519",
+    "raw_summary": "Delete or backspace key pressed during list item entry does not produce 'On After Edit' event.",
+    "raw_summary_variants": [
+      "Delete or backspace key pressed during list item entry does not produce 'On After Edit' event."
+    ],
+    "versions": [
+      "21.2_hf2"
+    ]
+  },
+  {
+    "reference": "ACI0106521",
+    "raw_summary": "typing a var with inline comment breaks the editor",
+    "raw_summary_variants": [
+      "typing a var with inline comment breaks the editor"
+    ],
+    "versions": [
+      "21",
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106523",
+    "raw_summary": "4D client crashes on quit with 4D 21.1 build 100562 — SIGSEGV in DB4D EntityModelCatalog destructor",
+    "raw_summary_variants": [
+      "4D client crashes on quit with 4D 21.1 build 100562 — SIGSEGV in DB4D EntityModelCatalog destructor"
+    ],
+    "versions": [
+      "21"
     ]
   },
   {
     "reference": "ACI0106526",
-    "raw_summary": "Systematic 4D crash when processing a binary structure during MSC Verify, Structure Repair, compiler syntax check and binary to project conversion",
+    "raw_summary": "4D may crash on a binary structure while processing an MSC Verify, Structure Repair, compiler syntax check and binary to project conversion",
     "raw_summary_variants": [
-      "Systematic 4D crash when processing a binary structure during MSC Verify, Structure Repair, compiler syntax check and binary to project conversion"
+      "4D may crash on a binary structure while processing an MSC Verify, Structure Repair, compiler syntax check and binary to project conversion"
     ],
     "versions": [
-      "21"
+      "21",
+      "21.2_hf1"
     ]
   },
   {
@@ -28458,7 +28535,8 @@
     ],
     "versions": [
       "21",
-      "21_r4"
+      "21_r4",
+      "21.2_hf1"
     ]
   },
   {
@@ -28468,7 +28546,20 @@
       "When building an application with the \"Silicon only\" option, the generated executable contains unexpectedly 2 architectures: Intel code is added."
     ],
     "versions": [
-      "21_r4"
+      "21_r4",
+      "21.2_hf1"
+    ]
+  },
+  {
+    "reference": "ACI0106532",
+    "raw_summary": "IncomingMessage.urlQuery\\`: an encoded \\`&\\` makes two different requests indistinguishable",
+    "raw_summary_variants": [
+      "IncomingMessage.urlQuery\\`: an encoded \\`&\\` makes two different requests indistinguishable"
+    ],
+    "versions": [
+      "21",
+      "21_r4",
+      "21_r5"
     ]
   },
   {
@@ -28483,13 +28574,26 @@
   },
   {
     "reference": "ACI0106542",
-    "raw_summary": "License update issue from R(x) into R(x+1) if you launch R(x+1) and directly open the licenses manager",
+    "raw_summary": "License update issue from R(x) to R(x+1) if you launch R(x+1) and directly open the licenses manager",
     "raw_summary_variants": [
-      "License update issue from R(x) into R(x+1) if you launch R(x+1) and directly open the licenses manager"
+      "License update issue from R(x) to R(x+1) if you launch R(x+1) and directly open the licenses manager"
     ],
     "versions": [
       "21",
-      "21_r5"
+      "21_r4_hf1",
+      "21_r5",
+      "21.2_hf1"
+    ]
+  },
+  {
+    "reference": "ACI0106543",
+    "raw_summary": "Explorer window flickering and possible memory leak with a component named like the host project",
+    "raw_summary_variants": [
+      "Explorer window flickering and possible memory leak with a component named like the host project"
+    ],
+    "versions": [
+      "21_r4_hf1",
+      "21.2_hf1"
     ]
   },
   {
@@ -28501,15 +28605,333 @@
     "versions": [
       "21",
       "21_r4",
-      "21_r5"
+      "21_r5",
+      "21.2_hf1"
     ]
   },
   {
     "reference": "ACI0106546",
-    "raw_summary": "The Engine server built with the â€˜PackProjectâ€™ key set to false displays a prompt on launch asking to import components that were previously included in 4D.",
+    "raw_summary": "The engined server built with the 'PackProject' key set to 'False' unexpectedly displays a prompt on launch asking to import components that were previously included in 4D.",
     "raw_summary_variants": [
-      "The Engine server built with the â€˜PackProjectâ€™ key set to false displays a prompt on launch asking to import components that were previously included in 4D.",
-      "The Engine server built with the ‘PackProject’ key set to 'False' displays a prompt on launch asking to import components that were previously included in 4D."
+      "The engined server built with the 'PackProject' key set to 'False' unexpectedly displays a prompt on launch asking to import components that were previously included in 4D."
+    ],
+    "versions": [
+      "21",
+      "21_r4",
+      "21_r5",
+      "21.2_hf1"
+    ]
+  },
+  {
+    "reference": "ACI0106554",
+    "raw_summary": "Assertion failure (SIGABRT) in QuicNetwork / ngtcp2 expiry timer handler that cause 4D Server to crash",
+    "raw_summary_variants": [
+      "Assertion failure (SIGABRT) in QuicNetwork / ngtcp2 expiry timer handler that cause 4D Server to crash"
+    ],
+    "versions": [
+      "21_r5",
+      "21.2_hf2"
+    ]
+  },
+  {
+    "reference": "ACI0106558",
+    "raw_summary": "The 'EXECUTE ON CLIENT' command does indeed execute the client method on each call, but the parameters passed become incorrect starting with the third transmission.",
+    "raw_summary_variants": [
+      "The 'EXECUTE ON CLIENT' command does indeed execute the client method on each call, but the parameters passed become incorrect starting with the third transmission."
+    ],
+    "versions": [
+      "21_r4_hf1",
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106566",
+    "raw_summary": "Web server forces 302 when the response has a location header: 201 Created is impossible",
+    "raw_summary_variants": [
+      "Web server forces 302 when the response has a location header: 201 Created is impossible"
+    ],
+    "versions": [
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106567",
+    "raw_summary": "'OBJECT SET RGB COLORS' applies only the last row's color to the whole list",
+    "raw_summary_variants": [
+      "'OBJECT SET RGB COLORS' applies only the last row's color to the whole list"
+    ],
+    "versions": [
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106573",
+    "raw_summary": "Memory leak: object cycles are never freed when they reference a shared object that has been attached to Storage",
+    "raw_summary_variants": [
+      "Memory leak: object cycles are never freed when they reference a shared object that has been attached to Storage"
+    ],
+    "versions": [
+      "21_r4",
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106576",
+    "raw_summary": "4D Write Pro: Memory leak with 'WP New' when converting legacy .4w7 documents containing formulas",
+    "raw_summary_variants": [
+      "4D Write Pro: Memory leak with 'WP New' when converting legacy .4w7 documents containing formulas"
+    ],
+    "versions": [
+      "20",
+      "21_r4_hf1",
+      "21_r5",
+      "21.2_hf2"
+    ]
+  },
+  {
+    "reference": "ACI0106581",
+    "raw_summary": "Privileges are lost after requesting REST resource to the component's WebServer",
+    "raw_summary_variants": [
+      "Privileges are lost after requesting REST resource to the component's WebServer"
+    ],
+    "versions": [
+      "21_r4_hf1",
+      "21_r5",
+      "21.2_hf2"
+    ]
+  },
+  {
+    "reference": "ACI0106590",
+    "raw_summary": "Using an object date property directly in a computation may provoke a syntax error",
+    "raw_summary_variants": [
+      "Using an object date property directly in a computation may provoke a syntax error"
+    ],
+    "versions": [
+      "21_r4_hf1",
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106596",
+    "raw_summary": "Explorer: Right click on table Documentation zone may lead to unexpectedly quit 4D.",
+    "raw_summary_variants": [
+      "Explorer: Right click on table Documentation zone may lead to unexpectedly quit 4D."
+    ],
+    "versions": [
+      "21_r4_hf1",
+      "21_r5",
+      "21.2_hf2"
+    ]
+  },
+  {
+    "reference": "ACI0106604",
+    "raw_summary": "Code Editor shows false “Missing end of block comment (*/)” warning that does not clear after editing or saving",
+    "raw_summary_variants": [
+      "Code Editor shows false “Missing end of block comment (*/)” warning that does not clear after editing or saving"
+    ],
+    "versions": [
+      "21_r5",
+      "21.2_hf2"
+    ]
+  },
+  {
+    "reference": "ACI0106605",
+    "raw_summary": "Label editor : In Dark mode, the search area of \"List of Fields\" stays light and the typed text is invisible",
+    "raw_summary_variants": [
+      "Label editor : In Dark mode, the search area of \"List of Fields\" stays light and the typed text is invisible"
+    ],
+    "versions": [
+      "21.2_hf2"
+    ]
+  },
+  {
+    "reference": "ACI0106606",
+    "raw_summary": "4D Write Pro: 'WP Get' breaks reports a column/page break inserted after a table on the table's last character",
+    "raw_summary_variants": [
+      "4D Write Pro: 'WP Get' breaks reports a column/page break inserted after a table on the table's last character"
+    ],
+    "versions": [
+      "21_r5",
+      "21.2_hf2"
+    ]
+  },
+  {
+    "reference": "ACI0106610",
+    "raw_summary": "4D Write Pro: memory leak when reading 'wk font italic' on a range ($range[wk font italic] / WP GET ATTRIBUTES)",
+    "raw_summary_variants": [
+      "4D Write Pro: memory leak when reading 'wk font italic' on a range ($range[wk font italic] / WP GET ATTRIBUTES)"
+    ],
+    "versions": [
+      "21_r5",
+      "21.2_hf2"
+    ]
+  },
+  {
+    "reference": "ACI0106612",
+    "raw_summary": "'FORM GET NAMES' returns an empty array in compiled mode when the table is passed with Table(n)->",
+    "raw_summary_variants": [
+      "'FORM GET NAMES' returns an empty array in compiled mode when the table is passed with Table(n)->"
+    ],
+    "versions": [
+      "21",
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106613",
+    "raw_summary": "Compiled mode only: an error that leaves a method with a registered defer statement is swallowed - the caller's Try...Catch never sees it (interpreted works)",
+    "raw_summary_variants": [
+      "Compiled mode only: an error that leaves a method with a registered defer statement is swallowed - the caller's Try...Catch never sees it (interpreted works)"
+    ],
+    "versions": [
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106616",
+    "raw_summary": "[Regression] macOS: 4D Write Pro ruler doesn't display the tab stop and page margin/indent markers in 20.8 HF3 (102063) and 20.9 (Write.bundle images missing) Variant: macOS 20.8 HF3",
+    "raw_summary_variants": [
+      "[Regression] macOS: 4D Write Pro ruler doesn't display the tab stop and page margin/indent markers in 20.8 HF3 (102063) and 20.9 (Write.bundle images missing) Variant: macOS 20.8 HF3"
+    ],
+    "versions": [
+      "20"
+    ]
+  },
+  {
+    "reference": "ACI0106620",
+    "raw_summary": "MSC Encrypt: maintenance operations fail when using passphrase instead of .4DKeyChain",
+    "raw_summary_variants": [
+      "MSC Encrypt: maintenance operations fail when using passphrase instead of .4DKeyChain"
+    ],
+    "versions": [
+      "21_r5",
+      "21.2_hf2"
+    ]
+  },
+  {
+    "reference": "ACI0106628",
+    "raw_summary": "'SVG_Define_solidColor' ignores the opacity (4th parameter or \"color:opacity\") the solidColor is drawn fully opaque",
+    "raw_summary_variants": [
+      "'SVG_Define_solidColor' ignores the opacity (4th parameter or \"color:opacity\") the solidColor is drawn fully opaque"
+    ],
+    "versions": [
+      "21_r5",
+      "21.2_hf2"
+    ]
+  },
+  {
+    "reference": "ACI0106632",
+    "raw_summary": "IP geolocation not working in server admin window",
+    "raw_summary_variants": [
+      "IP geolocation not working in server admin window"
+    ],
+    "versions": [
+      "21_r4",
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106636",
+    "raw_summary": "[4DWP] Transparent cell backgrounds are lost when table cells are vertically merged",
+    "raw_summary_variants": [
+      "[4DWP] Transparent cell backgrounds are lost when table cells are vertically merged"
+    ],
+    "versions": [
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106639",
+    "raw_summary": "[Regression]Web Area Stops Receiving Mouse and Keyboard Input After Closing a Modal Dialog",
+    "raw_summary_variants": [
+      "[Regression]Web Area Stops Receiving Mouse and Keyboard Input After Closing a Modal Dialog"
+    ],
+    "versions": [
+      "21_r4",
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106646",
+    "raw_summary": "4D View Pro: French localization of the Find/Replace dialog",
+    "raw_summary_variants": [
+      "4D View Pro: French localization of the Find/Replace dialog"
+    ],
+    "versions": [
+      "21",
+      "21_r4_hf1",
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106651",
+    "raw_summary": "[Regression]Component \"Class Instance\" loses its class when passed to a Server-Side ORDA function",
+    "raw_summary_variants": [
+      "[Regression]Component \"Class Instance\" loses its class when passed to a Server-Side ORDA function"
+    ],
+    "versions": [
+      "21_r4",
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106653",
+    "raw_summary": "Web server returns 403 Forbidden for any request with an “API-TOKEN” header",
+    "raw_summary_variants": [
+      "Web server returns 403 Forbidden for any request with an “API-TOKEN” header"
+    ],
+    "versions": [
+      "21",
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106654",
+    "raw_summary": "OB Copy with ck shared does not preserve 4D.CryptoKey instances in nested objects",
+    "raw_summary_variants": [
+      "OB Copy with ck shared does not preserve 4D.CryptoKey instances in nested objects"
+    ],
+    "versions": [
+      "21",
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106657",
+    "raw_summary": "Form objects flicker when resizing a window containing an embedded Web Area",
+    "raw_summary_variants": [
+      "Form objects flicker when resizing a window containing an embedded Web Area"
+    ],
+    "versions": [
+      "21_r4_hf1"
+    ]
+  },
+  {
+    "reference": "ACI0106659",
+    "raw_summary": "Web server: HTTP 500 “Invalid parameter” on requests with multi-IP X-Forwarded-For / Forwarded when scalable sessions are on",
+    "raw_summary_variants": [
+      "Web server: HTTP 500 “Invalid parameter” on requests with multi-IP X-Forwarded-For / Forwarded when scalable sessions are on"
+    ],
+    "versions": [
+      "21",
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106662",
+    "raw_summary": "Web Administration Help Button Opens an Invalid Documentation URL (Page Not Found)",
+    "raw_summary_variants": [
+      "Web Administration Help Button Opens an Invalid Documentation URL (Page Not Found)"
+    ],
+    "versions": [
+      "21"
+    ]
+  },
+  {
+    "reference": "ACI0106664",
+    "raw_summary": "macOS only: Compiling a project for first time with a big class fails (second compilation works)",
+    "raw_summary_variants": [
+      "macOS only: Compiling a project for first time with a big class fails (second compilation works)"
     ],
     "versions": [
       "21",
@@ -28518,22 +28940,54 @@
     ]
   },
   {
-    "reference": "ACI0106558",
-    "raw_summary": "EXECUTE ON CLIENT Parameter Regression After Two Successful Calls",
+    "reference": "ACI0106670",
+    "raw_summary": "[Regression] ARRAY TO SELECTION ~40× slower in 4D 21 R5, time grows with the number of fields filled. No Problem with 4D 21.2",
     "raw_summary_variants": [
-      "EXECUTE ON CLIENT Parameter Regression After Two Successful Calls"
+      "[Regression] ARRAY TO SELECTION ~40× slower in 4D 21 R5, time grows with the number of fields filled. No Problem with 4D 21.2"
     ],
     "versions": [
       "21_r5"
     ]
   },
   {
-    "reference": "ACI0106566",
-    "raw_summary": "Web server forces 302 when the response has a Location header: 201 Created is impossible",
+    "reference": "ACI0106678",
+    "raw_summary": "HTML Structure Definition Export No Longer Displays Field IDs",
     "raw_summary_variants": [
-      "Web server forces 302 when the response has a Location header: 201 Created is impossible"
+      "HTML Structure Definition Export No Longer Displays Field IDs"
     ],
     "versions": [
+      "21",
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106681",
+    "raw_summary": "Negative Time Duration Is Displayed Incorrectly Depending on the Input Format",
+    "raw_summary_variants": [
+      "Negative Time Duration Is Displayed Incorrectly Depending on the Input Format"
+    ],
+    "versions": [
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106688",
+    "raw_summary": "Rectangle not displaying in each row of output form in 4D 21 R5",
+    "raw_summary_variants": [
+      "Rectangle not displaying in each row of output form in 4D 21 R5"
+    ],
+    "versions": [
+      "21_r5"
+    ]
+  },
+  {
+    "reference": "ACI0106689",
+    "raw_summary": "[Regression] \":X,Y\" localization string reference in a form object title is not resolved when the title ends with a carriage return",
+    "raw_summary_variants": [
+      "[Regression] \":X,Y\" localization string reference in a form object title is not resolved when the title ends with a carriage return"
+    ],
+    "versions": [
+      "21_r4",
       "21_r5"
     ]
   }

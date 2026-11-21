@@ -733,7 +733,7 @@
   },
   {
     "reference": "ACI0099336",
-    "raw_summary": "'RELATE ONE SELECTION' do not use correctly the parameter passed to 'SET FIELD RELATION'.",
+    "raw_summary": "'RELATE ONE SELECTION' don't use correctly the parameter passed to 'SET FIELD RELATION'.",
     "versions": [
       "19",
       "19_r2",
@@ -7409,7 +7409,7 @@
   },
   {
     "reference": "ACI0101068",
-    "raw_summary": "Deleting the content of a cell with the keyboard is not detected as a modification of a 4D View Pro document",
+    "raw_summary": "4D View Pro: Deleting the content of a cell with the keyboard is not detected as a modification",
     "versions": [
       "18_r4",
       "19_r4_hf2",
@@ -11900,7 +11900,7 @@
   },
   {
     "reference": "ACI0101950",
-    "raw_summary": "After binary database is converted to project database, connecting client to server takes much more time with the project database than the binary database.",
+    "raw_summary": "After binary database is converted to project database, connecting client to server takes much more time.",
     "versions": [
       "19.0_hf1",
       "19_r3",
@@ -12238,7 +12238,7 @@
   },
   {
     "reference": "ACI0102010",
-    "raw_summary": "In Listboxes with entity selection, current item and current index change when clicking an unselectable row (via meta.unselectable)",
+    "raw_summary": "In a listbox with entity selection, current item and current index change when clicking an unselectable row (via meta.unselectable)",
     "versions": [
       "19.0_hf1",
       "19_r2",
@@ -12330,7 +12330,7 @@
   },
   {
     "reference": "ACI0102024",
-    "raw_summary": "Encrypting when no records on a table leads to make appear unexpectedly a yellow triangle.",
+    "raw_summary": "Encrypting when no record on a table leads to make appear unexpectedly a yellow triangle.",
     "versions": [
       "18.5_hf1",
       "18.6",
@@ -12407,7 +12407,7 @@
   },
   {
     "reference": "ACI0102035",
-    "raw_summary": "When a 4D v18 catalog is opened with 4D v19 every, <tip> tag is modified to add a return before the closing tag. This makes proper version control impossible when working with multiple versions because it creates thousands of changes in the catalog file.",
+    "raw_summary": "When a 4D v18 catalog is opened with 4D v19, every <tip> tag is modified to add a return before the closing tag. This makes proper version control impossible when working with multiple versions because it creates thousands of changes in the catalog file.",
     "versions": [
       "19",
       "19_r2",
@@ -12525,7 +12525,7 @@
   },
   {
     "reference": "ACI0102087",
-    "raw_summary": "4D Write Pro: Importing '.docx' with mergefields and formatting code, can generate ghost characters in range text",
+    "raw_summary": "4D Write Pro: Importing '.docx' with mergefields and formatting code can generate ghost characters in range text",
     "versions": [
       "19.0_hf1",
       "19_r2",
@@ -12577,7 +12577,7 @@
   },
   {
     "reference": "ACI0102098",
-    "raw_summary": "Stamp has unexpectedly changed when saving a related entity twice within a transaction.",
+    "raw_summary": "Stamp changes unexpectedly when saving a related entity twice within a transaction.",
     "versions": [
       "18.5_hf3",
       "18.6",
@@ -12817,7 +12817,7 @@
   },
   {
     "reference": "ACI0102145",
-    "raw_summary": "When converting a database to Project mode, in List box, some Font Colors and alignment properties revert to default settings",
+    "raw_summary": "After converting a database to project mode, in a listbox font colors and alignment properties revert to default settings.",
     "versions": [
       "18.5_hf1",
       "18.6",
@@ -12944,7 +12944,7 @@
   },
   {
     "reference": "ACI0102170",
-    "raw_summary": "Unexpected execution error about Relation path (link between 2 tables) at database launch with 4D Remote if 'On startup' database method is not empty.",
+    "raw_summary": "Unexpected execution error about relation path (link between 2 tables) at database launch with 4D Remote if 'On startup' database method is not empty.",
     "versions": [
       "19.0_hf1",
       "19_r2",
@@ -12958,7 +12958,7 @@
   },
   {
     "reference": "ACI0102171",
-    "raw_summary": "4D Entity selection Listbox builder doesn't display the entities in Client/Server mode",
+    "raw_summary": "4D Entity selection listbox builder doesn't display the entities in Client/Server mode",
     "versions": [
       "19.0_hf1",
       "19_r2",
@@ -13096,7 +13096,7 @@
   },
   {
     "reference": "ACI0102189",
-    "raw_summary": "4D Write Pro PDF export does not take into account text color of text SVGs",
+    "raw_summary": "4D Write Pro: PDF export doesn't take into account text color of text SVGs",
     "versions": [
       "19.0_hf1",
       "19_r2",
@@ -13129,7 +13129,7 @@
   },
   {
     "reference": "ACI0102194",
-    "raw_summary": "In 4D View Pro, the paperSize.kind attribute returned by the command 'VP Get print info' is wrong.",
+    "raw_summary": "4D View Pro: the paperSize.kind attribute returned by the command 'VP Get print info' is wrong.",
     "versions": [
       "19_r4",
       "19_r4_hf2",
@@ -13180,7 +13180,7 @@
   },
   {
     "reference": "ACI0102201",
-    "raw_summary": "On Mac OS, unable to start Web server on port 80 on specific IP-address",
+    "raw_summary": "On macOS, unable to start Web server on port 80 on specific IP-address",
     "versions": [
       "19.0_hf2",
       "19_r2",
@@ -13482,7 +13482,7 @@
   },
   {
     "reference": "ACI0102252",
-    "raw_summary": "In 4D v19, validating Japanese text in method editor will cause unnecessary line break to happen",
+    "raw_summary": "Since v19, validating Japanese text in method editor causes unnecessary line break to happen.",
     "versions": [
       "19.0_hf2",
       "19_r3",
@@ -13701,7 +13701,7 @@
   },
   {
     "reference": "ACI0102286",
-    "raw_summary": "When a Combo box has an array with no elements, clicking on the down arrow button will disable any Key input afterwards. Windows system only.",
+    "raw_summary": "When a Combo box has an array with no element, clicking on the down arrow button will disable any Key input afterwards. Windows system only.",
     "versions": [
       "19.0_hf2",
       "19_r2",
@@ -14652,7 +14652,7 @@
   },
   {
     "reference": "ACI0102454",
-    "raw_summary": "4D Server may quit unexpectedly when running a preemptive method that executes an SQL statement which calls on a function.",
+    "raw_summary": "4D Server may quit unexpectedly when running a preemptive method that executes a SQL statement which calls on a function.",
     "versions": [
       "18.5_hf5",
       "18.6",
@@ -14846,7 +14846,7 @@
   },
   {
     "reference": "ACI0102479",
-    "raw_summary": "If there is \"Narrow No-Break Space\" character as a separator to group the digits, it makes a wrong display for a number which contains more than 3 digits",
+    "raw_summary": "If a \"Narrow No-Break Space\" character is set as a separator (to group the digits), the display for a number which contains more than 3 digits is wrong.",
     "versions": [
       "18.5_hf5",
       "18.6",
@@ -17206,7 +17206,7 @@
   },
   {
     "reference": "ACI0102861",
-    "raw_summary": "After compact records and indexes when trying, creating a record may lead to a crash. Only with indexed field.",
+    "raw_summary": "After compact records and indexes, trying to create a record may lead to a crash. Only with indexed field.",
     "versions": [
       "19_r5",
       "19.3_hf1",
@@ -17563,7 +17563,7 @@
   },
   {
     "reference": "ACI0102940",
-    "raw_summary": "[147503] Regression: Email object attachments cannot be passed as a parameter to another process",
+    "raw_summary": "Email object attachments cannot be passed as a parameter to another process",
     "versions": [
       "19_r5",
       "19.3_hf1",
@@ -18947,7 +18947,7 @@
   },
   {
     "reference": "ACI0103244",
-    "raw_summary": "'Surrogate' character at the end of an alpha field, can caused invalid character because not truncated correctly",
+    "raw_summary": "'Surrogate' character at the end of an alpha field can caused invalid character because not truncated correctly",
     "versions": [
       "19_r6",
       "19_r6_hf1",
@@ -19595,7 +19595,7 @@
   },
   {
     "reference": "ACI0103462",
-    "raw_summary": "Customized date formats (or official for some regional settings, like Netherlands) may not be correct in 4D ; macOS 13.x only (Ventura).",
+    "raw_summary": "Customized date formats (or official for some regional settings, like Netherlands) may not be correct in 4D; macOS 13.x only (Ventura).",
     "versions": [
       "19_r7",
       "19_r8",
@@ -19755,7 +19755,7 @@
   },
   {
     "reference": "ACI0103499",
-    "raw_summary": "Compiler option \"Type the variables\" incorrectly typing parameter indirection in the symbols file",
+    "raw_summary": "Compiler option \"Type the variables\" incorrectly types parameter indirection in the symbols file",
     "versions": [
       "19_r7",
       "19.5_hf1",
@@ -20016,7 +20016,7 @@
   },
   {
     "reference": "ACI0103541",
-    "raw_summary": "Quick Report: Wrong break after dragging a column in place of another ; the subtotal is on the other field.",
+    "raw_summary": "Quick Report: Wrong break after dragging a column in place of another; the subtotal is on the other field.",
     "versions": [
       "19_r8",
       "19.5_hf2",
@@ -20542,7 +20542,7 @@
   },
   {
     "reference": "ACI0103642",
-    "raw_summary": "'HTTP Request' command behavior between 19Rx and 19.x : no XML response with v19 Rx sometimes",
+    "raw_summary": "'HTTP Request' command behaviour between v19R and v19: no XML response with v19R sometimes",
     "versions": [
       "19_r7_hf1",
       "19_r8"
@@ -20813,7 +20813,7 @@
   },
   {
     "reference": "ACI0103679",
-    "raw_summary": "In entity selection LISTBOX ,after selected Row with command LISTBOX SELECT ROWS, arrow keys does not select the right rows, instead of selecting the next one after the the row selected initially",
+    "raw_summary": "In entity selection LISTBOX ,after selected Row with command LISTBOX SELECT ROWS, arrow keys does not select the right rows, instead of selecting the next one after the row selected initially",
     "versions": [
       "19_r8",
       "19.6"
@@ -21178,7 +21178,7 @@
   },
   {
     "reference": "ACI0103734",
-    "raw_summary": "REGRESSION: The \".selectBox()\" command generates an error 11 (IMAP SELECT commmand failed)",
+    "raw_summary": "REGRESSION: The \".selectBox()\" command generates an error 11 (IMAP SELECT command failed)",
     "versions": [
       "19_r8",
       "19.6"
@@ -21337,7 +21337,7 @@
   },
   {
     "reference": "ACI0103756",
-    "raw_summary": "Wrong font size applied on an imput text after modifying it in the font dialog when using 4K resolution screen",
+    "raw_summary": "Wrong font size applied on an input text after modifying it in the font dialog when using 4K resolution screen",
     "versions": [
       "19_r8"
     ],
@@ -31157,6 +31157,18 @@
     "matched_commands": []
   },
   {
+    "reference": "ACI0105454",
+    "raw_summary": "WebSocketConnection.send() incorrectly serializes date properties as ISO-8601 with time zone instead of Date-only format",
+    "versions": [
+      "21_r4_hf1",
+      "21.2_hf2"
+    ],
+    "jp_notes": [
+      "`WebSocketConnection.send()`で日付型のプロパティを送信した場合，データベースパラメーターで`Dates inside objects`が`Date type`に設定されていても，日付がタイムゾーン付きのISO-8601形式にシリアライズされて送信されました。"
+    ],
+    "matched_commands": []
+  },
+  {
     "reference": "ACI0105455",
     "raw_summary": "Unexpected compiler warning may happen: \"Assumes that the pointer points to an alphanumeric expression. (533.1)\"",
     "versions": [
@@ -33418,6 +33430,16 @@
     "matched_commands": []
   },
   {
+    "reference": "ACI0105945",
+    "raw_summary": "The event \"On Begin URL Loading\" does not work properly in the internal web area",
+    "versions": [
+      "21",
+      "21_r4"
+    ],
+    "jp_notes": [],
+    "matched_commands": []
+  },
+  {
     "reference": "ACI0105952",
     "raw_summary": "Filter by object category in 'Object library' dialog doesn't display the objects in the Progress Indicator category",
     "versions": [
@@ -34130,6 +34152,17 @@
     "matched_commands": []
   },
   {
+    "reference": "ACI0106102",
+    "raw_summary": "Select Block shortcut (Cmd-B) may produce incorrect selection when expression contains string with parenthesis.",
+    "versions": [
+      "21.2_hf2"
+    ],
+    "jp_notes": [
+      "括弧を含むリテラル文字列が範囲に含まれている場合，キーボードショートカットの`command`+`B`でブロックを選択できませんでした。"
+    ],
+    "matched_commands": []
+  },
+  {
     "reference": "ACI0106104",
     "raw_summary": "Bug with Dynamic menu called from the host instance event of a widget",
     "versions": [
@@ -34823,6 +34856,18 @@
     "matched_commands": []
   },
   {
+    "reference": "ACI0106216",
+    "raw_summary": "Explorer selection is lost when switching applications",
+    "versions": [
+      "21_r5",
+      "21.2_hf2"
+    ],
+    "jp_notes": [
+      "エクスプローラーのホームタブで項目を選択した状態で最前面アプリケーションを切り替えた場合，再フォーカス時に項目の選択が失われました。\n\n**注記**: デザインモードでは，アプリケーションが最前面に移動するたびにプロジェクトがリロードされますが，ホームタブのみ，項目の選択を復元する仕組みが実装されていませんでした。"
+    ],
+    "matched_commands": []
+  },
+  {
     "reference": "ACI0106220",
     "raw_summary": "Bad display of 'user and groups' editor when not an administrator.",
     "versions": [
@@ -35216,7 +35261,9 @@
       "21_r4",
       "21.1"
     ],
-    "jp_notes": [],
+    "jp_notes": [
+      "クライアント/サーバー版のみ。クライアントがWebSocketメッセージを送信中にTCP接続に障害が発生した場合，サーバーがクラッシュしました。"
+    ],
     "matched_commands": []
   },
   {
@@ -35432,7 +35479,7 @@
   },
   {
     "reference": "ACI0106341",
-    "raw_summary": "Issue in user name display in the 4D toolbox : user name seems to be duplicated (whereas it is not).",
+    "raw_summary": "Issue in username display in the 4D toolbox: username seems to be duplicated (whereas it is not).",
     "versions": [
       "21_r4",
       "21.1_hf2",
@@ -35581,7 +35628,7 @@
   },
   {
     "reference": "ACI0106359",
-    "raw_summary": "In database settings, the â€œAPI KEYâ€ area appears unexpectedly in plain text.",
+    "raw_summary": "In database settings, the “API KEY” area appears unexpectedly in plain text.",
     "versions": [
       "21_r3_hf1",
       "21_r4"
@@ -35674,7 +35721,7 @@
   },
   {
     "reference": "ACI0106376",
-    "raw_summary": "Building an applaication with 'tool4D' and the component 'build4D' crashes in _core \"Create deployment license\" when starting it in headless mode.",
+    "raw_summary": "Building an application with 'tool4D' and the component 'build4D' crashes in _core \"Create deployment license\" when starting it in headless mode.",
     "versions": [
       "21_r3_hf1",
       "21_r4"
@@ -35688,6 +35735,17 @@
         "url": "https://developer.4d.com/docs/commands/create-deployment-license"
       }
     ]
+  },
+  {
+    "reference": "ACI0106377",
+    "raw_summary": "4D may crash while regaining focus in the method editor when editing a component's class.",
+    "versions": [
+      "21.2_hf2"
+    ],
+    "jp_notes": [
+      "Mac版のみ。コンポーネントのクラスをメソッドエディターで開こうとした場合，アプリケーションがクラッシュする恐れがありました。"
+    ],
+    "matched_commands": []
   },
   {
     "reference": "ACI0106379",
@@ -35736,6 +35794,17 @@
     ],
     "jp_notes": [
       "ウインドウを巡回するキーボードショートカットでエクスプローラーを最前面に移動した場合，矢印キーで項目を選択することはできますが，`enter`キーでエディターを開くことができませんでした。\n\n*注記*: ウィンドウの最前面ステータスだけでなく，マウスポインターの位置が`enter`キーの判定に影響していました。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106387",
+    "raw_summary": "Non-thread-safe trigger silently stops running on REST inserts/updates in compiled mode (100 \"REST\" processes limit)",
+    "versions": [
+      "21_r5"
+    ],
+    "jp_notes": [
+      "コンパイルモードのみ。REST APIでエンティティを更新した場合，スレッドアンセーフなトリガが`100`回までは実行されますが，その後は実行されず，エラーが返されこともありませんでした。"
     ],
     "matched_commands": []
   },
@@ -35804,6 +35873,20 @@
       "[`backupHistory.json`](https://developer.4d.com/docs/ja/Backup/backup#backuphistoryjson)ファイルの`endingDate`と`scheduledDate`が正しくありませんでした。バックアップの主要時間が加算されていないためです。[バックアップジャーナル](https://developer.4d.com/docs/ja/Backup/backup#バックアップジャーナル)は問題ありません。"
     ],
     "matched_commands": []
+  },
+  {
+    "reference": "ACI0106399",
+    "raw_summary": "Telemetry Bug: Process CPU time in Remote Admin window exceeds server uptime and Get process activity metrics",
+    "versions": [
+      "21"
+    ],
+    "jp_notes": [],
+    "matched_commands": [
+      {
+        "title": "Process activity",
+        "url": "https://developer.4d.com/docs/commands/process-activity"
+      }
+    ]
   },
   {
     "reference": "ACI0106403",
@@ -35918,11 +36001,12 @@
   },
   {
     "reference": "ACI0106421",
-    "raw_summary": "On Windows, it is not possible to establish a client connection with SSO and client-server encryption enabled.",
+    "raw_summary": "On Windows, it is not possible to establish a client connection, with SSO and client-server encryption enabled.",
     "versions": [
       "20",
       "21",
-      "21_r4"
+      "21_r4",
+      "21.2_hf1"
     ],
     "jp_notes": [
       "クライアント/サーバー版のみ。クライアント暗号化通信とシングルサインオン（SSO）の両方を有効にした場合，ServerNetでサーバーに接続することができませんでした。どちらか一方を無効にすれば，問題ありません。QUICネットワークレイヤー（常に暗号化通信）でも問題ありません。ACI0106296が修正されたことによる副作用のようです。"
@@ -35940,6 +36024,43 @@
       "メール添付ファイル名のMIMEエンコードに問題がありました。`Content-Disposition`ヘッダーの`attachment`属性とセミコロン記号（`;`）の間余計な改行が挿入されるため，ファイアーウォールやウイルス対策ソフトウェアによってブロックされる恐れがありました。"
     ],
     "matched_commands": []
+  },
+  {
+    "reference": "ACI0106425",
+    "raw_summary": "Crash if calling \"Is window maximized\" on macOS Golden Gate (macOS 27) and if web area is in the form",
+    "versions": [
+      "21.2_hf1"
+    ],
+    "jp_notes": [
+      "Mac版のみ。システムWebエリアが配置されたフォーム上で`\"Is window maximized`または`MAXIMIZE WINDOW`を実行した場合，アプリケーションがクラッシュしました。macOS 27 Golden Gateに特有の現象です。"
+    ],
+    "matched_commands": [
+      {
+        "title": "Is window maximized",
+        "url": "https://developer.4d.com/docs/commands/is-window-maximized"
+      },
+      {
+        "title": "MAXIMIZE WINDOW",
+        "url": "https://developer.4d.com/docs/commands/maximize-window"
+      }
+    ]
+  },
+  {
+    "reference": "ACI0106427",
+    "raw_summary": "Current process debug log recording doesn't contain components logs",
+    "versions": [
+      "21_r4_hf1",
+      "21.2_hf2"
+    ],
+    "jp_notes": [
+      "カレントプロセスデバッグログにコンポーネントメソッドの呼び出しが記録されませんでした。\n\n**注記**: コンポーネントメソッドのサブルーチンが記録されないのは仕様です。"
+    ],
+    "matched_commands": [
+      {
+        "title": "Current process",
+        "url": "https://developer.4d.com/docs/commands/current-process"
+      }
+    ]
   },
   {
     "reference": "ACI0106430",
@@ -35981,6 +36102,18 @@
     "matched_commands": []
   },
   {
+    "reference": "ACI0106443",
+    "raw_summary": "4D Server may be unresponsive due to the CPU load in the Network Manager process.",
+    "versions": [
+      "21_r5",
+      "21.2_hf2"
+    ],
+    "jp_notes": [
+      "QUICネットワークレイヤーのみ。多数のクライアントが同時に接続した場合，ネットワークマネージャープロセスがCPUを占有し，サーバーが無反応になることがありました。"
+    ],
+    "matched_commands": []
+  },
+  {
     "reference": "ACI0106447",
     "raw_summary": "When a new list is added to an existing enumeration, it is automatically inserted at the top of the list.",
     "versions": [
@@ -36000,7 +36133,7 @@
   },
   {
     "reference": "ACI0106448",
-    "raw_summary": "\"Modifiable Element\" checkbox is not Checked by default when creating a new list element",
+    "raw_summary": "\"Modifiable Element\" checkbox is not checked by default when creating a new list element",
     "versions": [
       "21_r4",
       "21.1_hf2",
@@ -36072,6 +36205,23 @@
       "Windows版のみ。プラグインSDKの`PA_CreateNativePictureForPrinting`から返されるピクチャが正しくありませんでした。拡大され，クリッピングされた画像が返されます。`PA_CreateNativePictureForScreen`は問題ありません。"
     ],
     "matched_commands": []
+  },
+  {
+    "reference": "ACI0106454",
+    "raw_summary": "WEB Get current session ID doesn't match Session.id",
+    "versions": [
+      "21",
+      "21_r5"
+    ],
+    "jp_notes": [
+      "スケーラブルセッション管理を有効にした場合，`WEB Get current session ID`が`Session.id`から返されるカレントのセッション識別子ではなく，ひとつ前のセッション識別子を返しました。"
+    ],
+    "matched_commands": [
+      {
+        "title": "WEB Get current session ID",
+        "url": "https://developer.4d.com/docs/commands/web-get-current-session-id"
+      }
+    ]
   },
   {
     "reference": "ACI0106458",
@@ -36275,7 +36425,7 @@
   },
   {
     "reference": "ACI0106504",
-    "raw_summary": "The 'Total HTTP hits' number may increase unexpectedly on Administration window (see 'HTTP Server' tab) with some non-http actions; yet, nothing is reported in the http log.",
+    "raw_summary": "The 'Total HTTP hits' number may increase unexpectedly on Administration window (see 'HTTP Server' tab) with some non-http actions; yet nothing is reported in the http log.",
     "versions": [
       "21_r3_hf2",
       "21_r4",
@@ -36287,11 +36437,33 @@
     "matched_commands": []
   },
   {
+    "reference": "ACI0106505",
+    "raw_summary": "[DUMP] Hang observed instead of crash – Related to ACI0106457",
+    "versions": [
+      "21_r5"
+    ],
+    "jp_notes": [],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106506",
+    "raw_summary": "Property List remains inaccessible off-screen after a display configuration change",
+    "versions": [
+      "21_r4_hf1",
+      "21_r5"
+    ],
+    "jp_notes": [
+      "Windows版のみ。マルチディスプレイの配置を変更した場合，プロパティリストがスクリーンの表示領域外にとどまることがありました。"
+    ],
+    "matched_commands": []
+  },
+  {
     "reference": "ACI0106507",
     "raw_summary": "EntitySelection.drop() takes ~500ms on an empty selection when \"Include in Log File\" is deactivated and the table has no Delete Trigger set.",
     "versions": [
       "21",
-      "21_r4"
+      "21_r4",
+      "21.2_hf1"
     ],
     "jp_notes": [
       "テーブルのジャーナリングが有効にされていない場合，`EntitySelection.drop()`で空のエンティティセレクションを削除するのに`500`㍉秒を要しました。"
@@ -36305,7 +36477,7 @@
   },
   {
     "reference": "ACI0106510",
-    "raw_summary": "Erratic behaviour regarding the width of list box columns in development mode when â€˜Automatic Column Widthâ€™ is selected",
+    "raw_summary": "Erratic behaviour regarding the width of list box columns in development mode when ‘Automatic Column Width’ is selected",
     "versions": [
       "21_r3_hf2",
       "21_r4",
@@ -36318,9 +36490,10 @@
   },
   {
     "reference": "ACI0106511",
-    "raw_summary": "#D syntax in QR editor does not print correct date when time is not suitable",
+    "raw_summary": "#D syntax in QR editor doesn't print the correct date when time is not suitable",
     "versions": [
-      "21"
+      "21",
+      "21.2_hf1"
     ],
     "jp_notes": [
       "クイックレポートでカレント日付を差し込むために`#D`を使用した場合，UTC時間帯の日付が出力されました。"
@@ -36339,11 +36512,24 @@
     "matched_commands": []
   },
   {
+    "reference": "ACI0106514",
+    "raw_summary": "Wrong 'While' and 'Until' statement evaluation in 'For each' loops (interpreted only)",
+    "versions": [
+      "21",
+      "21_r5"
+    ],
+    "jp_notes": [
+      "インタープリターモードのみ。`For each`ループ条件に` While (True) & (False)`または`Until (True) & (False)`と記述した場合，外側の式がループ条件とは別の式として評価されました。\n\n**注記**: どちらのモードでもブール式全体がループ条件として評価されるようになりました。"
+    ],
+    "matched_commands": []
+  },
+  {
     "reference": "ACI0106517",
     "raw_summary": "When a printing error occurs, 4D should return a more specific error message rather than the generic \"Error 1\"",
     "versions": [
       "21",
-      "21_r4"
+      "21_r4",
+      "21.2_hf1"
     ],
     "jp_notes": [
       "Windows版のみ。印刷中にエラーが発生した場合，「未知のエラー」という大雑把なメッセージが返されました。もっと具体的な情報が表示されるべきです。\n\n**注記**: メッセージに加え，エラーの原因となる印刷関連の不具合も修正されました。特定の状況で印刷APIがメインスレッドから呼び出されないことがありました。"
@@ -36351,10 +36537,56 @@
     "matched_commands": []
   },
   {
-    "reference": "ACI0106526",
-    "raw_summary": "Systematic 4D crash when processing a binary structure during MSC Verify, Structure Repair, compiler syntax check and binary to project conversion",
+    "reference": "ACI0106518",
+    "raw_summary": "V2 on_create Macro Event Not Triggered for Some Method Types",
     "versions": [
       "21"
+    ],
+    "jp_notes": [
+      "データベースメソッド・トリガ・フォームメソッド・オブジェクトメソッドを作成した場合，`on_create`マクロイベントが実行されませんでした。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106519",
+    "raw_summary": "Delete or backspace key pressed during list item entry does not produce 'On After Edit' event.",
+    "versions": [
+      "21.2_hf2"
+    ],
+    "jp_notes": [
+      "階層リスト項目の編集中に`delete`または`backspace`キーを入力した場合，`On After Edit`イベントが発生しませんでした。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106521",
+    "raw_summary": "typing a var with inline comment breaks the editor",
+    "versions": [
+      "21",
+      "21_r5"
+    ],
+    "jp_notes": [
+      "`var`宣言にインラインコメントを記述することができませんでした。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106523",
+    "raw_summary": "4D client crashes on quit with 4D 21.1 build 100562 — SIGSEGV in DB4D EntityModelCatalog destructor",
+    "versions": [
+      "21"
+    ],
+    "jp_notes": [
+      "QUICネットワークレイヤーのみ。終了時にクライアントアプリケーションがクラッシュする恐れがありました。データベースストラチャーに依存する現象です。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106526",
+    "raw_summary": "4D may crash on a binary structure while processing an MSC Verify, Structure Repair, compiler syntax check and binary to project conversion",
+    "versions": [
+      "21",
+      "21.2_hf1"
     ],
     "jp_notes": [
       "特定のストラクチャーファイルに対し，MSCの検査/修復，コンパイラーのシンタックスチェック，プロジェクト変換を実行しようとした場合，アプリケーションがクラッシュしました。\n\n**注記**: 無効な表示フォーマットにより，スタックオーバーフローが発生することが原因でした。"
@@ -36366,7 +36598,8 @@
     "raw_summary": "Display format is applied during edit mode of date or time input",
     "versions": [
       "21",
-      "21_r4"
+      "21_r4",
+      "21.2_hf1"
     ],
     "jp_notes": [
       "日付または時間型の入力オブジェクトにフォーカスを移動した場合，入力中もフォーマットが解除されませんでした。オブジェクトの入力順が先頭であれば問題ありません。タブ移動で現象が再現します。また，表示フォーマットに加えて入力フィルターも設定されていれば問題ありません。"
@@ -36377,11 +36610,23 @@
     "reference": "ACI0106530",
     "raw_summary": "When building an application with the \"Silicon only\" option, the generated executable contains unexpectedly 2 architectures: Intel code is added.",
     "versions": [
-      "21_r4"
+      "21_r4",
+      "21.2_hf1"
     ],
     "jp_notes": [
       "Mac版のみ。Apple Siliconをビルドターゲットに設定した場合，Intelターゲットのコードも出力されました。ACI0104718と逆のパターンです。"
     ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106532",
+    "raw_summary": "IncomingMessage.urlQuery\\`: an encoded \\`&\\` makes two different requests indistinguishable",
+    "versions": [
+      "21",
+      "21_r4",
+      "21_r5"
+    ],
+    "jp_notes": [],
     "matched_commands": []
   },
   {
@@ -36402,13 +36647,27 @@
   },
   {
     "reference": "ACI0106542",
-    "raw_summary": "License update issue from R(x) into R(x+1) if you launch R(x+1) and directly open the licenses manager",
+    "raw_summary": "License update issue from R(x) to R(x+1) if you launch R(x+1) and directly open the licenses manager",
     "versions": [
       "21",
-      "21_r5"
+      "21_r4_hf1",
+      "21_r5",
+      "21.2_hf1"
     ],
     "jp_notes": [
       "プロジェクトを指定せずにアプリケーションを起動した場合，ライセンスの自動アップデートが実行されず，ライセンス番号の入力を求められました。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106543",
+    "raw_summary": "Explorer window flickering and possible memory leak with a component named like the host project",
+    "versions": [
+      "21_r4_hf1",
+      "21.2_hf1"
+    ],
+    "jp_notes": [
+      "ホストと同じ名称のコンポーネントをインストールした場合，エクスプローラーのタブを切り替えるたびに画面のちらつき，メモリーリークが発生しました。\n\n**注記**: 修正により，ホストと同じ名称のコンポーネントや依存関係はロードされず，エラーが返されるようになりました。"
     ],
     "matched_commands": []
   },
@@ -36418,7 +36677,8 @@
     "versions": [
       "21",
       "21_r4",
-      "21_r5"
+      "21_r5",
+      "21.2_hf1"
     ],
     "jp_notes": [
       "「レコードの強制更新」モードで圧縮した場合，「レコードと一緒」に保存したオブジェクト値が失われました。「データファイルの中」（レコード外のBLOBブロックに保存）であれば問題ありません。"
@@ -36432,11 +36692,12 @@
   },
   {
     "reference": "ACI0106546",
-    "raw_summary": "The Engine server built with the â€˜PackProjectâ€™ key set to false displays a prompt on launch asking to import components that were previously included in 4D.",
+    "raw_summary": "The engined server built with the 'PackProject' key set to 'False' unexpectedly displays a prompt on launch asking to import components that were previously included in 4D.",
     "versions": [
       "21",
       "21_r4",
-      "21_r5"
+      "21_r5",
+      "21.2_hf1"
     ],
     "jp_notes": [
       "`PackProject`キーを`False`設定してアプリケーションをビルドした場合，初回起動時に純正コンポーネントのインストールを促す依存関係マネージャーのダイアログが表示されました。"
@@ -36449,9 +36710,22 @@
     ]
   },
   {
-    "reference": "ACI0106558",
-    "raw_summary": "EXECUTE ON CLIENT Parameter Regression After Two Successful Calls",
+    "reference": "ACI0106554",
+    "raw_summary": "Assertion failure (SIGABRT) in QuicNetwork / ngtcp2 expiry timer handler that cause 4D Server to crash",
     "versions": [
+      "21_r5",
+      "21.2_hf2"
+    ],
+    "jp_notes": [
+      "QUICレイヤーのみ。長時間にわたってサーバーを運用した場合，ネットワークマネージャーのアサーションにより，アプリケーションがアボートすることがありました。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106558",
+    "raw_summary": "The 'EXECUTE ON CLIENT' command does indeed execute the client method on each call, but the parameters passed become incorrect starting with the third transmission.",
+    "versions": [
+      "21_r4_hf1",
       "21_r5"
     ],
     "jp_notes": [
@@ -36466,7 +36740,7 @@
   },
   {
     "reference": "ACI0106566",
-    "raw_summary": "Web server forces 302 when the response has a Location header: 201 Created is impossible",
+    "raw_summary": "Web server forces 302 when the response has a location header: 201 Created is impossible",
     "versions": [
       "21_r5"
     ],
@@ -36483,5 +36757,434 @@
         "url": "https://developer.4d.com/docs/commands/web-server"
       }
     ]
+  },
+  {
+    "reference": "ACI0106567",
+    "raw_summary": "'OBJECT SET RGB COLORS' applies only the last row's color to the whole list",
+    "versions": [
+      "21_r5"
+    ],
+    "jp_notes": [
+      "リストフォームの`On Display Detail`イベントで`OBJECT SET RGB COLORS`を実行することができませんでした。最終行の色設定がすべての行に適用されました。\n\n**注記**: WindowsでFluentUIを有効にした場合，オブジェクトがリストフォームの詳細エリアの内部に収まっていることを確かめてください。上下のエリアにかかっているオブジェクトが全体の背景としてレンダリングされるのは仕様です。"
+    ],
+    "matched_commands": [
+      {
+        "title": "OBJECT SET RGB COLORS",
+        "url": "https://developer.4d.com/docs/commands/object-set-rgb-colors"
+      }
+    ]
+  },
+  {
+    "reference": "ACI0106573",
+    "raw_summary": "Memory leak: object cycles are never freed when they reference a shared object that has been attached to Storage",
+    "versions": [
+      "21_r4",
+      "21_r5"
+    ],
+    "jp_notes": [],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106576",
+    "raw_summary": "4D Write Pro: Memory leak with 'WP New' when converting legacy .4w7 documents containing formulas",
+    "versions": [
+      "20",
+      "21_r4_hf1",
+      "21_r5",
+      "21.2_hf2"
+    ],
+    "jp_notes": [
+      "フォーミュラを含む4D Writeドキュメント（`.4W7`）を`WP New`でWrite Proに変換した場合，メモリーリークが発生しました。"
+    ],
+    "matched_commands": [
+      {
+        "title": "WP New",
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-new"
+      }
+    ]
+  },
+  {
+    "reference": "ACI0106581",
+    "raw_summary": "Privileges are lost after requesting REST resource to the component's WebServer",
+    "versions": [
+      "21_r4_hf1",
+      "21_r5",
+      "21.2_hf2"
+    ],
+    "jp_notes": [
+      "ホストのWebサーバーでセッションの権限を設定した後，コンポーネントのWebサーバーでRESTリクエストを処理した場合，セッションの権限がリセットされました。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106590",
+    "raw_summary": "Using an object date property directly in a computation may provoke a syntax error",
+    "versions": [
+      "21_r4_hf1",
+      "21_r5"
+    ],
+    "jp_notes": [
+      "日付型のプロパティを日付型の演算式に記述した場合，シンタックスエラーが返されました。`Date`関数で明示的にキャストすれば問題ありません。\n\n```4d\nvar $days : Integer\nvar $object : Object\n$object:={date: Current date}\n$days:=Current date-$object.date\n```"
+    ],
+    "matched_commands": [
+      {
+        "title": "Date",
+        "url": "https://developer.4d.com/docs/commands/date"
+      }
+    ]
+  },
+  {
+    "reference": "ACI0106596",
+    "raw_summary": "Explorer: Right click on table Documentation zone may lead to unexpectedly quit 4D.",
+    "versions": [
+      "21_r4_hf1",
+      "21_r5",
+      "21.2_hf2"
+    ],
+    "jp_notes": [
+      "エクスプローラーでテーブルのドキュメンテーションを追加しようとした場合，アプリケーションがクラッシュしました。"
+    ],
+    "matched_commands": [
+      {
+        "title": "QUIT 4D",
+        "url": "https://developer.4d.com/docs/commands/quit-4d"
+      },
+      {
+        "title": "Right click",
+        "url": "https://developer.4d.com/docs/commands/right-click"
+      }
+    ]
+  },
+  {
+    "reference": "ACI0106604",
+    "raw_summary": "Code Editor shows false “Missing end of block comment (*/)” warning that does not clear after editing or saving",
+    "versions": [
+      "21_r5",
+      "21.2_hf2"
+    ],
+    "jp_notes": [
+      "メソッドエディターを閉じるか，シンタックスチェックを再実行するまで，ブロックコメントの終わり（`*/`）がありません，という警告が消えませんでした。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106605",
+    "raw_summary": "Label editor : In Dark mode, the search area of \"List of Fields\" stays light and the typed text is invisible",
+    "versions": [
+      "21.2_hf2"
+    ],
+    "jp_notes": [
+      "ラベエルエディターのフィールドリストの検索エリアがダークモードに対応していませんでした。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106606",
+    "raw_summary": "4D Write Pro: 'WP Get' breaks reports a column/page break inserted after a table on the table's last character",
+    "versions": [
+      "21_r5",
+      "21.2_hf2"
+    ],
+    "jp_notes": [
+      "Write Proドキュメントの表の後にカラムブレークまたはページブレークを挿入した場合，`WP Get breaks`が表の中（`WP Table range`）にある文字のレンジを返しました。表の外にあるブレークのレンジが返されるべきです。\n\n**注記**: 修正により，表の外にあるブレークを`WP INSERT BREAK`と`wk replace`で除去できるようになりました。表の末尾にブレーク（空の段落）を追加することはできないことに留意してください。"
+    ],
+    "matched_commands": [
+      {
+        "title": "WP Get breaks",
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-breaks"
+      },
+      {
+        "title": "WP Insert break",
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-insert-break"
+      },
+      {
+        "title": "WP Table range",
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-table-range"
+      }
+    ]
+  },
+  {
+    "reference": "ACI0106610",
+    "raw_summary": "4D Write Pro: memory leak when reading 'wk font italic' on a range ($range[wk font italic] / WP GET ATTRIBUTES)",
+    "versions": [
+      "21_r5",
+      "21.2_hf2"
+    ],
+    "jp_notes": [
+      "レンジのイタリックフォントをオブジェクト記法（`$range[wk font\nitalic]`）または`WP GET ATTRIBUTES`で参照した場合，`260`バイトほどのメモリーリークが発生しました。"
+    ],
+    "matched_commands": [
+      {
+        "title": "WP Get attributes",
+        "url": "https://developer.4d.com/docs/WritePro/commands/wp-get-attributes"
+      }
+    ]
+  },
+  {
+    "reference": "ACI0106612",
+    "raw_summary": "'FORM GET NAMES' returns an empty array in compiled mode when the table is passed with Table(n)->",
+    "versions": [
+      "21",
+      "21_r5"
+    ],
+    "jp_notes": [
+      "コンパイルモードのみ。`FORM GET NAMES`に`Table`の逆参照を渡した場合，空の配列が返されました。間にローカル変数を介せば問題ありません。"
+    ],
+    "matched_commands": [
+      {
+        "title": "FORM GET NAMES",
+        "url": "https://developer.4d.com/docs/commands/form-get-names"
+      },
+      {
+        "title": "Table",
+        "url": "https://developer.4d.com/docs/commands/table"
+      }
+    ]
+  },
+  {
+    "reference": "ACI0106613",
+    "raw_summary": "Compiled mode only: an error that leaves a method with a registered defer statement is swallowed - the caller's Try...Catch never sees it (interpreted works)",
+    "versions": [
+      "21_r5"
+    ],
+    "jp_notes": [],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106616",
+    "raw_summary": "[Regression] macOS: 4D Write Pro ruler doesn't display the tab stop and page margin/indent markers in 20.8 HF3 (102063) and 20.9 (Write.bundle images missing) Variant: macOS 20.8 HF3",
+    "versions": [
+      "20"
+    ],
+    "jp_notes": [
+      "Mac版のみ。4D Write Pro Interfaceのルーラーにタブストップ・ページマーカー・インデンドマーカーが表示されませんでした。リソース画像がアプリケーションパッケージに含まれていないようです。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106620",
+    "raw_summary": "MSC Encrypt: maintenance operations fail when using passphrase instead of .4DKeyChain",
+    "versions": [
+      "21_r5",
+      "21.2_hf2"
+    ],
+    "jp_notes": [
+      "MSCでパスフレーズを使用したデータファイルの暗号化ができませんでした。`.4DKeyChain`を使用すれば問題ありません。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106628",
+    "raw_summary": "'SVG_Define_solidColor' ignores the opacity (4th parameter or \"color:opacity\") the solidColor is drawn fully opaque",
+    "versions": [
+      "21_r5",
+      "21.2_hf2"
+    ],
+    "jp_notes": [
+      "`SVG_Define_solidColor`で透明度（第`4`パラメーターまたは`blue:50`シンタックス）を指定することができませんでした。ACI0105604が修正されたことによる副作用のようです。\n\n**注記**: 透明度が内部的に整数として宣言されていたことが原因でした。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106632",
+    "raw_summary": "IP geolocation not working in server admin window",
+    "versions": [
+      "21_r4",
+      "21_r5"
+    ],
+    "jp_notes": [
+      "サーバー管理画面にIPアドレスの位置情報が表示されませんでした。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106636",
+    "raw_summary": "[4DWP] Transparent cell backgrounds are lost when table cells are vertically merged",
+    "versions": [
+      "21_r5"
+    ],
+    "jp_notes": [
+      "背景色が透明に設定されたWrite Proドキュメントの表のセルを垂直に結合した場合，セルの背景色が透明ではなくなりました。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106639",
+    "raw_summary": "[Regression]Web Area Stops Receiving Mouse and Keyboard Input After Closing a Modal Dialog",
+    "versions": [
+      "21_r4",
+      "21_r5"
+    ],
+    "jp_notes": [
+      "Mac版のみ。モーダルダイアログを表示してから閉じた場合，以後，Webエリアがマウスイベントやキーボードイベントを受け付けなくなりました。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106646",
+    "raw_summary": "4D View Pro: French localization of the Find/Replace dialog",
+    "versions": [
+      "21",
+      "21_r4_hf1",
+      "21_r5"
+    ],
+    "jp_notes": [
+      "フランス語版のみ。検索＆置換ダイアログにローカライズされていない箇所がありました。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106651",
+    "raw_summary": "[Regression]Component \"Class Instance\" loses its class when passed to a Server-Side ORDA function",
+    "versions": [
+      "21_r4",
+      "21_r5"
+    ],
+    "jp_notes": [
+      "コンポーネントクラスのインスタンスを`server`メンバー関数に渡した場合，標準オブジェクトに変換され，クラスのアイデンティティが失われました。`local`メンバー関数であれば問題ありません。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106653",
+    "raw_summary": "Web server returns 403 Forbidden for any request with an “API-TOKEN” header",
+    "versions": [
+      "21",
+      "21_r5"
+    ],
+    "jp_notes": [
+      "HTTPリクエストに`API-TOKEN`ヘッダーを含めた場合，`On Web Authentication`や`On Web Connection`が実行されず，HTTPステータスコード`403`が返されました。"
+    ],
+    "matched_commands": [
+      {
+        "title": "WEB Server",
+        "url": "https://developer.4d.com/docs/commands/web-server"
+      }
+    ]
+  },
+  {
+    "reference": "ACI0106654",
+    "raw_summary": "OB Copy with ck shared does not preserve 4D.CryptoKey instances in nested objects",
+    "versions": [
+      "21",
+      "21_r5"
+    ],
+    "jp_notes": [
+      "`ck shared`を指定して`OB Copy`を実行した場合，入れ子にされたオブジェクトの`4D.CryptoKey`型プロパティのインスタンスが失われました。"
+    ],
+    "matched_commands": [
+      {
+        "title": "OB Copy",
+        "url": "https://developer.4d.com/docs/commands/ob-copy"
+      }
+    ]
+  },
+  {
+    "reference": "ACI0106657",
+    "raw_summary": "Form objects flicker when resizing a window containing an embedded Web Area",
+    "versions": [
+      "21_r4_hf1"
+    ],
+    "jp_notes": [
+      "Mac版のみ。CEF版Webエリアが配置されたフォームをリサイズした場合，他のフォームオブジェクトがちらつきました。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106659",
+    "raw_summary": "Web server: HTTP 500 “Invalid parameter” on requests with multi-IP X-Forwarded-For / Forwarded when scalable sessions are on",
+    "versions": [
+      "21",
+      "21_r5"
+    ],
+    "jp_notes": [
+      "スケーラブルセッション管理モードでHTTPリクエストの`X-Forwarded-For`または`Forwarded`ヘッダーに複数のIPアドレスを含めた場合，HTTPステータスコード`500`が返されました。"
+    ],
+    "matched_commands": [
+      {
+        "title": "WEB Server",
+        "url": "https://developer.4d.com/docs/commands/web-server"
+      }
+    ]
+  },
+  {
+    "reference": "ACI0106662",
+    "raw_summary": "Web Administration Help Button Opens an Invalid Documentation URL (Page Not Found)",
+    "versions": [
+      "21"
+    ],
+    "jp_notes": [
+      "Web管理のヘルプボタンをクリックした場合，ドキュメンテーションが表示されませんでした。`/en/`を含む旧URLが設定されているためです。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106664",
+    "raw_summary": "macOS only: Compiling a project for first time with a big class fails (second compilation works)",
+    "versions": [
+      "21",
+      "21_r4",
+      "21_r5"
+    ],
+    "jp_notes": [
+      "Mac版のみ。クラスのコンパイルが初回だけ失敗することがありました。ファイルサイズに依存する現象です。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106670",
+    "raw_summary": "[Regression] ARRAY TO SELECTION ~40× slower in 4D 21 R5, time grows with the number of fields filled. No Problem with 4D 21.2",
+    "versions": [
+      "21_r5"
+    ],
+    "jp_notes": [],
+    "matched_commands": [
+      {
+        "title": "ARRAY TO SELECTION",
+        "url": "https://developer.4d.com/docs/commands/array-to-selection"
+      }
+    ]
+  },
+  {
+    "reference": "ACI0106678",
+    "raw_summary": "HTML Structure Definition Export No Longer Displays Field IDs",
+    "versions": [
+      "21",
+      "21_r5"
+    ],
+    "jp_notes": [],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106681",
+    "raw_summary": "Negative Time Duration Is Displayed Incorrectly Depending on the Input Format",
+    "versions": [
+      "21_r5"
+    ],
+    "jp_notes": [],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106688",
+    "raw_summary": "Rectangle not displaying in each row of output form in 4D 21 R5",
+    "versions": [
+      "21_r5"
+    ],
+    "jp_notes": [
+      "Mac版のみ。Liquid Glassテーマが有効にされている場合，リストフォームの行毎に四角オブジェクトが表示されませんでした。"
+    ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106689",
+    "raw_summary": "[Regression] \":X,Y\" localization string reference in a form object title is not resolved when the title ends with a carriage return",
+    "versions": [
+      "21_r4",
+      "21_r5"
+    ],
+    "jp_notes": [
+      "フォームオブジェクトのタイトルにローカライズ文字列と改行コードが併用されている場合（例：`22010,62\\r`），コードがローカライズ文字列に置換されず，そのまま表示されました。"
+    ],
+    "matched_commands": []
   }
 ]
