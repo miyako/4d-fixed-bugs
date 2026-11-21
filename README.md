@@ -1,6 +1,6 @@
 # 4d-fixed-bugs
 
-A dataset of 2,467 fixed 4D software bugs crawled from
+A dataset of fixed 4D software bugs crawled from
 [developer.4d.com](https://developer.4d.com/), each with an ACI reference ID, an
 English summary (with markdown links to the relevant
 [developer.4d.com](https://developer.4d.com) command docs), the 4D
