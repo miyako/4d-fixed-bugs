@@ -12531,8 +12531,8 @@
   },
   {
     "reference": "ACI0106646",
-    "summary": "Dans la version française de 4D View Pro, certaines parties de la boîte de dialogue Rechercher et remplacer n'étaient pas traduites.",
-    "source_fingerprint": "bec1909472b9d251217e21b8b8728434618f20637d0ba635e482cc7860359dd2"
+    "summary": "Dans la version française de 4D View Pro, certains textes de la boîte de dialogue Rechercher et remplacer n’étaient pas traduits.",
+    "source_fingerprint": "c88d96cf1f99d1b95b5749e94948e0f948260d2bf9666559aa0e40ecb6b2f572"
   },
   {
     "reference": "ACI0106651",
@@ -12566,8 +12566,8 @@
   },
   {
     "reference": "ACI0106664",
-    "summary": "Sous macOS uniquement, la première compilation d'un projet contenant une classe volumineuse pouvait échouer, alors qu'une seconde compilation réussissait. L'échec dépendait de la taille du fichier de la classe.",
-    "source_fingerprint": "2ed002f027b4f92bf8927b54f490b2bec24f2bd77cc3d66dd8ed0f3526f7f5ea"
+    "summary": "Sous macOS, la compilation d’un projet pour la première fois pouvait échouer s’il contenait une classe volumineuse ; cet échec dépendait de la taille du fichier de la classe. Une nouvelle compilation du projet réussissait.",
+    "source_fingerprint": "5680a9556f86ba95c20a4eaf180f9cde4e36fbd4fe40d4fd7059e9b875a15632"
   },
   {
     "reference": "ACI0106670",
@@ -12593,5 +12593,10 @@
     "reference": "ACI0106689",
     "summary": "Lorsque le titre d'un objet de formulaire combinait une référence de chaîne de localisation (comme `22010,62`) avec un retour chariot final, la référence n'était pas remplacée par le texte localisé et s'affichait telle quelle. Il s'agissait d'une régression introduite dans 21 R4.",
     "source_fingerprint": "0ee9c8f87b8af0457444e84c9c5cf7be1762ed36a2f4fe5089034f45c55f4084"
+  },
+  {
+    "reference": "ACI0106695",
+    "summary": "Le compilateur Silicon interprétait mal certaines chaînes littérales ; par exemple, il traitait `\" &\"` comme `\"…\"`.",
+    "source_fingerprint": "376d7a29625b903a9a188403c18514995baec551c504e012348c10776ee979ab"
   }
 ]
