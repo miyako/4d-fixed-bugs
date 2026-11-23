@@ -26,6 +26,9 @@ NIGHTLY = """<h1>Nightly builds 4D 21 R4: <span>11 bugs fixed</span></h1>
 
 
 class ListingURLs(unittest.TestCase):
+    def setUp(self):
+        crawl._cooldown_until = 0.0
+
     def test_release_and_nightly_paths(self):
         for source, version, path in [
             ("version", "21.2", "versions/21.2/"),
@@ -61,6 +64,12 @@ class ListingURLs(unittest.TestCase):
             run.return_value.stdout = b"busy\n503"
             self.assertEqual(crawl.fetch("version", "21.1", attempts=3), (503, "busy"))
             self.assertEqual(run.call_count, 3)
+
+    def test_transient_error_pauses_every_worker(self):
+        with patch("crawl.time.monotonic", return_value=100.0), patch("crawl.time.sleep") as sleep:
+            crawl._start_cooldown(8)
+            crawl._wait_for_cooldown()
+            sleep.assert_called_once_with(8.0)
 
     def test_fetch_does_not_retry_404(self):
         with patch("crawl.subprocess.run") as run, patch("crawl.time.sleep") as sleep:
