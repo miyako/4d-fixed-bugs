@@ -30,6 +30,7 @@ import os
 import re
 import subprocess
 import sys
+import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
 
@@ -89,7 +90,11 @@ def classify(source: str, body: str, http_code: int = 200, url: str = "") -> tup
     if http_code == 404:
         return False, 0
     if http_code != 200:
-        raise RuntimeError(f"unexpected HTTP {http_code} for {source} listing")
+        snippet = re.sub(r"\s+", " ", body).strip()[:200]
+        raise RuntimeError(
+            f"unexpected HTTP {http_code} for {source} listing {url} "
+            f"(body: {snippet!r})"
+        )
     heading = H1_RE.search(body)
     if source == SOURCE_VERSION:
         if 'class="standard_error"' in body:
@@ -118,9 +123,29 @@ def classify(source: str, body: str, http_code: int = 200, url: str = "") -> tup
 
 
 RETRYABLE_HTTP = {429, 500, 502, 503, 504}
+MAX_BACKOFF = 60
+
+# When any worker gets a transient error, every worker waits until this
+# monotonic time before its next request, so a rate-limited or overloaded
+# server is not hit by the rest of the pool while one worker backs off.
+_cooldown_lock = threading.Lock()
+_cooldown_until = 0.0
 
 
-def fetch(source: str, version: str, attempts: int = 5) -> tuple[int, str]:
+def _wait_for_cooldown() -> None:
+    with _cooldown_lock:
+        delay = _cooldown_until - time.monotonic()
+    if delay > 0:
+        time.sleep(delay)
+
+
+def _start_cooldown(seconds: float) -> None:
+    global _cooldown_until
+    with _cooldown_lock:
+        _cooldown_until = max(_cooldown_until, time.monotonic() + seconds)
+
+
+def fetch(source: str, version: str, attempts: int = 7) -> tuple[int, str]:
     """Fetch one listing page.
 
     Uses the system `curl` rather than urllib: the bundled Python on some
@@ -132,6 +157,7 @@ def fetch(source: str, version: str, attempts: int = 5) -> tuple[int, str]:
     url = listing_url(source, version)
     last_err = ""
     for attempt in range(attempts):
+        _wait_for_cooldown()
         proc = subprocess.run(
             [
                 "curl", "-sS", "-L", "--max-time", "30",
@@ -155,7 +181,7 @@ def fetch(source: str, version: str, attempts: int = 5) -> tuple[int, str]:
         else:
             last_err = proc.stderr.decode("utf-8", "replace").strip()
         if attempt < attempts - 1:
-            time.sleep(min(2 ** attempt, 16))
+            _start_cooldown(min(2 ** (attempt + 1), MAX_BACKOFF))
     raise RuntimeError(f"failed to fetch {url}: {last_err}")
 
 
