@@ -14271,7 +14271,7 @@
   },
   {
     "reference": "ACI0106646",
-    "summary": "In the French version of 4D View Pro, parts of the Find and Replace dialog were left untranslated.",
+    "summary": "In the French version of 4D View Pro, some text in the Find and Replace dialog was not translated.",
     "commands": []
   },
   {
@@ -14308,7 +14308,7 @@
   },
   {
     "reference": "ACI0106664",
-    "summary": "On macOS only, the first compilation of a project containing a large class could fail, while a second compilation succeeded. The failure depended on the size of the class file.",
+    "summary": "On macOS, compiling a project for the first time could fail when it contained a large class; the failure depended on the class file size. Compiling the project again succeeded.",
     "commands": []
   },
   {
@@ -14336,6 +14336,11 @@
   {
     "reference": "ACI0106689",
     "summary": "When a form object's title combined a localization string reference (such as `22010,62`) with a trailing carriage return, the reference was not replaced by the localized text and was displayed literally. This was a regression introduced in 21 R4.",
+    "commands": []
+  },
+  {
+    "reference": "ACI0106695",
+    "summary": "The Silicon compiler misinterpreted some string literals; for example, it treated `\" &\"` as `\"…\"`.",
     "commands": []
   }
 ]

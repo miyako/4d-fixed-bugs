@@ -35801,6 +35801,7 @@
     "reference": "ACI0106387",
     "raw_summary": "Non-thread-safe trigger silently stops running on REST inserts/updates in compiled mode (100 \"REST\" processes limit)",
     "versions": [
+      "20",
       "21_r5"
     ],
     "jp_notes": [
@@ -36440,6 +36441,7 @@
     "reference": "ACI0106505",
     "raw_summary": "[DUMP] Hang observed instead of crash – Related to ACI0106457",
     "versions": [
+      "21",
       "21_r5"
     ],
     "jp_notes": [],
@@ -36778,6 +36780,7 @@
     "reference": "ACI0106573",
     "raw_summary": "Memory leak: object cycles are never freed when they reference a shared object that has been attached to Storage",
     "versions": [
+      "21",
       "21_r4",
       "21_r5"
     ],
@@ -37022,7 +37025,7 @@
   },
   {
     "reference": "ACI0106646",
-    "raw_summary": "4D View Pro: French localization of the Find/Replace dialog",
+    "raw_summary": "4D View Pro: French localization in the Find/Replace dialog contains some english text.",
     "versions": [
       "21",
       "21_r4_hf1",
@@ -37120,7 +37123,7 @@
   },
   {
     "reference": "ACI0106664",
-    "raw_summary": "macOS only: Compiling a project for first time with a big class fails (second compilation works)",
+    "raw_summary": "Compiling a project for the first time with a big class may fail if many of function in the class (depends of the cache). The second compilation works; macOS only",
     "versions": [
       "21",
       "21_r4",
@@ -37159,6 +37162,7 @@
     "reference": "ACI0106681",
     "raw_summary": "Negative Time Duration Is Displayed Incorrectly Depending on the Input Format",
     "versions": [
+      "21",
       "21_r5"
     ],
     "jp_notes": [],
@@ -37185,6 +37189,17 @@
     "jp_notes": [
       "フォームオブジェクトのタイトルにローカライズ文字列と改行コードが併用されている場合（例：`22010,62\\r`），コードがローカライズ文字列に置換されず，そのまま表示されました。"
     ],
+    "matched_commands": []
+  },
+  {
+    "reference": "ACI0106695",
+    "raw_summary": "Silicon compiler confuses some string literals. For instance, \" &\" considered as \"…\".",
+    "versions": [
+      "21",
+      "21_r4",
+      "21_r5"
+    ],
+    "jp_notes": [],
     "matched_commands": []
   }
 ]

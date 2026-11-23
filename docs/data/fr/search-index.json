@@ -22,8 +22,8 @@
       "onnx/model_q4.onnx_data": "c3975f2d1ab7a1878ae31a7d7a9b7804a827aff3800b60dfceafce21cac3df49"
     }
   },
-  "count": 2519,
-  "bytes": 7738368,
-  "metadata_sha256": "73f42160b11e3262efdfe3ce9232525559d66e2fe10507481b6d74c8be103fa7",
-  "vectors_sha256": "1216b1ca901e123d8926e00416e80914c50bb1f762e8cf6ac0240eb7a804ba9f"
+  "count": 2520,
+  "bytes": 7741440,
+  "metadata_sha256": "67486a07685e64d0c47b287ba7f141a54650c608aa760491220e0c91c504d972",
+  "vectors_sha256": "3bd2a0331c65e126dc55b6225cf7a4e44a9ac691e8ce7490e9f767956be5e7d3"
 }
