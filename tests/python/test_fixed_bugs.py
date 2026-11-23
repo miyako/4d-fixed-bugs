@@ -2,6 +2,7 @@ import os
 import sys
 import tempfile
 import unittest
+import unittest.mock
 from unittest.mock import patch
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "scripts", "update"))
@@ -44,6 +45,30 @@ class ListingURLs(unittest.TestCase):
             args = run.call_args.args[0]
             self.assertIn("-L", args)
             self.assertEqual(args[-1], f"{BASE_URL}/nightly/21_R4/")
+
+    def test_fetch_retries_transient_http_errors(self):
+        def result(body, code):
+            return unittest.mock.Mock(returncode=0, stdout=f"{body}\n{code}".encode())
+        with patch("crawl.subprocess.run") as run, patch("crawl.time.sleep") as sleep:
+            run.side_effect = [result("busy", 503), result("busy", 429), result(NIGHTLY, 200)]
+            self.assertEqual(crawl.fetch("branch", "21_r4"), (200, NIGHTLY))
+            self.assertEqual(run.call_count, 3)
+            self.assertEqual(sleep.call_count, 2)
+
+    def test_fetch_returns_persistent_transient_error(self):
+        with patch("crawl.subprocess.run") as run, patch("crawl.time.sleep"):
+            run.return_value.returncode = 0
+            run.return_value.stdout = b"busy\n503"
+            self.assertEqual(crawl.fetch("version", "21.1", attempts=3), (503, "busy"))
+            self.assertEqual(run.call_count, 3)
+
+    def test_fetch_does_not_retry_404(self):
+        with patch("crawl.subprocess.run") as run, patch("crawl.time.sleep") as sleep:
+            run.return_value.returncode = 0
+            run.return_value.stdout = b"<h1>404</h1>\n404"
+            self.assertEqual(crawl.fetch("version", "21.9"), (404, "<h1>404</h1>"))
+            self.assertEqual(run.call_count, 1)
+            sleep.assert_not_called()
 
 
 class ListingParsing(unittest.TestCase):
