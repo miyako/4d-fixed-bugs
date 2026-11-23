@@ -117,12 +117,17 @@ def classify(source: str, body: str, http_code: int = 200, url: str = "") -> tup
     )
 
 
-def fetch(source: str, version: str, attempts: int = 3) -> tuple[int, str]:
+RETRYABLE_HTTP = {429, 500, 502, 503, 504}
+
+
+def fetch(source: str, version: str, attempts: int = 5) -> tuple[int, str]:
     """Fetch one listing page.
 
     Uses the system `curl` rather than urllib: the bundled Python on some
     machines has no usable CA trust store, and curl is what the original
-    crawler used.
+    crawler used. Transport errors and transient HTTP statuses (429/5xx)
+    are retried with exponential backoff; if a transient status persists it
+    is returned so `classify` reports it.
     """
     url = listing_url(source, version)
     last_err = ""
@@ -140,13 +145,17 @@ def fetch(source: str, version: str, attempts: int = 3) -> tuple[int, str]:
             out = proc.stdout.decode("utf-8", "replace")
             body, _, code = out.rpartition("\n")
             try:
-                return int(code.strip()), body
+                http_code = int(code.strip())
             except ValueError:
                 last_err = f"unparsable status {code!r}"
+            else:
+                if http_code not in RETRYABLE_HTTP or attempt == attempts - 1:
+                    return http_code, body
+                last_err = f"HTTP {http_code}"
         else:
             last_err = proc.stderr.decode("utf-8", "replace").strip()
         if attempt < attempts - 1:
-            time.sleep(1 + attempt)
+            time.sleep(min(2 ** attempt, 16))
     raise RuntimeError(f"failed to fetch {url}: {last_err}")
 
 
