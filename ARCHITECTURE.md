@@ -333,6 +333,12 @@ Key structural points:
   fixed` to the viewport top, so it stays visible regardless of how far
   the chat transcript below is scrolled. `<main>` has matching
   `padding-top` so content isn't hidden behind the fixed bar.
+- The page is a fixed-height app shell (`body` is `height: 100dvh`,
+  `overflow: hidden`), so the document itself never scrolls: `<main>`
+  takes the remaining space and `.chat-container` scrolls internally.
+  `<footer>` is a normal flex child after `<main>`, which keeps it
+  pinned to the bottom of the viewport — the "data last updated" line
+  is visible at all times, without scrolling to the end of the page.
 - All three buttons carry an inline SVG icon (no icon font/library) plus
   a text label (`<span>Query</span>` etc.) — Query uses a
   magnifying-glass path, Clear a trash-can path, Copy a clipboard path.
@@ -656,13 +662,22 @@ that history. It is not part of the current app.)
   `--shadow`, `--hairline`, `--hairline-strong`), overridden inside
   `@media (prefers-color-scheme: dark)` — no JS-driven theme toggle.
   Light accent `#2b5fb8`, dark accent `#5b8def`.
-- Layout: `body` is a `max-width: 900px`, centered, full-height flex
-  column. `.app-bar` is `position: fixed` (top/left/right: 0, z-index:
-  20) containing `.app-bar-inner` (same 900px max-width, centered,
-  flex row: logo + form). `main` has `padding-top: 4.25rem` to clear
-  the fixed bar's height.
-- `.chat-container`: flex column, `max-height: 75vh`, `overflow-y:
-  auto`, bordered/rounded panel.
+- Layout: `body` is a `max-width: 900px`, centered flex column with a
+  fixed shell height (`height: 100dvh`, `overflow: hidden`) so the page
+  never scrolls. `.app-bar` is `position: fixed` (top/left/right: 0,
+  z-index: 20) containing `.app-bar-inner` (same 900px max-width,
+  centered, flex row: logo + form). `main` is `flex: 1`, `min-height: 0`
+  with `padding-top: 4.25rem` to clear the fixed bar's height and
+  `overflow-y: auto` as a fallback on very short viewports. `footer` is
+  the last flex child (`flex-shrink: 0`), so it sits at the bottom of the
+  viewport and the last-updated line stays visible while the chat scrolls.
+- `.chat-container`: flex column, `flex: 1` with `min-height: 10rem`,
+  `overflow-y: auto`, bordered/rounded panel — it is the only scrolling
+  region of the page.
+- `footer`: compact wrapped bar (`font-size: 0.78rem`, hairline top
+  border) holding the data-source credits and `#last-updated`;
+  `#last-updated` is pushed to the right edge with `margin-left: auto`
+  (`left-aligned` below 640px).
 - `.chat-message`: rounded bubble, `max-width: 80%` (96% for
   `.assistant`, since it also carries the hits table), `align-self:
   flex-end`/`flex-start` + accent/neutral background for user/assistant

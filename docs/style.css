@@ -29,6 +29,12 @@
 
 * { box-sizing: border-box; }
 
+html { height: 100%; }
+
+/* App shell: the page itself never scrolls. `main` takes the space between
+ * the fixed app bar and the footer and scrolls internally, so the footer
+ * (with the "data last updated" line) stays visible at the bottom of the
+ * viewport at all times. */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   max-width: 900px;
@@ -37,7 +43,9 @@ body {
   line-height: 1.5;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
   background: var(--bg);
   color: var(--fg);
 }
@@ -61,6 +69,9 @@ main {
   display: flex;
   flex-direction: column;
   min-height: 0;
+  /* Safety valve: on very short viewports the copy above the chat panel
+   * scrolls instead of squeezing the footer off-screen. */
+  overflow-y: auto;
   padding-top: 4.25rem;
 }
 
@@ -180,8 +191,9 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  min-height: 20rem;
-  max-height: 75vh;
+  /* Grows to fill the shell, but keeps a usable size on very short
+   * viewports — there `main` scrolls instead of collapsing the panel. */
+  min-height: 10rem;
   overflow-y: auto;
   margin-top: 0.5rem;
   padding: 0.75rem;
@@ -359,8 +371,50 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
   40% { transform: translateY(-4px); opacity: 1; }
 }
 
+/* Footer: lives outside `main`'s scroll area, so it is pinned to the bottom
+ * of the viewport and the "data last updated" line needs no scrolling. Kept
+ * to a compact bar (credits + timestamp) so it does not crowd the chat. */
 footer {
-  margin-top: 1.5rem;
-  font-size: 0.8rem;
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.15rem 1rem;
+  margin-top: 0.75rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--hairline-strong);
+  font-size: 0.78rem;
+  line-height: 1.4;
   color: var(--muted);
+}
+
+footer p { margin: 0; }
+
+/* Credits may shrink and wrap so they share the first row with the
+ * right-aligned timestamp instead of pushing it onto an extra line. */
+footer p:first-child {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
+footer #last-updated {
+  flex: 0 0 auto;
+  margin-left: auto;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 640px) {
+  footer {
+    font-size: 0.7rem;
+    line-height: 1.35;
+    gap: 0.1rem 0.75rem;
+  }
+  /* On phones the timestamp gets its own line; allow wrapping so long
+   * localized dates are never clipped. */
+  footer #last-updated {
+    flex: 0 0 100%;
+    margin-left: 0;
+    white-space: normal;
+  }
 }
