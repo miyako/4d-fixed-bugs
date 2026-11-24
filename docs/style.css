@@ -390,12 +390,15 @@ footer {
 
 footer p { margin: 0; }
 
-/* Credits may shrink and wrap so they share the first row with the
- * right-aligned timestamp instead of pushing it onto an extra line. */
-footer p:first-child {
+/* Credits live in a <details> toggle that only matters on phones. On wider
+ * screens the toggle itself is hidden, so the text reads as a plain credit
+ * line that shrinks to share the row with the right-aligned timestamp. */
+footer .footer-credits {
   flex: 1 1 12rem;
   min-width: 0;
 }
+
+footer .footer-credits > summary { display: none; }
 
 footer #last-updated {
   flex: 0 0 auto;
@@ -410,8 +413,18 @@ footer #last-updated {
     line-height: 1.35;
     gap: 0.1rem 0.75rem;
   }
-  /* On phones the timestamp gets its own line; allow wrapping so long
-   * localized dates are never clipped. */
+  /* Fold the verbose credits behind a toggle so the footer bar stays
+   * compact; the timestamp below is never folded. */
+  footer .footer-credits { flex: 1 1 100%; }
+  footer .footer-credits > summary {
+    display: list-item;
+    list-style-position: inside;
+    padding: 0.1rem 0;
+    cursor: pointer;
+  }
+  footer .footer-credits[open] > summary { margin-bottom: 0.15rem; }
+  /* Timestamp gets its own line; allow wrapping so long localized dates
+   * are never clipped. */
   footer #last-updated {
     flex: 0 0 100%;
     margin-left: 0;

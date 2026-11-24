@@ -1,5 +1,6 @@
 import { renderSummary, renderVersions } from "./render.js";
 import { showLastUpdated } from "./last-updated.js";
+import { initFooterCredits } from "./footer-credits.js";
 import { parseVersionIntent, bugMatchesIntent, describeIntent } from "./version.js";
 import { buildCommandIndex, extractCommandMentions } from "./commands.js";
 import * as webllmEngine from "./engines/webllm-engine.js";
@@ -661,4 +662,5 @@ async function boot() {
   }
 }
 
+initFooterCredits(document.querySelector(".footer-credits"));
 boot();

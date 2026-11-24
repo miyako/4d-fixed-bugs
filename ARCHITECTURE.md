@@ -319,8 +319,14 @@ Single HTML page, no separate results page, no client-side router.
   </main>
 
   <footer>
-    <p>Data crawled from <a href="https://developer.4d.com/">developer.4d.com</a>. Embeddings:
-       text-only EmbeddingGemma 2 via the pinned official Transformers.js CDN runtime.</p>
+    <!-- credits read as plain text on desktop; a <details> toggle on phones
+         (src/footer-credits.js syncs `open` with the 640px breakpoint) -->
+    <details class="footer-credits" open>
+      <summary>Data sources &amp; credits</summary>
+      <p>Data crawled from <a href="https://developer.4d.com/">developer.4d.com</a>. Embeddings:
+         text-only EmbeddingGemma 2 via the pinned official Transformers.js CDN runtime.</p>
+    </details>
+    <p id="last-updated" hidden></p>
   </footer>
 
   <script type="module" src="src/app.js?v=N"></script>
@@ -676,8 +682,12 @@ that history. It is not part of the current app.)
   region of the page.
 - `footer`: compact wrapped bar (`font-size: 0.78rem`, hairline top
   border) holding the data-source credits and `#last-updated`;
-  `#last-updated` is pushed to the right edge with `margin-left: auto`
-  (`left-aligned` below 640px).
+  `#last-updated` is pushed to the right edge with `margin-left: auto`.
+  The credits are wrapped in `<details class="footer-credits" open>`:
+  its `<summary>` is hidden above 640px so they read as a plain credit
+  line, and below 640px — where `src/footer-credits.js` collapses the
+  block on load and on breakpoint changes — the summary is the visible
+  toggle while the timestamp drops to its own line.
 - `.chat-message`: rounded bubble, `max-width: 80%` (96% for
   `.assistant`, since it also carries the hits table), `align-self:
   flex-end`/`flex-start` + accent/neutral background for user/assistant
