@@ -86,6 +86,7 @@ scripts/
   update/
     common.py                  # shared paths, version scheme, update_state.json handling
     crawl.py                   # probes FixedBugsList/versions/ and nightly/ listings, hashes each page
+                               # (GitHub Pages 503s are retried, then carried over as "unresolved")
     parse.py                   # both HTML layouts -> data/bugs_raw.json
     sync_jp.py                 # shallow-clones the 4D-JP repos -> data/jp_notes.json
     match_commands.py          # candidate command detection in English + Japanese text

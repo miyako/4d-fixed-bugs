@@ -135,8 +135,10 @@ The crawler probes both listings under `https://developer.4d.com/FixedBugsList/`
 
 URL tokens use uppercase `R` and `HF` and a trailing slash. Dataset versions,
 cache filenames and the internal source keys (`version` and `branch`) remain
-unchanged. Missing listings return HTTP 404; other HTTP errors and unexpected
-HTML stop the crawl rather than recording a valid or missing page.
+unchanged. Missing listings return HTTP 404; any other HTTP error or unexpected
+HTML stops the crawl rather than recording a valid or missing page — except a
+status that means "ask again later", which is retried and then handled as
+described under [Transient GitHub failures](#transient-github-failures-http-5xx).
 
 Versions with a nightly listing but **no** released listing are recorded as
 `beta_only_versions` in `data/update_state.json` and baked into
@@ -182,6 +184,12 @@ trust store.
   **not** `versions`: a bug appearing in one more hotfix changes the version
   list but not what the summary should say, so it costs nothing downstream.
 - `jp` — the HEAD sha of each 4D-JP clone.
+- `last_crawl` — how the most recent crawl went: mode, candidate count, new /
+  changed / disappeared pages, and `unresolved` (listings GitHub Pages would
+  not serve, whose previous state was kept — see
+  [Transient GitHub failures](#transient-github-failures-http-5xx)).
+- `link_checks` — URLs `check_links.py` verified (200) or found broken; links
+  it could not reach are deliberately left out so the next run retries them.
 - `beta_only_versions`, `counts` — build inputs and a run summary.
 
 A bug is queued for enrichment only when it is new, or when its fingerprint
@@ -212,6 +220,43 @@ whole dataset and trigger a full 2,400-bug rewrite.
   (~1,550 requests, a couple of minutes). Use after editing `majors` in
   `data/update_state.json`, or if you suspect the frontier logic missed
   something.
+
+## Transient GitHub failures (HTTP 5xx)
+
+`developer.4d.com` is served by **GitHub Pages**, and `api.github.com`,
+`github.com` and the Hugging Face/CDN hosts behind the build are all reached
+from a datacenter IP that GitHub throttles. `503 Service Unavailable` (and
+occasionally 502/522) therefore arrives every so often, and it says nothing
+about the data — the same URL answers normally seconds later. Every stage that
+touches the network treats those statuses as "ask again later":
+
+| Stage | Behaviour on 429/5xx or no response |
+|---|---|
+| `crawl.py` | Retried per request with jittered exponential backoff shared by all workers (so the pool does not keep hammering while one worker backs off). Whatever is still unavailable gets two further **sequential** passes after 20 s and 60 s — the parallel burst is what GitHub Pages reacts to. If page after page fails anyway, a circuit breaker stops the crawl (the site is down; sitting out every backoff would just burn the job timeout). |
+| `sync_jp.py` | `git fetch`/`clone` retried up to 4 times; if GitHub stays unreachable, an existing `vendor/` checkout is used and the run reports it. |
+| `check_links.py` | Retried 5 times; a link that never gets a definitive answer is *unverified*, not broken — it is not cached and does not fail the build. Only 4xx answers fail it. |
+| `update.sh` stage 7 | `npm ci` and the CDN runtime verification retried 3 times each. |
+| Workflow | `git push`, PR creation and every `gh` call retried with backoff. |
+
+A listing that is still unavailable after all of that is **unresolved**, which
+is deliberately not the same as missing:
+
+- its previous entry in `data/update_state.json` is left untouched, so it is
+  not reported as changed or disappeared, and the bugs it contributed are
+  carried over from the published dataset by `parse.merge_previous`;
+- nothing is written to `html/` for it, so no stale or error page can be
+  parsed as data;
+- it is listed in `last_crawl.unresolved` in `data/update_state.json`, printed
+  at the end of the crawl, mentioned in the PR body and in the weekly status
+  issue;
+- the next crawl re-probes it, because the frontier and the known-good page
+  list are unchanged.
+
+A handful of unresolved pages therefore leaves the run green: the refresh is
+still publishable and next week fills the gap. Only when more than
+`MAX_UNRESOLVED_SHARE` (20%) of the probed listings are unresolved is this
+treated as developer.4d.com being down rather than a few throttled pages, and
+the run fails instead of publishing a quiet week that was never observed.
 
 ## Writing the enrichment
 
@@ -494,6 +539,10 @@ Successful checks are cached under `link_checks` in `data/update_state.json`, so
 a routine run verifies only the handful of URLs the latest enrichment
 introduced. Run `--recheck-all` every few months to catch pages that have moved
 since they were last confirmed.
+
+A link the server could not answer for (5xx/429, or no response at all) is
+reported as *unverified* and deliberately not cached, so it is asked again on
+the next run; it does not fail the build the way a 404 does.
 
 When a whole command family moves, fix `data/command_index.json` as well as the
 summaries — otherwise the next enrichment pass will cheerfully reintroduce the
