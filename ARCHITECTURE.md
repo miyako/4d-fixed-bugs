@@ -86,6 +86,7 @@ scripts/
   update/
     common.py                  # shared paths, version scheme, update_state.json handling
     crawl.py                   # probes FixedBugsList/versions/ and nightly/ listings, hashes each page
+                               # (GitHub Pages 503s are retried, then carried over as "unresolved")
     parse.py                   # both HTML layouts -> data/bugs_raw.json
     sync_jp.py                 # shallow-clones the 4D-JP repos -> data/jp_notes.json
     match_commands.py          # candidate command detection in English + Japanese text
@@ -319,8 +320,14 @@ Single HTML page, no separate results page, no client-side router.
   </main>
 
   <footer>
-    <p>Data crawled from <a href="https://developer.4d.com/">developer.4d.com</a>. Embeddings:
-       text-only EmbeddingGemma 2 via the pinned official Transformers.js CDN runtime.</p>
+    <!-- credits read as plain text on desktop; a <details> toggle on phones
+         (src/footer-credits.js syncs `open` with the 640px breakpoint) -->
+    <details class="footer-credits" open>
+      <summary>Data sources &amp; credits</summary>
+      <p>Data crawled from <a href="https://developer.4d.com/">developer.4d.com</a>. Embeddings:
+         text-only EmbeddingGemma 2 via the pinned official Transformers.js CDN runtime.</p>
+    </details>
+    <p id="last-updated" hidden></p>
   </footer>
 
   <script type="module" src="src/app.js?v=N"></script>
@@ -333,6 +340,12 @@ Key structural points:
   fixed` to the viewport top, so it stays visible regardless of how far
   the chat transcript below is scrolled. `<main>` has matching
   `padding-top` so content isn't hidden behind the fixed bar.
+- The page is a fixed-height app shell (`body` is `height: 100dvh`,
+  `overflow: hidden`), so the document itself never scrolls: `<main>`
+  takes the remaining space and `.chat-container` scrolls internally.
+  `<footer>` is a normal flex child after `<main>`, which keeps it
+  pinned to the bottom of the viewport — the "data last updated" line
+  is visible at all times, without scrolling to the end of the page.
 - All three buttons carry an inline SVG icon (no icon font/library) plus
   a text label (`<span>Query</span>` etc.) — Query uses a
   magnifying-glass path, Clear a trash-can path, Copy a clipboard path.
@@ -656,13 +669,26 @@ that history. It is not part of the current app.)
   `--shadow`, `--hairline`, `--hairline-strong`), overridden inside
   `@media (prefers-color-scheme: dark)` — no JS-driven theme toggle.
   Light accent `#2b5fb8`, dark accent `#5b8def`.
-- Layout: `body` is a `max-width: 900px`, centered, full-height flex
-  column. `.app-bar` is `position: fixed` (top/left/right: 0, z-index:
-  20) containing `.app-bar-inner` (same 900px max-width, centered,
-  flex row: logo + form). `main` has `padding-top: 4.25rem` to clear
-  the fixed bar's height.
-- `.chat-container`: flex column, `max-height: 75vh`, `overflow-y:
-  auto`, bordered/rounded panel.
+- Layout: `body` is a `max-width: 900px`, centered flex column with a
+  fixed shell height (`height: 100dvh`, `overflow: hidden`) so the page
+  never scrolls. `.app-bar` is `position: fixed` (top/left/right: 0,
+  z-index: 20) containing `.app-bar-inner` (same 900px max-width,
+  centered, flex row: logo + form). `main` is `flex: 1`, `min-height: 0`
+  with `padding-top: 4.25rem` to clear the fixed bar's height and
+  `overflow-y: auto` as a fallback on very short viewports. `footer` is
+  the last flex child (`flex-shrink: 0`), so it sits at the bottom of the
+  viewport and the last-updated line stays visible while the chat scrolls.
+- `.chat-container`: flex column, `flex: 1` with `min-height: 10rem`,
+  `overflow-y: auto`, bordered/rounded panel — it is the only scrolling
+  region of the page.
+- `footer`: compact wrapped bar (`font-size: 0.78rem`, hairline top
+  border) holding the data-source credits and `#last-updated`;
+  `#last-updated` is pushed to the right edge with `margin-left: auto`.
+  The credits are wrapped in `<details class="footer-credits" open>`:
+  its `<summary>` is hidden above 640px so they read as a plain credit
+  line, and below 640px — where `src/footer-credits.js` collapses the
+  block on load and on breakpoint changes — the summary is the visible
+  toggle while the timestamp drops to its own line.
 - `.chat-message`: rounded bubble, `max-width: 80%` (96% for
   `.assistant`, since it also carries the hits table), `align-self:
   flex-end`/`flex-start` + accent/neutral background for user/assistant

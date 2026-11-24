@@ -20,7 +20,8 @@ export async function downloadModel() {
     }
     if (!bytes || createHash("sha256").update(bytes).digest("hex") !== expected) {
       execFileSync("curl", [
-        "--fail", "--location", "--silent", "--show-error", "--retry", "2",
+        "--fail", "--location", "--silent", "--show-error",
+        "--retry", "5", "--retry-delay", "3",
         "--max-time", "300",
         `https://huggingface.co/${SEARCH_CONFIG.model}/resolve/${SEARCH_CONFIG.revision}/${file}`,
         "--output", fileURLToPath(target),
