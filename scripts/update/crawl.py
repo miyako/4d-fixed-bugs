@@ -22,11 +22,25 @@ Modes:
            newest release in each series — enough to discover new releases
            without re-probing the whole historical candidate space.
   --full   probe every candidate (~1,550 requests, a couple of minutes).
+
+Transient failures:
+  The site is GitHub Pages, which answers HTTP 503 under load — a burst of
+  parallel requests from a datacenter IP is exactly what it throttles. A page
+  that still returns 5xx/429 after the per-request retries, or whose request
+  never got a response, is *unresolved*: not "missing", and not a reason to
+  throw away the whole crawl. Unresolved pages are retried one at a time with
+  longer spacing, keep whatever state (and cached HTML) they had before, and
+  are listed in `last_crawl.unresolved` so the run reports them. Only a crawl
+  that loses more than MAX_UNRESOLVED_SHARE of its pages is treated as an
+  outage and fails. Pages that keep failing one after another trip a circuit
+  breaker (FAILURE_PATIENCE), which stops the crawl instead of letting every
+  remaining candidate sit out its own backoff.
 """
 from __future__ import annotations
 
 import argparse
 import os
+import random
 import re
 import subprocess
 import sys
@@ -58,6 +72,33 @@ ROW_MARKER_RELEASED = re.compile(r'<th class="title 4D">')
 ROW_MARKER_BETA = re.compile(r'<td class="title"[^>]*>\s*ACI\d{7}\s*</td>')
 H1_RE = re.compile(r"<h1>(.*?)</h1>", re.DOTALL)
 
+RETRYABLE_HTTP = {429, 500, 502, 503, 504}
+MAX_BACKOFF = 60
+# The parallel pass stays quick on purpose: short backoff, many pages. The
+# long waits belong to the sequential retry passes, which cover only pages
+# that are still missing.
+PROBE_ATTEMPTS = 3
+# Attempts per sequential retry pass, and the delays between passes. A GitHub
+# Pages 503 usually clears within a minute or two.
+RETRY_ATTEMPTS = (4, 6)
+RETRY_PASS_DELAYS = (20, 60)
+# Pages in a row with no successful response before the crawl gives up: the
+# site is down, and sitting out the backoff for every remaining candidate
+# would burn the whole job timeout to learn nothing.
+FAILURE_PATIENCE = 20
+# A crawl that leaves more than this share of its candidates unresolved is
+# treated as an outage rather than a few flaky pages.
+MAX_UNRESOLVED_SHARE = 0.2
+
+
+class TransientError(RuntimeError):
+    """The server was temporarily unavailable (HTTP 5xx/429, or no response).
+
+    Deliberately a RuntimeError subclass so existing callers that only catch
+    RuntimeError keep working, but distinct enough for the crawl to skip the
+    page and keep the data it already has instead of failing the whole run.
+    """
+
 
 def series_of(version: str):
     """(series-key, index) used to decide how far past the newest known
@@ -86,15 +127,18 @@ def parent_of(version: str):
 def classify(source: str, body: str, http_code: int = 200, url: str = "") -> tuple[bool, int]:
     """(page_exists, bug_count) for a fetched page.
 
-    `url` is only used to make errors name the offending page."""
+    `url` is only used to make errors name the offending page. A status the
+    server may recover from (5xx/429) raises TransientError so the page can be
+    retried later; anything else is a genuine surprise and stops the crawl."""
     if http_code == 404:
         return False, 0
     if http_code != 200:
         snippet = re.sub(r"\s+", " ", body).strip()[:200]
-        raise RuntimeError(
+        message = (
             f"unexpected HTTP {http_code} for {source} listing {url} "
             f"(body: {snippet!r})"
         )
+        raise (TransientError if http_code in RETRYABLE_HTTP else RuntimeError)(message)
     heading = H1_RE.search(body)
     if source == SOURCE_VERSION:
         if 'class="standard_error"' in body:
@@ -122,9 +166,6 @@ def classify(source: str, body: str, http_code: int = 200, url: str = "") -> tup
     )
 
 
-RETRYABLE_HTTP = {429, 500, 502, 503, 504}
-MAX_BACKOFF = 60
-
 # When any worker gets a transient error, every worker waits until this
 # monotonic time before its next request, so a rate-limited or overloaded
 # server is not hit by the rest of the pool while one worker backs off.
@@ -145,14 +186,47 @@ def _start_cooldown(seconds: float) -> None:
         _cooldown_until = max(_cooldown_until, time.monotonic() + seconds)
 
 
+# Circuit breaker. Each backoff is cheap for one page and ruinous across ~700:
+# if the site is genuinely down, every candidate would sit out its own retries
+# and the weekly job would spend its whole timeout learning that. After
+# FAILURE_PATIENCE pages in a row with nothing usable, the crawl stops probing
+# and reports an outage instead.
+_failure_lock = threading.Lock()
+_consecutive_failures = 0
+_abort = threading.Event()
+
+
+def reset_breaker() -> None:
+    global _consecutive_failures
+    with _failure_lock:
+        _consecutive_failures = 0
+    _abort.clear()
+
+
+def _note_failure() -> None:
+    global _consecutive_failures
+    with _failure_lock:
+        _consecutive_failures += 1
+        tripped = _consecutive_failures >= FAILURE_PATIENCE
+    if tripped:
+        _abort.set()
+
+
+def _note_success() -> None:
+    global _consecutive_failures
+    with _failure_lock:
+        _consecutive_failures = 0
+
+
 def fetch(source: str, version: str, attempts: int = 7) -> tuple[int, str]:
     """Fetch one listing page.
 
     Uses the system `curl` rather than urllib: the bundled Python on some
     machines has no usable CA trust store, and curl is what the original
     crawler used. Transport errors and transient HTTP statuses (429/5xx)
-    are retried with exponential backoff; if a transient status persists it
-    is returned so `classify` reports it.
+    are retried with jittered exponential backoff shared across workers; if a
+    transient status persists it is returned so `classify` reports it, and a
+    transport error that never clears raises `TransientError`.
     """
     url = listing_url(source, version)
     last_err = ""
@@ -181,8 +255,95 @@ def fetch(source: str, version: str, attempts: int = 7) -> tuple[int, str]:
         else:
             last_err = proc.stderr.decode("utf-8", "replace").strip()
         if attempt < attempts - 1:
-            _start_cooldown(min(2 ** (attempt + 1), MAX_BACKOFF))
-    raise RuntimeError(f"failed to fetch {url}: {last_err}")
+            # Jitter: identical backoff makes workers resume in lockstep and
+            # reproduce the same burst that was just throttled.
+            _start_cooldown(min(2 ** (attempt + 1), MAX_BACKOFF) * random.uniform(1.0, 1.4))
+    raise TransientError(f"failed to fetch {url}: {last_err}")
+
+
+def probe(candidate: tuple[str, str], attempts: int = PROBE_ATTEMPTS) -> dict:
+    """Fetch and classify one listing page.
+
+    A page the server would not serve is reported as `unresolved` instead of
+    raising: one unreachable page must not discard the other 700.
+    """
+    source, version = candidate
+    if _abort.is_set():
+        return {
+            "source": source,
+            "version": version,
+            "status": "unresolved",
+            "error": "not attempted: developer.4d.com stopped responding",
+        }
+    try:
+        http_code, body = fetch(source, version, attempts=attempts)
+        exists, bug_count = classify(source, body, http_code, listing_url(source, version))
+    except TransientError as exc:
+        _note_failure()
+        return {
+            "source": source,
+            "version": version,
+            "status": "unresolved",
+            "error": str(exc),
+        }
+    _note_success()
+    target_dir = EXISTS_DIR if exists else NOTFOUND_DIR
+    path = os.path.join(target_dir, source, f"{version}.html")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(body)
+    stale = os.path.join(
+        NOTFOUND_DIR if exists else EXISTS_DIR, source, f"{version}.html"
+    )
+    if os.path.exists(stale):
+        os.remove(stale)
+    return {
+        "source": source,
+        "version": version,
+        "status": "found" if exists else "not_found",
+        "http_code": http_code,
+        "bytes": len(body.encode("utf-8", "replace")),
+        "bug_count": bug_count,
+        "hash": sha256_text(body) if exists else None,
+    }
+
+
+def retry_unresolved(results: list[dict], delays=RETRY_PASS_DELAYS,
+                     attempts=RETRY_ATTEMPTS) -> list[dict]:
+    """Re-probe the pages that failed, one at a time.
+
+    Sequential on purpose: the parallel burst is what a throttling GitHub
+    Pages edge reacts to, so repeating it is the one thing guaranteed not to
+    help. Later passes are allowed more attempts, since they deal with fewer
+    pages. Order is preserved and every entry is replaced in place.
+    """
+    by_key = {(r["source"], r["version"]): r for r in results}
+    unresolved = [r for r in results if r["status"] == "unresolved"]
+    if not unresolved:
+        return results
+    print(f"\n{len(unresolved)} page(s) were not served; retrying them one at a time...")
+    for index, delay in enumerate(delays, 1):
+        if not unresolved:
+            break
+        print(f"  pass {index}/{len(delays)}: waiting {delay}s before "
+              f"{len(unresolved)} sequential request(s)")
+        time.sleep(delay)
+        still = []
+        for position, res in enumerate(unresolved):
+            if _abort.is_set():
+                still.extend(unresolved[position:])
+                print("  giving up: developer.4d.com is not answering at all")
+                break
+            key = (res["source"], res["version"])
+            fresh = probe(key, attempts=attempts[index - 1] if index <= len(attempts)
+                          else attempts[-1])
+            by_key[key] = fresh
+            if fresh["status"] == "unresolved":
+                still.append(fresh)
+                print(f"  still unavailable: {key[0]}={key[1]}")
+            else:
+                print(f"  [recovered] {key[0]}={key[1]}")
+        unresolved = still
+    return [by_key[(r["source"], r["version"])] for r in results]
 
 
 def select_candidates(state: dict, full: bool) -> list[tuple[str, str]]:
@@ -224,6 +385,7 @@ def select_candidates(state: dict, full: bool) -> list[tuple[str, str]]:
 
 
 def crawl(full: bool, workers: int) -> dict:
+    reset_breaker()
     state = load_state()
     pages = state.setdefault("pages", {})
     candidates = select_candidates(state, full)
@@ -235,39 +397,26 @@ def crawl(full: bool, workers: int) -> dict:
 
     results = []
 
-    def one(candidate):
-        source, version = candidate
-        http_code, body = fetch(source, version)
-        exists, bug_count = classify(source, body, http_code, listing_url(source, version))
-        target_dir = EXISTS_DIR if exists else NOTFOUND_DIR
-        path = os.path.join(target_dir, source, f"{version}.html")
-        with open(path, "w", encoding="utf-8") as f:
-            f.write(body)
-        stale = os.path.join(
-            NOTFOUND_DIR if exists else EXISTS_DIR, source, f"{version}.html"
-        )
-        if os.path.exists(stale):
-            os.remove(stale)
-        return {
-            "source": source,
-            "version": version,
-            "status": "found" if exists else "not_found",
-            "http_code": http_code,
-            "bytes": len(body.encode("utf-8", "replace")),
-            "bug_count": bug_count,
-            "hash": sha256_text(body) if exists else None,
-        }
-
     with ThreadPoolExecutor(max_workers=workers) as pool:
-        for i, res in enumerate(pool.map(one, candidates), 1):
+        for i, res in enumerate(pool.map(probe, candidates), 1):
             results.append(res)
             if res["status"] == "found":
                 print(f"  [found]    {res['source']}={res['version']} ({res['bug_count']} bugs)")
             if i % 200 == 0:
                 print(f"  ...{i}/{len(candidates)}")
 
+    if _abort.is_set():
+        print(f"\nGiving up: {FAILURE_PATIENCE} pages in a row could not be fetched. "
+              "developer.4d.com looks down rather than merely busy.")
+    results = retry_unresolved(results)
+    unresolved = [r for r in results if r["status"] == "unresolved"]
+
     new_pages, changed_pages, gone_pages = [], [], []
     for res in results:
+        if res["status"] == "unresolved":
+            # Keep the previous state (and the cached HTML) exactly as it was:
+            # a page we could not read is not a page that disappeared.
+            continue
         key = page_key(res["source"], res["version"])
         previous = pages.get(key)
         if res["status"] == "found":
@@ -296,16 +445,52 @@ def crawl(full: bool, workers: int) -> dict:
         "new_pages": sorted(new_pages),
         "changed_pages": sorted(changed_pages),
         "gone_pages": sorted(gone_pages),
+        # Pages the site would not serve this run. Their previous state was
+        # kept, so the delta they would have produced is simply deferred to
+        # the next crawl.
+        "unresolved": sorted(page_key(r["source"], r["version"]) for r in unresolved),
     }
     save_state(state)
-    write_log(results)
+    write_log([r for r in results if r["status"] != "unresolved"])
 
     print(f"\nFound pages: {state['counts']['pages_found']}")
     print(f"New pages:     {len(new_pages)}  {sorted(new_pages)}")
     print(f"Changed pages: {len(changed_pages)}  {sorted(changed_pages)}")
     if gone_pages:
         print(f"Disappeared:   {len(gone_pages)}  {sorted(gone_pages)}")
+    if unresolved:
+        print(f"Unavailable:   {len(unresolved)}  "
+              f"{state['last_crawl']['unresolved']}")
     return state
+
+
+def verdict(probed: int, unresolved: list[str]) -> int:
+    """Exit status for a crawl that left `unresolved` pages unread.
+
+    A handful of throttled pages is normal and already covered by the data
+    carried over from the previous run, so it only warrants a warning. Losing
+    a fifth of the site is an outage, and publishing a dataset built from it
+    would misreport a quiet week.
+    """
+    if not unresolved:
+        return 0
+    listed = ", ".join(unresolved[:10]) + (" …" if len(unresolved) > 10 else "")
+    if probed and len(unresolved) / probed > MAX_UNRESOLVED_SHARE:
+        print(
+            f"\nERROR: {len(unresolved)} of {probed} listings could not be fetched "
+            f"(over {MAX_UNRESOLVED_SHARE:.0%}). This looks like developer.4d.com "
+            f"being unavailable rather than a few throttled pages; re-run later.\n"
+            f"  {listed}",
+            file=sys.stderr,
+        )
+        return 1
+    print(
+        f"\nWARNING: {len(unresolved)} of {probed} listings could not be fetched after "
+        f"retrying. Their previous data was kept and they are re-probed next run.\n"
+        f"  {listed}",
+        file=sys.stderr,
+    )
+    return 0
 
 
 def write_log(results) -> None:
@@ -329,7 +514,7 @@ def write_log(results) -> None:
             f.write(existing[key] + "\n")
 
 
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--full", action="store_true", help="probe every candidate")
     parser.add_argument("--fast", action="store_true", help="frontier probe only (default)")
@@ -342,8 +527,10 @@ def main():
     else:
         # No prior state means nothing to be incremental against.
         full = not load_state().get("pages")
-    crawl(full=full, workers=args.workers)
+    state = crawl(full=full, workers=args.workers)
+    last = state.get("last_crawl", {})
+    return verdict(last.get("probed", 0), last.get("unresolved", []))
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

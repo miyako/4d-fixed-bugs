@@ -56,10 +56,26 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          # api.github.com answers 502/503 under load; a skipped guard is not
+          # a reason to fail the whole run.
+          gh_retry() {
+            local n=1
+            until "$@"; do
+              if [ "$n" -ge 4 ]; then return 1; fi
+              echo "  retrying in $((n * 15))s (attempt $((n + 1))/4): $*" >&2
+              sleep $((n * 15)); n=$((n + 1))
+            done
+          }
+          set -uo pipefail
           skip=false
           if [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
-            open=$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --json headRefName \
-                   --jq '[.[] | select(.headRefName | startswith("dataset-update/"))] | length')
+            # Not knowing whether a PR is open is not the same as knowing none
+            # is: say so and stop, rather than open a second one.
+            if ! open=$(gh_retry gh pr list --repo "$GITHUB_REPOSITORY" --state open --json headRefName \
+                   --jq '[.[] | select(.headRefName | startswith("dataset-update/"))] | length'); then
+              echo "::error::api.github.com did not answer; cannot tell whether an update PR is open, so this week's update is skipped."
+              exit 1
+            fi
             if [ "$open" != "0" ]; then
               echo "An earlier dataset-update PR is still open; skipping this scheduled run."
               skip=true
@@ -78,7 +94,8 @@ jobs:
       pending: ${{ steps.run.outputs.pending }}
       pending_ja: ${{ steps.run.outputs.pending_ja }}
       pending_fr: ${{ steps.run.outputs.pending_fr }}
-      pr_url: ${{ steps.cpr.outputs.pull-request-url }}
+      unresolved: ${{ steps.run.outputs.unresolved }}
+      pr_url: ${{ steps.cpr.outputs.pull-request-url || steps.cpr-retry.outputs.pull-request-url }}
     env:
       # Scheduled runs have no inputs: default to a normal incremental update.
       MODE: ${{ inputs.mode || 'update' }}
@@ -98,6 +115,8 @@ jobs:
 
       - name: Cache verified search model and runtime
         uses: actions/cache@v4
+        # A 5xx from the cache service only costs a re-download, which retries.
+        continue-on-error: true
         with:
           path: |
             .cache/search-model
@@ -106,7 +125,14 @@ jobs:
 
       - name: Unit tests
         run: |
-          (cd scripts && npm ci --silent && npm test)
+          # The npm registry answers 5xx under load, and here a retry is cheap.
+          n=1
+          until (cd scripts && npm ci --silent); do
+            if [ "$n" -ge 3 ]; then exit 1; fi
+            echo "  npm ci failed; retrying in $((n * 15))s (attempt $((n + 1))/3)" >&2
+            sleep $((n * 15)); n=$((n + 1))
+          done
+          (cd scripts && npm test)
 
       - name: Run pipeline
         id: run
@@ -153,6 +179,12 @@ jobs:
             pending_fr=$(python3 -c "import json;print(len(json.load(open('data/pending_translation_fr.json'))))")
           fi
           echo "pending_fr=$pending_fr" >> "$GITHUB_OUTPUT"
+          # Listings developer.4d.com would not serve (it is GitHub Pages, and
+          # it 503s under load). The crawl keeps their previous data instead of
+          # dropping it, so the refresh is still publishable; the count is
+          # reported so a run that quietly lost pages is never invisible.
+          unresolved=$(python3 -c "import json;s=json.load(open('data/update_state.json'));print(len(s.get('last_crawl',{}).get('unresolved',[])))")
+          echo "unresolved=$unresolved" >> "$GITHUB_OUTPUT"
           # crawl_log.tsv and update_state.json carry timestamps that change on
           # every crawl. A scheduled run only counts as changed when something
           # else did, so quiet weeks open no pull request.
@@ -171,6 +203,7 @@ jobs:
         env:
           AUTOMATED: ${{ steps.run.outputs.automated }}
           OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
+          UNRESOLVED: ${{ steps.run.outputs.unresolved }}
         run: |
           python3 - > "$RUNNER_TEMP/pr_body.md" <<'EOF'
           import json, os
@@ -186,6 +219,10 @@ jobs:
           elif os.environ.get("AUTOMATED") == "partial":
               print(f"An OpenAI model (`{model}`) wrote part of the summaries. What it could not write validly "
                     "is still pending and listed below; the run log has the reasons.\n")
+          if os.environ.get("UNRESOLVED", "0") not in ("", "0"):
+              print(f"**{os.environ['UNRESOLVED']} listing(s) could not be fetched** (developer.4d.com is GitHub "
+                    "Pages and 503s under load). Their previous data was carried over unchanged, so nothing is "
+                    "lost; the next run re-probes them. The run log lists the pages.\n")
           if pending:
               print(f"**{len(pending)} bug(s) need an English summary before the site can be rebuilt.**\n")
               print("Write them per `scripts/update/ENRICHMENT_PROMPT.md`, merge with "
@@ -227,11 +264,37 @@ jobs:
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -m "Rebuild site data"
-          git push
+          # A 502/503 from github.com must not cost a full rebuild.
+          n=1
+          until git push; do
+            if [ "$n" -ge 4 ]; then exit 1; fi
+            echo "  push failed; retrying in $((n * 20))s (attempt $((n + 1))/4)" >&2
+            sleep $((n * 20)); n=$((n + 1))
+          done
 
       - name: Open pull request (update)
         id: cpr
         if: steps.run.outputs.changed == 'true' && env.MODE == 'update'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: dataset-update/${{ github.run_id }}
+          commit-message: Update dataset from developer.4d.com/FixedBugsList and 4D-JP notes
+          title: >-
+            Update dataset${{ steps.run.outputs.pending != '0' && format(' ({0} bugs pending enrichment)', steps.run.outputs.pending) || ((steps.run.outputs.pending_ja != '0' || steps.run.outputs.pending_fr != '0') && format(' (JA: {0}, FR: {1} pending translation)', steps.run.outputs.pending_ja, steps.run.outputs.pending_fr)) || '' }}
+          body-path: ${{ runner.temp }}/pr_body.md
+          delete-branch: true
+
+      # The first attempt died, most likely on a 5xx from api.github.com. The
+      # branch and the built data are still in the workspace, so a second
+      # attempt costs seconds — re-creating the PR finds the branch and only
+      # re-does the API call.
+      - name: Wait before retrying the pull request (GitHub 5xx)
+        if: steps.run.outputs.changed == 'true' && env.MODE == 'update' && steps.cpr.outcome == 'failure'
+        run: sleep 90
+
+      - name: Open pull request (update, retry)
+        id: cpr-retry
+        if: steps.run.outputs.changed == 'true' && env.MODE == 'update' && steps.cpr.outcome == 'failure'
         uses: peter-evans/create-pull-request@v7
         with:
           branch: dataset-update/${{ github.run_id }}
@@ -258,11 +321,13 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       OWNER: ${{ github.repository_owner }}
       SKIPPED: ${{ needs.guard.outputs.skip }}
+      GUARD_RESULT: ${{ needs.guard.result }}
       RESULT: ${{ needs.update.result }}
       CHANGED: ${{ needs.update.outputs.changed }}
       PENDING: ${{ needs.update.outputs.pending }}
       PENDING_JA: ${{ needs.update.outputs.pending_ja }}
       PENDING_FR: ${{ needs.update.outputs.pending_fr }}
+      UNRESOLVED: ${{ needs.update.outputs.unresolved }}
       PR_URL: ${{ needs.update.outputs.pr_url }}
       AUTOMATED: ${{ needs.update.outputs.automated }}
       RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
@@ -273,7 +338,17 @@ jobs:
           today=$(date -u +%Y-%m-%d)
           close_after=false
           body="$RUNNER_TEMP/body.md"
-          open_prs=$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --json number,url,headRefName \
+          # api.github.com answers 502/503 under load; the status issue is the
+          # only notification the owner gets, so it is worth retrying.
+          gh_retry() {
+            local n=1
+            until "$@"; do
+              if [ "$n" -ge 4 ]; then return 1; fi
+              echo "  retrying in $((n * 20))s (attempt $((n + 1))/4): $*" >&2
+              sleep $((n * 20)); n=$((n + 1))
+            done
+          }
+          open_prs=$(gh_retry gh pr list --repo "$GITHUB_REPOSITORY" --state open --json number,url,headRefName \
                      --jq '[.[] | select(.headRefName | startswith("dataset-update/"))] | map("- " + .url) | join("\n")')
 
           if [ "$SKIPPED" = "true" ]; then
@@ -287,6 +362,14 @@ jobs:
               echo "Reminder: finish that PR first (see the checklist below), then merge it. The next scheduled run will pick up from there."
             } > "$body"
             remind=true
+          elif [ "${GUARD_RESULT:-}" = "failure" ]; then
+            status="FAILED (could not check for open PRs)"
+            {
+              echo "@$OWNER The weekly dataset update did **not run**: GitHub did not answer when the run checked for open update pull requests, so it could not safely decide whether to start one."
+              echo
+              echo "Nothing is wrong with the dataset. Logs: $RUN_URL"
+            } > "$body"
+            remind=false
           elif [ "$RESULT" != "success" ]; then
             status="FAILED"
             {
@@ -299,7 +382,11 @@ jobs:
             status="no new fixes"
             close_after=true
             {
-              echo "@$OWNER The weekly dataset update ran and found **nothing new** on developer.4d.com, so no pull request was opened."
+              if [ -n "${UNRESOLVED:-}" ] && [ "$UNRESOLVED" != "0" ]; then
+                echo "@$OWNER The weekly dataset update ran and found **nothing new** on the pages it could read, so no pull request was opened."
+              else
+                echo "@$OWNER The weekly dataset update ran and found **nothing new** on developer.4d.com, so no pull request was opened."
+              fi
               echo
               echo "Run: $RUN_URL"
             } > "$body"
@@ -338,6 +425,15 @@ jobs:
             remind=true
           fi
 
+          # A run that lost pages has to say so: "nothing new" is only true of
+          # the pages that answered.
+          if [ -n "${UNRESOLVED:-}" ] && [ "$UNRESOLVED" != "0" ]; then
+            {
+              echo
+              echo "**${UNRESOLVED} listing(s) could not be fetched** this run (developer.4d.com is GitHub Pages and 503s under load). Their previous data was kept, so nothing was dropped; the next crawl re-probes them. The run log names the pages."
+            } >> "$body"
+          fi
+
           if [ "$remind" = "true" ]; then
             {
               echo
@@ -351,10 +447,10 @@ jobs:
             } >> "$body"
           fi
 
-          url=$(gh issue create --repo "$GITHUB_REPOSITORY" \
+          url=$(gh_retry gh issue create --repo "$GITHUB_REPOSITORY" \
                   --title "Weekly dataset update $today: $status" \
                   --body-file "$body")
           echo "$url"
           if [ "$close_after" = "true" ]; then
-            gh issue close "$url" --repo "$GITHUB_REPOSITORY" --reason completed
+            gh_retry gh issue close "$url" --repo "$GITHUB_REPOSITORY" --reason completed
           fi

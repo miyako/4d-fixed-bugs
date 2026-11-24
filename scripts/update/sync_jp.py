@@ -18,6 +18,11 @@ Note items look like:
 
     **注記**: … continuation paragraph belonging to the bullet above …
 
+github.com answers 502/503 under load often enough that a clone is worth
+retrying: the network operations below are attempted several times, and when
+a fetch still fails against an existing checkout the previous clone is used
+(and reported) rather than aborting the whole update.
+
 Output: data/jp_notes.json  [{reference, source, version_raw, version_norm, text, path}]
 """
 from __future__ import annotations
@@ -26,6 +31,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -43,28 +49,51 @@ REPOS = {
     "release-notes": ("release-notes", "https://github.com/4D-JP/release-notes.git"),
 }
 
+GIT_ATTEMPTS = 4
+GIT_RETRY_DELAYS = (5, 15, 45)
+
 ITEM_RE = re.compile(r"^\*[\s\u3000]*(ACI\d{7})[\s\u3000]*(.*)$")
 HR_RE = re.compile(r"^-{3,}\s*$")
 FRONT_MATTER_VERSION_RE = re.compile(r"^version:\s*(.+?)\s*$", re.MULTILINE)
 LAYOUT_FIX_RE = re.compile(r"^layout:\s*fix\s*$", re.MULTILINE)
 
 
-def run(cmd, cwd=None) -> str:
-    proc = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True)
-    if proc.returncode != 0:
-        raise RuntimeError(f"{' '.join(cmd)} failed: {proc.stderr.strip()}")
-    return proc.stdout.strip()
+def run(cmd, cwd=None, attempts: int = 1, delays=()) -> str:
+    """Run a command, retrying transient failures (GitHub 5xx) with backoff."""
+    last = ""
+    for attempt in range(attempts):
+        if attempt:
+            delay = delays[min(attempt - 1, len(delays) - 1)]
+            print(f"  retrying in {delay}s ({attempt + 1}/{attempts}): "
+                  f"{' '.join(cmd)}", file=sys.stderr)
+            time.sleep(delay)
+        proc = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True)
+        if proc.returncode == 0:
+            return proc.stdout.strip()
+        last = proc.stderr.strip()
+    raise RuntimeError(f"{' '.join(cmd)} failed: {last}")
 
 
 def sync_repo(name: str, url: str) -> str:
-    """Shallow-clone or fast-forward the repo; returns its HEAD sha."""
+    """Shallow-clone or fast-forward the repo; returns its HEAD sha.
+
+    A fetch that keeps failing falls back to the checkout already in the
+    vendor directory: stale Japanese notes are far better than a skipped
+    dataset refresh, and they only affect enrichment context, not correctness
+    of the published bug records."""
     path = os.path.join(VENDOR_DIR, name)
     if os.path.isdir(os.path.join(path, ".git")):
-        run(["git", "fetch", "--depth", "1", "origin", "HEAD"], cwd=path)
-        run(["git", "reset", "--hard", "FETCH_HEAD"], cwd=path)
+        try:
+            run(["git", "fetch", "--depth", "1", "origin", "HEAD"], cwd=path,
+                attempts=GIT_ATTEMPTS, delays=GIT_RETRY_DELAYS)
+            run(["git", "reset", "--hard", "FETCH_HEAD"], cwd=path)
+        except RuntimeError as exc:
+            print(f"WARNING: {name}: could not reach github.com ({exc}); using the "
+                  f"checkout already in vendor/{name}", file=sys.stderr)
     else:
         os.makedirs(VENDOR_DIR, exist_ok=True)
-        run(["git", "clone", "--depth", "1", "--quiet", url, path])
+        run(["git", "clone", "--depth", "1", "--quiet", url, path],
+            attempts=GIT_ATTEMPTS, delays=GIT_RETRY_DELAYS)
     return run(["git", "rev-parse", "HEAD"], cwd=path)
 
 

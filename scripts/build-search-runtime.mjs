@@ -39,7 +39,8 @@ for (const [file, expected] of Object.entries(RUNTIME_ARTIFACTS)) {
   }
   if (!bytes || hash(bytes) !== expected) {
     execFileSync("curl", [
-      "--fail", "--location", "--silent", "--show-error", "--retry", "2",
+      "--fail", "--location", "--silent", "--show-error",
+      "--retry", "5", "--retry-delay", "3",
       "--max-time", "180", runtimeUrl(file), "--output", fileURLToPath(target),
     ], { stdio: "inherit" });
     bytes = await readFile(target);

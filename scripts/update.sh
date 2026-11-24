@@ -48,6 +48,23 @@ done
 
 step() { printf '\n\033[1m== %s\033[0m\n' "$1"; }
 
+# Registry and CDN downloads fail with transient 5xx often enough that a bare
+# `npm ci` should not be what ends a weekly refresh.
+retry() {
+    local tries=$1 delay=$2
+    shift 2
+    local attempt=1
+    until "$@"; do
+        if [ "$attempt" -ge "$tries" ]; then
+            echo "failed after $attempt attempt(s): $*" >&2
+            return 1
+        fi
+        attempt=$((attempt + 1))
+        echo "  retrying in ${delay}s (attempt $attempt/$tries): $*" >&2
+        sleep "$delay"
+    done
+}
+
 if [ "$BUILD_ONLY" -eq 0 ]; then
     step "1/11 Crawling developer.4d.com/FixedBugsList"
     python3 scripts/update/crawl.py "${CRAWL_ARGS[@]}"
@@ -118,8 +135,8 @@ step "6/11 Checking documentation links"
 python3 scripts/update/check_links.py
 
 step "7/11 Restoring dependencies + verifying pinned official CDN search runtime"
-npm ci --silent --prefix scripts
-npm run build:search-runtime --prefix scripts
+retry 3 15 npm ci --silent --prefix scripts
+retry 3 15 npm run build:search-runtime --prefix scripts
 
 step "8/11 Building English embeddings + client dataset"
 (cd scripts && node update/generate_embeddings.mjs ${EMBED_ARGS[@]+"${EMBED_ARGS[@]}"})
